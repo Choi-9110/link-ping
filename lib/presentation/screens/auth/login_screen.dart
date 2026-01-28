@@ -1,0 +1,165 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../l10n/app_localizations.dart';
+
+import '../../../core/theme/spacing.dart';
+import '../../../providers/auth_provider.dart';
+import '../home/home_screen.dart';
+import 'profile_setup_screen.dart';
+
+class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  bool _isLoading = false;
+
+  Future<void> _signInWithGoogle() async {
+    setState(() => _isLoading = true);
+
+    try {
+      final authService = ref.read(authServiceProvider);
+      final result = await authService.signInWithGoogle();
+
+      if (result != null && mounted) {
+        // 로그인 성공 → 프로필 설정 화면으로
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ProfileSetupScreen(),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${l10n.loginFailed}: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _skipLogin() async {
+    setState(() => _isLoading = true);
+
+    try {
+      // 기기 언어 감지 (한국어인지 확인)
+      final locale = View.of(context).platformDispatcher.locale;
+      final isKorean = locale.languageCode == 'ko';
+
+      // 익명 로그인으로 게스트 ID 부여
+      final authService = ref.read(authServiceProvider);
+      await authService.signInAnonymously(isKorean: isKorean);
+
+      if (mounted) {
+        // 게스트 프로필 자동 생성 후 홈으로
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${l10n.guestLoginFailed}: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(Spacing.xl),
+          child: Column(
+            children: [
+              const Spacer(),
+
+              // 로고 & 타이틀
+              Icon(
+                Icons.link,
+                size: 80,
+                color: colorScheme.primary,
+              ),
+              const SizedBox(height: Spacing.lg),
+              Text(
+                l10n.appName,
+                style: theme.textTheme.headlineLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: Spacing.sm),
+              Text(
+                l10n.appSlogan,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+
+              const Spacer(),
+
+              // Google 로그인 버튼
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton.icon(
+                  onPressed: _isLoading ? null : _signInWithGoogle,
+                  icon: _isLoading
+                      ? const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.g_mobiledata, size: 28),
+                  label: Text(_isLoading ? l10n.loginLoading : l10n.loginWithGoogle),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorScheme.primary,
+                    foregroundColor: colorScheme.onPrimary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: Spacing.md),
+
+              // 나중에 하기
+              TextButton(
+                onPressed: _isLoading ? null : _skipLogin,
+                child: Text(
+                  l10n.loginLater,
+                  style: TextStyle(
+                    color: colorScheme.outline,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: Spacing.xl),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

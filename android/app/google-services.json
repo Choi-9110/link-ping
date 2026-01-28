@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1067948471437",
+    "project_id": "linkping-4b337",
+    "storage_bucket": "linkping-4b337.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067948471437:android:a6649bdd5a416a4b739ec4",
+        "android_client_info": {
+          "package_name": "com.example.linkping"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBearpNiKl9f-mhUxfvrOQLOTKx_Fbv5sY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

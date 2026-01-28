@@ -1,0 +1,200 @@
+{
+  "@@locale": "en",
+
+  "appName": "LinkPing",
+  "appSlogan": "Save links, take action!",
+
+  "login": "Login",
+  "loginWithGoogle": "Continue with Google",
+  "loginLoading": "Logging in...",
+  "loginLater": "Maybe later",
+  "loginFailed": "Login failed",
+  "guestLoginFailed": "Guest login failed",
+  "logout": "Logout",
+  "logoutConfirm": "Are you sure you want to logout?",
+
+  "guest": "Guest",
+  "guestSyncMessage": "Sign in with Google to sync data",
+
+  "profileSetup": "Profile Setup",
+  "profileSetupTitle": "Set up your profile",
+  "profileSetupSubtitle": "This information will be visible to other users",
+  "nickname": "Nickname",
+  "nicknameHint": "FitnessMike",
+  "nicknameRequired": "Please enter a nickname",
+  "nicknameMinLength": "At least 2 characters required",
+  "nicknameMaxLength": "Maximum 20 characters",
+  "country": "Country",
+  "complete": "Complete",
+  "profileSaveFailed": "Failed to save profile",
+
+  "home": "Home",
+  "settings": "Settings",
+  "notifications": "Notifications",
+
+  "addLink": "Add Link",
+  "editLink": "Edit Link",
+  "deleteLink": "Delete",
+  "deleteConfirm": "Delete this link?",
+  "cancel": "Cancel",
+  "save": "Save",
+  "delete": "Delete",
+
+  "url": "URL",
+  "urlHint": "https://example.com",
+  "urlRequired": "Please enter a URL",
+  "urlInvalid": "Please enter a valid URL",
+  "title": "Title",
+  "titleHint": "Daily workout routine",
+  "titleRequired": "Please enter a title",
+
+  "notificationTime": "Notification Time",
+  "repeatDays": "Repeat Days",
+  "selectRepeatDays": "Please select repeat days",
+  "sun": "Sun",
+  "mon": "Mon",
+  "tue": "Tue",
+  "wed": "Wed",
+  "thu": "Thu",
+  "fri": "Fri",
+  "sat": "Sat",
+  "sunday": "Sunday",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "everyday": "Everyday",
+  "weekdays": "Weekdays",
+  "weekends": "Weekends",
+  "repeat": "Repeat",
+
+  "linkUrl": "Link URL",
+  "invalidUrl": "Please enter a valid URL",
+  "reminderTitle": "Reminder Title",
+  "reminderTitleHint": "Let's stretch!",
+  "enterTitle": "Please enter a title",
+  "reminderTime": "Reminder Time",
+  "addTime": "Add time",
+  "addTimePremium": "Add time (Premium)",
+  "premiumFeature": "Premium Feature",
+  "multiTimesPremiumMessage": "Upgrade to Premium to set multiple\ntimes for a single link!",
+
+  "linkAdded": "Link added",
+  "linkUpdated": "Link updated",
+  "linkDeleted": "Link deleted",
+
+  "emptyStateTitle": "No links yet",
+  "emptyStateSubtitle": "Add links you want to visit regularly",
+  "emptyStateButton": "Add your first link",
+
+  "savedByCount": "Saved by {count}",
+  "@savedByCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "savedByTitle": "People who saved this link",
+  "noSavedUsers": "No one has saved this yet",
+  "me": "Me",
+  "loadFailed": "Failed to load",
+
+  "cheer": "Cheer",
+  "tease": "Tease",
+  "cheerSent": "Sent cheer to {nickname}!",
+  "@cheerSent": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "teaseSent": "Sent tease to {nickname}!",
+  "@teaseSent": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "sendFailed": "Failed to send",
+  "cannotSendToSelf": "Cannot send to yourself",
+
+  "noNotifications": "No notifications yet",
+  "noNotificationsSubtitle": "When others send you cheers or teases,\nthey will appear here",
+  "markAllRead": "Mark all read",
+  "cheerReceived": " sent you a cheer!",
+  "teaseReceived": " teased you!",
+  "notificationLoadFailed": "Failed to load notifications",
+  "justNow": "Just now",
+  "minutesAgo": "{minutes}m ago",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{hours}h ago",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "{days}d ago",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "profile": "Profile",
+  "editProfile": "Edit Profile",
+  "profileEditNotReady": "Edit profile (coming soon)",
+
+  "notificationSettings": "Notifications",
+  "notificationPermission": "Notification Permission",
+  "notificationTest": "Test Notification",
+  "notificationTestSubtitle": "Send a test notification",
+  "notificationTestSent": "Test notification sent",
+  "notificationPermissionRequired": "Notification permission required",
+
+  "premium": "Premium",
+  "premiumActive": "Premium Active",
+  "premiumPurchase": "Get Premium",
+  "premiumBenefits": "Unlimited links, no ads",
+  "premiumBenefitsList": "Premium benefits:",
+  "premiumBenefit1": "Unlimited links",
+  "premiumBenefit2": "No ads",
+  "premiumPrice": "$2.99/month or $19.99 lifetime",
+  "premiumLater": "Later",
+  "premiumBuy": "Purchase",
+  "premiumPaymentNotReady": "Payment (coming soon)",
+
+  "linkLimitReached": "Link limit reached",
+  "linkLimitMessage": "Free version allows up to 3 links.\nUpgrade to Premium for unlimited links!",
+  "viewPremium": "View Premium",
+
+  "account": "Account",
+  "info": "Info",
+  "version": "Version",
+  "privacyPolicy": "Privacy Policy",
+  "privacyPolicyNotReady": "Privacy Policy (coming soon)",
+  "contact": "Contact Us",
+  "contactNotReady": "Contact (coming soon)",
+
+  "loading": "Loading...",
+  "error": "Error",
+  "retry": "Retry",
+  "ok": "OK",
+  "yes": "Yes",
+  "no": "No"
+}

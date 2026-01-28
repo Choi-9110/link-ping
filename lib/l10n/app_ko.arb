@@ -1,0 +1,200 @@
+{
+  "@@locale": "ko",
+
+  "appName": "LinkPing",
+  "appSlogan": "저장한 링크, 실천하자!",
+
+  "login": "로그인",
+  "loginWithGoogle": "Google로 계속하기",
+  "loginLoading": "로그인 중...",
+  "loginLater": "나중에 할게요",
+  "loginFailed": "로그인 실패",
+  "guestLoginFailed": "게스트 로그인 실패",
+  "logout": "로그아웃",
+  "logoutConfirm": "로그아웃 하시겠습니까?",
+
+  "guest": "게스트",
+  "guestSyncMessage": "Google 로그인으로 데이터 동기화",
+
+  "profileSetup": "프로필 설정",
+  "profileSetupTitle": "프로필을 설정해주세요",
+  "profileSetupSubtitle": "다른 사용자에게 표시될 정보입니다",
+  "nickname": "닉네임",
+  "nicknameHint": "운동하는민수",
+  "nicknameRequired": "닉네임을 입력하세요",
+  "nicknameMinLength": "2자 이상 입력하세요",
+  "nicknameMaxLength": "20자 이하로 입력하세요",
+  "country": "국가",
+  "complete": "완료",
+  "profileSaveFailed": "프로필 저장 실패",
+
+  "home": "홈",
+  "settings": "설정",
+  "notifications": "알림",
+
+  "addLink": "링크 추가",
+  "editLink": "링크 수정",
+  "deleteLink": "삭제",
+  "deleteConfirm": "이 링크를 삭제할까요?",
+  "cancel": "취소",
+  "save": "저장",
+  "delete": "삭제",
+
+  "url": "URL",
+  "urlHint": "https://example.com",
+  "urlRequired": "URL을 입력하세요",
+  "urlInvalid": "올바른 URL을 입력하세요",
+  "title": "제목",
+  "titleHint": "매일 운동 루틴",
+  "titleRequired": "제목을 입력하세요",
+
+  "notificationTime": "알림 시간",
+  "repeatDays": "반복 요일",
+  "selectRepeatDays": "반복 요일을 선택하세요",
+  "sun": "일",
+  "mon": "월",
+  "tue": "화",
+  "wed": "수",
+  "thu": "목",
+  "fri": "금",
+  "sat": "토",
+  "sunday": "일요일",
+  "monday": "월요일",
+  "tuesday": "화요일",
+  "wednesday": "수요일",
+  "thursday": "목요일",
+  "friday": "금요일",
+  "saturday": "토요일",
+  "everyday": "매일",
+  "weekdays": "평일",
+  "weekends": "주말",
+  "repeat": "반복",
+
+  "linkUrl": "링크 URL",
+  "invalidUrl": "올바른 URL을 입력하세요",
+  "reminderTitle": "알림 제목",
+  "reminderTitleHint": "아침 스트레칭 하자!",
+  "enterTitle": "제목을 입력하세요",
+  "reminderTime": "알림 시간",
+  "addTime": "시간 추가",
+  "addTimePremium": "시간 추가 (프리미엄)",
+  "premiumFeature": "프리미엄 기능",
+  "multiTimesPremiumMessage": "하나의 링크에 여러 시간을 설정하려면\n프리미엄으로 업그레이드하세요!",
+
+  "linkAdded": "링크가 추가되었습니다",
+  "linkUpdated": "링크가 수정되었습니다",
+  "linkDeleted": "링크가 삭제되었습니다",
+
+  "emptyStateTitle": "아직 링크가 없어요",
+  "emptyStateSubtitle": "자주 방문하고 싶은 링크를 추가해보세요",
+  "emptyStateButton": "첫 링크 추가하기",
+
+  "savedByCount": "{count}명이 저장함",
+  "@savedByCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "savedByTitle": "이 링크를 저장한 사람들",
+  "noSavedUsers": "아직 저장한 사람이 없어요",
+  "me": "나",
+  "loadFailed": "불러오기 실패",
+
+  "cheer": "응원",
+  "tease": "약올리기",
+  "cheerSent": "{nickname}님에게 응원을 보냈어요!",
+  "@cheerSent": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "teaseSent": "{nickname}님에게 약올리기를 보냈어요!",
+  "@teaseSent": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "sendFailed": "전송 실패",
+  "cannotSendToSelf": "자기 자신에게는 보낼 수 없어요",
+
+  "noNotifications": "아직 알림이 없어요",
+  "noNotificationsSubtitle": "다른 유저가 응원이나 약올리기를 보내면\n여기에 표시됩니다",
+  "markAllRead": "모두 읽음",
+  "cheerReceived": "님이 응원을 보냈어요!",
+  "teaseReceived": "님이 약올렸어요!",
+  "notificationLoadFailed": "알림을 불러올 수 없습니다",
+  "justNow": "방금",
+  "minutesAgo": "{minutes}분 전",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{hours}시간 전",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "{days}일 전",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "profile": "프로필",
+  "editProfile": "프로필 수정",
+  "profileEditNotReady": "프로필 수정 (구현 예정)",
+
+  "notificationSettings": "알림",
+  "notificationPermission": "알림 권한",
+  "notificationTest": "알림 테스트",
+  "notificationTestSubtitle": "테스트 알림 보내기",
+  "notificationTestSent": "테스트 알림을 보냈습니다",
+  "notificationPermissionRequired": "알림 권한이 필요합니다",
+
+  "premium": "프리미엄",
+  "premiumActive": "프리미엄 사용 중",
+  "premiumPurchase": "프리미엄 구매",
+  "premiumBenefits": "무제한 링크, 광고 제거",
+  "premiumBenefitsList": "프리미엄 혜택:",
+  "premiumBenefit1": "무제한 링크 등록",
+  "premiumBenefit2": "광고 제거",
+  "premiumPrice": "월 $2.99 / 평생 $19.99",
+  "premiumLater": "나중에",
+  "premiumBuy": "구매하기",
+  "premiumPaymentNotReady": "결제 기능 (구현 예정)",
+
+  "linkLimitReached": "링크 한도 도달",
+  "linkLimitMessage": "무료 버전은 3개까지 등록할 수 있어요.\n프리미엄으로 업그레이드하면 무제한으로 등록할 수 있어요!",
+  "viewPremium": "프리미엄 보기",
+
+  "account": "계정",
+  "info": "정보",
+  "version": "버전",
+  "privacyPolicy": "개인정보 처리방침",
+  "privacyPolicyNotReady": "개인정보 처리방침 (구현 예정)",
+  "contact": "문의하기",
+  "contactNotReady": "문의하기 (구현 예정)",
+
+  "loading": "로딩 중...",
+  "error": "오류",
+  "retry": "다시 시도",
+  "ok": "확인",
+  "yes": "예",
+  "no": "아니요"
+}
