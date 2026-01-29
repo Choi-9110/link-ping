@@ -2,57 +2,64 @@
 
 > **작성자**: Designer (UI/UX)
 > **작성일**: Day 1-2
-> **상태**: 디자인 완료 (v1.1 - 소셜 기능 UI 추가)
-> **업데이트**: 로그인, 프로필 설정, 저장 수 표시 UI 추가
+> **상태**: 디자인 완료 (v2.0 - 다크 테마 리뉴얼)
+> **업데이트**: 알라미 스타일 다크 테마 적용 (블랙 + 코랄 레드)
 
 ---
 
 ## 1. 디자인 시스템
 
-### 선택: Material 3
+### 선택: Material 3 + 커스텀 다크 테마
 
 ```dart
 // 이유
 - Flutter 기본 지원 (추가 패키지 불필요)
-- 다크모드 자동 지원
-- 검증된 컴포넌트
+- 알라미 스타일 다크 모드 (퓨어 블랙 배경)
+- 검증된 컴포넌트 + 커스텀 컬러
 ```
 
 ---
 
 ## 2. 컬러 팔레트
 
-### Primary Color: Deep Purple
+### 🎨 알라미 스타일 (v2.0)
 
 ```dart
 // lib/core/theme/app_theme.dart
 
-static const Color primaryColor = Color(0xFF6750A4); // Deep Purple
+// 메인 컬러
+static const Color primaryColor = Color(0xFFFF5A5F);    // 코랄 레드
+static const Color backgroundColor = Color(0xFF000000); // 퓨어 블랙
+static const Color surfaceColor = Color(0xFF1C1C1E);    // 다크 그레이 (카드)
+static const Color surfaceVariant = Color(0xFF2C2C2E);  // 더 밝은 그레이
+static const Color toggleOnColor = Color(0xFF00D4AA);   // 틸/시안 (토글 ON)
 
-// Material 3 자동 생성
-ColorScheme.fromSeed(
-  seedColor: primaryColor,
-  brightness: Brightness.light, // or .dark
-)
+// 텍스트
+static const Color textPrimary = Color(0xFFFFFFFF);     // 흰색
+static const Color textSecondary = Color(0xFF8E8E93);   // 회색
 ```
 
 ### 색상 의미
 
-| 용도 | 색상 | 사용처 |
-|------|------|--------|
-| Primary | Deep Purple | FAB, 활성 토글, 버튼 |
-| Secondary | 자동생성 | 보조 강조 |
-| Surface | 자동생성 | 카드 배경 |
-| Error | 자동생성 | 삭제, 에러 |
-| On/Off | Green/Gray | 토글 상태 |
+| 용도 | 컬러 코드 | 색상 | 사용처 |
+|------|----------|------|--------|
+| Primary | `#FF5A5F` | 🔴 코랄 레드 | CTA 버튼, FAB, 강조 |
+| Background | `#000000` | ⬛ 퓨어 블랙 | 전체 배경 |
+| Surface | `#1C1C1E` | 다크 그레이 | 카드, 모달, 바텀시트 |
+| Toggle ON | `#00D4AA` | 🟢 틸/시안 | 스위치 ON 상태 |
+| Text Primary | `#FFFFFF` | ⬜ 흰색 | 주요 텍스트 |
+| Text Secondary | `#8E8E93` | 회색 | 보조 텍스트, 힌트 |
+| Outline | `#3A3A3C` | 어두운 회색 | 구분선, 비활성 |
+| Error | `#FF453A` | 빨강 | 삭제, 에러 |
 
-### 왜 Deep Purple?
+### 왜 블랙 + 코랄 레드?
 
 ```
 ✅ 선택 이유:
-- 알림/리마인더 앱 = 신뢰감 + 차분함
-- 보라색 = 창의성, 집중
-- 경쟁앱들과 차별화 (대부분 파랑/초록)
+- 알라미 앱 레퍼런스 (검증된 다크 UI)
+- 퓨어 블랙 = OLED 배터리 절약, 프리미엄 느낌
+- 코랄 레드 = 에너지, 행동 유도, 눈에 띄는 CTA
+- 틸 토글 = 활성화 상태 명확히 구분
 ```
 
 ---

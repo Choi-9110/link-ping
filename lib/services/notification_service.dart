@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
 
 import '../data/models/link_reminder.dart';
+import 'badge_service.dart';
 import 'url_launcher_service.dart';
 
 class NotificationService {
@@ -16,8 +20,10 @@ class NotificationService {
   Future<void> initialize() async {
     if (_initialized) return;
 
-    // 타임존 초기화
+    // 타임존 초기화 (디바이스 타임존 사용)
     tz_data.initializeTimeZones();
+    final timezoneInfo = await FlutterTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timezoneInfo.identifier));
 
     // Android 설정
     const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -39,12 +45,42 @@ class NotificationService {
     );
 
     _initialized = true;
+
+    // 알림 권한 요청
+    await requestPermission();
   }
 
   /// 알림 탭 시 처리
-  void _onNotificationTapped(NotificationResponse response) {
+  void _onNotificationTapped(NotificationResponse response) async {
     final payload = response.payload;
-    if (payload != null && payload.isNotEmpty) {
+    if (payload == null || payload.isEmpty) return;
+
+    try {
+      // payload 형식: {"url": "...", "hour": 7, "minute": 0}
+      final data = jsonDecode(payload) as Map<String, dynamic>;
+      final url = data['url'] as String;
+      final hour = data['hour'] as int;
+      final minute = data['minute'] as int;
+
+      // 스케줄된 시간 계산 (오늘 날짜 + 설정된 시간)
+      final now = DateTime.now();
+      var scheduledTime = DateTime(now.year, now.month, now.day, hour, minute);
+
+      // 만약 현재 시간보다 스케줄 시간이 미래면 (자정 넘어서 탭한 경우) 어제로
+      if (scheduledTime.isAfter(now)) {
+        scheduledTime = scheduledTime.subtract(const Duration(days: 1));
+      }
+
+      // 클릭 기록 및 뱃지 체크
+      await BadgeService.instance.recordClick(
+        scheduledTime: scheduledTime,
+        clickTime: now,
+      );
+
+      // URL 열기
+      UrlLauncherService.openUrl(url);
+    } catch (e) {
+      // 기존 형식 (URL만) 호환
       UrlLauncherService.openUrl(payload);
     }
   }
@@ -116,13 +152,20 @@ class NotificationService {
           time.minute,
         );
 
+        // payload에 URL과 시간 정보 포함 (클릭 추적용)
+        final payload = jsonEncode({
+          'url': link.url,
+          'hour': time.hour,
+          'minute': time.minute,
+        });
+
         await _plugin.zonedSchedule(
           id,
           link.title,
           '탭하여 링크로 이동',
           scheduledDate,
           details,
-          payload: link.url,
+          payload: payload,
           androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.absoluteTime,

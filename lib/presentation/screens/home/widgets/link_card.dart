@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/spacing.dart';
 import '../../../../data/models/link_reminder.dart';
+import '../../../../services/url_launcher_service.dart';
 import '../../../widgets/saved_users_bottom_sheet.dart';
 
 class LinkCard extends StatelessWidget {
@@ -84,106 +85,106 @@ class LinkCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           child: Padding(
             padding: const EdgeInsets.all(Spacing.md),
-            child: Column(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 제목 + 토글
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
+                // 좌측: 정보
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // 제목
+                      Text(
                         link.title,
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: link.isEnabled ? null : colorScheme.outline,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    Switch(
-                      value: link.isEnabled,
-                      onChanged: (_) => onToggle(),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: Spacing.xs),
-                // 시간 정보
-                Row(
-                  children: [
-                    Icon(
-                      Icons.access_time,
-                      size: 16,
-                      color: colorScheme.outline,
-                    ),
-                    const SizedBox(width: Spacing.xs),
-                    Text(
-                      '${link.repeatString} ${link.timeString}',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: colorScheme.outline,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: Spacing.xs),
-                // URL 호스트
-                Row(
-                  children: [
-                    Icon(
-                      Icons.link,
-                      size: 16,
-                      color: colorScheme.outline,
-                    ),
-                    const SizedBox(width: Spacing.xs),
-                    Expanded(
-                      child: Text(
-                        _extractHost(link.url),
+                      const SizedBox(height: 4),
+                      // 시간
+                      Text(
+                        '${link.repeatString} ${link.timeString}',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: colorScheme.outline,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
-                ),
-                // 저장 수 (0보다 클 때만 표시) - 클릭하면 유저 목록
-                if (saveCount > 0) ...[
-                  const SizedBox(height: Spacing.xs),
-                  GestureDetector(
-                    onTap: () => _showSavedUsers(context),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.sm,
-                        vertical: Spacing.xs,
+                      const SizedBox(height: 2),
+                      // 서비스명
+                      Text(
+                        _getServiceName(link.url),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.outline,
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                        color: colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.people,
-                            size: 16,
-                            color: colorScheme.primary,
-                          ),
-                          const SizedBox(width: Spacing.xs),
-                          Text(
-                            '$saveCount명이 저장함',
+                      // 저장 수
+                      if (saveCount > 0) ...[
+                        const SizedBox(height: 2),
+                        GestureDetector(
+                          onTap: () => _showSavedUsers(context),
+                          child: Text(
+                            '$saveCount명이 저장',
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: colorScheme.primary,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const SizedBox(width: 2),
-                          Icon(
-                            Icons.chevron_right,
-                            size: 16,
-                            color: colorScheme.primary,
-                          ),
-                        ],
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                // 우측: 토글 + D-day + 날짜
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // 토글
+                    Switch(
+                      value: link.isEnabled,
+                      onChanged: (_) => onToggle(),
+                    ),
+                    // D-day 박스
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.sm,
+                        vertical: Spacing.xs,
+                      ),
+                      decoration: BoxDecoration(
+                        color: link.isEnabled
+                            ? (link.hasEndDate
+                                ? colorScheme.secondary.withValues(alpha: 0.1)
+                                : colorScheme.primary.withValues(alpha: 0.1))
+                            : colorScheme.outline.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        link.dDayString,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: link.isEnabled
+                              ? (link.hasEndDate
+                                  ? colorScheme.secondary
+                                  : colorScheme.primary)
+                              : colorScheme.outline,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 4),
+                    // 날짜 (종료일 있으면 종료일, 없으면 생성일)
+                    Text(
+                      link.hasEndDate
+                          ? '~${_formatDate(link.endDate!)}'
+                          : _formatDate(link.createdAt),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colorScheme.outline,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -192,11 +193,44 @@ class LinkCard extends StatelessWidget {
     );
   }
 
-  String _extractHost(String url) {
+  /// URL에서 서비스명 추출
+  String _getServiceName(String url) {
     try {
-      return Uri.parse(url).host;
+      // 스킴이 없을 수 있으므로 ensureScheme 사용
+      final normalizedUrl = UrlLauncherService.ensureScheme(url);
+      final host = Uri.parse(normalizedUrl).host.toLowerCase();
+
+      // 주요 서비스 매핑
+      if (host.contains('naver')) return '네이버';
+      if (host.contains('youtube') || host.contains('youtu.be')) return '유튜브';
+      if (host.contains('instagram')) return '인스타그램';
+      if (host.contains('tiktok')) return '틱톡';
+      if (host.contains('twitter') || host.contains('x.com')) return 'X (트위터)';
+      if (host.contains('facebook')) return '페이스북';
+      if (host.contains('kakao')) return '카카오';
+      if (host.contains('google')) return '구글';
+      if (host.contains('github')) return 'GitHub';
+      if (host.contains('notion')) return '노션';
+      if (host.contains('velog')) return '벨로그';
+      if (host.contains('tistory')) return '티스토리';
+      if (host.contains('brunch')) return '브런치';
+      if (host.contains('linkedin')) return '링크드인';
+      if (host.contains('reddit')) return '레딧';
+      if (host.contains('twitch')) return '트위치';
+      if (host.contains('spotify')) return '스포티파이';
+      if (host.contains('apple')) return '애플';
+      if (host.contains('amazon')) return '아마존';
+      if (host.contains('coupang')) return '쿠팡';
+
+      // 매핑되지 않으면 호스트 반환 (www. 제거)
+      return host.replaceFirst('www.', '');
     } catch (_) {
       return url;
     }
+  }
+
+  /// 날짜 포맷
+  String _formatDate(DateTime date) {
+    return '${date.year}.${date.month.toString().padLeft(2, '0')}.${date.day.toString().padLeft(2, '0')}';
   }
 }

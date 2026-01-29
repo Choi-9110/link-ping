@@ -4,8 +4,10 @@ import 'package:uuid/uuid.dart';
 import '../core/constants/app_constants.dart';
 import '../data/models/link_reminder.dart';
 import '../data/repositories/link_repository.dart';
+import '../services/badge_service.dart';
 import '../services/firestore_service.dart';
 import '../services/notification_service.dart';
+import 'user_provider.dart';
 
 /// Repository Provider
 final linkRepositoryProvider = Provider<LinkRepository>((ref) {
@@ -27,6 +29,24 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
 
   void _loadLinks() {
     state = _repository.getAllLinks();
+    // 종료일이 지난 링크 자동 OFF
+    _checkExpiredLinks();
+  }
+
+  /// 종료일이 지난 링크를 자동으로 OFF
+  Future<void> _checkExpiredLinks() async {
+    final expiredLinks = state.where((link) => link.isEnabled && link.isExpired).toList();
+
+    for (final link in expiredLinks) {
+      final updated = link.copyWith(isEnabled: false);
+      await _repository.saveLink(updated);
+      // 알림 취소
+      await NotificationService.instance.cancelReminder(link.id);
+    }
+
+    if (expiredLinks.isNotEmpty) {
+      state = _repository.getAllLinks();
+    }
   }
 
   /// 링크 추가
@@ -37,6 +57,7 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
     required int minute,
     required List<int> repeatDays,
     List<ReminderTime>? additionalTimes,
+    DateTime? endDate,
   }) async {
     final urlHash = _generateUrlHash(url);
 
@@ -49,6 +70,7 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
       minute: minute,
       repeatDays: repeatDays,
       additionalTimes: additionalTimes,
+      endDate: endDate,
     );
 
     await _repository.saveLink(link);
@@ -61,6 +83,16 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
       await FirestoreService.instance.incrementUrlSaveCount(urlHash);
     } catch (_) {
       // Firestore 오류는 무시 (로컬 저장은 성공)
+    }
+
+    // 뱃지 체크 (링크 추가) - 이미 저장된 후이므로 length가 정확함
+    try {
+      final totalLinks = _repository.getAllLinks().length;
+      await BadgeService.instance.recordLinkAdded(totalLinks);
+      // 도메인 다양성 체크 (Variety 배지)
+      await BadgeService.instance.recordLinkDomain(url);
+    } catch (_) {
+      // 뱃지 오류는 무시
     }
 
     _loadLinks();
@@ -113,8 +145,17 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
   }
 }
 
-/// 프리미엄 상태 Provider (임시 - 나중에 실제 결제 연동)
-final isPremiumProvider = StateProvider<bool>((ref) => false);
+/// 프리미엄 상태 Provider (게스트: 로컬, 회원: Firestore)
+final isPremiumProvider = Provider<bool>((ref) {
+  // 회원인 경우 userProfile에서 가져옴
+  final userProfile = ref.watch(userProfileProvider).value;
+  if (userProfile != null) {
+    return userProfile.isPremium;
+  }
+
+  // 게스트인 경우 로컬에서 가져옴
+  return false; // 기본값 (Hive는 동기적으로 접근해야 해서 여기선 기본값)
+});
 
 /// 링크 추가 가능 여부
 final canAddMoreLinksProvider = Provider<bool>((ref) {

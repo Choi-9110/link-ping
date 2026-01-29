@@ -67,6 +67,9 @@ class LinkReminder extends HiveObject {
   @HiveField(9)
   final List<ReminderTime>? additionalTimes; // 프리미엄: 추가 알림 시간들
 
+  @HiveField(10)
+  final DateTime? endDate; // 종료일 (null이면 무한 반복)
+
   LinkReminder({
     required this.id,
     required this.url,
@@ -78,6 +81,7 @@ class LinkReminder extends HiveObject {
     this.isEnabled = true,
     DateTime? createdAt,
     this.additionalTimes,
+    this.endDate,
   }) : createdAt = createdAt ?? DateTime.now();
 
   /// 모든 알림 시간 목록 (기본 시간 + 추가 시간)
@@ -109,6 +113,8 @@ class LinkReminder extends HiveObject {
     bool? isEnabled,
     DateTime? createdAt,
     List<ReminderTime>? additionalTimes,
+    DateTime? endDate,
+    bool clearEndDate = false, // endDate를 null로 설정하려면 true
   }) {
     return LinkReminder(
       id: id ?? this.id,
@@ -121,8 +127,55 @@ class LinkReminder extends HiveObject {
       isEnabled: isEnabled ?? this.isEnabled,
       createdAt: createdAt ?? this.createdAt,
       additionalTimes: additionalTimes ?? this.additionalTimes,
+      endDate: clearEndDate ? null : (endDate ?? this.endDate),
     );
   }
+
+  /// 종료일이 지났는지 확인
+  bool get isExpired {
+    if (endDate == null) return false;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final end = DateTime(endDate!.year, endDate!.month, endDate!.day);
+    return today.isAfter(end);
+  }
+
+  /// D-day 계산 (종료일 기준 D-, 없으면 생성일 기준 D+)
+  String get dDayString {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    if (endDate != null) {
+      // 종료일이 있으면 D- 표시
+      final end = DateTime(endDate!.year, endDate!.month, endDate!.day);
+      final diff = end.difference(today).inDays;
+      if (diff > 0) return 'D-$diff';
+      if (diff == 0) return 'D-Day';
+      return 'D+${-diff}'; // 종료일 지남
+    } else {
+      // 종료일이 없으면 D+ 표시
+      final created = DateTime(createdAt.year, createdAt.month, createdAt.day);
+      final diff = today.difference(created).inDays;
+      return 'D+$diff';
+    }
+  }
+
+  /// D-day 숫자만 (부호 없이)
+  int get dDayCount {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    if (endDate != null) {
+      final end = DateTime(endDate!.year, endDate!.month, endDate!.day);
+      return end.difference(today).inDays;
+    } else {
+      final created = DateTime(createdAt.year, createdAt.month, createdAt.day);
+      return today.difference(created).inDays;
+    }
+  }
+
+  /// 종료일 여부
+  bool get hasEndDate => endDate != null;
 
   /// 시간 문자열 (예: "07:00" 또는 "07:00, 13:00, 21:00")
   String get timeString {

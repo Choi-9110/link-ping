@@ -1,0 +1,10 @@
+Ios
+app-id :  ca-app-pub-1117215826626141~1225867318
+ad-unit-id : ca-app-pub-1117215826626141/9604284316
+
+
+
+android
+app-id :  ca-app-pub-1117215826626141~3318851645
+ad-unit-id :ca-app-pub-1117215826626141/2979940293
+

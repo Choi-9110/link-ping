@@ -901,6 +901,144 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'아니요'**
   String get no;
+
+  /// No description provided for @share.
+  ///
+  /// In ko, this message translates to:
+  /// **'공유하기'**
+  String get share;
+
+  /// No description provided for @edit.
+  ///
+  /// In ko, this message translates to:
+  /// **'수정하기'**
+  String get edit;
+
+  /// No description provided for @copyLink.
+  ///
+  /// In ko, this message translates to:
+  /// **'링크 복사'**
+  String get copyLink;
+
+  /// No description provided for @linkCopied.
+  ///
+  /// In ko, this message translates to:
+  /// **'링크가 복사되었습니다'**
+  String get linkCopied;
+
+  /// No description provided for @shareMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'나 이거 {time}에 알림 받아서 하고 있어! 너도 같이 하자\n\n{url}\n\nLinkPing에서 열기'**
+  String shareMessage(String time, String url);
+
+  /// No description provided for @selectAction.
+  ///
+  /// In ko, this message translates to:
+  /// **'작업 선택'**
+  String get selectAction;
+
+  /// No description provided for @profileUpdated.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로필이 수정되었습니다'**
+  String get profileUpdated;
+
+  /// No description provided for @profileUpdateFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로필 수정에 실패했습니다'**
+  String get profileUpdateFailed;
+
+  /// No description provided for @accountLink.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정 연동'**
+  String get accountLink;
+
+  /// No description provided for @accountLinked.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정이 연동되었습니다'**
+  String get accountLinked;
+
+  /// No description provided for @accountLinkFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정 연동에 실패했습니다'**
+  String get accountLinkFailed;
+
+  /// No description provided for @kakao.
+  ///
+  /// In ko, this message translates to:
+  /// **'카카오톡'**
+  String get kakao;
+
+  /// No description provided for @kakaoLinkComingSoon.
+  ///
+  /// In ko, this message translates to:
+  /// **'카카오 연동 (준비 중)'**
+  String get kakaoLinkComingSoon;
+
+  /// No description provided for @guestLinkInfo.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정을 연동하면 다른 기기에서도 데이터를 동기화할 수 있어요'**
+  String get guestLinkInfo;
+
+  /// No description provided for @linked.
+  ///
+  /// In ko, this message translates to:
+  /// **'연동됨'**
+  String get linked;
+
+  /// No description provided for @link.
+  ///
+  /// In ko, this message translates to:
+  /// **'연동'**
+  String get link;
+
+  /// No description provided for @setEndDate.
+  ///
+  /// In ko, this message translates to:
+  /// **'종료일 설정'**
+  String get setEndDate;
+
+  /// No description provided for @endDateEnabled.
+  ///
+  /// In ko, this message translates to:
+  /// **'종료일에 자동으로 알람이 꺼집니다'**
+  String get endDateEnabled;
+
+  /// No description provided for @endDateDisabled.
+  ///
+  /// In ko, this message translates to:
+  /// **'무한 반복 (종료일 없음)'**
+  String get endDateDisabled;
+
+  /// No description provided for @selectEndDate.
+  ///
+  /// In ko, this message translates to:
+  /// **'종료일 선택'**
+  String get selectEndDate;
+
+  /// No description provided for @selectCheerMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'응원 메시지 선택'**
+  String get selectCheerMessage;
+
+  /// No description provided for @selectTeaseMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'약올리기 메시지 선택'**
+  String get selectTeaseMessage;
+
+  /// No description provided for @pingRateLimited.
+  ///
+  /// In ko, this message translates to:
+  /// **'{minutes}분 후에 다시 보낼 수 있어요'**
+  String pingRateLimited(int minutes);
 }
 
 class _AppLocalizationsDelegate

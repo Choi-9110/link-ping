@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// 알림 타입
 enum PingType {
-  cheer,  // 응원하기
-  tease,  // 약올리기
+  cheer, // 응원하기
+  tease, // 약올리기
 }
 
 /// 앱 내 알림 (응원/약올리기)
@@ -84,13 +84,17 @@ class PingMessages {
     '혹시 까먹은 거 아니에요? 🤔',
     '자극 좀 받으세요~ 🔥',
     '저도 기다리고 있어요! ⏰',
+    '아빠 이거 해야된다니까??',
+    '이거도 못함 ?? ',
   ];
 
   static String getRandomCheerMessage() {
-    return cheerMessages[(DateTime.now().millisecondsSinceEpoch % cheerMessages.length)];
+    return cheerMessages[(DateTime.now().millisecondsSinceEpoch %
+        cheerMessages.length)];
   }
 
   static String getRandomTeaseMessage() {
-    return teaseMessages[(DateTime.now().millisecondsSinceEpoch % teaseMessages.length)];
+    return teaseMessages[(DateTime.now().millisecondsSinceEpoch %
+        teaseMessages.length)];
   }
 }

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../data/models/user_profile.dart';
 import '../data/models/ping_notification.dart';
 import '../data/models/saved_by_user.dart';
+import '../data/models/shared_link.dart';
 import 'auth_service.dart';
 
 class FirestoreService {
@@ -22,6 +23,9 @@ class FirestoreService {
 
   CollectionReference<Map<String, dynamic>> get _notificationsCollection =>
       _firestore.collection('notifications');
+
+  CollectionReference<Map<String, dynamic>> get _sharedLinksCollection =>
+      _firestore.collection('sharedLinks');
 
   // ==================== 사용자 프로필 ====================
 
@@ -45,6 +49,32 @@ class FirestoreService {
     return _usersCollection.doc(uid).snapshots().map((doc) {
       if (!doc.exists) return null;
       return UserProfile.fromFirestore(doc);
+    });
+  }
+
+  /// 닉네임 중복 검사
+  Future<bool> isNicknameDuplicate(String nickname) async {
+    try {
+      final query = await _usersCollection
+          .where('nickname', isEqualTo: nickname)
+          .limit(1)
+          .get();
+      return query.docs.isNotEmpty;
+    } catch (e) {
+      print('닉네임 중복 검사 에러: $e');
+      return false; // 에러 시 중복 아님으로 처리
+    }
+  }
+
+  /// 프리미엄 상태 토글 (개발자용)
+  Future<void> togglePremium(String uid) async {
+    final doc = await _usersCollection.doc(uid).get();
+    if (!doc.exists) return;
+
+    final currentPremium = doc.data()?['isPremium'] ?? false;
+    await _usersCollection.doc(uid).update({
+      'isPremium': !currentPremium,
+      'updatedAt': FieldValue.serverTimestamp(),
     });
   }
 
@@ -199,6 +229,12 @@ class FirestoreService {
         .doc(toUid)
         .collection('items')
         .add(notification.toFirestore());
+
+    // 받는 사람의 통계 업데이트 (Social Butterfly 배지용)
+    final statsField = type == PingType.cheer ? 'cheersReceived' : 'pokesReceived';
+    await _firestore.collection('userStats').doc(toUid).set({
+      statsField: FieldValue.increment(1),
+    }, SetOptions(merge: true));
   }
 
   /// 내 알림 목록 스트림
@@ -261,5 +297,57 @@ class FirestoreService {
     }
 
     await batch.commit();
+  }
+
+  // ==================== 공유 링크 ====================
+
+  /// 공유 링크 생성
+  Future<String> createSharedLink({
+    required String url,
+    required String title,
+    required int hour,
+    required int minute,
+    required List<int> repeatDays,
+  }) async {
+    final nickname = await _getCurrentNickname();
+
+    final docRef = _sharedLinksCollection.doc();
+    final sharedLink = SharedLink(
+      id: docRef.id,
+      url: url,
+      title: title,
+      hour: hour,
+      minute: minute,
+      repeatDays: repeatDays,
+      sharedBy: nickname,
+      createdAt: DateTime.now(),
+    );
+
+    await docRef.set(sharedLink.toJson());
+
+    return docRef.id;
+  }
+
+  /// 공유 링크 가져오기
+  Future<SharedLink?> getSharedLink(String shareId) async {
+    try {
+      final doc = await _sharedLinksCollection.doc(shareId).get();
+      if (!doc.exists) return null;
+      return SharedLink.fromJson(doc.data()!);
+    } catch (e) {
+      print('공유 링크 조회 에러: $e');
+      return null;
+    }
+  }
+
+  /// 공유 링크 조회수 증가
+  Future<void> incrementShareViewCount(String shareId) async {
+    try {
+      await _sharedLinksCollection.doc(shareId).update({
+        'viewCount': FieldValue.increment(1),
+      });
+    } catch (e) {
+      print('조회수 증가 에러: $e');
+    }
   }
 }

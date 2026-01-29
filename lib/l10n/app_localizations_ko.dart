@@ -423,4 +423,77 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get no => '아니요';
+
+  @override
+  String get share => '공유하기';
+
+  @override
+  String get edit => '수정하기';
+
+  @override
+  String get copyLink => '링크 복사';
+
+  @override
+  String get linkCopied => '링크가 복사되었습니다';
+
+  @override
+  String shareMessage(String time, String url) {
+    return '나 이거 $time에 알림 받아서 하고 있어! 너도 같이 하자\n\n$url\n\nLinkPing에서 열기';
+  }
+
+  @override
+  String get selectAction => '작업 선택';
+
+  @override
+  String get profileUpdated => '프로필이 수정되었습니다';
+
+  @override
+  String get profileUpdateFailed => '프로필 수정에 실패했습니다';
+
+  @override
+  String get accountLink => '계정 연동';
+
+  @override
+  String get accountLinked => '계정이 연동되었습니다';
+
+  @override
+  String get accountLinkFailed => '계정 연동에 실패했습니다';
+
+  @override
+  String get kakao => '카카오톡';
+
+  @override
+  String get kakaoLinkComingSoon => '카카오 연동 (준비 중)';
+
+  @override
+  String get guestLinkInfo => '계정을 연동하면 다른 기기에서도 데이터를 동기화할 수 있어요';
+
+  @override
+  String get linked => '연동됨';
+
+  @override
+  String get link => '연동';
+
+  @override
+  String get setEndDate => '종료일 설정';
+
+  @override
+  String get endDateEnabled => '종료일에 자동으로 알람이 꺼집니다';
+
+  @override
+  String get endDateDisabled => '무한 반복 (종료일 없음)';
+
+  @override
+  String get selectEndDate => '종료일 선택';
+
+  @override
+  String get selectCheerMessage => '응원 메시지 선택';
+
+  @override
+  String get selectTeaseMessage => '약올리기 메시지 선택';
+
+  @override
+  String pingRateLimited(int minutes) {
+    return '$minutes분 후에 다시 보낼 수 있어요';
+  }
 }

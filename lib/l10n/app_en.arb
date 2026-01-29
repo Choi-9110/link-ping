@@ -196,5 +196,49 @@
   "retry": "Retry",
   "ok": "OK",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+
+  "share": "Share",
+  "edit": "Edit",
+  "copyLink": "Copy link",
+  "linkCopied": "Link copied",
+  "shareMessage": "I'm doing this at {time}! Join me\n\n{url}\n\nOpen in LinkPing",
+  "@shareMessage": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "selectAction": "Select action",
+
+  "profileUpdated": "Profile updated",
+  "profileUpdateFailed": "Failed to update profile",
+  "accountLink": "Link Account",
+  "accountLinked": "Account linked",
+  "accountLinkFailed": "Failed to link account",
+  "kakao": "KakaoTalk",
+  "kakaoLinkComingSoon": "Kakao link (coming soon)",
+  "guestLinkInfo": "Link your account to sync data across devices",
+  "linked": "Linked",
+  "link": "Link",
+
+  "setEndDate": "Set End Date",
+  "endDateEnabled": "Alarm will turn off on end date",
+  "endDateDisabled": "Repeats forever (no end date)",
+  "selectEndDate": "Select end date",
+
+  "selectCheerMessage": "Select cheer message",
+  "selectTeaseMessage": "Select tease message",
+  "pingRateLimited": "You can send again in {minutes} minutes",
+  "@pingRateLimited": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  }
 }

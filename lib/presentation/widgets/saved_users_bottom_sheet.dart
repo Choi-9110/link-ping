@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../core/theme/spacing.dart';
 import '../../data/models/ping_notification.dart';
 import '../../data/models/saved_by_user.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/user_provider.dart';
+import '../../services/badge_service.dart';
 import '../../services/firestore_service.dart';
 
 class SavedUsersBottomSheet extends ConsumerStatefulWidget {
@@ -25,16 +28,85 @@ class SavedUsersBottomSheet extends ConsumerStatefulWidget {
 class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
   final Set<String> _sendingPing = {};
 
-  Future<void> _sendPing(SavedByUser user, PingType type) async {
+  static const _rateLimitMinutes = 5;
+  static const _rateLimitKey = 'lastPingSentAt';
+
+  /// 발송 제한 체크 (무료: 5분 내 1회, 프리미엄: 무제한)
+  bool _canSendPing() {
+    final isPremium = ref.read(userProfileProvider).value?.isPremium ?? false;
+    if (isPremium) return true;
+
+    final settingsBox = Hive.box('settings');
+    final lastSentAt = settingsBox.get(_rateLimitKey) as int?;
+    if (lastSentAt == null) return true;
+
+    final lastSentTime = DateTime.fromMillisecondsSinceEpoch(lastSentAt);
+    final diff = DateTime.now().difference(lastSentTime).inMinutes;
+    return diff >= _rateLimitMinutes;
+  }
+
+  /// 마지막 발송 시간 저장
+  Future<void> _recordPingSent() async {
+    final settingsBox = Hive.box('settings');
+    await settingsBox.put(_rateLimitKey, DateTime.now().millisecondsSinceEpoch);
+  }
+
+  /// 남은 대기 시간 (분)
+  int _getRemainingMinutes() {
+    final settingsBox = Hive.box('settings');
+    final lastSentAt = settingsBox.get(_rateLimitKey) as int?;
+    if (lastSentAt == null) return 0;
+
+    final lastSentTime = DateTime.fromMillisecondsSinceEpoch(lastSentAt);
+    final diff = DateTime.now().difference(lastSentTime).inMinutes;
+    return _rateLimitMinutes - diff;
+  }
+
+  /// 메시지 선택 팝업 표시 후 전송
+  Future<void> _showMessageDialog(SavedByUser user, PingType type) async {
     // 자기 자신에게는 보내지 않음
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser?.uid == user.uid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('자기 자신에게는 보낼 수 없어요')),
-      );
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.cannotSendToSelf)),
+        );
+      }
       return;
     }
 
+    // 발송 제한 체크
+    if (!_canSendPing()) {
+      if (mounted) {
+        final remaining = _getRemainingMinutes();
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.pingRateLimited(remaining))),
+        );
+      }
+      return;
+    }
+
+    final messages = type == PingType.cheer
+        ? PingMessages.cheerMessages
+        : PingMessages.teaseMessages;
+
+    final selectedMessage = await showDialog<String>(
+      context: context,
+      builder: (context) => _MessageSelectionDialog(
+        type: type,
+        messages: messages,
+        recipientName: user.nickname,
+      ),
+    );
+
+    if (selectedMessage != null && mounted) {
+      await _sendPing(user, type, selectedMessage);
+    }
+  }
+
+  Future<void> _sendPing(SavedByUser user, PingType type, String message) async {
     setState(() => _sendingPing.add('${user.uid}_${type.name}'));
 
     try {
@@ -42,23 +114,36 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
         toUid: user.uid,
         type: type,
         urlTitle: widget.urlTitle,
+        customMessage: message,
       );
 
+      // 배지 기록 (응원/찌르기)
+      if (type == PingType.cheer) {
+        await BadgeService.instance.recordCheer();
+      } else {
+        await BadgeService.instance.recordPoke();
+      }
+
+      // 발송 시간 기록 (무료 사용자용)
+      await _recordPingSent();
+
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               type == PingType.cheer
-                  ? '${user.nickname}님에게 응원을 보냈어요!'
-                  : '${user.nickname}님에게 약올리기를 보냈어요!',
+                  ? l10n.cheerSent(user.nickname)
+                  : l10n.teaseSent(user.nickname),
             ),
           ),
         );
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('전송 실패: $e')),
+          SnackBar(content: Text(l10n.sendFailed)),
         );
       }
     } finally {
@@ -179,7 +264,7 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
                                   label: '응원',
                                   color: Colors.pink,
                                   isLoading: _sendingPing.contains('${user.uid}_cheer'),
-                                  onPressed: () => _sendPing(user, PingType.cheer),
+                                  onPressed: () => _showMessageDialog(user, PingType.cheer),
                                 ),
                                 const SizedBox(width: Spacing.xs),
                                 // 약올리기 버튼
@@ -188,7 +273,7 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
                                   label: '약올리기',
                                   color: Colors.orange,
                                   isLoading: _sendingPing.contains('${user.uid}_tease'),
-                                  onPressed: () => _sendPing(user, PingType.tease),
+                                  onPressed: () => _showMessageDialog(user, PingType.tease),
                                 ),
                               ],
                             ),
@@ -268,6 +353,73 @@ class _PingButton extends StatelessWidget {
                 ),
         ),
       ),
+    );
+  }
+}
+
+/// 메시지 선택 다이얼로그
+class _MessageSelectionDialog extends StatelessWidget {
+  final PingType type;
+  final List<String> messages;
+  final String recipientName;
+
+  const _MessageSelectionDialog({
+    required this.type,
+    required this.messages,
+    required this.recipientName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
+    final isCheer = type == PingType.cheer;
+    final color = isCheer ? Colors.pink : Colors.orange;
+    final icon = isCheer ? Icons.favorite : Icons.local_fire_department;
+    final title = isCheer ? l10n.selectCheerMessage : l10n.selectTeaseMessage;
+
+    return AlertDialog(
+      title: Row(
+        children: [
+          Icon(icon, color: color, size: 24),
+          const SizedBox(width: Spacing.sm),
+          Expanded(
+            child: Text(
+              title,
+              style: theme.textTheme.titleMedium,
+            ),
+          ),
+        ],
+      ),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: ListView.separated(
+          shrinkWrap: true,
+          itemCount: messages.length,
+          separatorBuilder: (_, __) => const SizedBox(height: Spacing.xs),
+          itemBuilder: (context, index) {
+            final message = messages[index];
+            return Material(
+              color: colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(12),
+              child: InkWell(
+                onTap: () => Navigator.pop(context, message),
+                borderRadius: BorderRadius.circular(12),
+                child: Padding(
+                  padding: const EdgeInsets.all(Spacing.md),
+                  child: Text(
+                    message,
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+      contentPadding: const EdgeInsets.fromLTRB(Spacing.md, Spacing.sm, Spacing.md, Spacing.md),
     );
   }
 }

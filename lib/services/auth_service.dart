@@ -100,13 +100,23 @@ class AuthService {
   /// Google 로그인
   Future<UserCredential?> signInWithGoogle() async {
     try {
+      print('Google 로그인 시작...');
+
       // Google 로그인 플로우
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return null; // 사용자가 취소함
+      print('Google 계정 선택: ${googleUser?.email}');
+
+      if (googleUser == null) {
+        print('사용자가 로그인 취소함');
+        return null; // 사용자가 취소함
+      }
 
       // 인증 정보 가져오기
+      print('인증 정보 가져오는 중...');
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
+      print('accessToken: ${googleAuth.accessToken != null}');
+      print('idToken: ${googleAuth.idToken != null}');
 
       // Firebase credential 생성
       final credential = GoogleAuthProvider.credential(
@@ -115,9 +125,13 @@ class AuthService {
       );
 
       // Firebase 로그인
-      return await _auth.signInWithCredential(credential);
-    } catch (e) {
+      print('Firebase 로그인 중...');
+      final result = await _auth.signInWithCredential(credential);
+      print('Firebase 로그인 성공: ${result.user?.uid}');
+      return result;
+    } catch (e, stackTrace) {
       print('Google 로그인 에러: $e');
+      print('스택 트레이스: $stackTrace');
       rethrow;
     }
   }
@@ -147,6 +161,73 @@ class AuthService {
   String getGuestNickname() {
     final settingsBox = Hive.box('settings');
     return settingsBox.get('guestNickname', defaultValue: '게스트');
+  }
+
+  /// 게스트 닉네임 저장하기
+  Future<void> saveGuestNickname(String nickname) async {
+    final settingsBox = Hive.box('settings');
+    await settingsBox.put('guestNickname', nickname);
+  }
+
+  /// Google 계정 연동 (익명 계정 → Google 계정)
+  Future<UserCredential?> linkWithGoogle() async {
+    try {
+      print('Google 연동 시작...');
+
+      final user = currentUser;
+      if (user == null) {
+        print('현재 사용자 없음');
+        return null;
+      }
+      print('현재 사용자: ${user.uid}');
+
+      // Google 로그인 플로우
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      print('Google 계정 선택: ${googleUser?.email}');
+
+      if (googleUser == null) {
+        print('사용자가 연동 취소함');
+        return null;
+      }
+
+      // 인증 정보 가져오기
+      print('인증 정보 가져오는 중...');
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      print('accessToken: ${googleAuth.accessToken != null}');
+      print('idToken: ${googleAuth.idToken != null}');
+
+      // Firebase credential 생성
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // 기존 계정에 Google 연동
+      print('계정 연동 중...');
+      final result = await user.linkWithCredential(credential);
+      print('연동 성공: ${result.user?.uid}');
+      return result;
+    } catch (e, stackTrace) {
+      print('Google 연동 에러: $e');
+      print('스택 트레이스: $stackTrace');
+      rethrow;
+    }
+  }
+
+  /// Google 연동 해제
+  Future<void> unlinkGoogle() async {
+    try {
+      final user = currentUser;
+      if (user == null) return;
+
+      await user.unlink('google.com');
+      await _googleSignIn.signOut();
+      print('Google 연동 해제 완료');
+    } catch (e) {
+      print('Google 연동 해제 에러: $e');
+      rethrow;
+    }
   }
 
   /// 로그아웃

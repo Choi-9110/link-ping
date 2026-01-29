@@ -426,4 +426,77 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get no => 'No';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get copyLink => 'Copy link';
+
+  @override
+  String get linkCopied => 'Link copied';
+
+  @override
+  String shareMessage(String time, String url) {
+    return 'I\'m doing this at $time! Join me\n\n$url\n\nOpen in LinkPing';
+  }
+
+  @override
+  String get selectAction => 'Select action';
+
+  @override
+  String get profileUpdated => 'Profile updated';
+
+  @override
+  String get profileUpdateFailed => 'Failed to update profile';
+
+  @override
+  String get accountLink => 'Link Account';
+
+  @override
+  String get accountLinked => 'Account linked';
+
+  @override
+  String get accountLinkFailed => 'Failed to link account';
+
+  @override
+  String get kakao => 'KakaoTalk';
+
+  @override
+  String get kakaoLinkComingSoon => 'Kakao link (coming soon)';
+
+  @override
+  String get guestLinkInfo => 'Link your account to sync data across devices';
+
+  @override
+  String get linked => 'Linked';
+
+  @override
+  String get link => 'Link';
+
+  @override
+  String get setEndDate => 'Set End Date';
+
+  @override
+  String get endDateEnabled => 'Alarm will turn off on end date';
+
+  @override
+  String get endDateDisabled => 'Repeats forever (no end date)';
+
+  @override
+  String get selectEndDate => 'Select end date';
+
+  @override
+  String get selectCheerMessage => 'Select cheer message';
+
+  @override
+  String get selectTeaseMessage => 'Select tease message';
+
+  @override
+  String pingRateLimited(int minutes) {
+    return 'You can send again in $minutes minutes';
+  }
 }

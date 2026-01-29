@@ -5,6 +5,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../../core/theme/spacing.dart';
 import '../../../data/models/link_reminder.dart';
 import '../../../providers/user_provider.dart';
+import '../../../services/url_launcher_service.dart';
 
 class AddLinkScreen extends ConsumerStatefulWidget {
   final String? initialUrl;
@@ -27,6 +28,10 @@ class _AddLinkScreenState extends ConsumerState<AddLinkScreen> {
   final List<TimeOfDay> _selectedTimes = [const TimeOfDay(hour: 7, minute: 0)];
   final Set<int> _selectedDays = {0, 1, 2, 3, 4, 5, 6}; // 기본: 매일
 
+  // 종료일 설정
+  bool _hasEndDate = false;
+  DateTime? _endDate;
+
   static const int _maxTimesForFree = 1;
   static const int _maxTimesForPremium = 10;
 
@@ -46,13 +51,7 @@ class _AddLinkScreenState extends ConsumerState<AddLinkScreen> {
   }
 
   bool _isValidUrl(String? url) {
-    if (url == null || url.isEmpty) return false;
-    try {
-      final uri = Uri.parse(url);
-      return uri.hasScheme && (uri.scheme == 'http' || uri.scheme == 'https');
-    } catch (_) {
-      return false;
-    }
+    return UrlLauncherService.isValidUrl(url);
   }
 
   Future<void> _selectTime(int index) async {
@@ -150,6 +149,22 @@ class _AddLinkScreenState extends ConsumerState<AddLinkScreen> {
         'minute': primaryTime.minute,
         'repeatDays': _selectedDays.toList()..sort(),
         'additionalTimes': additionalTimes,
+        'endDate': _hasEndDate ? _endDate : null,
+      });
+    }
+  }
+
+  Future<void> _selectEndDate() async {
+    final now = DateTime.now();
+    final date = await showDatePicker(
+      context: context,
+      initialDate: _endDate ?? now.add(const Duration(days: 7)),
+      firstDate: now,
+      lastDate: now.add(const Duration(days: 365 * 5)), // 5년 후까지
+    );
+    if (date != null) {
+      setState(() {
+        _endDate = date;
       });
     }
   }
@@ -174,7 +189,7 @@ class _AddLinkScreenState extends ConsumerState<AddLinkScreen> {
               controller: _urlController,
               decoration: InputDecoration(
                 labelText: l10n.linkUrl,
-                hintText: 'https://...',
+                hintText: 'google.com',
                 prefixIcon: const Icon(Icons.link),
                 border: const OutlineInputBorder(),
               ),
@@ -252,6 +267,10 @@ class _AddLinkScreenState extends ConsumerState<AddLinkScreen> {
 
             // 개별 요일 선택
             _buildDayChips(),
+            const SizedBox(height: Spacing.lg),
+
+            // 종료일 설정
+            _buildEndDateSection(),
             const SizedBox(height: Spacing.xl),
 
             // 저장 버튼
@@ -351,6 +370,53 @@ class _AddLinkScreenState extends ConsumerState<AddLinkScreen> {
           },
         );
       }),
+    );
+  }
+
+  Widget _buildEndDateSection() {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // 종료일 토글
+        SwitchListTile(
+          title: Text(l10n.setEndDate),
+          subtitle: Text(
+            _hasEndDate ? l10n.endDateEnabled : l10n.endDateDisabled,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.outline,
+            ),
+          ),
+          value: _hasEndDate,
+          onChanged: (value) {
+            setState(() {
+              _hasEndDate = value;
+              if (value && _endDate == null) {
+                _endDate = DateTime.now().add(const Duration(days: 7));
+              }
+            });
+          },
+          contentPadding: EdgeInsets.zero,
+        ),
+        // 종료일 선택
+        if (_hasEndDate) ...[
+          const SizedBox(height: Spacing.sm),
+          ListTile(
+            leading: const Icon(Icons.event),
+            title: Text(_endDate != null
+                ? '${_endDate!.year}.${_endDate!.month.toString().padLeft(2, '0')}.${_endDate!.day.toString().padLeft(2, '0')}'
+                : l10n.selectEndDate),
+            trailing: const Icon(Icons.chevron_right),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide(color: theme.colorScheme.outline),
+            ),
+            onTap: _selectEndDate,
+          ),
+        ],
+      ],
     );
   }
 }

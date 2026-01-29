@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -63,6 +60,19 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1067948471437',
     projectId: 'linkping-4b337',
     storageBucket: 'linkping-4b337.firebasestorage.app',
+    androidClientId: '1067948471437-3b9tgj2081kd204lsmkkis81qralm586.apps.googleusercontent.com',
+    iosClientId: '1067948471437-e3lqis1p7uvl6k7pk5nr4cke02lk8u5v.apps.googleusercontent.com',
     iosBundleId: 'com.example.linkping',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDeWqnF4heZig0AAJLjHsvvfm4S1lskFUs',
+    appId: '1:1067948471437:web:c46e5183a3d7d027739ec4',
+    messagingSenderId: '1067948471437',
+    projectId: 'linkping-4b337',
+    authDomain: 'linkping-4b337.firebaseapp.com',
+    storageBucket: 'linkping-4b337.firebasestorage.app',
+    measurementId: 'G-5X28NVEQDM',
+  );
+
 }

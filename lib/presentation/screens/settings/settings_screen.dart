@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../../l10n/app_localizations.dart';
 
 import '../../../core/theme/spacing.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../providers/user_provider.dart';
 import '../../../services/auth_service.dart';
+import '../../../services/badge_service.dart';
+import '../../../services/firestore_service.dart';
 import '../../../services/notification_service.dart';
 import '../auth/login_screen.dart';
+import '../badges/badge_collection_screen.dart';
+import '../privacy/privacy_policy_screen.dart';
+import '../terms/terms_of_service_screen.dart';
+import 'edit_profile_screen.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -20,9 +27,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _notificationEnabled = true;
 
   void _onEditProfile() {
-    final l10n = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l10n.profileEditNotReady)),
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const EditProfileScreen()),
     );
   }
 
@@ -126,9 +133,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _onPrivacyPolicy() {
-    final l10n = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l10n.privacyPolicyNotReady)),
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const PrivacyPolicyScreen()),
     );
   }
 
@@ -136,6 +143,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final l10n = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(l10n.contactNotReady)),
+    );
+  }
+
+  void _onTermsOfService() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const TermsOfServiceScreen()),
     );
   }
 
@@ -179,6 +193,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
           const SizedBox(height: Spacing.md),
 
+          // 뱃지 & 통계 섹션
+          _buildSectionTitle('뱃지 & 통계'),
+          _buildBadgeTile(colorScheme),
+
+          const SizedBox(height: Spacing.md),
+
           // 프리미엄 섹션
           _buildSectionTitle(l10n.premium),
           _buildPremiumTile(colorScheme),
@@ -212,6 +232,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             title: l10n.privacyPolicy,
             trailing: const Icon(Icons.chevron_right),
             onTap: _onPrivacyPolicy,
+          ),
+          _buildSettingsTile(
+            icon: Icons.description_outlined,
+            title: '이용약관',
+            trailing: const Icon(Icons.chevron_right),
+            onTap: _onTermsOfService,
           ),
           _buildSettingsTile(
             icon: Icons.mail_outline,
@@ -256,94 +282,113 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  Widget _buildProfileTile(ColorScheme colorScheme) {
-    final l10n = AppLocalizations.of(context)!;
-    final authState = ref.watch(authStateProvider);
-    final isGuest = authState.value?.isAnonymous ?? true;
+  void _onTogglePremium() async {
+    final authState = ref.read(authStateProvider);
+    final user = authState.value;
+    if (user == null) return;
 
-    // 게스트인 경우
+    bool willBePremium = false;
+
+    if (user.isAnonymous) {
+      // 게스트: 로컬에 저장
+      final settings = Hive.box('settings');
+      final current = settings.get('guestIsPremium', defaultValue: false) as bool;
+      willBePremium = !current;
+      await settings.put('guestIsPremium', willBePremium);
+      setState(() {}); // UI 갱신
+    } else {
+      // 회원: Firestore에 저장
+      final currentProfile = ref.read(userProfileProvider).value;
+      willBePremium = !(currentProfile?.isPremium ?? false);
+      await FirestoreService.instance.togglePremium(user.uid);
+      ref.invalidate(userProfileProvider);
+    }
+
+    // 프리미엄 배지 지급 (프리미엄 활성화 시에만)
+    if (willBePremium) {
+      await BadgeService.instance.recordPremiumPurchase();
+    }
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('프리미엄 상태 변경됨! 👑')),
+      );
+    }
+  }
+
+  /// 연결된 SNS 타입 가져오기
+  String _getLinkedSnsType(List<String> providerIds) {
+    if (providerIds.contains('google.com')) return 'Google';
+    if (providerIds.contains('apple.com')) return 'Apple';
+    if (providerIds.contains('oidc.kakao')) return '카카오';
+    return '';
+  }
+
+  Widget _buildProfileTile(ColorScheme colorScheme) {
+    final authState = ref.watch(authStateProvider);
+    final user = authState.value;
+    final isGuest = user?.isAnonymous ?? true;
+
+    // 연결된 provider 확인
+    final linkedProviders = user?.providerData.map((p) => p.providerId).toList() ?? [];
+    final snsType = _getLinkedSnsType(linkedProviders);
+    final hasLinkedSns = snsType.isNotEmpty;
+
+    // 닉네임 가져오기
+    String nickname;
+    bool isPremium = false;
+
     if (isGuest) {
-      final guestNickname = AuthService.instance.getGuestNickname();
-      return ListTile(
+      nickname = AuthService.instance.getGuestNickname();
+    } else {
+      final profile = ref.watch(userProfileProvider).value;
+      nickname = profile?.nickname ?? AuthService.instance.getGuestNickname();
+      isPremium = profile?.isPremium ?? false;
+    }
+
+    return GestureDetector(
+      onLongPress: _onTogglePremium,
+      child: ListTile(
         leading: CircleAvatar(
           backgroundColor: colorScheme.primaryContainer,
           child: Icon(
-            Icons.person_outline,
+            hasLinkedSns ? Icons.person : Icons.person_outline,
             color: colorScheme.onPrimaryContainer,
           ),
         ),
         title: Row(
           children: [
-            Text(guestNickname),
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: colorScheme.outline.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Text(
-                l10n.guest,
-                style: TextStyle(
-                  fontSize: 10,
-                  color: colorScheme.outline,
+            Flexible(child: Text(nickname, overflow: TextOverflow.ellipsis)),
+            if (isPremium) ...[
+              const SizedBox(width: 8),
+              Icon(Icons.workspace_premium, size: 16, color: colorScheme.primary),
+            ],
+            if (hasLinkedSns) ...[
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: colorScheme.primary.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  snsType,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: colorScheme.primary,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-            ),
+            ],
           ],
         ),
-        subtitle: Text(l10n.guestSyncMessage),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: _onEditProfile,
-      );
-    }
-
-    // 회원인 경우
-    final userProfileAsync = ref.watch(userProfileProvider);
-
-    return userProfileAsync.when(
-      data: (profile) {
-        final nickname = profile?.nickname ?? l10n.guest;
-        final country = profile?.country ?? '미설정';
-        final isPremium = profile?.isPremium ?? false;
-
-        return ListTile(
-          leading: CircleAvatar(
-            backgroundColor: colorScheme.primaryContainer,
-            child: Icon(
-              Icons.person,
-              color: colorScheme.onPrimaryContainer,
-            ),
+        subtitle: Text(
+          hasLinkedSns ? '계정 연동됨' : '로그인하여 데이터 동기화',
+          style: TextStyle(
+            color: hasLinkedSns ? colorScheme.primary : colorScheme.outline,
           ),
-          title: Row(
-            children: [
-              Text(nickname),
-              if (isPremium) ...[
-                const SizedBox(width: 8),
-                Icon(
-                  Icons.workspace_premium,
-                  size: 16,
-                  color: colorScheme.primary,
-                ),
-              ],
-            ],
-          ),
-          subtitle: Text(country),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: _onEditProfile,
-        );
-      },
-      loading: () => ListTile(
-        leading: const CircleAvatar(child: CircularProgressIndicator(strokeWidth: 2)),
-        title: Text(l10n.loading),
-      ),
-      error: (_, __) => ListTile(
-        leading: CircleAvatar(
-          backgroundColor: colorScheme.primaryContainer,
-          child: Icon(Icons.person, color: colorScheme.onPrimaryContainer),
         ),
-        title: Text(l10n.guest),
-        subtitle: Text(l10n.guestSyncMessage),
         trailing: const Icon(Icons.chevron_right),
         onTap: _onEditProfile,
       ),
@@ -363,6 +408,32 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       subtitle: subtitle != null ? Text(subtitle) : null,
       trailing: trailing,
       onTap: onTap,
+    );
+  }
+
+  Widget _buildBadgeTile(ColorScheme colorScheme) {
+    return FutureBuilder(
+      future: BadgeService.instance.getStats(),
+      builder: (context, snapshot) {
+        final stats = snapshot.data;
+        final streak = stats?.currentStreak ?? 0;
+        final badgeCount = stats?.badges.length ?? 0;
+
+        return ListTile(
+          leading: const Text('🏆', style: TextStyle(fontSize: 24)),
+          title: const Text('뱃지 컬렉션'),
+          subtitle: Text('🔥 $streak일 스트릭 · $badgeCount개 획득'),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const BadgeCollectionScreen(),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
