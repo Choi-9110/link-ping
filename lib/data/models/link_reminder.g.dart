@@ -65,13 +65,19 @@ class LinkReminderAdapter extends TypeAdapter<LinkReminder> {
       createdAt: fields[8] as DateTime?,
       additionalTimes: (fields[9] as List?)?.cast<ReminderTime>(),
       endDate: fields[10] as DateTime?,
+      isLocked: fields[11] as bool,
+      sharedBy: fields[12] as String?,
+      sharedLinkId: fields[13] as String?,
+      creatorUid: fields[14] as String?,
+      category: fields[15] as LinkCategory?,
+      soundId: fields[16] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, LinkReminder obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(17)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -93,7 +99,19 @@ class LinkReminderAdapter extends TypeAdapter<LinkReminder> {
       ..writeByte(9)
       ..write(obj.additionalTimes)
       ..writeByte(10)
-      ..write(obj.endDate);
+      ..write(obj.endDate)
+      ..writeByte(11)
+      ..write(obj.isLocked)
+      ..writeByte(12)
+      ..write(obj.sharedBy)
+      ..writeByte(13)
+      ..write(obj.sharedLinkId)
+      ..writeByte(14)
+      ..write(obj.creatorUid)
+      ..writeByte(15)
+      ..write(obj.category)
+      ..writeByte(16)
+      ..write(obj.soundId);
   }
 
   @override
@@ -103,6 +121,60 @@ class LinkReminderAdapter extends TypeAdapter<LinkReminder> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is LinkReminderAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class LinkCategoryAdapter extends TypeAdapter<LinkCategory> {
+  @override
+  final int typeId = 2;
+
+  @override
+  LinkCategory read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return LinkCategory.exercise;
+      case 1:
+        return LinkCategory.study;
+      case 2:
+        return LinkCategory.contact;
+      case 3:
+        return LinkCategory.selfDev;
+      case 4:
+        return LinkCategory.other;
+      default:
+        return LinkCategory.exercise;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, LinkCategory obj) {
+    switch (obj) {
+      case LinkCategory.exercise:
+        writer.writeByte(0);
+        break;
+      case LinkCategory.study:
+        writer.writeByte(1);
+        break;
+      case LinkCategory.contact:
+        writer.writeByte(2);
+        break;
+      case LinkCategory.selfDev:
+        writer.writeByte(3);
+        break;
+      case LinkCategory.other:
+        writer.writeByte(4);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LinkCategoryAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

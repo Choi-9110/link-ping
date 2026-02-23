@@ -1,0 +1,419 @@
+{
+  "@@locale": "es",
+
+  "appName": "LinkPing",
+  "appSlogan": "Guarda enlaces, pasa a la accion!",
+
+  "login": "Iniciar sesion",
+  "loginWithGoogle": "Continuar con Google",
+  "loginLoading": "Iniciando sesion...",
+  "loginLater": "Quiza despues",
+  "loginFailed": "Error al iniciar sesion",
+  "guestLoginFailed": "Error al iniciar como invitado",
+  "logout": "Cerrar sesion",
+  "logoutConfirm": "Seguro que quieres cerrar sesion?",
+
+  "guest": "Invitado",
+  "guestSyncMessage": "Inicia sesion con Google para sincronizar tus datos",
+
+  "profileSetup": "Configurar perfil",
+  "profileSetupTitle": "Configura tu perfil",
+  "profileSetupSubtitle": "Esta informacion sera visible para otros usuarios",
+  "nickname": "Apodo",
+  "nicknameHint": "FitnessMiguel",
+  "nicknameRequired": "Por favor ingresa un apodo",
+  "nicknameMinLength": "Minimo 2 caracteres",
+  "nicknameMaxLength": "Maximo 20 caracteres",
+  "country": "Pais",
+  "complete": "Listo",
+  "profileSaveFailed": "Error al guardar el perfil",
+
+  "home": "Inicio",
+  "settings": "Ajustes",
+  "notifications": "Notificaciones",
+
+  "addLink": "Agregar enlace",
+  "editLink": "Editar enlace",
+  "deleteLink": "Eliminar",
+  "deleteConfirm": "Eliminar este enlace?",
+  "cancel": "Cancelar",
+  "save": "Guardar",
+  "delete": "Eliminar",
+
+  "url": "URL",
+  "urlHint": "https://ejemplo.com",
+  "urlRequired": "Por favor ingresa una URL",
+  "urlInvalid": "Por favor ingresa una URL valida",
+  "title": "Titulo",
+  "titleHint": "Rutina de ejercicio diaria",
+  "titleRequired": "Por favor ingresa un titulo",
+
+  "notificationTime": "Hora de notificacion",
+  "repeatDays": "Dias de repeticion",
+  "selectRepeatDays": "Por favor selecciona al menos un dia",
+  "sun": "Dom",
+  "mon": "Lun",
+  "tue": "Mar",
+  "wed": "Mie",
+  "thu": "Jue",
+  "fri": "Vie",
+  "sat": "Sab",
+  "sunday": "Domingo",
+  "monday": "Lunes",
+  "tuesday": "Martes",
+  "wednesday": "Miercoles",
+  "thursday": "Jueves",
+  "friday": "Viernes",
+  "saturday": "Sabado",
+  "everyday": "Diario",
+  "weekdays": "Entre semana",
+  "weekends": "Fines de semana",
+  "repeat": "Repetir",
+
+  "linkUrl": "Enlace o numero de telefono",
+  "linkUrlHint": "google.com o +34612345678",
+  "invalidUrl": "Por favor ingresa una URL o numero valido",
+  "reminderTitle": "Titulo del recordatorio",
+  "reminderTitleHint": "Hora de estirar!",
+  "enterTitle": "Por favor ingresa un titulo",
+  "reminderTime": "Hora del recordatorio",
+  "addTime": "Agregar hora",
+  "addTimePremium": "Agregar hora (Premium)",
+  "premiumFeature": "Funcion Premium",
+  "multiTimesPremiumMessage": "Actualiza a Premium para configurar\nmultiples horarios para un solo enlace!",
+
+  "linkAdded": "Enlace agregado",
+  "linkUpdated": "Enlace actualizado",
+  "linkDeleted": "Enlace eliminado",
+
+  "emptyStateTitle": "Aun no hay enlaces",
+  "emptyStateSubtitle": "Agrega enlaces que quieras visitar regularmente",
+  "emptyStateButton": "Agrega tu primer enlace",
+
+  "savedByCount": "Guardado por {count}",
+  "@savedByCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "savedByTitle": "Personas que guardaron este enlace",
+  "noSavedUsers": "Nadie lo ha guardado aun",
+  "me": "Yo",
+  "loadFailed": "Error al cargar",
+
+  "cheer": "Animar",
+  "tease": "Provocar",
+  "cheerSent": "Animaste a {nickname}!",
+  "@cheerSent": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "teaseSent": "Provocaste a {nickname}!",
+  "@teaseSent": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "sendFailed": "Error al enviar",
+  "cannotSendToSelf": "No puedes enviarte a ti mismo",
+
+  "noNotifications": "Aun no hay notificaciones",
+  "noNotificationsSubtitle": "Cuando alguien te anime o provoque,\naparecera aqui",
+  "markAllRead": "Marcar todo como leido",
+  "cheerReceived": " te animo!",
+  "teaseReceived": " te provoco!",
+  "notificationLoadFailed": "Error al cargar notificaciones",
+  "justNow": "Ahora mismo",
+  "minutesAgo": "Hace {minutes}m",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "Hace {hours}h",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "Hace {days}d",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "profile": "Perfil",
+  "editProfile": "Editar perfil",
+  "profileEditNotReady": "Editar perfil (proximamente)",
+
+  "notificationSettings": "Notificaciones",
+  "notificationPermission": "Permitir notificaciones",
+  "notificationTest": "Probar notificacion",
+  "notificationTestSubtitle": "Enviar una notificacion de prueba",
+  "notificationTestSent": "Notificacion de prueba enviada",
+  "notificationPermissionRequired": "Se requiere permiso de notificaciones",
+
+  "premium": "Premium",
+  "premiumActive": "Premium activo",
+  "premiumPurchase": "Obtener Premium",
+  "premiumBenefits": "Enlaces ilimitados, sin anuncios",
+  "premiumHeadline": "No te pierdas ningun momento importante",
+  "premiumSubtitle": "Anima a tus seres queridos sin limites",
+  "premiumBenefit1": "Animos y bromas ilimitados",
+  "premiumBenefit1Desc": "Envia animos a tus amigos sin preocuparte por los Porings",
+  "premiumBenefit2": "Enlaces ilimitados",
+  "premiumBenefit2Desc": "Ejercicio, estudio, llamadas... crea todos los habitos que quieras",
+  "premiumBenefit3": "Tiempos de alarma ilimitados",
+  "premiumBenefit3Desc": "Configura alarmas de manana, tarde y noche libremente",
+  "premiumBenefit4": "Porings ilimitados",
+  "premiumBenefit4Desc": "Usa todas las funciones al instante, sin anuncios",
+  "premiumBenefit5": "Experiencia limpia sin anuncios",
+  "premiumBenefit5Desc": "Sin banners ni anuncios de recompensa",
+  "premiumBenefit6": "Todos los sonidos premium",
+  "premiumBenefit6Desc": "Empieza tu dia con tu tono de alarma favorito",
+  "premiumPrice": "$2.99/mes - $9.99/ano - $29.99 de por vida",
+  "premiumLater": "Despues",
+  "premiumBuy": "Comprar",
+  "premiumPaymentNotReady": "Pagos (proximamente)",
+
+  "linkLimitReached": "Limite de enlaces alcanzado",
+  "linkLimitMessage": "Los usuarios gratuitos pueden guardar hasta 2 enlaces.\nInvita amigos para +1, o actualiza a Premium para ilimitados!",
+  "linkLimitMessageBase": "Los usuarios gratuitos pueden guardar hasta 2 enlaces.",
+  "inviteFriendForBonus": "Invitar amigos (+1 enlace)",
+  "inviteFriendBonusDesc": "Obtiene un enlace extra cuando un amigo se una!",
+  "viewPremium": "Ver Premium",
+
+  "account": "Cuenta",
+  "info": "Informacion",
+  "version": "Version",
+  "privacyPolicy": "Politica de privacidad",
+  "privacyPolicyNotReady": "Politica de privacidad (proximamente)",
+  "contact": "Contactanos",
+  "contactNotReady": "Contacto (proximamente)",
+
+  "loading": "Cargando...",
+  "error": "Error",
+  "retry": "Reintentar",
+  "ok": "OK",
+  "yes": "Si",
+  "no": "No",
+
+  "share": "Compartir",
+  "edit": "Editar",
+  "copyLink": "Copiar enlace",
+  "linkCopied": "Enlace copiado",
+  "shareMessage": "Unete a mi a las {time}!\n\n{url}\n\nAbrir en LinkPing",
+  "@shareMessage": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "selectAction": "Elige una accion",
+
+  "profileUpdated": "Perfil actualizado",
+  "profileUpdateFailed": "Error al actualizar el perfil",
+  "accountLink": "Vincular cuenta",
+  "accountLinked": "Cuenta vinculada",
+  "accountLinkFailed": "Error al vincular cuenta",
+  "kakao": "KakaoTalk",
+  "kakaoLinkComingSoon": "Vinculacion con Kakao (proximamente)",
+  "guestLinkInfo": "Vincula tu cuenta para sincronizar datos entre dispositivos",
+  "linked": "Vinculado",
+  "link": "Vincular",
+
+  "setEndDate": "Establecer fecha de fin",
+  "endDateEnabled": "Los recordatorios se detendran en esta fecha",
+  "endDateDisabled": "Se repite siempre (sin fecha de fin)",
+  "selectEndDate": "Seleccionar fecha de fin",
+
+  "selectCheerMessage": "Elige un mensaje de animo",
+  "selectTeaseMessage": "Elige un mensaje provocador",
+  "pingRateLimited": "Puedes enviar de nuevo en {minutes} minutos",
+  "@pingRateLimited": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+
+  "addTimeWithAd": "Ver anuncio para agregar hora",
+  "watchAdToAddTime": "Ve un anuncio corto para agregar otro horario.\nLos usuarios Premium pueden agregar horarios sin anuncios!",
+  "watchAd": "Ver anuncio",
+  "adLoadFailed": "Error al cargar el anuncio",
+  "timeAddedSuccess": "Hora agregada",
+
+  "inviteFriends": "Invitar amigos",
+  "inviteFriendsMessage": "Invita un amigo y obtiene 1 enlace extra!",
+  "bonusLinkEarned": "Ganaste un enlace extra!",
+  "referralCode": "Codigo de referido",
+  "copyReferralCode": "Copiar codigo",
+  "referralCodeCopied": "Codigo copiado",
+
+  "lockedTime": "Hora bloqueada",
+  "unlockTimeWithAd": "Ver anuncio para desbloquear",
+  "watchAdToUnlockTime": "Ve un anuncio para activar este horario.\nLos usuarios Premium tienen todos los horarios activados!",
+  "timeUnlocked": "Horario desbloqueado",
+
+  "shareSettings": "Configuracion de compartir",
+  "editable": "Editable",
+  "recipientCanChangeTime": "El destinatario puede cambiar la hora",
+  "timeLocked": "Hora fija",
+  "shareAtThisTime": "Compartir a esta hora exacta",
+  "category": "Categoria",
+
+  "consentRequest": "Solicitud de consentimiento",
+  "consentRequestMessage": "Solicitar consentimiento de modificacion a los destinatarios.",
+  "consentNote1": "Puede tardar hasta 24 horas",
+  "consentNote2": "Se te notificara cuando se complete",
+  "consentNote3": "Se mantendra la hora original si se rechaza",
+  "requestConsent": "Solicitar consentimiento",
+
+  "timeLockedAlarm": "Alarma con hora fija",
+  "receivedSharedAlarmInfo": "Compartido por {nickname}.\nNo se puede cambiar la hora ni los dias de repeticion.",
+  "@receivedSharedAlarmInfo": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "sharedToOthersInfo": "Los destinatarios tambien recibiran notificaciones a esta hora.\nSe requiere consentimiento para cambiar la hora.",
+  "locked": "Bloqueado",
+
+  "badgesAndStats": "Insignias y estadisticas",
+  "badgeCollection": "Coleccion de insignias",
+  "streakDays": "Racha de {days} dias",
+  "@streakDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "badgesEarned": "{count} obtenidas",
+  "@badgesEarned": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accountSynced": "Cuenta sincronizada",
+  "loginToSync": "Inicia sesion para sincronizar",
+  "termsOfService": "Terminos de servicio",
+  "bonusStatus": "Bonus: {current}/{max} obtenidos",
+  "@bonusStatus": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+
+  "andMore": "+{count} mas",
+  "@andMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "pingWindowClosed": "Solo puedes enviar dentro de 5 minutos despues de tu alarma",
+  "pingWindowActive": "Tiempo restante: {time}",
+  "@pingWindowActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "pingFreeRemaining": "1 ping gratis disponible",
+  "pingWatchAdForMore": "Ver anuncio para enviar mas",
+  "premiumUnlimited": "Ilimitado",
+  "watchAdToSendMore": "Ver anuncio para enviar mas",
+  "watchAdDescription": "Los usuarios gratuitos pueden enviar 1 ping por ventana de alarma.\n¡Ve un anuncio para enviar mas, o actualiza a Premium para ilimitado!",
+
+  "poring": "Poring",
+  "poringBalance": "Saldo Poring",
+  "poringEarn": "Ganar Poring",
+  "poringEarnDescription": "Mira anuncios para ganar Porings.\n¡Usa Porings para desbloquear funciones!",
+  "poringDailyProgress": "Hoy {count}/{max}",
+  "@poringDailyProgress": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "max": {"type": "int"}
+    }
+  },
+  "poringWatchAd": "Ver anuncio (+1 Poring)",
+  "poringCooldown": "Siguiente anuncio en {seconds}s",
+  "@poringCooldown": {
+    "placeholders": {
+      "seconds": {"type": "int"}
+    }
+  },
+  "poringDailyLimitReached": "¡Limite diario alcanzado! Vuelve manana.",
+  "poringDailyLimitThanks": "¡Has visto los {max} anuncios de hoy! ¡Gracias!",
+  "@poringDailyLimitThanks": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
+  "poringEarned": "¡Poring +1!",
+  "poringUnlock": "Desbloquear con Poring",
+  "poringUnlockConfirm": "¿Usar 1 Poring para desbloquear?",
+  "poringNotEnough": "No hay suficientes Porings",
+  "poringWatchAdToEarnAndUse": "No hay suficientes Porings. Mira un anuncio para ganar Porings",
+  "poringSpent": "¡Poring usado!",
+  "poringPremiumInfinite": "Premium: Ilimitado",
+
+  "referralAcceptedTitle": "{nickname} aceptó tu invitación",
+  "@referralAcceptedTitle": {
+    "placeholders": {
+      "nickname": {"type": "String"}
+    }
+  },
+  "referralBonusLink": "Enlace bonus +1",
+  "referralBonusPoring": "Poring +{count}",
+  "@referralBonusPoring": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "poringRewardClaimed": "¡Recompensa: Poring +{count} reclamado!",
+  "@poringRewardClaimed": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "referralAcceptedMessage": "Invitación aceptada",
+
+  "addTimeWithPoring": "Añadir hora de alarma",
+  "poringCostConfirm": "Se usará 1 Poring",
+  "poringRequiredToSend": "Se necesita 1 Poring para enviar un mensaje",
+  "deleteTimeConfirm": "¿Eliminar esta hora de alarma?"
+}

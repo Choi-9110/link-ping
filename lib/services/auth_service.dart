@@ -169,6 +169,34 @@ class AuthService {
     await settingsBox.put('guestNickname', nickname);
   }
 
+  /// 게스트 프로필 이모지 가져오기
+  String getGuestEmoji() {
+    final settingsBox = Hive.box('settings');
+    return settingsBox.get('guestEmoji', defaultValue: 'face_grinning');
+  }
+
+  /// 게스트 프로필 이모지 저장하기
+  Future<void> saveGuestEmoji(String emoji) async {
+    final settingsBox = Hive.box('settings');
+    await settingsBox.put('guestEmoji', emoji);
+  }
+
+  /// 게스트 전화번호 가져오기
+  String? getGuestPhoneNumber() {
+    final settingsBox = Hive.box('settings');
+    return settingsBox.get('guestPhoneNumber');
+  }
+
+  /// 게스트 전화번호 저장하기
+  Future<void> saveGuestPhoneNumber(String? phoneNumber) async {
+    final settingsBox = Hive.box('settings');
+    if (phoneNumber == null) {
+      await settingsBox.delete('guestPhoneNumber');
+    } else {
+      await settingsBox.put('guestPhoneNumber', phoneNumber);
+    }
+  }
+
   /// Google 계정 연동 (익명 계정 → Google 계정)
   Future<UserCredential?> linkWithGoogle() async {
     try {

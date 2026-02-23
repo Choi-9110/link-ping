@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/spacing.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class EmptyState extends StatelessWidget {
   final VoidCallback? onAddLink;
@@ -14,6 +15,7 @@ class EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Center(
       child: Padding(
@@ -28,7 +30,7 @@ class EmptyState extends StatelessWidget {
             ),
             const SizedBox(height: Spacing.lg),
             Text(
-              '저장한 링크를 알림으로\n받아보세요!',
+              l10n.emptyStateTitle,
               textAlign: TextAlign.center,
               style: theme.textTheme.titleLarge?.copyWith(
                 color: colorScheme.onSurface,
@@ -36,7 +38,7 @@ class EmptyState extends StatelessWidget {
             ),
             const SizedBox(height: Spacing.sm),
             Text(
-              '인스타, 유튜브 영상을\n정해진 시간에 바로 열어요',
+              l10n.emptyStateSubtitle,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: colorScheme.outline,
@@ -47,7 +49,7 @@ class EmptyState extends StatelessWidget {
               FilledButton.icon(
                 onPressed: onAddLink,
                 icon: const Icon(Icons.add),
-                label: const Text('첫 번째 링크 추가'),
+                label: Text(l10n.addLink),
               ),
           ],
         ),

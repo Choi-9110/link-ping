@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/theme/app_theme.dart';
+
 /// 웹 앱 소개 페이지
 class WebIntroScreen extends StatelessWidget {
   const WebIntroScreen({super.key});
+
+  // 컬러 테마에서 가져오기
+  Color get _brandAccent => AppTheme.colorTheme.brandAccent;
+  LinearGradient get _backgroundGradient => AppTheme.colorTheme.backgroundGradient;
+  Color get _surfacePlaceholder => AppTheme.colorTheme.surfaceVariant;
 
   @override
   Widget build(BuildContext context) {
@@ -12,16 +19,8 @@ class WebIntroScreen extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF1a1a2e),
-              Color(0xFF16213e),
-              Color(0xFF0f3460),
-            ],
-          ),
+        decoration: BoxDecoration(
+          gradient: _backgroundGradient,
         ),
         child: SafeArea(
           child: SingleChildScrollView(
@@ -33,6 +32,8 @@ class WebIntroScreen extends StatelessWidget {
                 _buildHeroSection(context, isWide),
                 // 기능 소개
                 _buildFeaturesSection(isWide),
+                // 활용 예시 (Use Cases)
+                _buildUseCasesSection(isWide),
                 // 사용 방법
                 _buildHowItWorksSection(isWide),
                 // 다운로드 CTA
@@ -63,7 +64,7 @@ class WebIntroScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFe94560).withValues(alpha: 0.3),
+                  color: _brandAccent.withValues(alpha: 0.3),
                   blurRadius: 15,
                 ),
               ],
@@ -74,8 +75,8 @@ class WebIntroScreen extends StatelessWidget {
                 'assets/app_icon.png',
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
-                  color: const Color(0xFF2D3250),
-                  child: const Icon(Icons.link, color: Color(0xFFe94560)),
+                  color: _surfacePlaceholder,
+                  child: Icon(Icons.link, color: _brandAccent),
                 ),
               ),
             ),
@@ -110,7 +111,7 @@ class WebIntroScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(32),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFe94560).withValues(alpha: 0.4),
+                  color: _brandAccent.withValues(alpha: 0.4),
                   blurRadius: 40,
                   spreadRadius: 10,
                 ),
@@ -122,8 +123,8 @@ class WebIntroScreen extends StatelessWidget {
                 'assets/app_icon.png',
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
-                  color: const Color(0xFF2D3250),
-                  child: const Icon(Icons.link, color: Color(0xFFe94560), size: 60),
+                  color: _surfacePlaceholder,
+                  child: Icon(Icons.link, color: _brandAccent, size: 60),
                 ),
               ),
             ),
@@ -295,10 +296,10 @@ class WebIntroScreen extends StatelessWidget {
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              color: const Color(0xFFe94560).withValues(alpha: 0.2),
+              color: _brandAccent.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: Icon(icon, color: const Color(0xFFe94560), size: 28),
+            child: Icon(icon, color: _brandAccent, size: 28),
           ),
           const SizedBox(height: 16),
           Text(
@@ -318,6 +319,141 @@ class WebIntroScreen extends StatelessWidget {
               height: 1.4,
             ),
             textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUseCasesSection(bool isWide) {
+    // 테마에서 가져온 색상들 사용
+    final colors = AppTheme.colorTheme;
+
+    final useCases = [
+      {
+        'emoji': '💑',
+        'title': '장거리 연애 커플',
+        'desc': '떨어져 있어도 같은 시간에\n넷플릭스 같이 보기',
+        'tag': '매일 밤 10시',
+        'color': colors.tertiary, // 퍼플 계열
+      },
+      {
+        'emoji': '📚',
+        'title': '자기계발 루틴',
+        'desc': '아침 TED 강연\n점심 영어 공부 영상',
+        'tag': '매일 성장하기',
+        'color': const Color(0xFF0984E3), // 블루
+      },
+      {
+        'emoji': '🏋️',
+        'title': '운동 버디',
+        'desc': '친구와 같은 시간에\n홈트 영상 따라하기',
+        'tag': '함께라서 가능해',
+        'color': colors.secondary, // 민트
+      },
+      {
+        'emoji': '👨‍👩‍👧',
+        'title': '가족 교육',
+        'desc': '아이에게 매일 정해진 시간에\n교육 콘텐츠 보여주기',
+        'tag': '습관 만들기',
+        'color': const Color(0xFFFDAE61), // 오렌지
+      },
+    ];
+
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: isWide ? 80 : 24,
+        vertical: 48,
+      ),
+      color: _brandAccent.withValues(alpha: 0.1),
+      child: Column(
+        children: [
+          const Text(
+            '이런 분들이 사용해요',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 40),
+          Wrap(
+            spacing: 24,
+            runSpacing: 24,
+            alignment: WrapAlignment.center,
+            children: useCases.map((uc) => _buildUseCaseCard(
+              emoji: uc['emoji'] as String,
+              title: uc['title'] as String,
+              desc: uc['desc'] as String,
+              tag: uc['tag'] as String,
+              color: uc['color'] as Color,
+              isWide: isWide,
+            )).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUseCaseCard({
+    required String emoji,
+    required String title,
+    required String desc,
+    required String tag,
+    required Color color,
+    required bool isWide,
+  }) {
+    return Container(
+      width: isWide ? 240 : 160,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: color.withValues(alpha: 0.3),
+          width: 2,
+        ),
+      ),
+      child: Column(
+        children: [
+          Text(
+            emoji,
+            style: const TextStyle(fontSize: 48),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            desc,
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 13,
+              height: 1.4,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              tag,
+              style: TextStyle(
+                color: color,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ],
       ),
@@ -379,7 +515,7 @@ class WebIntroScreen extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: const Color(0xFFe94560),
+              color: _brandAccent,
               borderRadius: BorderRadius.circular(24),
             ),
             child: Center(
@@ -466,9 +602,9 @@ class WebIntroScreen extends StatelessWidget {
   Widget _buildFooter() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 32),
-      child: Column(
+      child: const Column(
         children: [
-          const Text(
+          Text(
             'LinkPing',
             style: TextStyle(
               color: Colors.white54,
@@ -476,8 +612,8 @@ class WebIntroScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 8),
-          const Text(
+          SizedBox(height: 8),
+          Text(
             '© 2025 LinkPing. All rights reserved.',
             style: TextStyle(
               color: Colors.white38,

@@ -1,0 +1,419 @@
+{
+  "@@locale": "zh",
+
+  "appName": "LinkPing",
+  "appSlogan": "收藏链接，立即行动！",
+
+  "login": "登录",
+  "loginWithGoogle": "使用 Google 登录",
+  "loginLoading": "正在登录...",
+  "loginLater": "稍后再说",
+  "loginFailed": "登录失败",
+  "guestLoginFailed": "访客登录失败",
+  "logout": "退出登录",
+  "logoutConfirm": "确定要退出登录吗？",
+
+  "guest": "访客",
+  "guestSyncMessage": "使用 Google 登录以同步数据",
+
+  "profileSetup": "设置资料",
+  "profileSetupTitle": "设置您的个人资料",
+  "profileSetupSubtitle": "这些信息将对其他用户可见",
+  "nickname": "昵称",
+  "nicknameHint": "健身小明",
+  "nicknameRequired": "请输入昵称",
+  "nicknameMinLength": "至少2个字符",
+  "nicknameMaxLength": "最多20个字符",
+  "country": "国家",
+  "complete": "完成",
+  "profileSaveFailed": "保存资料失败",
+
+  "home": "首页",
+  "settings": "设置",
+  "notifications": "通知",
+
+  "addLink": "添加链接",
+  "editLink": "编辑链接",
+  "deleteLink": "删除",
+  "deleteConfirm": "确定删除此链接？",
+  "cancel": "取消",
+  "save": "保存",
+  "delete": "删除",
+
+  "url": "网址",
+  "urlHint": "https://example.com",
+  "urlRequired": "请输入网址",
+  "urlInvalid": "请输入有效的网址",
+  "title": "标题",
+  "titleHint": "每日健身计划",
+  "titleRequired": "请输入标题",
+
+  "notificationTime": "提醒时间",
+  "repeatDays": "重复日期",
+  "selectRepeatDays": "请选择重复的日期",
+  "sun": "日",
+  "mon": "一",
+  "tue": "二",
+  "wed": "三",
+  "thu": "四",
+  "fri": "五",
+  "sat": "六",
+  "sunday": "周日",
+  "monday": "周一",
+  "tuesday": "周二",
+  "wednesday": "周三",
+  "thursday": "周四",
+  "friday": "周五",
+  "saturday": "周六",
+  "everyday": "每天",
+  "weekdays": "工作日",
+  "weekends": "周末",
+  "repeat": "重复",
+
+  "linkUrl": "链接或电话号码",
+  "linkUrlHint": "google.com 或 13812345678",
+  "invalidUrl": "请输入有效的链接或电话号码",
+  "reminderTitle": "提醒标题",
+  "reminderTitleHint": "该做拉伸了！",
+  "enterTitle": "请输入标题",
+  "reminderTime": "提醒时间",
+  "addTime": "添加时间",
+  "addTimePremium": "添加时间（高级版）",
+  "premiumFeature": "高级功能",
+  "multiTimesPremiumMessage": "升级高级版可为单个链接\n设置多个提醒时间！",
+
+  "linkAdded": "链接已添加",
+  "linkUpdated": "链接已更新",
+  "linkDeleted": "链接已删除",
+
+  "emptyStateTitle": "暂无链接",
+  "emptyStateSubtitle": "添加您想定期访问的链接",
+  "emptyStateButton": "添加第一个链接",
+
+  "savedByCount": "{count}人已收藏",
+  "@savedByCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "savedByTitle": "收藏此链接的用户",
+  "noSavedUsers": "暂无人收藏",
+  "me": "我",
+  "loadFailed": "加载失败",
+
+  "cheer": "加油",
+  "tease": "催一下",
+  "cheerSent": "已为 {nickname} 加油！",
+  "@cheerSent": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "teaseSent": "已催促 {nickname}！",
+  "@teaseSent": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "sendFailed": "发送失败",
+  "cannotSendToSelf": "不能发送给自己",
+
+  "noNotifications": "暂无通知",
+  "noNotificationsSubtitle": "当有人给您加油或催促时，\n会显示在这里",
+  "markAllRead": "全部标为已读",
+  "cheerReceived": " 为您加油！",
+  "teaseReceived": " 催促了您！",
+  "notificationLoadFailed": "加载通知失败",
+  "justNow": "刚刚",
+  "minutesAgo": "{minutes}分钟前",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{hours}小时前",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "{days}天前",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "profile": "个人资料",
+  "editProfile": "编辑资料",
+  "profileEditNotReady": "编辑资料（即将推出）",
+
+  "notificationSettings": "通知设置",
+  "notificationPermission": "允许通知",
+  "notificationTest": "测试通知",
+  "notificationTestSubtitle": "发送测试通知",
+  "notificationTestSent": "测试通知已发送",
+  "notificationPermissionRequired": "需要通知权限",
+
+  "premium": "高级版",
+  "premiumActive": "高级版使用中",
+  "premiumPurchase": "获取高级版",
+  "premiumBenefits": "无限链接，无广告",
+  "premiumHeadline": "每一个重要时刻，都不再错过",
+  "premiumSubtitle": "无限制地为重要的人加油",
+  "premiumBenefit1": "无限加油和戳一戳",
+  "premiumBenefit1Desc": "无需Poring，直接为朋友送上鼓励",
+  "premiumBenefit2": "无限链接",
+  "premiumBenefit2Desc": "运动、学习、打电话…随心创建习惯",
+  "premiumBenefit3": "无限额外提醒时间",
+  "premiumBenefit3Desc": "一个链接自由设置早中晚提醒",
+  "premiumBenefit4": "无限Poring",
+  "premiumBenefit4Desc": "无需看广告，直接使用所有功能",
+  "premiumBenefit5": "无广告清爽体验",
+  "premiumBenefit5Desc": "没有横幅广告，没有激励广告",
+  "premiumBenefit6": "解锁全部高级铃声",
+  "premiumBenefit6Desc": "用专属铃声开启每一天",
+  "premiumPrice": "月付 $2.99 / 年付 $9.99 / 永久 $29.99",
+  "premiumLater": "稍后",
+  "premiumBuy": "立即购买",
+  "premiumPaymentNotReady": "支付功能（即将推出）",
+
+  "linkLimitReached": "已达链接上限",
+  "linkLimitMessage": "免费用户最多可保存2个链接。\n邀请好友可+1，升级高级版享无限！",
+  "linkLimitMessageBase": "免费用户最多可保存2个链接。",
+  "inviteFriendForBonus": "邀请好友（+1链接）",
+  "inviteFriendBonusDesc": "好友注册后可获得额外链接！",
+  "viewPremium": "查看高级版",
+
+  "account": "账户",
+  "info": "关于",
+  "version": "版本",
+  "privacyPolicy": "隐私政策",
+  "privacyPolicyNotReady": "隐私政策（即将推出）",
+  "contact": "联系我们",
+  "contactNotReady": "联系我们（即将推出）",
+
+  "loading": "加载中...",
+  "error": "错误",
+  "retry": "重试",
+  "ok": "确定",
+  "yes": "是",
+  "no": "否",
+
+  "share": "分享",
+  "edit": "编辑",
+  "copyLink": "复制链接",
+  "linkCopied": "链接已复制",
+  "shareMessage": "我在 {time} 有个小习惯，一起来吧！\n\n{url}\n\n在 LinkPing 中打开",
+  "@shareMessage": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "selectAction": "选择操作",
+
+  "profileUpdated": "资料已更新",
+  "profileUpdateFailed": "更新资料失败",
+  "accountLink": "关联账户",
+  "accountLinked": "账户已关联",
+  "accountLinkFailed": "关联账户失败",
+  "kakao": "KakaoTalk",
+  "kakaoLinkComingSoon": "Kakao关联（即将推出）",
+  "guestLinkInfo": "关联账户以在多设备间同步数据",
+  "linked": "已关联",
+  "link": "关联",
+
+  "setEndDate": "设置结束日期",
+  "endDateEnabled": "提醒将在此日期停止",
+  "endDateDisabled": "永久重复（无结束日期）",
+  "selectEndDate": "选择结束日期",
+
+  "selectCheerMessage": "选择加油消息",
+  "selectTeaseMessage": "选择催促消息",
+  "pingRateLimited": "{minutes}分钟后可再次发送",
+  "@pingRateLimited": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+
+  "addTimeWithAd": "看广告添加时间",
+  "watchAdToAddTime": "观看短视频广告即可添加新的提醒时间。\n高级版用户可无限添加，无需看广告！",
+  "watchAd": "观看广告",
+  "adLoadFailed": "广告加载失败",
+  "timeAddedSuccess": "时间已添加",
+
+  "inviteFriends": "邀请好友",
+  "inviteFriendsMessage": "邀请好友可获得额外1个链接名额！",
+  "bonusLinkEarned": "获得额外链接！",
+  "referralCode": "邀请码",
+  "copyReferralCode": "复制邀请码",
+  "referralCodeCopied": "邀请码已复制",
+
+  "lockedTime": "锁定的时间",
+  "unlockTimeWithAd": "看广告解锁",
+  "watchAdToUnlockTime": "观看广告即可激活此提醒时间。\n高级版用户自动激活所有时间！",
+  "timeUnlocked": "提醒时间已解锁",
+
+  "shareSettings": "分享设置",
+  "editable": "可编辑",
+  "recipientCanChangeTime": "接收者可更改时间",
+  "timeLocked": "时间锁定",
+  "shareAtThisTime": "以此时间分享",
+  "category": "分类",
+
+  "consentRequest": "请求同意",
+  "consentRequestMessage": "向接收者请求修改同意。",
+  "consentNote1": "最多可能需要24小时",
+  "consentNote2": "同意完成后会通知您",
+  "consentNote3": "如被拒绝，将保持原时间",
+  "requestConsent": "请求同意",
+
+  "timeLockedAlarm": "时间锁定闹钟",
+  "receivedSharedAlarmInfo": "由{nickname}分享的闹钟。\n无法更改提醒时间和重复日期。",
+  "@receivedSharedAlarmInfo": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "sharedToOthersInfo": "接收者也会在同一时间收到通知。\n更改时间需要获得同意。",
+  "locked": "已锁定",
+
+  "badgesAndStats": "徽章和统计",
+  "badgeCollection": "徽章收藏",
+  "streakDays": "连续{days}天",
+  "@streakDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "badgesEarned": "已获得{count}个",
+  "@badgesEarned": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accountSynced": "账户已同步",
+  "loginToSync": "登录以同步数据",
+  "termsOfService": "服务条款",
+  "bonusStatus": "奖励: 已获得{current}/{max}",
+  "@bonusStatus": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+
+  "andMore": "另外{count}个",
+  "@andMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "pingWindowClosed": "只能在闹钟响起后5分钟内发送",
+  "pingWindowActive": "剩余时间: {time}",
+  "@pingWindowActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "pingFreeRemaining": "免费发送1次",
+  "pingWatchAdForMore": "看广告发送更多",
+  "premiumUnlimited": "无限",
+  "watchAdToSendMore": "看广告发送更多",
+  "watchAdDescription": "免费用户每次闹钟只能发送给1人。\n看广告可以发送更多，或升级到高级版无限发送！",
+
+  "poring": "波灵",
+  "poringBalance": "波灵余额",
+  "poringEarn": "收集波灵",
+  "poringEarnDescription": "观看广告获得波灵。\n用波灵解锁功能！",
+  "poringDailyProgress": "今日 {count}/{max}",
+  "@poringDailyProgress": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "max": {"type": "int"}
+    }
+  },
+  "poringWatchAd": "观看广告 (+1波灵)",
+  "poringCooldown": "下一个广告还需 {seconds}秒",
+  "@poringCooldown": {
+    "placeholders": {
+      "seconds": {"type": "int"}
+    }
+  },
+  "poringDailyLimitReached": "已达今日上限！明天再来吧。",
+  "poringDailyLimitThanks": "今天已观看全部{max}个广告！感谢您！",
+  "@poringDailyLimitThanks": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
+  "poringEarned": "波灵 +1！",
+  "poringUnlock": "用波灵解锁",
+  "poringUnlockConfirm": "使用1个波灵解锁？",
+  "poringNotEnough": "波灵不足",
+  "poringWatchAdToEarnAndUse": "波灵不足。观看广告获取波灵",
+  "poringSpent": "波灵已使用！",
+  "poringPremiumInfinite": "高级版：无限",
+
+  "referralAcceptedTitle": "{nickname}接受了你的邀请",
+  "@referralAcceptedTitle": {
+    "placeholders": {
+      "nickname": {"type": "String"}
+    }
+  },
+  "referralBonusLink": "奖励链接 +1",
+  "referralBonusPoring": "波灵 +{count}",
+  "@referralBonusPoring": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "poringRewardClaimed": "推荐奖励 波灵 +{count} 已领取！",
+  "@poringRewardClaimed": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "referralAcceptedMessage": "邀请已被接受",
+
+  "addTimeWithPoring": "添加提醒时间",
+  "poringCostConfirm": "将消耗1个波灵",
+  "poringRequiredToSend": "发送消息需要1个波灵",
+  "deleteTimeConfirm": "删除此提醒时间？"
+}

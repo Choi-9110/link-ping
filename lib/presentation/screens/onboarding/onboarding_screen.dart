@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/spacing.dart';
+import '../../../l10n/app_localizations.dart';
 import '../auth/login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -14,23 +16,58 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<OnboardingPage> _pages = [
-    OnboardingPage(
-      icon: Icons.link,
-      title: '링크를 저장하세요',
-      description: '인스타, 유튜브, 틱톡에서\n나중에 볼 영상을 저장하세요',
-    ),
-    OnboardingPage(
-      icon: Icons.notifications_active,
-      title: '알림을 받으세요',
-      description: '원하는 시간에 알림을 받고\n저장한 영상을 바로 열어요',
-    ),
-    OnboardingPage(
-      icon: Icons.people,
-      title: '함께 실천하세요',
-      description: '친구와 같이 하면\n실천율이 95%로 올라가요',
-    ),
-  ];
+  List<OnboardingPage> _getPages(AppLocalizations l10n) {
+    // 테마 컬러 사용
+    final colors = AppTheme.colorTheme;
+
+    return [
+      // 1. 기본 소개
+      OnboardingPage(
+        pixelEmojiAsset: 'assets/pixel_emojis/badge_link.webp',
+        title: l10n.onboarding1Title,
+        description: l10n.onboarding1Desc,
+        backgroundColor: colors.tertiary, // 퍼플
+      ),
+      // 2. 알림 기능
+      OnboardingPage(
+        pixelEmojiAsset: 'assets/pixel_emojis/badge_sunrise.webp',
+        title: l10n.onboarding2Title,
+        description: l10n.onboarding2Desc,
+        backgroundColor: colors.secondary, // 민트
+      ),
+      // 3. 활용 예시 - 커플
+      OnboardingPage(
+        pixelEmojiAsset: 'assets/pixel_emojis/face_love.webp',
+        title: l10n.onboarding3Title,
+        description: l10n.onboarding3Desc,
+        subText: l10n.onboarding3Sub,
+        backgroundColor: colors.primary, // 코랄
+      ),
+      // 4. 활용 예시 - 자기계발
+      OnboardingPage(
+        pixelEmojiAsset: 'assets/pixel_emojis/item_books.webp',
+        title: l10n.onboarding4Title,
+        description: l10n.onboarding4Desc,
+        subText: l10n.onboarding4Sub,
+        backgroundColor: colors.tertiary.withValues(alpha: 0.8), // 퍼플 변형
+      ),
+      // 5. 활용 예시 - 친구들과
+      OnboardingPage(
+        pixelEmojiAsset: 'assets/pixel_emojis/face_party.webp',
+        title: l10n.onboarding5Title,
+        description: l10n.onboarding5Desc,
+        subText: l10n.onboarding5Sub,
+        backgroundColor: colors.secondary.withValues(alpha: 0.8), // 민트 변형
+      ),
+      // 6. 시작하기
+      OnboardingPage(
+        pixelEmojiAsset: 'assets/pixel_emojis/item_rocket.webp',
+        title: l10n.onboarding6Title,
+        description: l10n.onboarding6Desc,
+        backgroundColor: colors.surface, // 다크 그레이
+      ),
+    ];
+  }
 
   @override
   void dispose() {
@@ -38,8 +75,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.dispose();
   }
 
-  void _onNext() {
-    if (_currentPage < _pages.length - 1) {
+  void _onNext(int totalPages) {
+    if (_currentPage < totalPages - 1) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -52,111 +89,170 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _goToLogin() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final pages = _getPages(l10n);
+    final page = pages[_currentPage];
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Skip 버튼
-            Align(
-              alignment: Alignment.topRight,
-              child: TextButton(
-                onPressed: _goToLogin,
-                child: const Text('건너뛰기'),
+      body: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              page.backgroundColor,
+              page.backgroundColor.withValues(alpha: 0.8),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Skip 버튼
+              Align(
+                alignment: Alignment.topRight,
+                child: TextButton(
+                  onPressed: _goToLogin,
+                  child: Text(
+                    l10n.skip,
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+                ),
               ),
-            ),
 
-            // 페이지 뷰
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: _pages.length,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                },
-                itemBuilder: (context, index) {
-                  final page = _pages[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(Spacing.xl),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          page.icon,
-                          size: 120,
-                          color: colorScheme.primary,
-                        ),
-                        const SizedBox(height: Spacing.xl),
-                        Text(
-                          page.title,
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
+              // 페이지 뷰
+              Expanded(
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: pages.length,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentPage = index;
+                    });
+                  },
+                  itemBuilder: (context, index) {
+                    final page = pages[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(Spacing.xl),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // 픽셀 이모지
+                          if (page.pixelEmojiAsset != null)
+                            Image.asset(
+                              page.pixelEmojiAsset!,
+                              width: 120,
+                              height: 120,
+                              filterQuality: FilterQuality.none,
+                            )
+                          else if (page.emoji != null)
+                            Text(
+                              page.emoji!,
+                              style: const TextStyle(fontSize: 100),
+                            ),
+                          const SizedBox(height: Spacing.xl),
+                          // 제목
+                          Text(
+                            page.title,
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: Spacing.md),
-                        Text(
-                          page.description,
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            color: colorScheme.onSurfaceVariant,
+                          const SizedBox(height: Spacing.md),
+                          // 설명
+                          Text(
+                            page.description,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              height: 1.5,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                          // 서브텍스트 (있는 경우)
+                          if (page.subText != null) ...[
+                            const SizedBox(height: Spacing.lg),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.2),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Text(
+                                page.subText!,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              // 인디케이터
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(pages.length, (index) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: _currentPage == index ? 24 : 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: _currentPage == index
+                          ? Colors.white
+                          : Colors.white.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                   );
-                },
+                }),
               ),
-            ),
 
-            // 인디케이터
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(_pages.length, (index) {
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  width: _currentPage == index ? 24 : 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: _currentPage == index
-                        ? colorScheme.primary
-                        : colorScheme.outline.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(4),
+              const SizedBox(height: Spacing.xl),
+
+              // 다음/시작 버튼
+              Padding(
+                padding: const EdgeInsets.all(Spacing.md),
+                child: FilledButton(
+                  onPressed: () => _onNext(pages.length),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: page.backgroundColor,
+                    minimumSize: const Size(double.infinity, 56),
                   ),
-                );
-              }),
-            ),
-
-            const SizedBox(height: Spacing.xl),
-
-            // 다음/시작 버튼
-            Padding(
-              padding: const EdgeInsets.all(Spacing.md),
-              child: FilledButton(
-                onPressed: _onNext,
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 56),
-                ),
-                child: Text(
-                  _currentPage == _pages.length - 1 ? '시작하기' : '다음',
+                  child: Text(
+                    _currentPage == pages.length - 1
+                        ? l10n.getStarted
+                        : l10n.next,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-            ),
 
-            const SizedBox(height: Spacing.md),
-          ],
+              const SizedBox(height: Spacing.md),
+            ],
+          ),
         ),
       ),
     );
@@ -164,13 +260,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 }
 
 class OnboardingPage {
-  final IconData icon;
+  final String? emoji;
+  final String? pixelEmojiAsset;
   final String title;
   final String description;
+  final String? subText;
+  final Color backgroundColor;
 
   OnboardingPage({
-    required this.icon,
+    this.emoji,
+    this.pixelEmojiAsset,
     required this.title,
     required this.description,
+    this.subText,
+    required this.backgroundColor,
   });
 }

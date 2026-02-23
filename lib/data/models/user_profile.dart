@@ -7,6 +7,11 @@ class UserProfile {
   final bool isPremium;
   final DateTime createdAt;
   final DateTime? updatedAt;
+  final String profileEmoji;
+  final int bonusLinks; // 공유 보상으로 획득한 추가 링크 수 (최대 1)
+  final String? referredBy; // 추천인 UID (가입 시 설정)
+  final String? phoneNumber; // 내 전화번호 (tel: 알람용)
+  final int pendingPoringReward; // 추천 보상 포링 (Firestore→Hive 브릿지)
 
   UserProfile({
     required this.uid,
@@ -15,6 +20,11 @@ class UserProfile {
     this.isPremium = false,
     required this.createdAt,
     this.updatedAt,
+    this.profileEmoji = 'face_grinning',
+    this.bonusLinks = 0,
+    this.referredBy,
+    this.phoneNumber,
+    this.pendingPoringReward = 0,
   });
 
   /// Firestore 문서에서 UserProfile 생성
@@ -27,6 +37,11 @@ class UserProfile {
       isPremium: data['isPremium'] ?? false,
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       updatedAt: (data['updatedAt'] as Timestamp?)?.toDate(),
+      profileEmoji: data['profileEmoji'] ?? 'face_grinning',
+      bonusLinks: data['bonusLinks'] ?? 0,
+      referredBy: data['referredBy'],
+      phoneNumber: data['phoneNumber'],
+      pendingPoringReward: data['pendingPoringReward'] ?? 0,
     );
   }
 
@@ -38,6 +53,11 @@ class UserProfile {
       'isPremium': isPremium,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
+      'profileEmoji': profileEmoji,
+      'bonusLinks': bonusLinks,
+      if (referredBy != null) 'referredBy': referredBy,
+      if (phoneNumber != null) 'phoneNumber': phoneNumber,
+      'pendingPoringReward': pendingPoringReward,
     };
   }
 
@@ -47,6 +67,11 @@ class UserProfile {
     String? country,
     bool? isPremium,
     DateTime? updatedAt,
+    String? profileEmoji,
+    int? bonusLinks,
+    String? referredBy,
+    String? phoneNumber,
+    int? pendingPoringReward,
   }) {
     return UserProfile(
       uid: uid,
@@ -55,6 +80,17 @@ class UserProfile {
       isPremium: isPremium ?? this.isPremium,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      profileEmoji: profileEmoji ?? this.profileEmoji,
+      bonusLinks: bonusLinks ?? this.bonusLinks,
+      referredBy: referredBy ?? this.referredBy,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      pendingPoringReward: pendingPoringReward ?? this.pendingPoringReward,
     );
+  }
+
+  /// 총 사용 가능한 링크 수 계산
+  int get totalLinksLimit {
+    if (isPremium) return -1; // 무제한
+    return 2 + bonusLinks; // 기본 2 + 보너스
   }
 }

@@ -4,6 +4,7 @@ import '../../../l10n/app_localizations.dart';
 
 import '../../../core/theme/spacing.dart';
 import '../../../providers/auth_provider.dart';
+import '../../../services/firestore_service.dart';
 import '../home/home_screen.dart';
 import 'profile_setup_screen.dart';
 
@@ -24,14 +25,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final authService = ref.read(authServiceProvider);
       final result = await authService.signInWithGoogle();
 
-      if (result != null && mounted) {
-        // 로그인 성공 → 프로필 설정 화면으로
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ProfileSetupScreen(),
-          ),
-        );
+      if (result != null && result.user != null) {
+        // 기존 프로필이 있는지 확인
+        final existingProfile = await FirestoreService.instance
+            .getUserProfile(result.user!.uid);
+
+        if (!mounted) return;
+
+        if (existingProfile != null) {
+          // 기존 회원 → 홈으로 바로 이동
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+          );
+        } else {
+          // 신규 회원 → 프로필 설정 화면으로
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ProfileSetupScreen(),
+            ),
+          );
+        }
       }
     } catch (e) {
       if (mounted) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/spacing.dart';
 import '../../../../data/models/link_reminder.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../services/url_launcher_service.dart';
 import '../../../widgets/saved_users_bottom_sheet.dart';
 
@@ -37,6 +38,7 @@ class LinkCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Dismissible(
       key: Key(link.id),
@@ -53,20 +55,23 @@ class LinkCard extends StatelessWidget {
       confirmDismiss: (direction) async {
         return await showDialog<bool>(
           context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('삭제'),
-            content: const Text('이 링크를 삭제할까요?'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('취소'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text('삭제'),
-              ),
-            ],
-          ),
+          builder: (dialogContext) {
+            final dialogL10n = AppLocalizations.of(dialogContext)!;
+            return AlertDialog(
+              title: Text(dialogL10n.delete),
+              content: Text(dialogL10n.deleteConfirm),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(dialogContext, false),
+                  child: Text(dialogL10n.cancel),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(dialogContext, true),
+                  child: Text(dialogL10n.delete),
+                ),
+              ],
+            );
+          },
         );
       },
       onDismissed: (_) => onDelete(),
@@ -94,23 +99,86 @@ class LinkCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // 제목
-                      Text(
-                        link.title,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: link.isEnabled ? null : colorScheme.outline,
+                      // 카테고리 뱃지
+                      if (link.category != null) ...[
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: colorScheme.secondaryContainer,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Builder(builder: (context) {
+                            final locale = Localizations.localeOf(context);
+                            final isKorean = locale.languageCode == 'ko';
+                            return Text(
+                              link.category!.displayName(isKorean),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: colorScheme.onSecondaryContainer,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            );
+                          }),
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        const SizedBox(height: 4),
+                      ],
+                      // 제목
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              link.title,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: link.isEnabled ? null : colorScheme.outline,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          // 잠금 링크 표시
+                          if (link.isLocked) ...[
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: colorScheme.primary.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.lock,
+                                    size: 12,
+                                    color: colorScheme.primary,
+                                  ),
+                                  const SizedBox(width: 2),
+                                  Text(
+                                    l10n.locked,
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: colorScheme.primary,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                       const SizedBox(height: 4),
                       // 시간
-                      Text(
-                        '${link.repeatString} ${link.timeString}',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: colorScheme.outline,
-                        ),
-                      ),
+                      Builder(builder: (context) {
+                        final locale = Localizations.localeOf(context);
+                        final isKorean = locale.languageCode == 'ko';
+                        return Text(
+                          '${link.getRepeatString(isKorean)} ${link.timeString}',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: colorScheme.outline,
+                          ),
+                        );
+                      }),
                       const SizedBox(height: 2),
                       // 서비스명
                       Text(
@@ -125,7 +193,7 @@ class LinkCard extends StatelessWidget {
                         GestureDetector(
                           onTap: () => _showSavedUsers(context),
                           child: Text(
-                            '$saveCount명이 저장',
+                            l10n.savedByCount(saveCount),
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: colorScheme.primary,
                               fontWeight: FontWeight.w500,
@@ -196,31 +264,36 @@ class LinkCard extends StatelessWidget {
   /// URL에서 서비스명 추출
   String _getServiceName(String url) {
     try {
-      // 스킴이 없을 수 있으므로 ensureScheme 사용
+      // 전화번호인 경우
       final normalizedUrl = UrlLauncherService.ensureScheme(url);
+      if (UrlLauncherService.isPhoneUrl(normalizedUrl)) {
+        final phoneNumber = UrlLauncherService.getDisplayPhoneNumber(normalizedUrl);
+        return '📞 $phoneNumber';
+      }
+
       final host = Uri.parse(normalizedUrl).host.toLowerCase();
 
-      // 주요 서비스 매핑
-      if (host.contains('naver')) return '네이버';
-      if (host.contains('youtube') || host.contains('youtu.be')) return '유튜브';
-      if (host.contains('instagram')) return '인스타그램';
-      if (host.contains('tiktok')) return '틱톡';
-      if (host.contains('twitter') || host.contains('x.com')) return 'X (트위터)';
-      if (host.contains('facebook')) return '페이스북';
-      if (host.contains('kakao')) return '카카오';
-      if (host.contains('google')) return '구글';
+      // 주요 서비스 매핑 (영어 브랜드명)
+      if (host.contains('naver')) return 'Naver';
+      if (host.contains('youtube') || host.contains('youtu.be')) return 'YouTube';
+      if (host.contains('instagram')) return 'Instagram';
+      if (host.contains('tiktok')) return 'TikTok';
+      if (host.contains('twitter') || host.contains('x.com')) return 'X';
+      if (host.contains('facebook')) return 'Facebook';
+      if (host.contains('kakao')) return 'Kakao';
+      if (host.contains('google')) return 'Google';
       if (host.contains('github')) return 'GitHub';
-      if (host.contains('notion')) return '노션';
-      if (host.contains('velog')) return '벨로그';
-      if (host.contains('tistory')) return '티스토리';
-      if (host.contains('brunch')) return '브런치';
-      if (host.contains('linkedin')) return '링크드인';
-      if (host.contains('reddit')) return '레딧';
-      if (host.contains('twitch')) return '트위치';
-      if (host.contains('spotify')) return '스포티파이';
-      if (host.contains('apple')) return '애플';
-      if (host.contains('amazon')) return '아마존';
-      if (host.contains('coupang')) return '쿠팡';
+      if (host.contains('notion')) return 'Notion';
+      if (host.contains('velog')) return 'Velog';
+      if (host.contains('tistory')) return 'Tistory';
+      if (host.contains('brunch')) return 'Brunch';
+      if (host.contains('linkedin')) return 'LinkedIn';
+      if (host.contains('reddit')) return 'Reddit';
+      if (host.contains('twitch')) return 'Twitch';
+      if (host.contains('spotify')) return 'Spotify';
+      if (host.contains('apple')) return 'Apple';
+      if (host.contains('amazon')) return 'Amazon';
+      if (host.contains('coupang')) return 'Coupang';
 
       // 매핑되지 않으면 호스트 반환 (www. 제거)
       return host.replaceFirst('www.', '');

@@ -28,7 +28,14 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
   }
 
   void _loadLinks() {
-    state = _repository.getAllLinks();
+    final links = _repository.getAllLinks();
+    // 시간순 정렬 (00:00 → 23:59)
+    links.sort((a, b) {
+      final aMinutes = a.hour * 60 + a.minute;
+      final bMinutes = b.hour * 60 + b.minute;
+      return aMinutes.compareTo(bMinutes);
+    });
+    state = links;
     // 종료일이 지난 링크 자동 OFF
     _checkExpiredLinks();
   }
@@ -58,6 +65,12 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
     required List<int> repeatDays,
     List<ReminderTime>? additionalTimes,
     DateTime? endDate,
+    bool isLocked = false,
+    String? sharedBy,
+    String? sharedLinkId, // 공유 링크 ID (공유받은 링크인 경우)
+    String? creatorUid, // 원본 만든 사람 UID
+    LinkCategory? category, // 카테고리
+    String? soundId, // 알람 소리 ID
   }) async {
     final urlHash = _generateUrlHash(url);
 
@@ -71,6 +84,12 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
       repeatDays: repeatDays,
       additionalTimes: additionalTimes,
       endDate: endDate,
+      isLocked: isLocked,
+      sharedBy: sharedBy,
+      sharedLinkId: sharedLinkId,
+      creatorUid: creatorUid,
+      category: category,
+      soundId: soundId,
     );
 
     await _repository.saveLink(link);
@@ -85,6 +104,15 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
       // Firestore 오류는 무시 (로컬 저장은 성공)
     }
 
+    // 공유 링크 저장 기록 (수정/삭제 알림용)
+    if (sharedLinkId != null) {
+      try {
+        await FirestoreService.instance.recordSharedLinkSave(sharedLinkId);
+      } catch (_) {
+        // 오류 무시
+      }
+    }
+
     // 뱃지 체크 (링크 추가) - 이미 저장된 후이므로 length가 정확함
     try {
       final totalLinks = _repository.getAllLinks().length;
@@ -93,6 +121,18 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
       await BadgeService.instance.recordLinkDomain(url);
     } catch (_) {
       // 뱃지 오류는 무시
+    }
+
+    // 📊 통계 트래킹 (링크 생성)
+    try {
+      await FirestoreService.instance.trackLinkCreated(
+        category: category?.name,
+        soundId: soundId,
+        hour: hour,
+        weekdays: repeatDays,
+      );
+    } catch (_) {
+      // 통계 오류는 무시
     }
 
     _loadLinks();
@@ -125,17 +165,44 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
       } catch (_) {
         // Firestore 오류는 무시
       }
+
+      // 고정 알람 + 공유한 링크 + 내가 만든 링크 → 공유받은 사람들에게 삭제 알림
+      // sharedLinkId가 있으면 공유됨, creatorUid가 null이면 내가 원작자
+      if (link.isLocked && link.sharedLinkId != null && link.creatorUid == null) {
+        try {
+          await FirestoreService.instance.sendLockedLinkDeletedNotification(
+            sharedLinkId: link.sharedLinkId!,
+            linkTitle: link.title,
+          );
+        } catch (_) {
+          // 알림 전송 실패는 무시
+        }
+      }
     }
 
     _loadLinks();
   }
 
-  /// 링크 토글 (활성/비활성)
+  /// 링크 토글 (활성/비활성) - UI 먼저 업데이트 후 백그라운드 처리
   Future<void> toggleLink(String id) async {
     final link = _repository.getLink(id);
-    if (link != null) {
-      final updated = link.copyWith(isEnabled: !link.isEnabled);
-      await updateLink(updated);
+    if (link == null) return;
+
+    final updated = link.copyWith(isEnabled: !link.isEnabled);
+
+    // 1. UI 먼저 즉시 업데이트 (낙관적 업데이트)
+    state = state.map((l) => l.id == id ? updated : l).toList();
+
+    // 2. 저장소에 저장
+    await _repository.saveLink(updated);
+
+    // 3. 알림 스케줄/취소 (백그라운드)
+    if (updated.isEnabled) {
+      // 켜기: 알림 스케줄
+      NotificationService.instance.scheduleReminder(updated);
+    } else {
+      // 끄기: 알림 취소
+      NotificationService.instance.cancelReminder(id);
     }
   }
 
@@ -157,11 +224,27 @@ final isPremiumProvider = Provider<bool>((ref) {
   return false; // 기본값 (Hive는 동기적으로 접근해야 해서 여기선 기본값)
 });
 
+/// 보너스 링크 수 Provider
+final bonusLinksProvider = Provider<int>((ref) {
+  final userProfile = ref.watch(userProfileProvider).value;
+  return userProfile?.bonusLinks ?? 0;
+});
+
+/// 총 링크 한도 (기본 2 + 보너스)
+final totalLinksLimitProvider = Provider<int>((ref) {
+  final isPremium = ref.watch(isPremiumProvider);
+  if (isPremium) return -1; // 무제한
+  final bonusLinks = ref.watch(bonusLinksProvider);
+  return AppConstants.freeLinksLimit + bonusLinks;
+});
+
 /// 링크 추가 가능 여부
 final canAddMoreLinksProvider = Provider<bool>((ref) {
   final links = ref.watch(linksProvider);
   final isPremium = ref.watch(isPremiumProvider);
-  return isPremium || links.length < AppConstants.freeLinksLimit;
+  if (isPremium) return true;
+  final totalLimit = ref.watch(totalLinksLimitProvider);
+  return links.length < totalLimit;
 });
 
 /// 남은 무료 슬롯 개수
@@ -169,5 +252,6 @@ final remainingFreeSlotsProvider = Provider<int>((ref) {
   final links = ref.watch(linksProvider);
   final isPremium = ref.watch(isPremiumProvider);
   if (isPremium) return -1; // 무제한
-  return AppConstants.freeLinksLimit - links.length;
+  final totalLimit = ref.watch(totalLinksLimitProvider);
+  return totalLimit - links.length;
 });

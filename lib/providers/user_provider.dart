@@ -3,8 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/models/user_profile.dart';
 import '../data/models/ping_notification.dart';
 import '../data/models/saved_by_user.dart';
+import '../services/auth_service.dart';
 import '../services/firestore_service.dart';
 import 'auth_provider.dart';
+
+/// 게스트 프로필 Provider (닉네임, 이모지)
+/// invalidate 시 다시 로드됨
+final guestProfileProvider = Provider<({String nickname, String emoji})>((ref) {
+  return (
+    nickname: AuthService.instance.getGuestNickname(),
+    emoji: AuthService.instance.getGuestEmoji(),
+  );
+});
 
 /// FirestoreService Provider
 final firestoreServiceProvider = Provider<FirestoreService>((ref) {

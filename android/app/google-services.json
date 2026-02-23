@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1067948471437:android:3e42bbc64bce02ca739ec4",
+        "android_client_info": {
+          "package_name": "app.linkping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1067948471437-97rh7m7urak4g54chp6kda51erbaib8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBearpNiKl9f-mhUxfvrOQLOTKx_Fbv5sY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1067948471437-97rh7m7urak4g54chp6kda51erbaib8v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1067948471437-e3lqis1p7uvl6k7pk5nr4cke02lk8u5v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.linkping"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1067948471437:android:a6649bdd5a416a4b739ec4",
         "android_client_info": {
           "package_name": "com.example.linkping"

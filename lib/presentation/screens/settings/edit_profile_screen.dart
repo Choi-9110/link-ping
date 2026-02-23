@@ -3,12 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../l10n/app_localizations.dart';
 
 import '../../../core/theme/spacing.dart';
+import '../../../core/utils/phone_utils.dart';
 import '../../../data/models/user_profile.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../providers/user_provider.dart';
 import '../../../services/badge_service.dart';
 import '../../../services/firestore_service.dart';
 import '../../../services/auth_service.dart';
+import '../../widgets/emoji_picker_dialog.dart';
+import '../../../services/pixel_emoji_service.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({super.key});
@@ -33,8 +36,98 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     }
   }
 
+  /// 현재 이모지 가져오기
+  String _getCurrentEmoji() {
+    final authState = ref.read(authStateProvider);
+    final isGuest = authState.value?.isAnonymous ?? true;
+
+    if (isGuest) {
+      return AuthService.instance.getGuestEmoji();
+    } else {
+      final profile = ref.read(userProfileProvider).value;
+      return profile?.profileEmoji ?? 'face_grinning';
+    }
+  }
+
+  /// 현재 전화번호 가져오기
+  String? _getCurrentPhoneNumber() {
+    final authState = ref.read(authStateProvider);
+    final isGuest = authState.value?.isAnonymous ?? true;
+
+    if (isGuest) {
+      return AuthService.instance.getGuestPhoneNumber();
+    } else {
+      final profile = ref.read(userProfileProvider).value;
+      return profile?.phoneNumber;
+    }
+  }
+
+  /// 현재 국가 코드 가져오기
+  String? _getCurrentCountry() {
+    final profile = ref.read(userProfileProvider).value;
+    return profile?.country;
+  }
+
+  /// 이모지 선택 팝업
+  void _showEmojiPickerDialog() async {
+    final currentEmoji = _getCurrentEmoji();
+    final selectedEmoji = await showDialog<String>(
+      context: context,
+      builder: (context) => EmojiPickerDialog(currentEmoji: currentEmoji),
+    );
+
+    if (selectedEmoji != null && selectedEmoji != currentEmoji) {
+      await _saveEmoji(selectedEmoji);
+    }
+  }
+
+  /// 이모지 저장
+  Future<void> _saveEmoji(String emoji) async {
+    final authState = ref.read(authStateProvider);
+    final isGuest = authState.value?.isAnonymous ?? true;
+
+    String nickname;
+
+    if (isGuest) {
+      // 게스트: 로컬에 저장
+      await AuthService.instance.saveGuestEmoji(emoji);
+      nickname = AuthService.instance.getGuestNickname();
+      ref.invalidate(guestProfileProvider); // 게스트 프로필 갱신
+    } else {
+      // 회원: Firestore에 저장
+      final currentProfile = ref.read(userProfileProvider).value;
+      if (currentProfile != null) {
+        final updatedProfile = currentProfile.copyWith(
+          profileEmoji: emoji,
+          updatedAt: DateTime.now(),
+        );
+        await FirestoreService.instance.saveUserProfile(updatedProfile);
+        nickname = currentProfile.nickname;
+        ref.invalidate(userProfileProvider);
+      } else {
+        nickname = AuthService.instance.getGuestNickname();
+      }
+    }
+
+    // 저장한 링크 목록에서도 이모지 업데이트
+    await FirestoreService.instance.updateUserProfileInSavedBy(
+      nickname: nickname,
+      emoji: emoji,
+    );
+
+    setState(() {}); // UI 새로고침
+
+    if (mounted) {
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.profileEmojiChanged)),
+      );
+    }
+  }
+
   /// 닉네임 수정 팝업
   void _showNicknameEditDialog() {
+    final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController(text: _getCurrentNickname());
     final formKey = GlobalKey<FormState>();
     bool isChecking = false;
@@ -42,94 +135,97 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
     showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setDialogState) => AlertDialog(
-          title: const Text('닉네임 수정'),
-          content: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: controller,
-                  decoration: InputDecoration(
-                    hintText: '닉네임을 입력하세요',
-                    prefixIcon: const Icon(Icons.person_outline),
-                    errorText: errorMessage,
-                  ),
-                  maxLength: 20,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return '닉네임을 입력해주세요';
-                    }
-                    if (value.trim().length < 2) {
-                      return '2자 이상 입력해주세요';
-                    }
-                    return null;
-                  },
-                ),
-                if (isChecking)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 8),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                        SizedBox(width: 8),
-                        Text('중복 확인 중...'),
-                      ],
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (dialogContext, setDialogState) {
+          final dialogL10n = AppLocalizations.of(dialogContext)!;
+          return AlertDialog(
+            title: Text(dialogL10n.editNickname),
+            content: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: controller,
+                    decoration: InputDecoration(
+                      hintText: dialogL10n.enterNickname,
+                      prefixIcon: const Icon(Icons.person_outline),
+                      errorText: errorMessage,
                     ),
-                  ),
-              ],
-            ),
-          ),
-          actions: [
-            FilledButton(
-              onPressed: isChecking
-                  ? null
-                  : () async {
-                      if (!formKey.currentState!.validate()) return;
-
-                      final newNickname = controller.text.trim();
-                      final currentNickname = _getCurrentNickname();
-
-                      // 같은 닉네임이면 그냥 닫기
-                      if (newNickname == currentNickname) {
-                        Navigator.pop(context);
-                        return;
+                    maxLength: 20,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return dialogL10n.pleaseEnterNickname;
                       }
-
-                      // 중복 검사
-                      setDialogState(() {
-                        isChecking = true;
-                        errorMessage = null;
-                      });
-
-                      final isDuplicate = await FirestoreService.instance
-                          .isNicknameDuplicate(newNickname);
-
-                      if (isDuplicate) {
-                        setDialogState(() {
-                          isChecking = false;
-                          errorMessage = '이미 사용 중인 닉네임이에요';
-                        });
-                        return;
+                      if (value.trim().length < 2) {
+                        return dialogL10n.minTwoChars;
                       }
-
-                      // 저장
-                      await _saveNickname(newNickname);
-
-                      if (context.mounted) {
-                        Navigator.pop(context);
-                      }
+                      return null;
                     },
-              child: const Text('수정'),
+                  ),
+                  if (isChecking)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(dialogL10n.checkingDuplicate),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ],
-        ),
+            actions: [
+              FilledButton(
+                onPressed: isChecking
+                    ? null
+                    : () async {
+                        if (!formKey.currentState!.validate()) return;
+
+                        final newNickname = controller.text.trim();
+                        final currentNickname = _getCurrentNickname();
+
+                        // 같은 닉네임이면 그냥 닫기
+                        if (newNickname == currentNickname) {
+                          Navigator.pop(dialogContext);
+                          return;
+                        }
+
+                        // 중복 검사
+                        setDialogState(() {
+                          isChecking = true;
+                          errorMessage = null;
+                        });
+
+                        final isDuplicate = await FirestoreService.instance
+                            .isNicknameDuplicate(newNickname);
+
+                        if (isDuplicate) {
+                          setDialogState(() {
+                            isChecking = false;
+                            errorMessage = dialogL10n.nicknameAlreadyInUse;
+                          });
+                          return;
+                        }
+
+                        // 저장
+                        await _saveNickname(newNickname);
+
+                        if (dialogContext.mounted) {
+                          Navigator.pop(dialogContext);
+                        }
+                      },
+                child: Text(l10n.edit),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -139,15 +235,126 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final authState = ref.read(authStateProvider);
     final isGuest = authState.value?.isAnonymous ?? true;
 
+    String emoji;
+
     if (isGuest) {
       // 게스트: 로컬에 저장
       await AuthService.instance.saveGuestNickname(nickname);
+      emoji = AuthService.instance.getGuestEmoji();
+      ref.invalidate(guestProfileProvider); // 게스트 프로필 갱신
     } else {
       // 회원: Firestore에 저장
       final currentProfile = ref.read(userProfileProvider).value;
       if (currentProfile != null) {
         final updatedProfile = currentProfile.copyWith(
           nickname: nickname,
+          updatedAt: DateTime.now(),
+        );
+        await FirestoreService.instance.saveUserProfile(updatedProfile);
+        emoji = currentProfile.profileEmoji;
+        ref.invalidate(userProfileProvider);
+      } else {
+        emoji = 'face_grinning';
+      }
+    }
+
+    // 저장한 링크 목록에서도 닉네임 업데이트
+    await FirestoreService.instance.updateUserProfileInSavedBy(
+      nickname: nickname,
+      emoji: emoji,
+    );
+
+    setState(() {}); // UI 새로고침
+
+    if (mounted) {
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.nicknameChanged)),
+      );
+    }
+  }
+
+  /// 전화번호 수정 팝업
+  void _showPhoneNumberEditDialog() {
+    final l10n = AppLocalizations.of(context)!;
+    final currentPhone = _getCurrentPhoneNumber() ?? '';
+    final countryCode = _getCurrentCountry();
+    final phoneCode = PhoneUtils.getPhoneCode(countryCode);
+    final phoneHint = PhoneUtils.getPhoneHint(countryCode);
+    final controller = TextEditingController(text: currentPhone);
+    final formKey = GlobalKey<FormState>();
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        final dialogL10n = AppLocalizations.of(dialogContext)!;
+        return AlertDialog(
+          title: Text(dialogL10n.myPhoneNumber),
+          content: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    hintText: phoneHint,
+                    prefixIcon: const Icon(Icons.phone),
+                    prefixText: '$phoneCode ',
+                  ),
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value != null && value.isNotEmpty) {
+                      final cleaned = value.replaceAll(RegExp(r'[\s\-()]'), '');
+                      if (cleaned.length < 8 || cleaned.length > 15) {
+                        return dialogL10n.invalidPhoneNumber;
+                      }
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: Text(dialogL10n.cancel),
+            ),
+            FilledButton(
+              onPressed: () async {
+                if (!formKey.currentState!.validate()) return;
+
+                final newPhone = controller.text.trim();
+                await _savePhoneNumber(newPhone.isEmpty ? null : newPhone);
+
+                if (dialogContext.mounted) {
+                  Navigator.pop(dialogContext);
+                }
+              },
+              child: Text(l10n.save),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// 전화번호 저장
+  Future<void> _savePhoneNumber(String? phoneNumber) async {
+    final authState = ref.read(authStateProvider);
+    final isGuest = authState.value?.isAnonymous ?? true;
+
+    if (isGuest) {
+      // 게스트: 로컬에 저장
+      await AuthService.instance.saveGuestPhoneNumber(phoneNumber);
+    } else {
+      // 회원: Firestore에 저장
+      final currentProfile = ref.read(userProfileProvider).value;
+      if (currentProfile != null) {
+        final updatedProfile = currentProfile.copyWith(
+          phoneNumber: phoneNumber,
           updatedAt: DateTime.now(),
         );
         await FirestoreService.instance.saveUserProfile(updatedProfile);
@@ -158,8 +365,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     setState(() {}); // UI 새로고침
 
     if (mounted) {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('닉네임이 변경되었어요')),
+        SnackBar(
+          content: Text(phoneNumber == null ? l10n.phoneNumberDeleted : l10n.phoneNumberSaved),
+        ),
       );
     }
   }
@@ -194,7 +404,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           final newProfile = UserProfile(
             uid: user.uid,
             nickname: guestNickname,
-            country: '미설정',
+            country: l10n.notSet,
             createdAt: DateTime.now(),
           );
           await FirestoreService.instance.saveUserProfile(newProfile);
@@ -220,13 +430,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         // Firebase 에러 타입별 처리
         final errorString = e.toString();
         if (errorString.contains('credential-already-in-use')) {
-          message = '이 구글 계정은 이미 다른 계정에 연동되어 있어요';
+          message = l10n.googleAccountAlreadyLinked;
         } else if (errorString.contains('provider-already-linked')) {
-          message = '이미 구글 계정이 연동되어 있어요';
+          message = l10n.providerAlreadyLinked;
         } else if (errorString.contains('invalid-credential')) {
-          message = '인증 정보가 유효하지 않아요';
+          message = l10n.invalidCredential;
         } else if (errorString.contains('network-request-failed')) {
-          message = '네트워크 연결을 확인해주세요';
+          message = l10n.networkError;
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -241,18 +451,19 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   }
 
   void _showChangeAccountDialog() {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('계정 변경'),
-        content: const Text('다른 구글 계정으로 변경하시겠습니까?'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.changeAccount),
+        content: Text(l10n.changeAccountConfirm),
         actions: [
           FilledButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               _linkGoogleAccount(isChanging: true);
             },
-            child: const Text('변경'),
+            child: Text(l10n.change),
           ),
         ],
       ),
@@ -289,6 +500,38 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // 프로필 이모지 섹션
+            Text(
+              l10n.profileEmoji,
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: colorScheme.primary,
+              ),
+            ),
+            const SizedBox(height: Spacing.sm),
+            Card(
+              child: ListTile(
+                leading: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  alignment: Alignment.center,
+                  child: PixelEmojiService.buildPixelEmoji(
+                    _getCurrentEmoji(),
+                    size: 32,
+                  ),
+                ),
+                title: Text(l10n.changeEmoji),
+                subtitle: Text(l10n.profileEmojiDescription),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: _showEmojiPickerDialog,
+              ),
+            ),
+
+            const SizedBox(height: Spacing.lg),
+
             // 닉네임 수정 섹션
             Text(
               l10n.nickname,
@@ -301,8 +544,34 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               child: ListTile(
                 leading: const Icon(Icons.person_outline),
                 title: Text(_getCurrentNickname()),
-                trailing: const Icon(Icons.edit, size: 20),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: _showNicknameEditDialog,
+              ),
+            ),
+
+            const SizedBox(height: Spacing.lg),
+
+            // 전화번호 섹션 (전화 알람용)
+            Text(
+              l10n.myPhoneNumber,
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: colorScheme.primary,
+              ),
+            ),
+            const SizedBox(height: Spacing.sm),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.phone_outlined),
+                title: Text(
+                  _getCurrentPhoneNumber() ?? l10n.phoneNumberNotSet,
+                  style: TextStyle(
+                    color: _getCurrentPhoneNumber() == null
+                        ? colorScheme.outline
+                        : null,
+                  ),
+                ),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: _showPhoneNumberEditDialog,
               ),
             ),
 

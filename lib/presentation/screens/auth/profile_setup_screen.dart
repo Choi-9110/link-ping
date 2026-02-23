@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/spacing.dart';
 import '../../../data/models/user_profile.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../providers/user_provider.dart';
+import '../../../services/firestore_service.dart';
 import '../home/home_screen.dart';
 
 class ProfileSetupScreen extends ConsumerStatefulWidget {
@@ -17,8 +19,10 @@ class ProfileSetupScreen extends ConsumerStatefulWidget {
 class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nicknameController = TextEditingController();
+  final _referralCodeController = TextEditingController();
   String _selectedCountry = 'KR';
   bool _isLoading = false;
+  bool _hasReferralCode = false;
 
   final List<Map<String, String>> _countries = [
     {'code': 'KR', 'name': '대한민국', 'flag': '🇰🇷'},
@@ -32,6 +36,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
   @override
   void dispose() {
     _nicknameController.dispose();
+    _referralCodeController.dispose();
     super.dispose();
   }
 
@@ -49,13 +54,15 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
     setState(() => _isLoading = true);
 
     try {
+      final l10n = AppLocalizations.of(context)!;
       final user = ref.read(authStateProvider).value;
       if (user == null) {
-        throw Exception('로그인이 필요합니다');
+        throw Exception(l10n.loginRequired);
       }
 
       final nickname = _nicknameController.text.trim();
       final countryName = _getCountryName(_selectedCountry);
+      final referralCode = _referralCodeController.text.trim().toUpperCase();
 
       // UserProfile 생성
       final profile = UserProfile(
@@ -68,6 +75,14 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
       // Firestore에 저장
       await ref.read(firestoreServiceProvider).saveUserProfile(profile);
 
+      // 추천 코드가 있으면 처리
+      if (_hasReferralCode && referralCode.isNotEmpty) {
+        await FirestoreService.instance.processReferral(
+          newUserUid: user.uid,
+          referralCode: referralCode,
+        );
+      }
+
       if (mounted) {
         // 홈 화면으로 이동
         Navigator.pushReplacement(
@@ -79,8 +94,9 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('프로필 저장 실패: $e')),
+          SnackBar(content: Text('${l10n.profileSaveFailed}: $e')),
         );
       }
     } finally {
@@ -93,10 +109,11 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('프로필 설정'),
+        title: Text(l10n.profileSetup),
         automaticallyImplyLeading: false,
       ),
       body: Form(
@@ -108,14 +125,14 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
 
             // 안내 텍스트
             Text(
-              '프로필을 설정해주세요',
+              l10n.profileSetupTitle,
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: Spacing.sm),
             Text(
-              '다른 사용자에게 표시될 정보입니다',
+              l10n.profileSetupSubtitle,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.outline,
               ),
@@ -127,22 +144,22 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
             TextFormField(
               controller: _nicknameController,
               enabled: !_isLoading,
-              decoration: const InputDecoration(
-                labelText: '닉네임',
-                hintText: '운동하는민수',
-                prefixIcon: Icon(Icons.person),
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.nickname,
+                hintText: l10n.nicknameHint,
+                prefixIcon: const Icon(Icons.person),
+                border: const OutlineInputBorder(),
               ),
               textInputAction: TextInputAction.done,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return '닉네임을 입력하세요';
+                  return l10n.nicknameRequired;
                 }
                 if (value.trim().length < 2) {
-                  return '2자 이상 입력하세요';
+                  return l10n.nicknameMinLength;
                 }
                 if (value.trim().length > 20) {
-                  return '20자 이하로 입력하세요';
+                  return l10n.nicknameMaxLength;
                 }
                 return null;
               },
@@ -153,10 +170,10 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
             // 국가 선택
             DropdownButtonFormField<String>(
               value: _selectedCountry,
-              decoration: const InputDecoration(
-                labelText: '국가',
-                prefixIcon: Icon(Icons.public),
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.country,
+                prefixIcon: const Icon(Icons.public),
+                border: const OutlineInputBorder(),
               ),
               items: _countries.map((country) {
                 return DropdownMenuItem(
@@ -175,6 +192,11 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                     },
             ),
 
+            const SizedBox(height: Spacing.lg),
+
+            // 추천 코드 섹션
+            _buildReferralCodeSection(theme),
+
             const SizedBox(height: Spacing.xl),
 
             // 완료 버튼
@@ -192,10 +214,78 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                         color: Colors.white,
                       ),
                     )
-                  : const Text('완료'),
+                  : Text(l10n.done),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildReferralCodeSection(ThemeData theme) {
+    final l10n = AppLocalizations.of(context)!;
+    final colorScheme = theme.colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.all(Spacing.md),
+      decoration: BoxDecoration(
+        color: colorScheme.primary.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: colorScheme.primary.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text('🎁', style: TextStyle(fontSize: 20)),
+              const SizedBox(width: Spacing.sm),
+              Expanded(
+                child: Text(
+                  l10n.referralCode,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Switch(
+                value: _hasReferralCode,
+                onChanged: _isLoading
+                    ? null
+                    : (value) {
+                        setState(() {
+                          _hasReferralCode = value;
+                        });
+                      },
+              ),
+            ],
+          ),
+          if (_hasReferralCode) ...[
+            const SizedBox(height: Spacing.sm),
+            Text(
+              l10n.referralCodeQuestion,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.outline,
+              ),
+            ),
+            const SizedBox(height: Spacing.sm),
+            TextFormField(
+              controller: _referralCodeController,
+              enabled: !_isLoading,
+              textCapitalization: TextCapitalization.characters,
+              decoration: InputDecoration(
+                hintText: 'ABCD1234',
+                prefixIcon: const Icon(Icons.card_giftcard),
+                border: const OutlineInputBorder(),
+                helperText: l10n.referralCodeHelperText,
+                helperStyle: TextStyle(color: colorScheme.outline),
+              ),
+              maxLength: 8,
+            ),
+          ],
+        ],
       ),
     );
   }

@@ -70,8 +70,9 @@
   "weekends": "주말",
   "repeat": "반복",
 
-  "linkUrl": "링크 URL",
-  "invalidUrl": "올바른 URL을 입력하세요",
+  "linkUrl": "링크 또는 전화번호",
+  "linkUrlHint": "google.com 또는 01012345678",
+  "invalidUrl": "올바른 URL 또는 전화번호를 입력하세요",
   "reminderTitle": "알림 제목",
   "reminderTitleHint": "아침 스트레칭 하자!",
   "enterTitle": "제목을 입력하세요",
@@ -171,16 +172,40 @@
   "premiumActive": "프리미엄 사용 중",
   "premiumPurchase": "프리미엄 구매",
   "premiumBenefits": "무제한 링크, 광고 제거",
-  "premiumBenefitsList": "프리미엄 혜택:",
-  "premiumBenefit1": "무제한 링크 등록",
-  "premiumBenefit2": "광고 제거",
-  "premiumPrice": "월 $2.99 / 평생 $19.99",
+  "premiumHeadline": "나의 모든 순간을, 놓치지 않게",
+  "premiumSubtitle": "소중한 사람을 제한 없이 응원하세요",
+  "premiumBenefit1": "무제한 응원 & 약올리기",
+  "premiumBenefit1Desc": "포링 걱정 없이 친구에게 바로 응원을 보내세요",
+  "premiumBenefit2": "링크 무제한 등록",
+  "premiumBenefit2Desc": "운동, 공부, 효도 전화... 원하는 만큼 습관을 만드세요",
+  "premiumBenefit3": "추가 알림시간 무제한",
+  "premiumBenefit3Desc": "하나의 링크에 아침, 점심, 저녁 알림을 자유롭게",
+  "premiumBenefit4": "포링 무제한",
+  "premiumBenefit4Desc": "광고 없이 모든 기능을 바로 사용하세요",
+  "premiumBenefit5": "광고 없는 깔끔한 경험",
+  "premiumBenefit5Desc": "배너도, 보상형 광고도 없는 깨끗한 화면",
+  "premiumBenefit6": "모든 프리미엄 소리 해금",
+  "premiumBenefit6Desc": "나만의 알림음으로 하루를 시작하세요",
+  "premiumPrice": "월 $2.99 / 연 $9.99 / 평생 $29.99",
   "premiumLater": "나중에",
   "premiumBuy": "구매하기",
+  "premiumMonthly": "월간 구독",
+  "premiumYearly": "연간 구독",
+  "premiumLifetime": "평생 이용권",
+  "premiumPurchaseSuccess": "프리미엄 구매가 완료되었습니다!",
+  "premiumPurchaseFailed": "구매에 실패했습니다. 다시 시도해주세요.",
+  "premiumRestoreSuccess": "구매 내역이 복원되었습니다!",
+  "restorePurchases": "구매 복원",
+  "storeNotAvailable": "스토어에 연결할 수 없습니다",
+  "productsNotFound": "상품을 불러올 수 없습니다",
+  "retry": "다시 시도",
   "premiumPaymentNotReady": "결제 기능 (구현 예정)",
 
   "linkLimitReached": "링크 한도 도달",
-  "linkLimitMessage": "무료 버전은 3개까지 등록할 수 있어요.\n프리미엄으로 업그레이드하면 무제한으로 등록할 수 있어요!",
+  "linkLimitMessage": "무료 버전은 2개까지 등록할 수 있어요.\n친구 초대로 +1개, 프리미엄으로 무제한!",
+  "linkLimitMessageBase": "무료 버전은 2개까지 등록할 수 있어요.",
+  "inviteFriendForBonus": "친구 초대하기 (+1개)",
+  "inviteFriendBonusDesc": "친구가 가입하면 보너스 링크 획득!",
   "viewPremium": "프리미엄 보기",
 
   "account": "계정",
@@ -240,5 +265,425 @@
         "type": "int"
       }
     }
-  }
+  },
+
+  "addTimeWithAd": "광고 보고 시간 추가",
+  "watchAdToAddTime": "광고를 시청하면 알림 시간을 추가할 수 있어요.\n프리미엄 유저는 광고 없이 무제한 추가 가능!",
+  "watchAd": "광고 보기",
+  "adLoadFailed": "광고를 불러올 수 없습니다",
+  "timeAddedSuccess": "시간이 추가되었습니다",
+
+  "inviteFriends": "친구 초대",
+  "inviteFriendsMessage": "친구를 초대하면 링크 1개를 더 추가할 수 있어요!",
+  "bonusLinkEarned": "보너스 링크를 획득했어요!",
+  "referralCode": "초대 코드",
+  "copyReferralCode": "초대 코드 복사",
+  "referralCodeCopied": "초대 코드가 복사되었습니다",
+
+  "lockedTime": "잠긴 시간",
+  "unlockTimeWithAd": "광고 보고 잠금해제",
+  "watchAdToUnlockTime": "광고를 시청하면 이 알림 시간을 활성화할 수 있어요.\n프리미엄 유저는 모든 시간이 자동으로 활성화됩니다!",
+  "timeUnlocked": "알림 시간이 활성화되었습니다",
+
+  "shareSettings": "공유 설정",
+  "editable": "수정 가능",
+  "recipientCanChangeTime": "받는 사람이 시간 변경 가능",
+  "timeLocked": "시간 고정",
+  "shareAtThisTime": "이 시간 그대로 공유",
+  "category": "카테고리",
+
+  "consentRequest": "동의 요청",
+  "consentRequestMessage": "공유받은 사람들에게 수정 동의를 요청합니다.",
+  "consentNote1": "최대 24시간 소요될 수 있어요",
+  "consentNote2": "동의가 완료되면 알림으로 안내해드려요",
+  "consentNote3": "거절 시 기존 시간이 유지됩니다",
+  "requestConsent": "동의 요청하기",
+
+  "timeLockedAlarm": "시간 고정 알람",
+  "receivedSharedAlarmInfo": "{nickname}님이 공유한 알람이에요.\n알림 시간과 반복 요일은 수정할 수 없어요.",
+  "@receivedSharedAlarmInfo": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "sharedToOthersInfo": "공유받은 사람들도 같은 시간에 알림을 받아요.\n시간 수정 시 동의가 필요해요.",
+  "locked": "잠김",
+
+  "badgesAndStats": "뱃지 & 통계",
+  "badgeCollection": "뱃지 컬렉션",
+  "streakDays": "{days}일 스트릭",
+  "@streakDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "badgesEarned": "{count}개 획득",
+  "@badgesEarned": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accountSynced": "계정 연동됨",
+  "loginToSync": "로그인하여 데이터 동기화",
+  "termsOfService": "이용약관",
+  "bonusStatus": "보너스: {current}/{max} 획득",
+  "@bonusStatus": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+
+  "andMore": "외 {count}개",
+  "@andMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "pingWindowClosed": "알람이 울린 후 5분 내에만 전송할 수 있어요",
+  "pingWindowActive": "남은 시간: {time}",
+  "@pingWindowActive": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "pingFreeRemaining": "무료 1회 전송 가능",
+  "pingWatchAdForMore": "광고 보고 더 보내기",
+  "premiumUnlimited": "무제한",
+  "watchAdToSendMore": "광고 보고 더 보내기",
+  "watchAdDescription": "무료 유저는 알람 1회당 1명에게만 전송할 수 있어요.\n광고를 시청하면 추가 전송 가능! 프리미엄은 무제한!",
+
+  "selectProfileEmoji": "프로필 이모지 선택",
+  "profileEmoji": "프로필 이모지",
+  "changeEmoji": "이모지 변경",
+  "profileEmojiDescription": "다른 사람에게 보여지는 프로필 이모지",
+  "profileEmojiChanged": "프로필 이모지가 변경되었어요",
+  "myPhoneNumber": "내 전화번호",
+  "phoneNumberNotSet": "설정 안 됨",
+  "editNickname": "닉네임 수정",
+  "enterNickname": "닉네임을 입력하세요",
+  "pleaseEnterNickname": "닉네임을 입력해주세요",
+  "minTwoChars": "2자 이상 입력해주세요",
+  "nicknameChanged": "닉네임이 변경되었어요",
+  "checkingDuplicate": "중복 확인 중...",
+  "nicknameAlreadyInUse": "이미 사용 중인 닉네임이에요",
+  "invalidPhoneNumber": "올바른 전화번호를 입력해주세요",
+  "phoneNumberSaved": "전화번호가 저장되었어요",
+  "phoneNumberDeleted": "전화번호가 삭제되었어요",
+  "changeAccount": "계정 변경",
+  "changeAccountConfirm": "다른 구글 계정으로 변경하시겠습니까?",
+  "change": "변경",
+
+  "cheerReceivedFrom": "{name}님이 응원을 보냈어요!",
+  "@cheerReceivedFrom": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "teaseReceivedFrom": "{name}님이 약올렸어요!",
+  "@teaseReceivedFrom": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "inquiryReplyArrived": "문의 답변 도착",
+  "linkAlarmDeleted": "링크 알람 삭제됨",
+  "timeModificationRequest": "시간 수정 요청",
+  "modificationApproved": "수정 요청 승인됨",
+  "modificationRejected": "수정 요청 거부됨",
+  "alarmTurnedOff": "알람이 OFF되었습니다",
+  "approve": "승인",
+  "reject": "거절",
+  "approved": "승인했어요!",
+  "rejected": "거절했어요.",
+  "voteFailed": "투표에 실패했어요",
+  "tapToViewReply": "탭하여 답변 확인하기 →",
+  "noResponseWarning": "24시간 내 응답하지 않으면 알람이 OFF됩니다",
+  "inquiry": "문의",
+
+  "googleAccountAlreadyLinked": "이 구글 계정은 이미 다른 계정에 연동되어 있어요",
+  "providerAlreadyLinked": "이미 구글 계정이 연동되어 있어요",
+  "invalidCredential": "인증 정보가 유효하지 않아요",
+  "networkError": "네트워크 연결을 확인해주세요",
+
+  "noInquiries": "문의 내역이 없어요",
+  "inquiryHint": "궁금한 점이 있으면 문의해주세요!",
+  "inquirySubmitted": "문의가 등록되었습니다",
+  "inquirySubmitFailed": "문의 등록 실패",
+  "inquiryTitle": "제목",
+  "inquiryTitleHint": "문의 제목을 입력하세요",
+  "inquiryTitleRequired": "제목을 입력해주세요",
+  "inquiryContent": "내용",
+  "inquiryContentHint": "문의 내용을 자세히 작성해주세요",
+  "inquiryContentRequired": "내용을 입력해주세요",
+  "inquiryContentMinLength": "내용을 10자 이상 입력해주세요",
+  "submitInquiry": "문의 등록",
+  "inquiryResponsePromise": "문의하신 내용은 빠른 시일 내에 답변드리겠습니다.",
+
+  "alarmSound": "알람 소리",
+  "selectSoundCategory": "어떤 스타일의 소리를 원하세요?",
+  "pingNotificationSound": "Ping 알림음",
+  "pingNotificationSoundDesc": "찔러보기/응원하기 알림 소리",
+  "currentSound": "현재 소리",
+  "freeSounds": "무료 소리",
+  "premiumSounds": "프리미엄 소리",
+  "premiumSoundsLocked": "프리미엄으로 업그레이드하면 모든 소리를 사용할 수 있어요",
+  "soundSelected": "소리가 선택되었어요",
+  "soundNotAvailable": "아직 소리 파일이 준비되지 않았어요",
+  "alarmSoundDescription": "알림 소리를 선택하세요",
+
+  "soundCategoryAlarm": "긴 알림",
+  "soundCategoryNotify": "간단한 효과음",
+  "soundCategoryAlarmDesc": "멜로디형 (5-15초) · 절대 놓치면 안 되는 중요한 알람에!",
+  "soundCategoryNotifyDesc": "짧은 효과음 (2-5초) · 가볍게 확인하고 넘어갈 리마인더에!",
+
+  "currentStreak": "연속 스트릭",
+  "achievementRate": "달성률",
+  "badgeCollected": "뱃지 수집",
+  "longestStreak": "최장: {days}일",
+  "@longestStreak": {
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  },
+  "daysCount": "{days}일",
+  "@daysCount": {
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  },
+
+  "badgeEarned": "뱃지 획득!",
+  "badgeNotYetEarned": "아직 획득하지 않음",
+  "badgeEarnedOn": "{date} 획득",
+  "@badgeEarnedOn": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "badgeProgress": "진행률: {progress}/{target}",
+  "@badgeProgress": {
+    "placeholders": {
+      "progress": {"type": "int"},
+      "target": {"type": "int"}
+    }
+  },
+  "badgeProgressPercent": "{percent}% 완료",
+  "@badgeProgressPercent": {
+    "placeholders": {
+      "percent": {"type": "int"}
+    }
+  },
+
+  "badge_streak3_name": "3일 연속",
+  "badge_streak3_desc": "3일 연속 달성",
+  "badge_streak7_name": "일주일 불꽃",
+  "badge_streak7_desc": "7일 연속 달성",
+  "badge_streak30_name": "한 달의 열정",
+  "badge_streak30_desc": "30일 연속 달성",
+  "badge_streak100_name": "백일의 기적",
+  "badge_streak100_desc": "100일 연속 달성",
+  "badge_marathon_name": "마라톤",
+  "badge_marathon_desc": "365일 연속 달성!",
+  "badge_comeback_name": "컴백",
+  "badge_comeback_desc": "스트릭 끊긴 후 다시 7일 달성",
+
+  "badge_quickDraw_name": "퀵 드로우",
+  "badge_quickDraw_desc": "알림 5초 내 클릭",
+  "badge_speedDemon_name": "스피드 데몬",
+  "badge_speedDemon_desc": "알림 후 30초 내 오픈 10회",
+  "badge_quickResponse_name": "빠른 응답",
+  "badge_quickResponse_desc": "알림 후 3분 내 오픈 50회",
+
+  "badge_morningGlory_name": "모닝 글로리",
+  "badge_morningGlory_desc": "오전 5~7시 클릭 5회",
+  "badge_earlyBird_name": "얼리버드",
+  "badge_earlyBird_desc": "오전 7시 전 링크 오픈 10회",
+  "badge_nightOwl_name": "올빼미",
+  "badge_nightOwl_desc": "밤 11시 이후 링크 오픈 10회",
+  "badge_nightShift_name": "야간 근무",
+  "badge_nightShift_desc": "자정~5시 사이 클릭 5회",
+
+  "badge_perfectWeek_name": "완벽한 일주일",
+  "badge_perfectWeek_desc": "일주일 100% 달성",
+  "badge_perfectMonth_name": "완벽한 한 달",
+  "badge_perfectMonth_desc": "한 달 100% 달성",
+  "badge_perfectionist_name": "완벽주의자",
+  "badge_perfectionist_desc": "달성률 95% 이상 (50회 이상)",
+
+  "badge_firstCheer_name": "첫 응원",
+  "badge_firstCheer_desc": "첫 응원 보내기",
+  "badge_cheerLeader_name": "응원단장",
+  "badge_cheerLeader_desc": "응원 50회 보내기",
+  "badge_firstPoke_name": "첫 찌르기",
+  "badge_firstPoke_desc": "첫 찌르기 보내기",
+  "badge_poker_name": "찌르기 마스터",
+  "badge_poker_desc": "찌르기 50회 보내기",
+  "badge_socialButterfly_name": "소셜 버터플라이",
+  "badge_socialButterfly_desc": "응원/찌르기 10회 받기",
+
+  "badge_firstLink_name": "첫 링크",
+  "badge_firstLink_desc": "첫 링크 등록",
+  "badge_linkCollector_name": "링크 수집가",
+  "badge_linkCollector_desc": "링크 10개 등록",
+  "badge_linkMaster_name": "링크 마스터",
+  "badge_linkMaster_desc": "링크 50개 등록",
+  "badge_hotLink_name": "핫 링크",
+  "badge_hotLink_desc": "내 링크 10명 이상 저장",
+  "badge_variety_name": "다양성",
+  "badge_variety_desc": "5개 이상 다른 도메인 링크",
+
+  "badge_founder_name": "파운더",
+  "badge_founder_desc": "앱 초기 사용자",
+  "badge_premium_name": "프리미엄",
+  "badge_premium_desc": "프리미엄 구독",
+  "badge_badgeCollector_name": "뱃지 수집가",
+  "badge_badgeCollector_desc": "뱃지 10개 획득",
+  "badge_cloudSynced_name": "클라우드 동기화",
+  "badge_cloudSynced_desc": "계정 연동으로 데이터 동기화",
+
+  "premiumSoundUnlock": "프리미엄 소리",
+  "premiumSoundUnlockDesc": "이 소리는 프리미엄 전용입니다.\n광고를 시청하거나 프리미엄에 가입하세요.",
+  "watchAdToUnlock": "광고 보고 사용하기",
+  "upgradeToPremium": "프리미엄 등록하기",
+  "adNotReady": "광고를 준비 중입니다. 잠시 후 다시 시도해주세요.",
+  "adWatchSuccess": "광고 시청 완료! 소리가 적용되었습니다.",
+
+  "earnedBadges": "획득한 배지",
+  "skip": "건너뛰기",
+  "next": "다음",
+  "getStarted": "시작하기",
+  "done": "완료",
+  "send": "보내기",
+  "close": "닫기",
+  "confirm": "확인",
+  "nickname": "닉네임",
+  "country": "국가",
+  "nicknameHint": "닉네임을 입력하세요",
+  "notSet": "미설정",
+
+  "inquiryDetail": "문의 상세",
+  "inquiryNotFound": "문의를 찾을 수 없습니다",
+  "reply": "답변",
+  "repliedOn": "답변일: {date}",
+  "@repliedOn": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "linkPingTeam": "LinkPing 팀",
+  "waitingForReply": "답변을 기다리고 있어요.\n답변이 등록되면 알림으로 알려드릴게요!",
+
+  "linkNotFound": "링크를 찾을 수 없어요",
+  "linkLoadFailed": "링크를 불러오는데 실패했어요",
+  "linkNotificationService": "링크 알림 서비스",
+  "timeEditable": "시간 수정 가능",
+  "lockedTimeDesc": "공유자가 설정한 시간 그대로 알림을 받아요",
+  "editableTimeDesc": "저장 후 원하는 시간으로 변경할 수 있어요",
+  "openInApp": "앱에서 열기",
+  "appRequiredMessage": "앱이 설치되어 있어야 해요",
+  "openLinkInBrowser": "브라우저에서 링크 열기",
+  "viewCount": "조회 {count}회",
+  "@viewCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "saveAndChangeTime": "저장 후 원하는 시간으로 변경하여 알림 받기",
+  "generatingShareLink": "공유 링크 생성 중...",
+
+  "onboarding1Title": "링크를 저장하세요",
+  "onboarding1Desc": "인스타, 유튜브, 틱톡...\n나중에 볼 링크를 저장해두세요",
+  "onboarding2Title": "딱 그 시간에 알림!",
+  "onboarding2Desc": "원하는 시간에 알림을 받고\n저장한 링크를 바로 열어요",
+  "onboarding3Title": "장거리 연애 중?",
+  "onboarding3Desc": "떨어져 있어도 같은 시간에\n넷플릭스 같이 보기",
+  "onboarding3Sub": "매일 밤 10시, 우리만의 영화 시간",
+  "onboarding4Title": "매일 성장하고 싶다면",
+  "onboarding4Desc": "아침 7시 TED 강연\n점심시간 영어 공부 유튜브",
+  "onboarding4Sub": "루틴을 만들어보세요",
+  "onboarding5Title": "친구와 함께하면",
+  "onboarding5Desc": "운동 영상 같이 따라하기\n스터디 자료 공유하기",
+  "onboarding5Sub": "함께하면 실천율 95%!",
+  "onboarding6Title": "지금 시작하세요",
+  "onboarding6Desc": "무료로 2개까지 저장 가능\n프리미엄은 무제한!",
+
+  "loginRequired": "로그인이 필요합니다",
+  "referralCodeQuestion": "친구에게 받은 초대 코드가 있나요?",
+  "referralCodeHelperText": "8자리 코드를 입력하세요",
+  "southKorea": "대한민국",
+
+  "poring": "포링",
+  "poringBalance": "포링 잔액",
+  "poringEarn": "포링 모으기",
+  "poringEarnDescription": "광고를 시청하면 포링을 받을 수 있어요.\n포링으로 기능을 잠금해제하세요!",
+  "poringDailyProgress": "오늘 {count}/{max}",
+  "@poringDailyProgress": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "max": {"type": "int"}
+    }
+  },
+  "poringWatchAd": "광고 보기 (+1 포링)",
+  "poringCooldown": "다음 광고까지 {seconds}초",
+  "@poringCooldown": {
+    "placeholders": {
+      "seconds": {"type": "int"}
+    }
+  },
+  "poringDailyLimitReached": "오늘 일일 한도를 다 채웠어요! 내일 다시 오세요.",
+  "poringDailyLimitThanks": "오늘 광고 {max}개를 모두 시청해주셨어요! 감사합니다!",
+  "@poringDailyLimitThanks": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
+  "poringEarned": "포링 +1!",
+  "poringUnlock": "포링으로 잠금해제",
+  "poringUnlockConfirm": "포링 1개를 사용하여 잠금해제할까요?",
+  "poringNotEnough": "포링이 부족합니다",
+  "poringWatchAdToEarnAndUse": "포링이 부족합니다. 광고를 보고 포링을 획득하세요",
+  "poringSpent": "포링 사용 완료!",
+  "poringPremiumInfinite": "프리미엄: 무제한",
+
+  "referralAcceptedTitle": "{nickname}님이 초대에 응했습니다",
+  "@referralAcceptedTitle": {
+    "placeholders": {
+      "nickname": {"type": "String"}
+    }
+  },
+  "referralBonusLink": "보너스 링크 +1",
+  "referralBonusPoring": "포링 +{count}",
+  "@referralBonusPoring": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "poringRewardClaimed": "추천 보상 포링 +{count} 수령!",
+  "@poringRewardClaimed": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "referralAcceptedMessage": "초대가 수락되었습니다",
+
+  "addTimeWithPoring": "알림 시간 추가하기",
+  "poringCostConfirm": "포링 1개가 소모됩니다",
+  "poringRequiredToSend": "메시지를 보내려면 포링 1개가 필요합니다",
+  "deleteTimeConfirm": "추가된 알림 시간을 삭제하시겠습니까?"
 }

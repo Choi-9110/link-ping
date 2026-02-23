@@ -184,4 +184,791 @@
   v1 거의 다 됐다! 🚀    
 
 
-  
+
+
+
+  ===  게임 연결 하는것.  
+  알림 울리고 
+
+
+  ///////
+
+
+  거의 자동이에요! 약간의 설정만 필요해요 👇                  
+                                                              
+  ---                                                         
+  파일 추가 방법                                              
+                                                              
+  Android: 파일 넣으면 자동 인식 ✅                           
+  android/app/src/main/res/raw/alarm_gentle.mp3  ← 넣기만 하
+   됨                                                         
+                                                              
+  iOS: Xcode에서 한 번 등록 필요 ⚠️                           
+  1. ios/Runner/Sounds/alarm_gentle.caf 파일 넣기             
+  2. Xcode 열기 → Runner 우클릭 → "Add Files"                 
+  3. Sounds 폴더 선택 → 끝     
+
+
+                                                            
+⏺ 무료 알람 사운드 소스 추천 🎵                               
+                                                              
+  1. 즉시 다운로드 가능 (추천)                                
+  사이트: Pixabay                                             
+  특징: 완전 무료, 상업용 OK, 회원가입 불필요                 
+  링크: https://pixabay.com/sound-effects/search/alarm%20tone/
+  ────────────────────────────────────────                    
+  사이트: Mixkit                                              
+  특징: 고품질, 무료, 회원가입 불필요                         
+  링크: https://mixkit.co/free-sound-effects/alerts/          
+  ────────────────────────────────────────                    
+  사이트: Uppbeat                                             
+  특징: 앱용 무료                                             
+  링크: https://uppbeat.io/sfx/category/notifications         
+  검색 키워드:                                                
+  - alarm tone, notification, gentle wake up                  
+  - chime, bell, marimba, piano notification                  
+                                                              
+  ---                                                         
+  2. Suno로 직접 만들기 ✨                                    
+                                                              
+  장점:                                                       
+  - 완전 독창적인 소리                                        
+  - 저작권 걱정 없음 (본인 생성물)                            
+  - 앱 분위기에 맞게 커스텀 가능                              
+                                                              
+  Suno 프롬프트 예시:                                         
+  "5 second gentle alarm chime, soft bells, morning wake up   
+  tone"                                                       
+  "short notification sound, digital beep, modern app alert"  
+  "peaceful meditation bell, single strike, zen notification" 
+                                                              
+  주의: 30초 이내로 만들어야 해요 (알림음 제한)               
+                                                              
+  ---                                                         
+  제 추천                                                     
+                                                              
+  빠르게 하려면: Pixabay에서 15개 다운로드 (10분 컷)          
+                                                              
+  퀄리티 + 독창성 원하면: Suno로 직접 제작 👍                 
+  - LinkPing만의 시그니처 사운드가 생김                       
+  - 나중에 "프리미엄 전용 사운드"로 마케팅 가능               
+                                                              
+  ---                                                         
+  Suno로 만드실 거면 제가 프롬프트 15개 만들어드릴까요? 🎹    
+                                                           
+
+
+
+  따로 해야하는것. 아직안함. 
+
+
+Suno 프롬프트 15개 🎵                                       
+                                                              
+  무료 사운드 (5개) - 일상적인 알림용                         
+                                                              
+  1. default (기본)                                           
+  8 second warm notification chime, soft wooden xylophone with
+   gentle reverb,                                             
+  two-note melody rising tone, cozy and friendly, minimal     
+  ambient pad background,                                     
+  44100hz high quality, fade out ending                       
+  📳 진동: --⬤--⬤-- (짧게 2번)                                
+                                                              
+  ---                                                         
+  2. gentle (부드러운)                                        
+  6 second extremely soft and calming notification, music box 
+  single note                                                 
+  with delicate wind chime follow, whisper quiet, ASMR-like   
+  gentle tone,                                                
+  dreamy and peaceful, slow fade out                          
+  📳 진동: --⬤---- (아주 짧게 1번)                            
+                                                              
+  ---                                                         
+  3. morning (상쾌한 아침)                                    
+  10 second fresh morning alarm, cheerful acoustic guitar     
+  pluck with                                                  
+  bird chirp accent, sunrise feeling, optimistic ascending    
+  three-note melody,                                          
+  bright but not harsh, natural reverb                        
+  📳 진동: --⬤-⬤-⬤-- (경쾌하게 3번)                           
+                                                              
+  ---                                                         
+  4. digital (디지털)                                         
+  5 second modern minimal digital notification, soft synth    
+  blip with                                                   
+  subtle bass undertone, tech startup app sound, clean and    
+  crisp,                                                      
+  satisfying click feeling, no harsh frequencies              
+  📳 진동: --⬤⬤-- (빠르게 2번)                                
+                                                              
+  ---                                                         
+  5. chime (차임벨)                                           
+  7 second crystal clear wind chime notification, three       
+  descending glass bells,                                     
+  zen garden atmosphere, space between each note, peaceful and
+   meditative,                                                
+  gentle hall reverb                                          
+  📳 진동: -⬤--⬤--⬤- (여유롭게 3번)                           
+                                                              
+  ---                                                         
+  프리미엄 사운드 (10개) - 특별한 알림용                      
+                                                              
+  6. energetic (활기찬) ⏰ 깨우기용                           
+  12 second upbeat wake up alarm, funky marimba melody with   
+  soft percussion,                                            
+  gradually increasing energy, happy and motivating, makes you
+   want to get up,                                            
+  positive morning vibes, loop-friendly ending                
+  📳 진동: ⬤-⬤-⬤-⬤-⬤-⬤ (연속 펄스)                            
+                                                              
+  ---                                                         
+  7. nature (자연의 소리)                                     
+  10 second nature notification, real bird song (robin) with  
+  gentle stream                                               
+  water background, forest morning ambience, organic and      
+  refreshing,                                                 
+  sunrise in the woods feeling                                
+  📳 진동: --⬤---⬤--- (자연스럽게 2번)                        
+                                                              
+  ---                                                         
+  8. classic (클래식)                                         
+  8 second elegant classical notification, solo violin        
+  pizzicato with                                              
+  soft piano chord, sophisticated and refined, baroque        
+  inspired but minimal,                                       
+  concert hall acoustic                                       
+  📳 진동: -⬤-⬤---- (우아하게 2번)                            
+                                                              
+  ---                                                         
+  9. minimal (미니멀)                                         
+  4 second ultra minimal notification, single pure sine wave  
+  tone with                                                   
+  subtle harmonic, Scandinavian design feeling, extremely     
+  clean,                                                      
+  almost silent but noticeable, premium feel                  
+  📳 진동: --⬤-- (딱 1번)                                     
+                                                              
+  ---                                                         
+  10. piano (피아노)                                          
+  8 second warm piano notification, two gentle piano keys like
+   someone                                                    
+  softly knocking, felt piano intimate sound, Nils Frahm      
+  inspired,                                                   
+  emotional and personal, slight tape warmth                  
+  📳 진동: -⬤---⬤- (피아노 터치처럼 2번)                      
+                                                              
+  ---                                                         
+  11. bell (종소리) ⏰ 깨우기용                               
+  10 second temple bell notification, single Tibetan singing  
+  bowl strike                                                 
+  with long natural decay, deep resonance, meditative but     
+  attention-grabbing,                                         
+  spiritual awakening feeling                                 
+  📳 진동: ⬤⬤⬤-------- (처음 강하게 + 여운)                   
+                                                              
+  ---                                                         
+  12. whistle (휘파람)                                        
+  6 second cheerful whistle notification, human-like casual   
+  whistle melody,                                             
+  three notes like calling a friend, playful and friendly,    
+  slight room reverb, smile-inducing                          
+  📳 진동: -⬤-⬤-⬤- (휘파람 리듬)                              
+                                                              
+  ---                                                         
+  13. marimba (마림바)                                        
+  7 second wooden marimba notification, classic               
+  iPhone-inspired but warmer,                                 
+  three-note ascending melody, tropical wood resonance,       
+  familiar yet unique, satisfying mallet sound                
+  📳 진동: -⬤⬤-⬤- (마림바 리듬)                               
+                                                              
+  ---                                                         
+  14. radar (레이더) ⏰ 긴급/깨우기용                         
+  15 second urgent but not annoying radar alarm, pulsing soft 
+  synth wave,                                                 
+  gradually intensifying, sci-fi submarine sonar inspired,    
+  serious but not stressful, builds anticipation, loop-ready  
+  📳 진동: ⬤--⬤--⬤--⬤-⬤-⬤-⬤⬤⬤ (점점 빨라짐)                   
+                                                              
+  ---                                                         
+  15. meditation (명상)                                       
+  12 second zen meditation bell, singing bowl with soft gong  
+  undertone,                                                  
+  temple morning ceremony, extremely peaceful, long sustain   
+  and decay,                                                  
+  mindfulness app quality, spa atmosphere                     
+  📳 진동: ---⬤------- (깊고 길게 1번)                        
+                                                              
+  ---                                                         
+  진동 패턴 구현 🔔                                           
+                                                              
+  진동 패턴도 구현할 수 있어요! Android는 자유롭게, iOS는 기
+   패턴 중 선택.                                              
+                                                              
+  원하시면 사운드 파일 추가하신 후에 진동 패턴도 코드에       
+  넣어드릴게요!                                               
+                                                              
+  ---                                                         
+  Suno 사용 팁                                                
+                                                              
+  1. "Instrumental" 모드로 생성                               
+  2. 길이가 길면 앞부분만 잘라서 사용 (5~15초)                
+  3. MP3로 다운로드 → iOS용은 CAF로 변환                      
+                                                              
+  파일 준비되면 알려주세요! 📁     
+
+
+
+   료되었습니다.                                             
+                                                              
+  ---                                                         
+  요약                                                        
+                                                              
+  구현 완료                                                   
+                                                              
+  1. AlarmSoundService 업데이트 - 30개 사운드 (알람 15 +      
+  효과음 15)                                                  
+    - SoundCategory enum 추가 (alarm / notify)                
+    - 카테고리별 필터링 메서드 추가                           
+  2. AlarmSoundScreen 업데이트 - 탭 UI 추가                   
+    - 알람 탭 / 효과음 탭으로 분리                            
+    - 각 탭에 무료 5개 + 프리미엄 10개 표시                   
+    - 현재 선택된 사운드에 카테고리 뱃지 표시                 
+  3. 로컬라이제이션 추가                                      
+    - soundCategoryAlarm / soundCategoryNotify                
+    - 카테고리 설명 텍스트                                    
+                                                              
+  ---                                                         
+  프리미엄 모델 구조                                          
+  ┌───────────────┬──────┬─────────────┐                      
+  │               │ 무료 │  프리미엄   │                      
+  ├───────────────┼──────┼─────────────┤                      
+  │ 알람 사운드   │ 5개  │ 15개 (전체) │                      
+  ├───────────────┼──────┼─────────────┤                      
+  │ 효과음 사운드 │ 5개  │ 15개 (전체) │                      
+  ├───────────────┼──────┼─────────────┤                      
+  │ 총합          │ 10개 │ 30개        │                      
+  └───────────────┴──────┴─────────────┘                      
+  ---                                                         
+  다음 할 일                                                  
+                                                              
+  1. Suno에서 사운드 생성 (위의 프롬프트 사용)                
+  2. ffmpeg로 트리밍                                          
+    - 알람: 8초                                               
+    - 효과음: 2-3초                                           
+  3. 파일 배치                                                
+    - assets/sounds/ (MP3)                                    
+    - android/app/src/main/res/raw/ (MP3)                     
+    - ios/Runner/Sounds/ (CAF로 변환)                         
+  4. Xcode에서 iOS 등록                                       
+                                                              
+✻ Cooked for 4m 24s         
+
+
+
+  알람 스타일 (5-15초) - Suno 프롬프트                     
+                                                              
+  무료 (5개)                                                  
+                                                              
+  1. alarm_default (기본)                                     
+  Gentle wake-up alarm tone, soft chime melody, calm and      
+  peaceful, 8 seconds, loopable ending, mobile notification   
+  style                                                       
+                                                              
+  2. alarm_gentle (부드러운)                                  
+  Soft gentle alarm, warm ambient pad with light bells,       
+  soothing and non-intrusive, 8 seconds, gradual fade in      
+                                                              
+  3. alarm_morning (상쾌한 아침)                              
+  Fresh morning alarm, bright acoustic guitar with birds      
+  chirping, uplifting and cheerful, 10 seconds, nature        
+  inspired                                                    
+                                                              
+  4. alarm_digital (디지털)                                   
+  Modern digital alarm, clean synth tones, tech-inspired      
+  beeps, 8 seconds, futuristic but pleasant                   
+                                                              
+  5. alarm_chime (차임벨)                                     
+  Classic chime alarm, grandfather clock style bells, warm and
+   traditional, 8 seconds, elegant resonance                  
+                                                              
+  프리미엄 (10개)                                             
+                                                              
+  6. alarm_energetic (활기찬)                                 
+  Energetic wake-up alarm, upbeat marimba melody, positive and
+   motivating, 10 seconds, happy morning vibes                
+                                                              
+  7. alarm_nature (자연의 소리)                               
+  Nature alarm sound, forest stream with soft wind chimes,    
+  peaceful and organic, 12 seconds, zen atmosphere            
+                                                              
+  8. alarm_classic (클래식)                                   
+  Classical alarm tone, soft piano with strings, elegant      
+  Mozart-inspired, 10 seconds, sophisticated wake-up          
+                                                              
+  9. alarm_minimal (미니멀)                                   
+  Minimalist alarm, single pure tone with subtle harmonics,   
+  clean and simple, 6 seconds, Scandinavian design inspired   
+                                                              
+  10. alarm_piano (피아노)                                    
+  Piano alarm melody, gentle arpeggios in C major, warm and   
+  musical, 10 seconds, studio quality                         
+                                                              
+  11. alarm_bell (종소리)                                     
+  Temple bell alarm, deep resonant gong with overtones,       
+  meditative and calming, 12 seconds, Buddhist temple inspired
+                                                              
+  12. alarm_whistle (휘파람)                                  
+  Cheerful whistle alarm, happy tune like morning birds,      
+  playful and light, 8 seconds, cartoon-friendly              
+                                                              
+  13. alarm_marimba (마림바)                                  
+  Marimba alarm tone, tropical wooden percussion melody, warm 
+  and organic, 8 seconds, island vibes                        
+                                                              
+  14. alarm_radar (레이더)                                    
+  Radar ping alarm, sci-fi inspired sonar beeps, modern and   
+  techy, 8 seconds, space station ambiance                    
+                                                              
+  15. alarm_meditation (명상)                                 
+  Meditation alarm, singing bowl with ambient drone, deeply   
+  calming, 15 seconds, yoga studio atmosphere                 
+                                                              
+  ---                                                         
+  🔕 효과음 스타일 (2-5초) - Suno 프롬프트                    
+                                                              
+  무료 (5개)                                                  
+                                                              
+  1. notify_default (기본)                                    
+  Short notification sound, single soft chime, warm digital   
+  tone, 2 seconds, clean and minimal, gentle ping             
+                                                              
+  2. notify_bubble (버블)                                     
+  Bubble pop notification, soft water droplet sound, playful  
+  and light, 2 seconds, friendly UI sound effect              
+                                                              
+  3. notify_ding (딩)                                         
+  Simple ding notification, clear bell tone, single note, 2   
+  seconds, modern app notification sound                      
+                                                              
+  4. notify_tap (탭)                                          
+  Soft tap notification, wooden percussion, gentle knock      
+  sound, 2 seconds, organic and warm                          
+                                                              
+  5. notify_swoosh (스우시)                                   
+  Gentle swoosh notification, soft air movement, modern       
+  digital transition, 2 seconds, smooth and clean             
+                                                              
+  프리미엄 (10개)                                               
+
+                                                              
+  6. notify_crystal (크리스탈)                                
+  Crystal chime notification, glass-like clarity, sparkling   
+  high tone, 3 seconds, elegant and refined                   
+                                                              
+  7. notify_pop (팝)                                          
+  Playful pop notification, cute cartoon style, bouncy and    
+  fun, 2 seconds, friendly app sound                          
+                                                              
+  8. notify_wave (웨이브)                                     
+  Soft wave notification, ocean-inspired, gentle whoosh, 3    
+  seconds, calming and natural                                
+                                                              
+  9. notify_star (스타)                                       
+  Magical star twinkle, fairy dust sparkle, whimsical chime, 3
+   seconds, enchanting notification                           
+                                                              
+  10. notify_string (스트링)                                  
+  Single string pluck, acoustic guitar note, warm and organic,
+   2 seconds, musical notification                            
+                                                              
+  11. notify_wind (윈드차임)                                  
+  Gentle wind chime, single tube, natural resonance, 4        
+  seconds, zen and peaceful                                   
+                                                              
+  12. notify_click (클릭)                                     
+  Satisfying click sound, mechanical keyboard style, precise  
+  and clean, 1.5 seconds, tech-inspired                       
+                                                              
+  13. notify_glow (글로우)                                    
+  Warm glowing tone, soft synthesizer pad, ambient            
+  notification, 3 seconds, cozy and gentle                    
+                                                              
+  14. notify_bounce (바운스)                                  
+  Bouncy notification, rubber ball style, playful and         
+  energetic, 2 seconds, fun UI sound                          
+                                                              
+  15. notify_zen (젠)                                         
+  Zen bowl notification, singing bowl resonance, meditative   
+  tone, 4 seconds, mindful and calm      
+
+
+--                                                                
+  🔔 알림음 AI 프롬프트 (Suno/Udio용)                                
+                                                                     
+  기본 효과음 (1-3초)                                                
+                                                                     
+  Short notification sound, gentle chime, soft bell, minimal, clean, 
+  modern UI sound effect                                             
+                                                                     
+  Cute pop notification, bubbly, playful, mobile app alert, 2 seconds
+                                                                     
+  Elegant ding notification, crystal clear, premium feel, subtle     
+  reverb                                                             
+                                                                     
+  재미있는 스타일                                                    
+                                                                     
+  Cartoon boing sound effect, bouncy, playful, fun notification alert
+                                                                     
+  Retro 8-bit game notification, pixel art style, cheerful beep      
+                                                                     
+  Whoosh swoosh notification, satisfying, smooth transition sound    
+                                                                     
+  자연/힐링                                                          
+                                                                     
+  Water droplet notification sound, zen, calming, nature inspired,   
+  peaceful                                                                                                                         
+  Wooden knock notification, organic, warm, ASMR style, gentle                                                                   
+  Bird chirp notification, morning alarm, nature, fresh, short tweet 
+                                                                     
+  세련된/미니멀                                                      
+                                                                     
+  Minimal click notification, high-end, Apple style, subtle,         
+  professional                                                                                                                 
+  Soft marimba notification, wooden, warm tone, iOS inspired, clean  
+Glass tap notification, transparent, modern, sleek, UI feedback    
+                                                                     
+  강조형 (놓치면 안될 때)                                            
+                                                                     
+  Urgent but friendly notification, attention grabbing, bright,      
+  energetic ping                                                                                                             
+  Double tap notification, rhythmic, memorable, distinctive alert   
+
+-------
+
+
+                                                                   
+  펑키/그루비                                                        
+                                                                     
+  Funky bass slap notification, groovy, short riff, upbeat energy    
+  Disco sparkle notification, 70s vibe, shiny, fun party ping        
+                                                                     
+  일렉트로닉                                                         
+                                                                     
+  Synth wave notification, neon, cyberpunk, electronic pulse         
+  EDM build-up drop notification, festival energy, exciting, short   
+  burst                                                              
+  Lo-fi notification ping, chill, warm vinyl crackle, cozy vibe      
+                                                                     
+  악기별                                                             
+                                                                     
+  Piano key notification, single note, elegant, concert hall reverb  
+  Harp glissando notification, magical, fairy tale, dreamy sweep     
+  Kalimba notification sound, African thumb piano, warm, peaceful    
+  Xylophone notification, bright, playful, kindergarten style        
+  Steel drum notification, tropical, Caribbean, happy island vibe    
+                                                                     
+  특이한/재미                                                        
+                                                                     
+  Rubber duck squeak notification, funny, quirky, cartoon style      
+  Coin collect notification, video game, achievement unlocked,       
+  satisfying                                                         
+  Magic spell cast notification, wizard, fantasy RPG, sparkle whoosh 
+  Cat meow notification, cute, adorable, short meow sound            
+  Robot beep notification, R2D2 style, sci-fi, mechanical chirp      
+                                                                     
+  고급/럭셔리                                                        
+                                                                     
+  Champagne pop notification, celebration, luxury, premium feel      
+  Jewelry box opening notification, music box, delicate, precious    
+  Velvet soft notification, ASMR whisper texture, premium, subtle    
+                                                                     
+  계절/테마                                                          
+                                                                     
+  Sleigh bells notification, Christmas, winter, festive jingle       
+  Thunder rumble notification, dramatic, epic, powerful announcement 
+  Spring bird notification, cherry blossom, fresh morning, nature    
+                                                                     
+  K-스타일                                                           
+                                                                     
+  K-pop idol notification, aegyo cute, Korean style, bright and      
+  bubbly                                                             
+  Traditional Korean gayageum notification, 가야금, elegant, cultural
+          
+
+
+
+
+
+
+          //////앱 설명
+
+                                                                             
+  앱 이름                                                            
+                                                                     
+  LinkPing                                                           
+                                                                     
+  간단한 설명 (80자 이내)                                            
+                                                                     
+  Save links, set reminders, and actually use them. Your             
+  accountability partner for saved content.                          
+                                                                     
+  자세한 설명                                                        
+                                                                     
+  📌 Save links. Set reminders. Actually watch them.                 
+                                                                     
+  We all save links "for later" — workout videos, recipes, articles, 
+  tutorials. But let's be honest: most of them stay forgotten in our 
+  bookmarks forever.                                                 
+                                                                     
+  LinkPing changes that. It's your personal reminder app for saved   
+  links, helping you actually use what you save.                     
+                                                                     
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                       
+                                                                     
+  ✨ KEY FEATURES                                                    
+                                                                     
+  🔗 Link Reminders                                                  
+  Save any URL and set custom reminder times. Get notified and tap to
+   open — it's that simple.                                          
+                                                                     
+  📞 Call Reminders                                                  
+  Never forget to call Mom! Set phone call reminders for loved ones. 
+  Tap the notification to dial directly.                             
+                                                                     
+  🔔 Flexible Scheduling                                             
+  • Set multiple reminder times per link                             
+  • Choose repeat days (daily, weekdays, weekends, or custom)        
+  • Set end dates for temporary reminders                            
+                                                                     
+  👥 Social Accountability                                           
+  • Share links with friends                                         
+  • See who else saved the same link                                 
+  • Send "cheer" or "tease" pings to motivate each other             
+                                                                     
+  🔒 Locked Alarms                                                   
+  Share time-locked reminders with friends. Everyone gets reminded at
+   the same time — perfect for workout buddies!                      
+                                                                     
+  🎵 Custom Alarm Sounds                                             
+  Choose from 30+ notification sounds. Premium users get access to   
+  all sounds.                                                        
+                                                                     
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                       
+                                                                     
+  💡 PERFECT FOR                                                     
+                                                                     
+  • Workout videos you keep putting off                              
+  • Online courses you paid for but never watched                    
+  • Recipes you want to try                                          
+  • Articles you saved to "read later"                               
+  • Daily calls to family members                                    
+  • Anything you want to actually do!                                
+                                                                     
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                       
+                                                                     
+  ⭐ PREMIUM BENEFITS                                                
+                                                                     
+  • Unlimited links (free: 2 links)                                  
+  • Ad-free experience                                               
+  • All premium sounds                                               
+  • Multiple reminder times per link                                 
+                                                                     
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━                                       
+                                                                     
+  🌍 Available in: English, Korean, Japanese, Chinese, Spanish       
+                                                                     
+  Stop saving links and start using them.                            
+  Download LinkPing today!                                           
+                                   
+                                   
+
+
+
+
+--------------------------------
+
+🎨 LinkPing 앱 컬러 분석 리포트                   
+                                                    
+  ---                                               
+  📊 현재 컬러 팔레트 요약                          
+  ┌────────────┬───────────┬─────────┬─────────────┐
+  │    구분    │   컬러    │   HEX   │    용도     │
+  ├────────────┼───────────┼─────────┼─────────────┤
+  │ Primary    │ 🔴 코랄   │ #FF5A5F │ 메인 액션,  │
+  │            │ 레드      │         │ 버튼        │
+  ├────────────┼───────────┼─────────┼─────────────┤
+  │ Secondary  │ 🟢        │ #00D4AA │ 토글, 보조  │
+  │            │ 틸/민트   │         │ 액션        │
+  ├────────────┼───────────┼─────────┼─────────────┤
+  │ Background │ ⬛ 퓨어   │ #000000 │ 앱 배경     │
+  │            │ 블랙      │         │             │
+  ├────────────┼───────────┼─────────┼─────────────┤
+  │ Surface    │ 🌑 다크   │ #1C1C1E │ 카드 배경   │
+  │            │ 그레이    │         │             │
+  ├────────────┼───────────┼─────────┼─────────────┤
+  │ Brand      │ 💗 핑크   │ #e94560 │ 공유/랜딩   │
+  │ Accent     │ 레드      │         │ 페이지      │
+  ├────────────┼───────────┼─────────┼─────────────┤
+  │ Error      │ 🔴 레드   │ #FF453A │ 에러 상태   │
+  └────────────┴───────────┴─────────┴─────────────┘
+  ---                                               
+  🎯 UI/UX 전문가 분석                              
+                                                    
+  1. 전체적인 느낌 (Color Mood)                     
+                                                    
+  현재 컬러 조합: "다크 모드 + 네온 액센트"         
+  ─────────────────────────────────────────         
+  키워드: 트렌디, 모던, 에너제틱, 테크, MZ세대      
+  ─────────────────────────────────────────         
+                                                    
+  긍정적 요소:                                      
+  - 🌙 다크 테마 → 눈의 피로 감소, 배터리 절약,     
+  프리미엄 느낌                                     
+  - 🔴 코랄 레드(#FF5A5F) → Airbnb 스타일,          
+  따뜻하면서도 액티브한 느낌                        
+  - 🟢 민트(#00D4AA) → 신선함, 성공/완료 느낌,      
+  코랄과 보색 대비                                  
+                                                    
+  현재 스타일: Alarmy, Spotify, Netflix 계열의 "다
+   + 비비드 액센트" 트렌드                          
+                                                    
+  ---                                               
+  2. 문제점 발견 ⚠️                                 
+  이슈: 컬러 불일치                                 
+  상세: Primary #FF5A5F vs Brand #e94560 -          
+  비슷하지만                                        
+    다른 레드 2개 사용                              
+  위치: 공유 랜딩 페이지                            
+  ────────────────────────────────────────          
+  이슈: 온보딩 컬러 과다                            
+  상세: 6개 페이지에 6개 다른 색상 → 브랜드 일관성  
+  약화                                              
+  위치: onboarding_screen                           
+  ────────────────────────────────────────          
+  이슈: 그라데이션 불일치                           
+  상세: 네이비 그라데이션(#1a1a2e)이 메인           
+  테마(블랙)와                                      
+    다른 톤                                         
+  위치: share_landing, web_intro                    
+  ────────────────────────────────────────          
+  이슈: 하드코딩 과다                               
+  상세: 테마 컬러 대신 직접 Color() 사용 → 유지보수 
+    어려움                                          
+  위치: 전체                                        
+  ---                                               
+  3. 컬러 하모니 분석                               
+                                                    
+  현재 조합:                                        
+  ┌─────────────────────────────────────────────┐   
+  │  #FF5A5F (코랄)  ←── 60° ──→  #00D4AA (민트) │  
+  │       ↑                           ↑          │  
+  │   Warm/Active              Cool/Fresh        │  
+  │                                              │  
+  │  보색 대비 (Complementary) - ✅ 강한 대비    │  
+  └─────────────────────────────────────────────┘   
+                                                    
+  색상환 관계:                                      
+  - 코랄 + 민트 = Split-Complementary (분할보색)    
+  - 시각적 대비 강함, 에너지 넘침                   
+  - 단, 과도한 사용 시 피로감 유발 가능             
+                                                    
+  ---                                               
+  💡 개선 제안                                      
+                                                    
+  Option A: 현재 스타일 정제 (권장)                 
+                                                    
+  브랜드 레드 통일 + 보조색 정리                    
+                                                    
+  Primary:      #FF5A5F (유지 - 코랄레드)           
+  Secondary:    #00D4AA (유지 - 민트)               
+  Tertiary:     #6C5CE7 (신규 - 퍼플, 온보딩에서    
+  가져옴)                                           
+  ─────────────────────────────────────────────     
+  효과: 브랜드 일관성↑, #e94560 제거하고 통일       
+                                                    
+  Option B: 부드러운 다크 테마                      
+                                                    
+  차분하고 세련된 느낌으로 변경                     
+                                                    
+  Primary:      #FF6B6B (소프트 코랄)               
+  Secondary:    #4ECDC4 (소프트 민트)               
+  Background:   #1A1A2E (다크 네이비 - 현재         
+  그라데이션 색상)                                  
+  ─────────────────────────────────────────────     
+  효과: 전체적으로 부드러워짐, 눈의 피로↓           
+                                                    
+  Option C: 미니멀 모노크롬                         
+                                                    
+  프리미엄/미니멀 느낌 강화                         
+                                                    
+  Primary:      #FFFFFF (화이트 - 주요 액션)        
+  Accent:       #FF5A5F (코랄 - 포인트만)           
+  Background:   #0A0A0A (딥 블랙)                   
+  Surface:      #141414 (차콜)                      
+  ─────────────────────────────────────────────     
+  효과: 고급스러움↑, 심플함, Apple 스타일           
+                                                    
+  ---                                               
+  🔧 즉시 적용 가능한 개선사항                      
+                                                    
+  1. 레드 컬러 통일                                 
+                                                    
+  // 변경 전: 두 가지 레드 혼용                     
+  #FF5A5F (theme)                                   
+  #e94560 (hardcoded)                               
+                                                    
+  // 변경 후: 하나로 통일                           
+  #FF5A5F 만 사용 (or #e94560 만 사용)              
+                                                    
+  2. 온보딩 컬러 단순화                             
+                                                    
+  // 변경 전: 6개 다른 색상                         
+  Purple → Green → Pink → Blue → Red → Gray         
+                                                    
+  // 변경 후: 브랜드 컬러 3개로                     
+  #FF5A5F (Primary) → #00D4AA (Secondary) → #6C5CE7 
+  (Tertiary)                                        
+  그라데이션으로 페이지 전환                        
+                                                    
+  3. 그라데이션 배경 통일                           
+                                                    
+  // 변경 전: 네이비 그라데이션                     
+  #1a1a2e → #16213e → #0f3460                       
+                                                    
+  // 변경 후: 메인 테마와 일치                      
+  #000000 → #1C1C1E → #2C2C2E                       
+                                                    
+  ---                                               
+  📈 변경 효과 예측                                 
+  변경: 레드 통일                                   
+  효과: 브랜드 인지도 20%↑, 사용자 혼란↓            
+  ────────────────────────────────────────          
+  변경: 온보딩 단순화                               
+  효과: 첫인상 일관성↑, 이탈률↓                     
+  ────────────────────────────────────────          
+  변경: 그라데이션 통일                             
+  효과: 앱 전체 통일감↑, 프리미엄 느낌↑             
+  ────────────────────────────────────────          
+  변경: 하드코딩 제거                               
+  효과: 다크/라이트 테마 전환 가능, 유지보수↑       
+  ---                                               
+  어떤 방향으로 개선하고 싶으신가요?                
+  - A: 현재 스타일 정제 (빠른 적용)                 
+  - B: 부드러운 다크 테마 (톤 다운)                 
+  - C: 미니멀 모노크롬 (프리미엄)                   
+  - 커스텀: 다른 방향 제안                          
+                                                    
+✻ Brewed for 2m 3s              
+
+
+
+//////////
+
+A tiny pixel art icon of a nano banana, 16x16 or 32x32 pixels, retro 8-bit dot
+  art style. The banana is small, cute, and slightly glowing golden-yellow with a
+  subtle amber outline. Minimal detail — chunky square pixels clearly visible, no
+  anti-aliasing. Flat shading with 3-4 color palette (bright yellow, golden amber,
+   dark brown outline). Transparent background. Matches the aesthetic of classic
+  Game Boy / NES sprite items — like a collectible coin or power-up item. The
+  banana should look like a game currency/token, not realistic fruit.

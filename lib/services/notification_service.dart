@@ -1,12 +1,17 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
 
 import '../data/models/link_reminder.dart';
+import 'alarm_sound_service.dart';
+import 'auth_service.dart';
 import 'badge_service.dart';
+import 'firestore_service.dart';
+import 'ping_window_service.dart';
 import 'url_launcher_service.dart';
 
 class NotificationService {
@@ -15,6 +20,15 @@ class NotificationService {
 
   final _plugin = FlutterLocalNotificationsPlugin();
   bool _initialized = false;
+
+  // 액션 ID 상수
+  static const String _actionOpenLink = 'open_link';
+  static const String _actionCall = 'call';
+  static const String _actionSnooze = 'snooze_3min';
+
+  // 카테고리 ID 상수
+  static const String _categoryLink = 'link_reminder';
+  static const String _categoryPhone = 'phone_reminder';
 
   /// 알림 서비스 초기화
   Future<void> initialize() async {
@@ -25,19 +39,61 @@ class NotificationService {
     final timezoneInfo = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(timezoneInfo.identifier));
 
-    // Android 설정
+    // Android 설정 (액션 버튼 포함)
     const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    // iOS 설정
-    const iosSettings = DarwinInitializationSettings(
+    // iOS 설정 (액션 카테고리 포함)
+    final iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,
+      notificationCategories: [
+        // 링크 알림 카테고리
+        DarwinNotificationCategory(
+          _categoryLink,
+          actions: <DarwinNotificationAction>[
+            DarwinNotificationAction.plain(
+              _actionOpenLink,
+              '이동하기',
+              options: <DarwinNotificationActionOption>{
+                DarwinNotificationActionOption.foreground,
+              },
+            ),
+            DarwinNotificationAction.plain(
+              _actionSnooze,
+              '3분 후',
+            ),
+          ],
+          options: <DarwinNotificationCategoryOption>{
+            DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
+          },
+        ),
+        // 전화 알림 카테고리
+        DarwinNotificationCategory(
+          _categoryPhone,
+          actions: <DarwinNotificationAction>[
+            DarwinNotificationAction.plain(
+              _actionCall,
+              '전화걸기',
+              options: <DarwinNotificationActionOption>{
+                DarwinNotificationActionOption.foreground,
+              },
+            ),
+            DarwinNotificationAction.plain(
+              _actionSnooze,
+              '3분 후',
+            ),
+          ],
+          options: <DarwinNotificationCategoryOption>{
+            DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
+          },
+        ),
+      ],
     );
 
     // 초기화
     await _plugin.initialize(
-      const InitializationSettings(
+      InitializationSettings(
         android: androidSettings,
         iOS: iosSettings,
       ),
@@ -50,13 +106,24 @@ class NotificationService {
     await requestPermission();
   }
 
-  /// 알림 탭 시 처리
+  /// 알림 탭/액션 버튼 처리
   void _onNotificationTapped(NotificationResponse response) async {
     final payload = response.payload;
     if (payload == null || payload.isEmpty) return;
 
+    final actionId = response.actionId;
+
+    // 🔔 3분 후 스누즈 액션 처리
+    if (actionId == _actionSnooze) {
+      await _handleSnooze(payload);
+      return;
+    }
+
+    // 알람 응답 시 Ping 윈도우 시작 (응원/약올리기 5분 윈도우)
+    await PingWindowService.instance.recordAlarmFired();
+
     try {
-      // payload 형식: {"url": "...", "hour": 7, "minute": 0}
+      // payload 형식: {"url": "...", "hour": 7, "minute": 0, "title": "..."}
       final data = jsonDecode(payload) as Map<String, dynamic>;
       final url = data['url'] as String;
       final hour = data['hour'] as int;
@@ -77,11 +144,106 @@ class NotificationService {
         clickTime: now,
       );
 
-      // URL 열기
+      // 📊 통계 트래킹 (알림 클릭)
+      await FirestoreService.instance.trackNotificationClicked(hour: now.hour);
+
+      // tel: URL인 경우 내 번호인지 확인
+      if (UrlLauncherService.isPhoneUrl(url)) {
+        final myPhoneNumber = await _getMyPhoneNumber();
+        if (UrlLauncherService.isMyPhoneNumber(url, myPhoneNumber)) {
+          // 내 번호면 전화하지 않고 앱만 열림
+          return;
+        }
+      }
+
+      // URL 열기 (이동하기 / 전화걸기 액션 또는 알림 탭)
       UrlLauncherService.openUrl(url);
     } catch (e) {
       // 기존 형식 (URL만) 호환
       UrlLauncherService.openUrl(payload);
+    }
+  }
+
+  /// 3분 후 스누즈 처리
+  Future<void> _handleSnooze(String payload) async {
+    try {
+      final data = jsonDecode(payload) as Map<String, dynamic>;
+      final url = data['url'] as String;
+      final title = data['title'] as String? ?? 'LinkPing';
+      final hour = data['hour'] as int;
+      final minute = data['minute'] as int;
+
+      final isPhone = UrlLauncherService.isPhoneUrl(url);
+
+      // 3분 후 알림 스케줄
+      final snoozeTime = tz.TZDateTime.now(tz.local).add(const Duration(minutes: 3));
+
+      final androidDetails = AndroidNotificationDetails(
+        'linkping_snooze',
+        '스누즈 알림',
+        channelDescription: '3분 후 다시 알림',
+        importance: Importance.high,
+        priority: Priority.high,
+        icon: '@mipmap/ic_launcher',
+        actions: isPhone
+            ? <AndroidNotificationAction>[
+                const AndroidNotificationAction(_actionCall, '전화걸기'),
+                const AndroidNotificationAction(_actionSnooze, '3분 후'),
+              ]
+            : <AndroidNotificationAction>[
+                const AndroidNotificationAction(_actionOpenLink, '이동하기'),
+                const AndroidNotificationAction(_actionSnooze, '3분 후'),
+              ],
+      );
+
+      final iosDetails = DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+        categoryIdentifier: isPhone ? _categoryPhone : _categoryLink,
+      );
+
+      final details = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+      );
+
+      // 새 payload (시간 정보 유지)
+      final newPayload = jsonEncode({
+        'url': url,
+        'title': title,
+        'hour': hour,
+        'minute': minute,
+      });
+
+      await _plugin.zonedSchedule(
+        DateTime.now().millisecondsSinceEpoch % 100000, // 유니크 ID
+        title,
+        isPhone ? '탭하여 전화 걸기' : '탭하여 링크로 이동',
+        snoozeTime,
+        details,
+        payload: newPayload,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    } catch (e) {
+      // 스누즈 실패 시 무시
+    }
+  }
+
+  /// 내 전화번호 가져오기
+  Future<String?> _getMyPhoneNumber() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return null;
+
+    if (user.isAnonymous) {
+      // 게스트: 로컬에서 가져오기
+      return AuthService.instance.getGuestPhoneNumber();
+    } else {
+      // 회원: Firestore에서 가져오기
+      final profile = await FirestoreService.instance.getUserProfile(user.uid);
+      return profile?.phoneNumber;
     }
   }
 
@@ -117,6 +279,18 @@ class NotificationService {
 
     if (!link.isEnabled) return;
 
+    // 링크별 소리 가져오기 (없으면 전역 설정 사용)
+    final soundId = link.soundId ?? AlarmSoundService.instance.getSelectedSoundId();
+    final sound = AlarmSoundService.instance.getSoundById(soundId);
+
+    // 사운드 파일이 실제로 존재하는지 확인
+    final useCustomSound = sound != null && sound.isAvailable;
+
+    // 전화 vs 링크 구분
+    final isPhone = UrlLauncherService.isPhoneUrl(link.url);
+    final notificationBody = isPhone ? '탭하여 전화 걸기' : '탭하여 링크로 이동';
+
+    // Android 알림 설정 (액션 버튼 포함)
     final androidDetails = AndroidNotificationDetails(
       'linkping_reminders',
       '링크 알림',
@@ -124,12 +298,30 @@ class NotificationService {
       importance: Importance.high,
       priority: Priority.high,
       icon: '@mipmap/ic_launcher',
+      sound: useCustomSound
+          ? RawResourceAndroidNotificationSound(sound.fileName)
+          : null,
+      playSound: true,
+      // 🔔 액션 버튼 추가
+      actions: isPhone
+          ? <AndroidNotificationAction>[
+              const AndroidNotificationAction(_actionCall, '전화걸기'),
+              const AndroidNotificationAction(_actionSnooze, '3분 후'),
+            ]
+          : <AndroidNotificationAction>[
+              const AndroidNotificationAction(_actionOpenLink, '이동하기'),
+              const AndroidNotificationAction(_actionSnooze, '3분 후'),
+            ],
     );
 
-    const iosDetails = DarwinNotificationDetails(
+    // iOS 알림 설정 (카테고리로 액션 버튼 지정)
+    final iosDetails = DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
+      sound: useCustomSound ? '${sound.fileName}.caf' : null,
+      // 🔔 카테고리로 액션 버튼 지정
+      categoryIdentifier: isPhone ? _categoryPhone : _categoryLink,
     );
 
     final details = NotificationDetails(
@@ -155,6 +347,7 @@ class NotificationService {
         // payload에 URL과 시간 정보 포함 (클릭 추적용)
         final payload = jsonEncode({
           'url': link.url,
+          'title': link.title,
           'hour': time.hour,
           'minute': time.minute,
         });
@@ -162,7 +355,7 @@ class NotificationService {
         await _plugin.zonedSchedule(
           id,
           link.title,
-          '탭하여 링크로 이동',
+          notificationBody,
           scheduledDate,
           details,
           payload: payload,

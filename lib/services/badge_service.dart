@@ -621,7 +621,102 @@ class BadgeService {
     return newBadges;
   }
 
-  /// 모든 뱃지 목록 (획득 여부 포함)
+  /// 모든 뱃지 목록 (획득 여부 + 진행률 포함)
+  Future<List<({BadgeType type, UserBadge? earned, int progress, int target})>> getAllBadgesWithProgress() async {
+    final stats = await getStats();
+    final earnedMap = {for (var b in stats.badges) b.type: b};
+
+    return BadgeType.values.map((type) {
+      final progressData = _getBadgeProgress(type, stats);
+      return (
+        type: type,
+        earned: earnedMap[type],
+        progress: progressData.$1,
+        target: progressData.$2,
+      );
+    }).toList();
+  }
+
+  /// 뱃지별 진행률 계산
+  (int progress, int target) _getBadgeProgress(BadgeType type, UserStats stats) {
+    switch (type) {
+      // 스트릭
+      case BadgeType.streak3:
+        return (stats.currentStreak.clamp(0, 3), 3);
+      case BadgeType.streak7:
+        return (stats.currentStreak.clamp(0, 7), 7);
+      case BadgeType.streak30:
+        return (stats.currentStreak.clamp(0, 30), 30);
+      case BadgeType.streak100:
+        return (stats.currentStreak.clamp(0, 100), 100);
+      case BadgeType.marathon:
+        return (stats.currentStreak.clamp(0, 365), 365);
+      case BadgeType.comeback:
+        return (stats.hadStreakBroken && stats.currentStreak >= 7 ? 1 : 0, 1);
+
+      // 속도
+      case BadgeType.quickDraw:
+        return (stats.ultraQuickClicks.clamp(0, 1), 1);
+      case BadgeType.speedDemon:
+        return (stats.superQuickClicks.clamp(0, 10), 10);
+      case BadgeType.quickResponse:
+        return (stats.quickClicks.clamp(0, 50), 50);
+
+      // 시간대
+      case BadgeType.morningGlory:
+        return (stats.morningGloryClicks.clamp(0, 5), 5);
+      case BadgeType.earlyBird:
+        return (stats.earlyBirdClicks.clamp(0, 10), 10);
+      case BadgeType.nightOwl:
+        return (stats.nightOwlClicks.clamp(0, 10), 10);
+      case BadgeType.nightShift:
+        return (stats.nightShiftClicks.clamp(0, 5), 5);
+
+      // 달성률
+      case BadgeType.perfectWeek:
+        return (stats.currentStreak >= 7 && stats.achievementRate >= 100 ? 1 : 0, 1);
+      case BadgeType.perfectMonth:
+        return (stats.currentStreak >= 30 && stats.achievementRate >= 100 ? 1 : 0, 1);
+      case BadgeType.perfectionist:
+        return (stats.totalClicks >= 50 && stats.achievementRate >= 95 ? 1 : 0, 1);
+
+      // 소셜
+      case BadgeType.firstCheer:
+        return (stats.cheersSent.clamp(0, 1), 1);
+      case BadgeType.cheerLeader:
+        return (stats.cheersSent.clamp(0, 50), 50);
+      case BadgeType.firstPoke:
+        return (stats.pokesSent.clamp(0, 1), 1);
+      case BadgeType.poker:
+        return (stats.pokesSent.clamp(0, 50), 50);
+      case BadgeType.socialButterfly:
+        return ((stats.cheersReceived + stats.pokesReceived).clamp(0, 10), 10);
+
+      // 링크 (별도 추적 필요)
+      case BadgeType.firstLink:
+        return (0, 1); // LinksProvider에서 추적
+      case BadgeType.linkCollector:
+        return (0, 10);
+      case BadgeType.linkMaster:
+        return (0, 50);
+      case BadgeType.hotLink:
+        return (0, 10);
+      case BadgeType.variety:
+        return (stats.uniqueDomains.clamp(0, 5), 5);
+
+      // 특별
+      case BadgeType.founder:
+        return (0, 1);
+      case BadgeType.premium:
+        return (0, 1);
+      case BadgeType.badgeCollector:
+        return (stats.badges.length.clamp(0, 10), 10);
+      case BadgeType.cloudSynced:
+        return (0, 1);
+    }
+  }
+
+  /// 모든 뱃지 목록 (획득 여부 포함) - 기존 호환
   Future<List<({BadgeType type, UserBadge? earned})>> getAllBadges() async {
     final stats = await getStats();
     final earnedMap = {for (var b in stats.badges) b.type: b};
@@ -629,5 +724,52 @@ class BadgeService {
     return BadgeType.values.map((type) {
       return (type: type, earned: earnedMap[type]);
     }).toList();
+  }
+
+  /// Firestore 통계 기반으로 뱃지 동기화
+  /// 받은 응원/찌르기 등 외부에서 업데이트된 통계 기반으로 뱃지 체크
+  Future<List<BadgeType>> syncBadgesFromStats() async {
+    final doc = _statsDoc;
+    if (doc == null) return [];
+
+    final stats = await getStats();
+    final newBadges = <BadgeType>[];
+
+    // Social Butterfly 체크 (받은 응원/찌르기 10개 이상)
+    final totalReceived = stats.cheersReceived + stats.pokesReceived;
+    if (totalReceived >= 10 &&
+        !stats.badges.any((b) => b.type == BadgeType.socialButterfly)) {
+      newBadges.add(BadgeType.socialButterfly);
+    }
+
+    // Badge Collector 체크 (뱃지 10개 이상)
+    final totalBadges = stats.badges.length + newBadges.length;
+    if (totalBadges >= 10 &&
+        !stats.badges.any((b) => b.type == BadgeType.badgeCollector) &&
+        !newBadges.contains(BadgeType.badgeCollector)) {
+      newBadges.add(BadgeType.badgeCollector);
+    }
+
+    // 새 뱃지가 있으면 저장
+    if (newBadges.isNotEmpty) {
+      final updatedBadges = List<UserBadge>.from(stats.badges);
+      for (final badge in newBadges) {
+        updatedBadges.add(UserBadge(type: badge, earnedAt: DateTime.now()));
+      }
+
+      try {
+        await doc.set({
+          'badges': updatedBadges.map((b) => b.toJson()).toList(),
+        }, SetOptions(merge: true));
+      } catch (e) {
+        // 저장 실패 무시
+      }
+
+      if (onNewBadges != null) {
+        onNewBadges!(newBadges);
+      }
+    }
+
+    return newBadges;
   }
 }

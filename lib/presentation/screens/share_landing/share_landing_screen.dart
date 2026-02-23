@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/theme/app_theme.dart';
 import '../../../data/models/shared_link.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../services/firestore_service.dart';
 
 class ShareLandingScreen extends StatefulWidget {
@@ -18,6 +19,13 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
   SharedLink? _sharedLink;
   bool _isLoading = true;
   String? _error;
+
+  // 컬러 테마에서 가져오기
+  Color get _brandAccent => AppTheme.colorTheme.brandAccent;
+  LinearGradient get _backgroundGradient => AppTheme.colorTheme.backgroundGradient;
+  Color get _surfacePlaceholder => AppTheme.colorTheme.surfaceVariant;
+  // 성공 상태 컬러 (민트/그린 계열)
+  Color get _successColor => AppTheme.colorTheme.secondary;
 
   @override
   void initState() {
@@ -36,13 +44,13 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
         _sharedLink = link;
         _isLoading = false;
         if (link == null) {
-          _error = '링크를 찾을 수 없어요';
+          _error = 'linkNotFound';
         }
       });
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _error = '링크를 불러오는데 실패했어요';
+        _error = 'linkLoadFailed';
       });
     }
   }
@@ -51,16 +59,8 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF1a1a2e),
-              Color(0xFF16213e),
-              Color(0xFF0f3460),
-            ],
-          ),
+        decoration: BoxDecoration(
+          gradient: _backgroundGradient,
         ),
         child: SafeArea(
           child: _isLoading
@@ -76,6 +76,8 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
   }
 
   Widget _buildErrorState() {
+    final l10n = AppLocalizations.of(context)!;
+    final errorMessage = _error == 'linkNotFound' ? l10n.linkNotFound : l10n.linkLoadFailed;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -87,7 +89,7 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
           ),
           const SizedBox(height: 24),
           Text(
-            _error!,
+            errorMessage,
             style: const TextStyle(
               color: Colors.white70,
               fontSize: 18,
@@ -137,6 +139,7 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
   }
 
   Widget _buildLogo() {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
         // 글로우 이펙트가 있는 로고
@@ -147,7 +150,7 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFe94560).withValues(alpha: 0.4),
+                color: _brandAccent.withValues(alpha: 0.4),
                 blurRadius: 30,
                 spreadRadius: 5,
               ),
@@ -160,12 +163,12 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
               fit: BoxFit.cover,
               errorBuilder: (_, __, ___) => Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFF2D3250),
+                  color: _surfacePlaceholder,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.link,
-                  color: Color(0xFFe94560),
+                  color: _brandAccent,
                   size: 40,
                 ),
               ),
@@ -183,9 +186,9 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
-          '링크 알림 서비스',
-          style: TextStyle(
+        Text(
+          l10n.linkNotificationService,
+          style: const TextStyle(
             color: Colors.white60,
             fontSize: 14,
           ),
@@ -222,22 +225,24 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFe94560).withValues(alpha: 0.2),
+                  color: _brandAccent.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.person,
-                      color: Color(0xFFe94560),
+                      color: _brandAccent,
                       size: 16,
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      '${link.sharedBy}님이 공유',
-                      style: const TextStyle(
-                        color: Color(0xFFe94560),
+                      link.isKorean
+                          ? '${link.sharedBy}님이 공유'
+                          : 'Shared by ${link.sharedBy}',
+                      style: TextStyle(
+                        color: _brandAccent,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -288,20 +293,72 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          // 알림 시간
+          // 알림 시간 (공유자의 언어로 표시)
           Row(
             children: [
               _buildInfoChip(
                 icon: Icons.access_time,
-                label: link.timeString,
+                label: link.getTimeString(link.isKorean),
               ),
               const SizedBox(width: 12),
               _buildInfoChip(
                 icon: Icons.repeat,
-                label: link.repeatString,
+                label: link.getRepeatString(link.isKorean),
               ),
             ],
           ),
+          const SizedBox(height: 16),
+          // 잠금 상태 표시
+          Builder(builder: (context) {
+            final l10n = AppLocalizations.of(context)!;
+            final statusColor = link.isLocked ? _brandAccent : _successColor;
+            return Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: statusColor.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: statusColor.withValues(alpha: 0.3),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    link.isLocked ? Icons.lock : Icons.lock_open,
+                    color: statusColor,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          link.isLocked ? l10n.timeLockedAlarm : l10n.timeEditable,
+                          style: TextStyle(
+                            color: statusColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          link.isLocked
+                              ? l10n.lockedTimeDesc
+                              : l10n.editableTimeDesc,
+                          style: const TextStyle(
+                            color: Colors.white54,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
         ],
       ),
     );
@@ -332,37 +389,47 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
   }
 
   Widget _buildDownloadButton() {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
-        // 앱에서 열기 버튼 (메인)
+        // 앱에서 열기 버튼 (메인) - 딥링크 바로 시도
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: _openInApp,
+            onPressed: _tryOpenApp,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFe94560),
+              backgroundColor: _brandAccent,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
               elevation: 8,
-              shadowColor: const Color(0xFFe94560).withValues(alpha: 0.5),
+              shadowColor: _brandAccent.withValues(alpha: 0.5),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.download_rounded, size: 22),
-                SizedBox(width: 8),
+                const Icon(Icons.open_in_new, size: 22),
+                const SizedBox(width: 8),
                 Text(
-                  '앱에서 저장하기',
-                  style: TextStyle(
+                  l10n.openInApp,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        // 앱 없으면 설치 안내
+        Text(
+          l10n.appRequiredMessage,
+          style: const TextStyle(
+            color: Colors.white54,
+            fontSize: 12,
           ),
         ),
         const SizedBox(height: 16),
@@ -417,11 +484,12 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
   }
 
   Widget _buildOpenInBrowserButton(SharedLink link) {
+    final l10n = AppLocalizations.of(context)!;
     return TextButton(
       onPressed: () => _openUrl(link.url),
-      child: const Text(
-        '브라우저에서 링크 열기',
-        style: TextStyle(
+      child: Text(
+        l10n.openLinkInBrowser,
+        style: const TextStyle(
           color: Colors.white54,
           decoration: TextDecoration.underline,
         ),
@@ -430,19 +498,22 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
   }
 
   Widget _buildFooter(SharedLink link) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
         Text(
-          '조회 ${link.viewCount + 1}회',
+          l10n.viewCount(link.viewCount + 1),
           style: const TextStyle(
             color: Colors.white38,
             fontSize: 12,
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
-          '매일 정해진 시간에 링크 알림을 받아보세요',
-          style: TextStyle(
+        Text(
+          link.isLocked
+              ? l10n.receivedSharedAlarmInfo(link.sharedBy)
+              : l10n.saveAndChangeTime,
+          style: const TextStyle(
             color: Colors.white38,
             fontSize: 12,
           ),
@@ -452,61 +523,13 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
     );
   }
 
-  void _openInApp() {
-    // 딥링크로 앱 열기 시도
+  /// 앱 열기 시도 (딥링크 바로 실행)
+  void _tryOpenApp() {
     final deepLink = 'linkping://share/${widget.shareId}';
-
-    if (kIsWeb) {
-      // 웹에서는 딥링크 시도 후 스토어로 이동
-      _tryDeepLink(deepLink);
-    } else {
-      // 앱 내에서는 바로 저장 처리
-      Navigator.pop(context, _sharedLink);
-    }
-  }
-
-  Future<void> _tryDeepLink(String deepLink) async {
     final uri = Uri.parse(deepLink);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      // 앱이 없으면 스토어로
-      _showStoreDialog();
-    }
-  }
 
-  void _showStoreDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1a1a2e),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          'LinkPing 앱 설치',
-          style: TextStyle(color: Colors.white),
-        ),
-        content: const Text(
-          '앱을 설치하고 링크 알림을 받아보세요!',
-          style: TextStyle(color: Colors.white70),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('취소'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _openAppStore(); // iOS 우선
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFe94560),
-            ),
-            child: const Text('설치하기'),
-          ),
-        ],
-      ),
-    );
+    // 바로 딥링크 실행 시도 (canLaunchUrl 체크 안 함)
+    launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
   Future<void> _openUrl(String url) async {
