@@ -948,11 +948,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get soundCategoryAlarmDesc =>
-      'Melodic tunes (5-15 sec) · For must-not-miss alarms!';
+      'Melodic\n(5-15 sec)\nFor must-not-miss alarms';
 
   @override
   String get soundCategoryNotifyDesc =>
-      'Short sounds (2-5 sec) · For light check-and-go reminders!';
+      'Short effect\n(2-5 sec)\nFor quick reminders';
 
   @override
   String get currentStreak => 'Current Streak';

@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import '../../../l10n/app_localizations.dart';
 
 import '../../../core/theme/spacing.dart';
-import '../../../core/theme/color_themes.dart';
 import '../../../providers/auth_provider.dart';
-import '../../../providers/color_theme_provider.dart';
 import '../../../providers/user_provider.dart';
-import '../../../data/models/ping_notification.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/badge_service.dart';
 import '../../../services/firestore_service.dart';
@@ -66,9 +62,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     await NotificationService.instance.showTestNotification();
     if (mounted) {
       final l10n = AppLocalizations.of(context)!;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.notificationTestSent)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.notificationTestSent)));
     }
   }
 
@@ -104,7 +100,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               if (mounted) {
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => const OnboardingScreen(),
+                  ),
                   (route) => false,
                 );
               }
@@ -137,97 +135,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  /// [DEBUG] 현재 유저 UID 보기
-  void _showDebugInfo() {
-    final authState = ref.read(authStateProvider);
-    final user = authState.value;
-    final uid = user?.uid ?? 'N/A';
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('[DEBUG] 유저 정보'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('UID: $uid'),
-            const SizedBox(height: 8),
-            Text('익명: ${user?.isAnonymous ?? true}'),
-            Text('이메일: ${user?.email ?? "없음"}'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('닫기'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// [DEBUG] 테스트 알림 데이터 생성
-  void _createTestNotification() {
-    final controller = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('[DEBUG] 테스트 알림 보내기'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('받는 사람 UID 입력:'),
-            const SizedBox(height: 8),
-            TextField(
-              controller: controller,
-              decoration: const InputDecoration(
-                hintText: 'UID 붙여넣기',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('취소'),
-          ),
-          FilledButton(
-            onPressed: () async {
-              final toUid = controller.text.trim();
-              if (toUid.isEmpty) return;
-
-              Navigator.pop(context);
-
-              try {
-                await FirestoreService.instance.sendPing(
-                  toUid: toUid,
-                  type: PingType.cheer,
-                  urlTitle: '테스트 링크',
-                  customMessage: '테스트 응원 메시지입니다! 🎉',
-                );
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('테스트 알림 전송 완료!')),
-                  );
-                }
-              } catch (e) {
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('에러: $e')),
-                  );
-                }
-              }
-            },
-            child: const Text('보내기'),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -235,9 +142,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.settings),
-      ),
+      appBar: AppBar(title: Text(l10n.settings)),
       body: ListView(
         children: [
           const SizedBox(height: Spacing.sm),
@@ -335,24 +240,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             onTap: _onContact,
           ),
 
-          const SizedBox(height: Spacing.md),
-
-          // [DEBUG] 개발자 섹션 - 출시 전 제거
-          _buildSectionTitle('[DEBUG] 개발자 도구'),
-          _buildSettingsTile(
-            icon: Icons.bug_report_outlined,
-            title: '내 UID 보기',
-            trailing: const Icon(Icons.chevron_right),
-            onTap: _showDebugInfo,
-          ),
-          _buildSettingsTile(
-            icon: Icons.send_outlined,
-            title: '테스트 알림 보내기',
-            subtitle: '다른 유저에게 테스트 알림 전송',
-            trailing: const Icon(Icons.chevron_right),
-            onTap: _createTestNotification,
-          ),
-
           const SizedBox(height: Spacing.xl),
         ],
       ),
@@ -368,141 +255,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-      ),
-    );
-  }
-
-  /// 🎨 컬러 테마 선택기 (테스트용)
-  Widget _buildColorThemeSelector(ColorScheme colorScheme) {
-    final currentTheme = ref.watch(colorThemeProvider);
-    final locale = Localizations.localeOf(context);
-    final isKorean = locale.languageCode == 'ko';
-
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: Spacing.md),
-      padding: const EdgeInsets.all(Spacing.md),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: colorScheme.outline.withValues(alpha: 0.3),
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.palette_outlined, color: colorScheme.primary, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                '테마 선택 (테스트)',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: Spacing.md),
-          ...ColorThemes.all.map((theme) {
-            final isSelected = currentTheme.id == theme.id;
-            return GestureDetector(
-              onTap: () {
-                ref.read(colorThemeProvider.notifier).setTheme(theme);
-                // 즉시 반영을 위해 setState 호출
-                setState(() {});
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${isKorean ? theme.nameKo : theme.name} 테마 적용! 앱을 재시작하면 완전히 적용됩니다.'),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              },
-              child: Container(
-                margin: const EdgeInsets.only(bottom: Spacing.sm),
-                padding: const EdgeInsets.all(Spacing.sm),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? colorScheme.primary.withValues(alpha: 0.1)
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isSelected ? colorScheme.primary : colorScheme.outline.withValues(alpha: 0.2),
-                    width: isSelected ? 2 : 1,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    // 컬러 프리뷰
-                    Row(
-                      children: [
-                        _colorDot(theme.primary),
-                        _colorDot(theme.secondary),
-                        _colorDot(theme.tertiary),
-                        _colorDot(theme.background),
-                      ],
-                    ),
-                    const SizedBox(width: 12),
-                    // 테마 이름
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            isKorean ? theme.nameKo : theme.name,
-                            style: TextStyle(
-                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                              color: isSelected ? colorScheme.primary : null,
-                            ),
-                          ),
-                          Text(
-                            _getThemeDescription(theme.id),
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // 선택 표시
-                    if (isSelected)
-                      Icon(Icons.check_circle, color: colorScheme.primary, size: 24),
-                  ],
-                ),
-              ),
-            );
-          }),
-        ],
-      ),
     );
-  }
-
-  Widget _colorDot(Color color) {
-    return Container(
-      width: 24,
-      height: 24,
-      margin: const EdgeInsets.only(right: 4),
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white24, width: 1),
-      ),
-    );
-  }
-
-  String _getThemeDescription(String themeId) {
-    switch (themeId) {
-      case 'vibrant':
-        return '코랄 + 민트 조합';
-      case 'soft':
-        return '부드러운 네이비 톤';
-      case 'minimal':
-        return '모노크롬 미니멀';
-      default:
-        return '';
-    }
   }
 
   Widget _buildPremiumTile(ColorScheme colorScheme) {
@@ -521,40 +277,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  void _onTogglePremium() async {
-    final authState = ref.read(authStateProvider);
-    final user = authState.value;
-    if (user == null) return;
-
-    bool willBePremium = false;
-
-    if (user.isAnonymous) {
-      // 게스트: 로컬에 저장
-      final settings = Hive.box('settings');
-      final current = settings.get('guestIsPremium', defaultValue: false) as bool;
-      willBePremium = !current;
-      await settings.put('guestIsPremium', willBePremium);
-      setState(() {}); // UI 갱신
-    } else {
-      // 회원: Firestore에 저장
-      final currentProfile = ref.read(userProfileProvider).value;
-      willBePremium = !(currentProfile?.isPremium ?? false);
-      await FirestoreService.instance.togglePremium(user.uid);
-      ref.invalidate(userProfileProvider);
-    }
-
-    // 프리미엄 배지 지급 (프리미엄 활성화 시에만)
-    if (willBePremium) {
-      await BadgeService.instance.recordPremiumPurchase();
-    }
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('프리미엄 상태 변경됨! 👑')),
-      );
-    }
-  }
-
   /// 연결된 SNS 타입 가져오기
   String _getLinkedSnsType(List<String> providerIds) {
     if (providerIds.contains('google.com')) return 'Google';
@@ -570,7 +292,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final isGuest = user?.isAnonymous ?? true;
 
     // 연결된 provider 확인
-    final linkedProviders = user?.providerData.map((p) => p.providerId).toList() ?? [];
+    final linkedProviders =
+        user?.providerData.map((p) => p.providerId).toList() ?? [];
     final snsType = _getLinkedSnsType(linkedProviders);
     final hasLinkedSns = snsType.isNotEmpty;
 
@@ -590,49 +313,46 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       isPremium = profile?.isPremium ?? false;
     }
 
-    return GestureDetector(
-      onLongPress: _onTogglePremium,
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: colorScheme.surfaceContainerHighest,
-          child: PixelEmojiService.buildPixelEmoji(emoji, size: 28),
-        ),
-        title: Row(
-          children: [
-            Flexible(child: Text(nickname, overflow: TextOverflow.ellipsis)),
-            if (isPremium) ...[
-              const SizedBox(width: 8),
-              Icon(Icons.workspace_premium, size: 16, color: colorScheme.primary),
-            ],
-            if (hasLinkedSns) ...[
-              const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: colorScheme.primary.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  snsType,
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: colorScheme.primary,
-                    fontWeight: FontWeight.w500,
-                  ),
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundColor: colorScheme.surfaceContainerHighest,
+        child: PixelEmojiService.buildPixelEmoji(emoji, size: 28),
+      ),
+      title: Row(
+        children: [
+          Flexible(child: Text(nickname, overflow: TextOverflow.ellipsis)),
+          if (isPremium) ...[
+            const SizedBox(width: 8),
+            Icon(Icons.workspace_premium, size: 16, color: colorScheme.primary),
+          ],
+          if (hasLinkedSns) ...[
+            const SizedBox(width: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: colorScheme.primary.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                snsType,
+                style: TextStyle(
+                  fontSize: 10,
+                  color: colorScheme.primary,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-            ],
+            ),
           ],
-        ),
-        subtitle: Text(
-          hasLinkedSns ? l10n.accountSynced : l10n.loginToSync,
-          style: TextStyle(
-            color: hasLinkedSns ? colorScheme.primary : colorScheme.outline,
-          ),
-        ),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: _onEditProfile,
+        ],
       ),
+      subtitle: Text(
+        hasLinkedSns ? l10n.accountSynced : l10n.loginToSync,
+        style: TextStyle(
+          color: hasLinkedSns ? colorScheme.primary : colorScheme.outline,
+        ),
+      ),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: _onEditProfile,
     );
   }
 
@@ -656,12 +376,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final l10n = AppLocalizations.of(context)!;
     final langCode = Localizations.localeOf(context).languageCode;
     final selectedSoundId = AlarmSoundService.instance.getSelectedSoundId();
-    final selectedSound = AlarmSoundService.instance.getSoundById(selectedSoundId);
+    final selectedSound = AlarmSoundService.instance.getSoundById(
+      selectedSoundId,
+    );
 
     return ListTile(
       leading: const Icon(Icons.notifications_active_outlined),
       title: Text(l10n.pingNotificationSound),
-      subtitle: Text(selectedSound?.getName(langCode) ?? l10n.pingNotificationSound),
+      subtitle: Text(
+        selectedSound?.getName(langCode) ?? l10n.pingNotificationSound,
+      ),
       trailing: const Icon(Icons.chevron_right),
       onTap: () async {
         await Navigator.push(
@@ -686,7 +410,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         return ListTile(
           leading: const Text('🏆', style: TextStyle(fontSize: 24)),
           title: Text(l10n.badgeCollection),
-          subtitle: Text('🔥 ${l10n.streakDays(streak)} · ${l10n.badgesEarned(badgeCount)}'),
+          subtitle: Text(
+            '🔥 ${l10n.streakDays(streak)} · ${l10n.badgesEarned(badgeCount)}',
+          ),
           trailing: const Icon(Icons.chevron_right),
           onTap: () {
             Navigator.push(
@@ -727,9 +453,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: colorScheme.primary.withValues(alpha: 0.3),
-        ),
+        border: Border.all(color: colorScheme.primary.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -750,9 +474,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Text(
                       l10n.bonusStatus(bonusLinks, maxBonus),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -779,15 +503,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Text(
                       l10n.referralCode,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: colorScheme.outline,
-                          ),
+                        color: colorScheme.outline,
+                      ),
                     ),
                     Text(
                       referralCode,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                      ),
                     ),
                   ],
                 ),
@@ -816,9 +540,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   void _copyReferralCode(String code) {
     final l10n = AppLocalizations.of(context)!;
     Clipboard.setData(ClipboardData(text: code));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l10n.referralCodeCopied)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(l10n.referralCodeCopied)));
   }
 
   void _shareReferralCode(String code) {
@@ -826,10 +550,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final isKorean = locale.languageCode == 'ko';
 
     // 미리보기 다이얼로그로 공유
-    SharePreviewDialog.show(
-      context,
-      referralCode: code,
-      isKorean: isKorean,
-    );
+    SharePreviewDialog.show(context, referralCode: code, isKorean: isKorean);
   }
 }

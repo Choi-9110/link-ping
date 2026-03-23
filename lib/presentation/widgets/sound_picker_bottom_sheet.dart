@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -181,8 +183,7 @@ class _CategoryCard extends StatelessWidget {
                   color: colorScheme.outline,
                 ),
                 textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+                maxLines: 4,
               ),
             ],
           ),
@@ -209,13 +210,16 @@ class SoundPickerBottomSheet extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<SoundPickerBottomSheet> createState() => _SoundPickerBottomSheetState();
+  ConsumerState<SoundPickerBottomSheet> createState() =>
+      _SoundPickerBottomSheetState();
 }
 
-class _SoundPickerBottomSheetState extends ConsumerState<SoundPickerBottomSheet> {
+class _SoundPickerBottomSheetState
+    extends ConsumerState<SoundPickerBottomSheet> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   late String _previewSoundId;
   String? _playingSoundId;
+  StreamSubscription? _playerCompleteSubscription;
 
   // 포링으로 프리미엄 소리 해금한 경우 저장 전까지 자유 변경 가능
   bool _premiumUnlockedInSession = false;
@@ -228,7 +232,8 @@ class _SoundPickerBottomSheetState extends ConsumerState<SoundPickerBottomSheet>
   void initState() {
     super.initState();
     _previewSoundId =
-        widget.initialSoundId ?? AlarmSoundService.instance.getSelectedSoundId();
+        widget.initialSoundId ??
+        AlarmSoundService.instance.getSelectedSoundId();
 
     // 선택한 카테고리의 사운드만 가져오기
     final sounds = widget.category == SoundCategory.alarm
@@ -238,7 +243,7 @@ class _SoundPickerBottomSheetState extends ConsumerState<SoundPickerBottomSheet>
     _freeSounds = sounds.where((s) => !s.isPremium).toList();
     _premiumSounds = sounds.where((s) => s.isPremium).toList();
 
-    _audioPlayer.onPlayerComplete.listen((_) {
+    _playerCompleteSubscription = _audioPlayer.onPlayerComplete.listen((_) {
       if (mounted) {
         setState(() => _playingSoundId = null);
       }
@@ -246,12 +251,15 @@ class _SoundPickerBottomSheetState extends ConsumerState<SoundPickerBottomSheet>
 
     // 프리미엄 유저가 아니면 보상형 광고 미리 로드
     if (!widget.isPremium) {
-      AdService.instance.loadRewardedAd(useTestAd: false);
+      AdService.instance.loadRewardedAd(
+        useTestAd: AdService.instance.useTestAds,
+      );
     }
   }
 
   @override
   void dispose() {
+    _playerCompleteSubscription?.cancel();
     _audioPlayer.dispose();
     super.dispose();
   }
@@ -296,7 +304,10 @@ class _SoundPickerBottomSheetState extends ConsumerState<SoundPickerBottomSheet>
     // 프리미엄 소리인데 프리미엄 유저가 아닌 경우 다이얼로그 표시
     // 단, 이미 이 세션에서 포링으로 해금했으면 자유 변경 가능
     final sound = AlarmSoundService.instance.getSoundById(_previewSoundId);
-    if (sound != null && sound.isPremium && !widget.isPremium && !_premiumUnlockedInSession) {
+    if (sound != null &&
+        sound.isPremium &&
+        !widget.isPremium &&
+        !_premiumUnlockedInSession) {
       _showPremiumUnlockDialog(sound);
       return;
     }
@@ -384,7 +395,11 @@ class _SoundPickerBottomSheetState extends ConsumerState<SoundPickerBottomSheet>
           // 포링으로 해금 버튼
           FilledButton.icon(
             onPressed: () => _unlockWithPoring(dialogContext),
-            icon: Icon(Icons.notifications_active, size: 18, color: Colors.amber.shade200),
+            icon: Icon(
+              Icons.notifications_active,
+              size: 18,
+              color: Colors.amber.shade200,
+            ),
             label: Text(l10n.poringUnlock),
           ),
         ],
@@ -414,7 +429,9 @@ class _SoundPickerBottomSheetState extends ConsumerState<SoundPickerBottomSheet>
     } else {
       // 광고 보고 포링 획득+차감
       if (!AdService.instance.isRewardedAdReady) {
-        await AdService.instance.loadRewardedAd(useTestAd: false);
+        await AdService.instance.loadRewardedAd(
+          useTestAd: AdService.instance.useTestAds,
+        );
         await Future.delayed(const Duration(milliseconds: 1000));
 
         if (!AdService.instance.isRewardedAdReady) {
@@ -426,12 +443,14 @@ class _SoundPickerBottomSheetState extends ConsumerState<SoundPickerBottomSheet>
       }
 
       await AdService.instance.showRewardedAd(
-        useTestAd: false,
+        useTestAd: AdService.instance.useTestAds,
         onRewarded: () async {
           if (mounted) {
             await poringNotifier.earnPoring();
             await poringNotifier.spendPoring();
-            FirestoreService.instance.trackSoundChanged(soundId: _previewSoundId);
+            FirestoreService.instance.trackSoundChanged(
+              soundId: _previewSoundId,
+            );
             ToastOverlay.showSuccess(context, l10n.poringSpent);
             // 세션 내 자유 변경 허용
             setState(() => _premiumUnlockedInSession = true);
@@ -451,12 +470,20 @@ class _SoundPickerBottomSheetState extends ConsumerState<SoundPickerBottomSheet>
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final previewSound = AlarmSoundService.instance.getSoundById(_previewSoundId);
+    final previewSound = AlarmSoundService.instance.getSoundById(
+      _previewSoundId,
+    );
 
     final isAlarmCategory = widget.category == SoundCategory.alarm;
-    final categoryTitle = isAlarmCategory ? l10n.soundCategoryAlarm : l10n.soundCategoryNotify;
-    final categoryIcon = isAlarmCategory ? Icons.alarm : Icons.notifications_active;
-    final categoryColor = isAlarmCategory ? colorScheme.primary : colorScheme.tertiary;
+    final categoryTitle = isAlarmCategory
+        ? l10n.soundCategoryAlarm
+        : l10n.soundCategoryNotify;
+    final categoryIcon = isAlarmCategory
+        ? Icons.alarm
+        : Icons.notifications_active;
+    final categoryColor = isAlarmCategory
+        ? colorScheme.primary
+        : colorScheme.tertiary;
 
     return DraggableScrollableSheet(
       initialChildSize: 0.6,
@@ -520,7 +547,8 @@ class _SoundPickerBottomSheetState extends ConsumerState<SoundPickerBottomSheet>
                         ),
                       ),
                       Text(
-                        previewSound?.getName(widget.langCode) ?? l10n.alarmSound,
+                        previewSound?.getName(widget.langCode) ??
+                            l10n.alarmSound,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -610,7 +638,8 @@ class _SoundPickerBottomSheetState extends ConsumerState<SoundPickerBottomSheet>
       children: sounds.map((sound) {
         final isSelected = _previewSoundId == sound.id;
         final isPlaying = _playingSoundId == sound.id;
-        final isLocked = sound.isPremium && !widget.isPremium && !_premiumUnlockedInSession;
+        final isLocked =
+            sound.isPremium && !widget.isPremium && !_premiumUnlockedInSession;
 
         return GestureDetector(
           onTap: () => _playSound(sound),
@@ -660,7 +689,9 @@ class _SoundPickerBottomSheetState extends ConsumerState<SoundPickerBottomSheet>
                   Icon(
                     Icons.lock,
                     size: 14,
-                    color: isSelected ? colorScheme.onPrimary : colorScheme.outline,
+                    color: isSelected
+                        ? colorScheme.onPrimary
+                        : colorScheme.outline,
                   ),
                 ],
               ],

@@ -449,8 +449,8 @@
 
   "soundCategoryAlarm": "Long Alarm",
   "soundCategoryNotify": "Quick Effect",
-  "soundCategoryAlarmDesc": "Melodic tunes (5-15 sec) · For must-not-miss alarms!",
-  "soundCategoryNotifyDesc": "Short sounds (2-5 sec) · For light check-and-go reminders!",
+  "soundCategoryAlarmDesc": "Melodic\n(5-15 sec)\nFor must-not-miss alarms",
+  "soundCategoryNotifyDesc": "Short effect\n(2-5 sec)\nFor quick reminders",
 
   "currentStreak": "Current Streak",
   "achievementRate": "Achievement",

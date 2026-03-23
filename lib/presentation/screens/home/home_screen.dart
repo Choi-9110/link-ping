@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-import 'package:share_plus/share_plus.dart';
 import '../../../l10n/app_localizations.dart';
 
+import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/spacing.dart';
 import '../../../core/utils/badge_localizations.dart';
 import '../../../data/models/badge.dart';
@@ -23,9 +23,10 @@ import '../badges/badge_collection_screen.dart';
 import '../edit_link/edit_link_screen.dart';
 import '../notifications/notifications_screen.dart';
 import '../settings/settings_screen.dart';
-import '../../widgets/banner_ad_widget.dart';
+// banner_ad_widget은 MainShell에서 통합 관리
 import '../../widgets/native_ad_widget.dart';
 import '../../widgets/share_preview_dialog.dart';
+import '../../widgets/link_share_preview_dialog.dart';
 import '../../widgets/poring_counter_widget.dart';
 import '../../widgets/toast_overlay.dart';
 import 'widgets/link_card.dart';
@@ -63,7 +64,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Future<void> _claimPendingPoringReward() async {
     try {
-      final claimed = await FirestoreService.instance.claimPendingPoringReward();
+      final claimed = await FirestoreService.instance
+          .claimPendingPoringReward();
       if (claimed > 0) {
         // Hive 로컬 포링에 합산
         await PoringService.instance.addPoring(claimed);
@@ -89,14 +91,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   void _listenForSharedIntent() {
     // 앱이 이미 실행 중일 때 공유 수신
-    _shareSubscription = ReceiveSharingIntent.instance
-        .getMediaStream()
-        .listen(_handleSharedMedia);
+    _shareSubscription = ReceiveSharingIntent.instance.getMediaStream().listen(
+      _handleSharedMedia,
+      onError: (error) => debugPrint('Share stream error: $error'),
+    );
 
     // 앱이 공유로 처음 열렸을 때
-    ReceiveSharingIntent.instance
-        .getInitialMedia()
-        .then(_handleSharedMedia);
+    ReceiveSharingIntent.instance.getInitialMedia().then(
+      _handleSharedMedia,
+      onError: (e) => debugPrint('Initial media error: $e'),
+    );
   }
 
   void _handleSharedMedia(List<SharedMediaFile> files) {
@@ -106,9 +110,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if (url != null && mounted) {
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (context) => AddLinkScreen(initialUrl: url),
-        ),
+        MaterialPageRoute(builder: (context) => AddLinkScreen(initialUrl: url)),
       );
     }
     ReceiveSharingIntent.instance.reset();
@@ -230,7 +232,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           minHeight: 16,
                         ),
                         child: Text(
-                          '${unreadCount.value! > 9 ? '9+' : unreadCount.value}',
+                          '${(unreadCount.value ?? 0) > 9 ? '9+' : unreadCount.value ?? 0}',
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.onError,
                             fontSize: 10,
@@ -265,7 +267,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
                       // 광고 포함한 총 아이템 수 계산
                       final adInterval = 2; // 2개마다 광고
-                      final adCount = isPremium ? 0 : (links.length / adInterval).floor();
+                      final adCount = isPremium
+                          ? 0
+                          : (links.length / adInterval).floor();
                       final totalItems = links.length + adCount;
 
                       return ListView.builder(
@@ -276,19 +280,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           if (isPremium) {
                             final link = links[index];
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: Spacing.sm),
+                              padding: const EdgeInsets.only(
+                                bottom: Spacing.sm,
+                              ),
                               child: _LinkCardWithCount(
                                 link: link,
                                 onTap: () => _onCardTap(context, link),
-                                onToggle: () => ref.read(linksProvider.notifier).toggleLink(link.id),
-                                onDelete: () => ref.read(linksProvider.notifier).deleteLink(link.id),
+                                onToggle: () => ref
+                                    .read(linksProvider.notifier)
+                                    .toggleLink(link.id),
+                                onDelete: () => ref
+                                    .read(linksProvider.notifier)
+                                    .deleteLink(link.id),
                               ),
                             );
                           }
 
                           // 광고 위치 계산 (2, 5, 8, ...)
-                          final adsBeforeIndex = (index / (adInterval + 1)).floor();
-                          final isAdPosition = (index + 1) % (adInterval + 1) == 0 && index > 0;
+                          final adsBeforeIndex = (index / (adInterval + 1))
+                              .floor();
+                          final isAdPosition =
+                              (index + 1) % (adInterval + 1) == 0 && index > 0;
 
                           if (isAdPosition) {
                             return const NativeAdWidget();
@@ -306,8 +318,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             child: _LinkCardWithCount(
                               link: link,
                               onTap: () => _onCardTap(context, link),
-                              onToggle: () => ref.read(linksProvider.notifier).toggleLink(link.id),
-                              onDelete: () => ref.read(linksProvider.notifier).deleteLink(link.id),
+                              onToggle: () => ref
+                                  .read(linksProvider.notifier)
+                                  .toggleLink(link.id),
+                              onDelete: () => ref
+                                  .read(linksProvider.notifier)
+                                  .deleteLink(link.id),
                             ),
                           );
                         },
@@ -315,35 +331,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     },
                   ),
           ),
-          // 배너 광고 (프리미엄 사용자는 제외)
-          Consumer(
-            builder: (context, ref, _) {
-              final userProfile = ref.watch(userProfileProvider);
-              final isPremium = userProfile.value?.isPremium ?? false;
-
-              if (isPremium) return const SizedBox.shrink();
-
-              return const SafeArea(
-                top: false,
-                child: BannerAdWidget(),
-              );
-            },
-          ),
+          // 배너 광고는 MainShell에서 통합 관리
         ],
       ),
-      floatingActionButton: Consumer(
-        builder: (context, ref, _) {
-          final userProfile = ref.watch(userProfileProvider);
-          final isPremium = userProfile.value?.isPremium ?? false;
-
-          return Padding(
-            padding: EdgeInsets.only(bottom: isPremium ? 0 : 60), // 프리미엄이면 광고 없으니 0
-            child: FloatingActionButton(
-              onPressed: () => _onAddLink(context, canAddMore),
-              child: const Icon(Icons.add),
-            ),
-          );
-        },
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'home_fab',
+        onPressed: () => _onAddLink(context, canAddMore),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -351,7 +345,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildStreakHeader(BuildContext context) {
     final links = ref.watch(linksProvider);
 
-    return FutureBuilder<List<({BadgeType type, UserBadge? earned, int progress, int target})>>(
+    return FutureBuilder<
+      List<({BadgeType type, UserBadge? earned, int progress, int target})>
+    >(
       future: BadgeService.instance.getAllBadgesWithProgress(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const SizedBox.shrink();
@@ -361,52 +357,67 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         // 뱃지 우선순위 (낮을수록 높은 우선순위)
         int getBadgePriority(BadgeType type) {
           switch (type) {
-            case BadgeType.firstLink: return 1;    // 첫 링크 - 최우선
-            case BadgeType.streak3: return 2;      // 3일 스트릭
-            case BadgeType.firstCheer: return 3;   // 첫 응원
-            case BadgeType.firstPoke: return 4;    // 첫 찌르기
-            case BadgeType.streak7: return 5;      // 7일 스트릭
-            case BadgeType.earlyBird: return 6;
-            case BadgeType.nightOwl: return 7;
-            case BadgeType.quickDraw: return 8;
-            case BadgeType.speedDemon: return 9;
-            case BadgeType.linkCollector: return 10;
-            case BadgeType.cheerLeader: return 11;
-            case BadgeType.poker: return 12;
-            case BadgeType.streak30: return 13;
-            case BadgeType.perfectWeek: return 14;
-            default: return 99;
+            case BadgeType.firstLink:
+              return 1; // 첫 링크 - 최우선
+            case BadgeType.streak3:
+              return 2; // 3일 스트릭
+            case BadgeType.firstCheer:
+              return 3; // 첫 응원
+            case BadgeType.firstPoke:
+              return 4; // 첫 찌르기
+            case BadgeType.streak7:
+              return 5; // 7일 스트릭
+            case BadgeType.earlyBird:
+              return 6;
+            case BadgeType.nightOwl:
+              return 7;
+            case BadgeType.quickDraw:
+              return 8;
+            case BadgeType.speedDemon:
+              return 9;
+            case BadgeType.linkCollector:
+              return 10;
+            case BadgeType.cheerLeader:
+              return 11;
+            case BadgeType.poker:
+              return 12;
+            case BadgeType.streak30:
+              return 13;
+            case BadgeType.perfectWeek:
+              return 14;
+            default:
+              return 99;
           }
         }
 
         // 특별 케이스: 첫 링크 뱃지 (링크가 없을 때 표시)
         final firstLinkBadge = badges.firstWhere(
           (b) => b.type == BadgeType.firstLink,
-          orElse: () => (type: BadgeType.firstLink, earned: null, progress: 0, target: 1),
+          orElse: () =>
+              (type: BadgeType.firstLink, earned: null, progress: 0, target: 1),
         );
 
         if (links.isEmpty && firstLinkBadge.earned == null) {
           // 첫 링크가 없으면 "첫 링크" 뱃지 안내
-          return _buildBadgeHint(
-            context,
-            firstLinkBadge.type,
-            0,
-            1,
-          );
+          return _buildBadgeHint(context, firstLinkBadge.type, 0, 1);
         }
 
         // 달성 임박 뱃지 찾기 (90% 이상, 아직 미획득)
         final nearlyComplete = badges
-            .where((b) =>
-                b.earned == null &&
-                b.target > 0 &&
-                b.progress > 0 &&
-                (b.progress / b.target) >= 0.9) // 90% 이상
+            .where(
+              (b) =>
+                  b.earned == null &&
+                  b.target > 0 &&
+                  b.progress > 0 &&
+                  (b.progress / b.target) >= 0.9,
+            ) // 90% 이상
             .toList();
 
         // 우선순위 → 진행률 순으로 정렬
         nearlyComplete.sort((a, b) {
-          final priorityCompare = getBadgePriority(a.type).compareTo(getBadgePriority(b.type));
+          final priorityCompare = getBadgePriority(
+            a.type,
+          ).compareTo(getBadgePriority(b.type));
           if (priorityCompare != 0) return priorityCompare;
           return (b.progress / b.target).compareTo(a.progress / a.target);
         });
@@ -417,25 +428,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         }
 
         final badge = nearlyComplete.first;
-        return _buildBadgeHint(context, badge.type, badge.progress, badge.target);
+        return _buildBadgeHint(
+          context,
+          badge.type,
+          badge.progress,
+          badge.target,
+        );
       },
     );
   }
 
-  Widget _buildBadgeHint(BuildContext context, BadgeType type, int progress, int target) {
+  Widget _buildBadgeHint(
+    BuildContext context,
+    BadgeType type,
+    int progress,
+    int target,
+  ) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (_) => const BadgeCollectionScreen(),
-        ),
+        MaterialPageRoute(builder: (_) => const BadgeCollectionScreen()),
       ),
       child: Container(
-        margin: const EdgeInsets.fromLTRB(Spacing.md, Spacing.sm, Spacing.md, 0),
-        padding: const EdgeInsets.symmetric(horizontal: Spacing.md, vertical: Spacing.sm),
+        margin: const EdgeInsets.fromLTRB(
+          Spacing.md,
+          Spacing.sm,
+          Spacing.md,
+          0,
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Spacing.md,
+          vertical: Spacing.sm,
+        ),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -477,8 +504,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           child: LinearProgressIndicator(
                             value: target > 0 ? progress / target : 0,
                             minHeight: 6,
-                            backgroundColor: colorScheme.outline.withValues(alpha: 0.2),
-                            valueColor: AlwaysStoppedAnimation(colorScheme.primary),
+                            backgroundColor: colorScheme.outline.withValues(
+                              alpha: 0.2,
+                            ),
+                            valueColor: AlwaysStoppedAnimation(
+                              colorScheme.primary,
+                            ),
                           ),
                         ),
                       ),
@@ -507,13 +538,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     final result = await Navigator.push<Map<String, dynamic>>(
       context,
-      MaterialPageRoute(
-        builder: (context) => const AddLinkScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const AddLinkScreen()),
     );
 
     if (result != null) {
-      await ref.read(linksProvider.notifier).addLink(
+      await ref
+          .read(linksProvider.notifier)
+          .addLink(
             url: result['url'],
             title: result['title'],
             hour: result['hour'],
@@ -533,30 +564,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
-  void _onCardTap(BuildContext context, LinkReminder link) {
-    final l10n = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
+  void _onCardTap(BuildContext parentContext, LinkReminder link) {
+    final l10n = AppLocalizations.of(parentContext)!;
+    final colorScheme = Theme.of(parentContext).colorScheme;
 
     showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          link.title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+      context: parentContext,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(link.title, maxLines: 1, overflow: TextOverflow.ellipsis),
         content: Row(
           children: [
             // 공유하기 버튼
             Expanded(
               child: _buildActionButton(
-                context: context,
+                context: dialogContext,
                 icon: Icons.share_outlined,
                 label: l10n.share,
                 color: colorScheme.primary,
                 onTap: () {
-                  Navigator.pop(context);
-                  _shareLink(context, link);
+                  Navigator.pop(dialogContext);
+                  _shareLink(parentContext, link);
                 },
               ),
             ),
@@ -564,13 +591,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // 수정하기 버튼
             Expanded(
               child: _buildActionButton(
-                context: context,
+                context: dialogContext,
                 icon: Icons.edit_outlined,
                 label: l10n.edit,
                 color: colorScheme.secondary,
                 onTap: () {
-                  Navigator.pop(context);
-                  _goToEditLink(context, link);
+                  Navigator.pop(dialogContext);
+                  _goToEditLink(parentContext, link);
                 },
               ),
             ),
@@ -602,10 +629,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(height: 8),
               Text(
                 label,
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(color: color, fontWeight: FontWeight.w600),
               ),
             ],
           ),
@@ -651,20 +675,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       }
 
       // 공유 URL 생성
-      const baseUrl = 'https://linkping-4b337.web.app'; // TODO: 커스텀 도메인으로 변경
-      final shareUrl = '$baseUrl/s/$shareId';
+      final shareUrl = AppConstants.buildShareUrl(shareId);
 
-      final lockText = link.isLocked ? '🔒' : '🔓';
       final timeText = '${link.getRepeatString(isKorean)} ${link.timeString}';
-      final message = '$lockText ${link.title}\n⏰ $timeText\n\n$shareUrl';
-
-      Share.share(message, subject: link.title);
+      if (!context.mounted) return;
+      await LinkSharePreviewDialog.show(
+        context,
+        title: link.title,
+        timeText: timeText,
+        shareUrl: shareUrl,
+        isLocked: link.isLocked,
+        isKorean: isKorean,
+      );
     } catch (e) {
       if (context.mounted) {
-        // 실패 시 기존 방식으로 공유
+        // 링크 생성 실패 시 원본 링크로 공유
         final timeText = '${link.getRepeatString(isKorean)} ${link.timeString}';
-        final message = l10n.shareMessage(timeText, link.url);
-        Share.share(message, subject: link.title);
+        await LinkSharePreviewDialog.show(
+          context,
+          title: link.title,
+          timeText: timeText,
+          shareUrl: link.url,
+          isLocked: link.isLocked,
+          isKorean: isKorean,
+        );
       }
     }
   }
@@ -672,9 +706,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void _goToEditLink(BuildContext context, LinkReminder link) async {
     final result = await Navigator.push<Map<String, dynamic>>(
       context,
-      MaterialPageRoute(
-        builder: (context) => EditLinkScreen(link: link),
-      ),
+      MaterialPageRoute(builder: (context) => EditLinkScreen(link: link)),
     );
 
     if (result != null) {
@@ -714,18 +746,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void _onNotifications(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const NotificationsScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const NotificationsScreen()),
     );
   }
 
   void _onSettings(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const SettingsScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const SettingsScreen()),
     );
   }
 
@@ -747,10 +775,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              l10n.linkLimitMessageBase,
-              textAlign: TextAlign.center,
-            ),
+            Text(l10n.linkLimitMessageBase, textAlign: TextAlign.center),
             const SizedBox(height: 20),
             // 친구초대하기 버튼
             FilledButton.tonal(
@@ -786,9 +811,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => const SettingsScreen(),
-                ),
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
               );
             },
             child: Text(l10n.viewPremium),

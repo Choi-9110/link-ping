@@ -1871,13 +1871,13 @@ abstract class AppLocalizations {
   /// No description provided for @soundCategoryAlarmDesc.
   ///
   /// In ko, this message translates to:
-  /// **'멜로디형 (5-15초) · 절대 놓치면 안 되는 중요한 알람에!'**
+  /// **'멜로디형\n(5-15초)\n놓치면 안 되는 중요한 알람용'**
   String get soundCategoryAlarmDesc;
 
   /// No description provided for @soundCategoryNotifyDesc.
   ///
   /// In ko, this message translates to:
-  /// **'짧은 효과음 (2-5초) · 가볍게 확인하고 넘어갈 리마인더에!'**
+  /// **'짧은 효과음\n(2-5초)\n가볍게 확인할 리마인더용'**
   String get soundCategoryNotifyDesc;
 
   /// No description provided for @currentStreak.

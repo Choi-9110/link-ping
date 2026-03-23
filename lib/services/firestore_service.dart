@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 import '../data/models/user_profile.dart';
 import '../data/models/user_stats.dart';
@@ -33,7 +34,8 @@ class FirestoreService {
   CollectionReference<Map<String, dynamic>> get _inquiriesCollection =>
       _firestore.collection('inquiries');
 
-  CollectionReference<Map<String, dynamic>> get _modificationRequestsCollection =>
+  CollectionReference<Map<String, dynamic>>
+  get _modificationRequestsCollection =>
       _firestore.collection('modificationRequests');
 
   CollectionReference<Map<String, dynamic>> get _analyticsCollection =>
@@ -43,10 +45,9 @@ class FirestoreService {
 
   /// 사용자 프로필 저장/업데이트
   Future<void> saveUserProfile(UserProfile profile) async {
-    await _usersCollection.doc(profile.uid).set(
-          profile.toFirestore(),
-          SetOptions(merge: true),
-        );
+    await _usersCollection
+        .doc(profile.uid)
+        .set(profile.toFirestore(), SetOptions(merge: true));
   }
 
   /// 사용자 프로필 가져오기
@@ -64,6 +65,20 @@ class FirestoreService {
     });
   }
 
+  /// 현재 로그인 사용자의 관리자 권한 확인
+  Future<bool> isCurrentUserAdmin() async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return false;
+
+    try {
+      final doc = await _usersCollection.doc(uid).get();
+      if (!doc.exists) return false;
+      return doc.data()?['isAdmin'] == true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   /// 닉네임 중복 검사
   Future<bool> isNicknameDuplicate(String nickname) async {
     try {
@@ -73,7 +88,7 @@ class FirestoreService {
           .get();
       return query.docs.isNotEmpty;
     } catch (e) {
-      print('닉네임 중복 검사 에러: $e');
+      debugPrint('닉네임 중복 검사 에러: $e');
       return false; // 에러 시 중복 아님으로 처리
     }
   }
@@ -179,7 +194,9 @@ class FirestoreService {
 
       if (doc.exists) {
         final currentCount = doc.data()?['saveCount'] ?? 0;
-        final savedBy = List<Map<String, dynamic>>.from(doc.data()?['savedBy'] ?? []);
+        final savedBy = List<Map<String, dynamic>>.from(
+          doc.data()?['savedBy'] ?? [],
+        );
 
         // 이미 저장한 유저인지 확인
         final alreadySaved = savedBy.any((u) => u['uid'] == user.uid);
@@ -212,7 +229,9 @@ class FirestoreService {
 
       if (doc.exists) {
         final currentCount = doc.data()?['saveCount'] ?? 0;
-        final savedBy = List<Map<String, dynamic>>.from(doc.data()?['savedBy'] ?? []);
+        final savedBy = List<Map<String, dynamic>>.from(
+          doc.data()?['savedBy'] ?? [],
+        );
 
         // 해당 유저 제거
         savedBy.removeWhere((u) => u['uid'] == user.uid);
@@ -249,7 +268,9 @@ class FirestoreService {
     final doc = await _urlStatsCollection.doc(urlHash).get();
     if (!doc.exists) return [];
 
-    final savedBy = List<Map<String, dynamic>>.from(doc.data()?['savedBy'] ?? []);
+    final savedBy = List<Map<String, dynamic>>.from(
+      doc.data()?['savedBy'] ?? [],
+    );
     return savedBy.map((data) => SavedByUser.fromMap(data)).toList();
   }
 
@@ -257,7 +278,9 @@ class FirestoreService {
   Stream<List<SavedByUser>> savedByUsersStream(String urlHash) {
     return _urlStatsCollection.doc(urlHash).snapshots().map((doc) {
       if (!doc.exists) return [];
-      final savedBy = List<Map<String, dynamic>>.from(doc.data()?['savedBy'] ?? []);
+      final savedBy = List<Map<String, dynamic>>.from(
+        doc.data()?['savedBy'] ?? [],
+      );
       return savedBy.map((data) => SavedByUser.fromMap(data)).toList();
     });
   }
@@ -275,28 +298,33 @@ class FirestoreService {
       // 이 유저가 저장한 모든 URL stats 찾기
       final querySnapshot = await _urlStatsCollection.get();
 
-      final batch = _firestore.batch();
-      int updateCount = 0;
+      final docsToUpdate = <({DocumentReference ref, List<Map<String, dynamic>> savedBy})>[];
 
       for (final doc in querySnapshot.docs) {
-        final savedBy = List<Map<String, dynamic>>.from(doc.data()['savedBy'] ?? []);
+        final savedBy = List<Map<String, dynamic>>.from(
+          doc.data()['savedBy'] ?? [],
+        );
         final userIndex = savedBy.indexWhere((u) => u['uid'] == user.uid);
 
         if (userIndex != -1) {
-          // 유저 정보 업데이트
           savedBy[userIndex] = {
             'uid': user.uid,
             'nickname': nickname,
             'profileEmoji': emoji,
             if (country != null) 'country': country,
           };
-
-          batch.update(doc.reference, {'savedBy': savedBy});
-          updateCount++;
+          docsToUpdate.add((ref: doc.reference, savedBy: savedBy));
         }
       }
 
-      if (updateCount > 0) {
+      // Firestore batch 500개 제한 대응
+      const batchLimit = 450;
+      for (var i = 0; i < docsToUpdate.length; i += batchLimit) {
+        final chunk = docsToUpdate.skip(i).take(batchLimit);
+        final batch = _firestore.batch();
+        for (final item in chunk) {
+          batch.update(item.ref, {'savedBy': item.savedBy});
+        }
         await batch.commit();
       }
     } catch (e) {
@@ -320,7 +348,8 @@ class FirestoreService {
     final fromNickname = await _getCurrentNickname();
 
     // 메시지 선택
-    final message = customMessage ??
+    final message =
+        customMessage ??
         (type == PingType.cheer
             ? PingMessages.getRandomCheerMessage()
             : PingMessages.getRandomTeaseMessage());
@@ -342,7 +371,9 @@ class FirestoreService {
         .add(notification.toFirestore());
 
     // 받는 사람의 통계 업데이트 (Social Butterfly 배지용)
-    final statsField = type == PingType.cheer ? 'cheersReceived' : 'pokesReceived';
+    final statsField = type == PingType.cheer
+        ? 'cheersReceived'
+        : 'pokesReceived';
     await _firestore.collection('userStats').doc(toUid).set({
       statsField: FieldValue.increment(1),
     }, SetOptions(merge: true));
@@ -505,7 +536,7 @@ class FirestoreService {
       if (!doc.exists) return null;
       return SharedLink.fromJson(doc.data()!);
     } catch (e) {
-      print('공유 링크 조회 에러: $e');
+      debugPrint('공유 링크 조회 에러: $e');
       return null;
     }
   }
@@ -517,7 +548,7 @@ class FirestoreService {
         'viewCount': FieldValue.increment(1),
       });
     } catch (e) {
-      print('조회수 증가 에러: $e');
+      debugPrint('조회수 증가 에러: $e');
     }
   }
 
@@ -544,7 +575,9 @@ class FirestoreService {
     if (sharedLink == null) throw Exception('공유 링크를 찾을 수 없습니다');
 
     // 투표 대상자 = 저장한 사람들 (자기 자신 제외)
-    final voterUids = sharedLink.savedByUids.where((uid) => uid != user.uid).toList();
+    final voterUids = sharedLink.savedByUids
+        .where((uid) => uid != user.uid)
+        .toList();
     if (voterUids.isEmpty) throw Exception('수정 요청을 보낼 대상이 없습니다');
 
     // 투표 초기화 (모두 pending)
@@ -589,7 +622,8 @@ class FirestoreService {
         'fromUid': user.uid,
         'fromNickname': nickname,
         'urlTitle': linkTitle,
-        'message': '$nickname님이 "$linkTitle" 알람 시간 수정을 요청했어요.\n${request.timeChangeString}',
+        'message':
+            '$nickname님이 "$linkTitle" 알람 시간 수정을 요청했어요.\n${request.timeChangeString}',
         'modificationRequestId': docRef.id,
         'sharedLinkId': sharedLinkId,
         'createdAt': FieldValue.serverTimestamp(),
@@ -653,7 +687,9 @@ class FirestoreService {
     final isApproved = request.isApprovalReached;
     final newStatus = isExpired && !allVoted
         ? ModificationStatus.expired
-        : (isApproved ? ModificationStatus.approved : ModificationStatus.rejected);
+        : (isApproved
+              ? ModificationStatus.approved
+              : ModificationStatus.rejected);
 
     // 상태 업데이트
     await _modificationRequestsCollection.doc(requestId).update({
@@ -681,7 +717,8 @@ class FirestoreService {
         type: 'modification_approved',
         fromNickname: 'LinkPing',
         urlTitle: linkTitle,
-        message: '"$linkTitle" 수정 요청이 승인되었어요! (${request.approvedCount}/${request.respondedCount} 승인)',
+        message:
+            '"$linkTitle" 수정 요청이 승인되었어요! (${request.approvedCount}/${request.respondedCount} 승인)',
         sharedLinkId: request.sharedLinkId,
       );
 
@@ -728,7 +765,8 @@ class FirestoreService {
         type: 'modification_rejected',
         fromNickname: 'LinkPing',
         urlTitle: linkTitle,
-        message: '"$linkTitle" 수정 요청이 거부되었어요. (${request.approvedCount}/${request.respondedCount} 승인)',
+        message:
+            '"$linkTitle" 수정 요청이 거부되었어요. (${request.approvedCount}/${request.respondedCount} 승인)',
         sharedLinkId: request.sharedLinkId,
       );
     }
@@ -757,7 +795,8 @@ class FirestoreService {
       'urlTitle': urlTitle,
       'message': message,
       if (sharedLinkId != null) 'sharedLinkId': sharedLinkId,
-      if (modificationRequestId != null) 'modificationRequestId': modificationRequestId,
+      if (modificationRequestId != null)
+        'modificationRequestId': modificationRequestId,
       'createdAt': FieldValue.serverTimestamp(),
       'isRead': false,
     });
@@ -779,7 +818,8 @@ class FirestoreService {
 
         // 만료됐고 내가 관련된 경우 처리
         if (request.isExpired &&
-            (request.voterUids.contains(user.uid) || request.creatorUid == user.uid)) {
+            (request.voterUids.contains(user.uid) ||
+                request.creatorUid == user.uid)) {
           await _checkAndProcessModificationRequest(doc.id);
         }
       }
@@ -823,7 +863,9 @@ class FirestoreService {
         .where('userId', isEqualTo: user.uid)
         .snapshots()
         .map((snapshot) {
-          final list = snapshot.docs.map((doc) => Inquiry.fromFirestore(doc)).toList();
+          final list = snapshot.docs
+              .map((doc) => Inquiry.fromFirestore(doc))
+              .toList();
           // 클라이언트에서 정렬 (인덱스 없이도 동작)
           list.sort((a, b) => b.createdAt.compareTo(a.createdAt));
           return list;
@@ -837,7 +879,7 @@ class FirestoreService {
       if (!doc.exists) return null;
       return Inquiry.fromFirestore(doc);
     } catch (e) {
-      print('문의 조회 에러: $e');
+      debugPrint('문의 조회 에러: $e');
       return null;
     }
   }
@@ -854,8 +896,10 @@ class FirestoreService {
 
   /// [관리자] 모든 문의 목록 가져오기
   Stream<List<Inquiry>> allInquiriesStream({String? statusFilter}) {
-    Query<Map<String, dynamic>> query = _inquiriesCollection
-        .orderBy('createdAt', descending: true);
+    Query<Map<String, dynamic>> query = _inquiriesCollection.orderBy(
+      'createdAt',
+      descending: true,
+    );
 
     if (statusFilter != null) {
       query = query.where('status', isEqualTo: statusFilter);
@@ -884,13 +928,13 @@ class FirestoreService {
           .doc(inquiry.userId)
           .collection('items')
           .add({
-        'type': 'inquiry_reply',
-        'inquiryId': inquiryId,
-        'inquiryTitle': inquiry.title,
-        'message': '문의하신 내용에 답변이 등록되었습니다.',
-        'createdAt': FieldValue.serverTimestamp(),
-        'isRead': false,
-      });
+            'type': 'inquiry_reply',
+            'inquiryId': inquiryId,
+            'inquiryTitle': inquiry.title,
+            'message': '문의하신 내용에 답변이 등록되었습니다.',
+            'createdAt': FieldValue.serverTimestamp(),
+            'isRead': false,
+          });
     }
   }
 
@@ -916,7 +960,7 @@ class FirestoreService {
       }
       return null;
     } catch (e) {
-      print('추천인 찾기 에러: $e');
+      debugPrint('추천인 찾기 에러: $e');
       return null;
     }
   }
@@ -946,7 +990,7 @@ class FirestoreService {
         return true;
       });
     } catch (e) {
-      print('보너스 지급 에러: $e');
+      debugPrint('보너스 지급 에러: $e');
       return false;
     }
   }
@@ -963,14 +1007,11 @@ class FirestoreService {
     // 자기 자신 추천 방지
     if (referrerUid == newUserUid) return;
 
-    // 새 유저에게 추천인 정보 저장
-    await _usersCollection.doc(newUserUid).update({
-      'referredBy': referrerUid,
-    });
+    // 새 유저에게 추천인 정보 저장 + 추천 횟수를 원자적으로 확인
+    await _usersCollection.doc(newUserUid).update({'referredBy': referrerUid});
 
-    // 추천 횟수 확인 (현재 새 유저 포함 전 카운트)
+    // 추천 횟수를 조회 (update 후이므로 이 유저 포함)
     final referralCount = await getReferralCount(referrerUid);
-    // referralCount는 이미 이 유저를 포함한 값 (referredBy 업데이트 후)
 
     final nickname = await _getCurrentNickname();
 
@@ -982,22 +1023,19 @@ class FirestoreService {
             .doc(referrerUid)
             .collection('items')
             .add({
-          'type': 'referral_accepted',
-          'fromUid': newUserUid,
-          'fromNickname': nickname,
-          'urlTitle': '',
-          'message': '$nickname님이 초대에 응했어요! 보너스 링크 +1',
-          'createdAt': FieldValue.serverTimestamp(),
-          'isRead': false,
-        });
+              'type': 'referral_accepted',
+              'fromUid': newUserUid,
+              'fromNickname': nickname,
+              'urlTitle': '',
+              'message': '$nickname님이 초대에 응했어요! 보너스 링크 +1',
+              'createdAt': FieldValue.serverTimestamp(),
+              'isRead': false,
+            });
       }
     } else {
       // 2번째+ 추천 → 포링 +5
       await addPendingPoringReward(referrerUid, 5);
-      await _notificationsCollection
-          .doc(referrerUid)
-          .collection('items')
-          .add({
+      await _notificationsCollection.doc(referrerUid).collection('items').add({
         'type': 'referral_accepted',
         'fromUid': newUserUid,
         'fromNickname': nickname,
@@ -1030,9 +1068,7 @@ class FirestoreService {
       if (pending <= 0) return 0;
 
       // Firestore에서 0으로 리셋
-      await _usersCollection.doc(uid).update({
-        'pendingPoringReward': 0,
-      });
+      await _usersCollection.doc(uid).update({'pendingPoringReward': 0});
 
       return pending as int;
     } catch (e) {
@@ -1094,7 +1130,8 @@ class FirestoreService {
 
       // 2. 일별 통계 기록 (soundStats/daily/{date}/{soundId})
       final today = DateTime.now();
-      final dateStr = '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
+      final dateStr =
+          '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
 
       final dailyStatsRef = _analyticsCollection
           .doc('soundStats')
@@ -1132,10 +1169,9 @@ class FirestoreService {
           .orderBy('selectCount', descending: true)
           .get();
 
-      return snapshot.docs.map((doc) => {
-        'soundId': doc.id,
-        ...doc.data(),
-      }).toList();
+      return snapshot.docs
+          .map((doc) => {'soundId': doc.id, ...doc.data()})
+          .toList();
     } catch (e) {
       return [];
     }
@@ -1152,7 +1188,8 @@ class FirestoreService {
       // 날짜 범위 내 모든 일별 데이터 조회
       DateTime current = startDate;
       while (current.isBefore(endDate) || current.isAtSameMomentAs(endDate)) {
-        final dateStr = '${current.year}-${current.month.toString().padLeft(2, '0')}-${current.day.toString().padLeft(2, '0')}';
+        final dateStr =
+            '${current.year}-${current.month.toString().padLeft(2, '0')}-${current.day.toString().padLeft(2, '0')}';
 
         final snapshot = await _analyticsCollection
             .doc('soundStats')
@@ -1196,10 +1233,7 @@ class FirestoreService {
     try {
       final stats = await getSoundStats();
 
-      final categoryUsage = <String, int>{
-        'alarm': 0,
-        'notify': 0,
-      };
+      final categoryUsage = <String, int>{'alarm': 0, 'notify': 0};
 
       for (final stat in stats) {
         final category = stat['category'] as String? ?? 'alarm';

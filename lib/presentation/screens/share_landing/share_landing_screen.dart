@@ -546,6 +546,6 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
 
   void _openPlayStore() {
     // TODO: 실제 Play Store URL로 변경
-    _openUrl('https://play.google.com/store/apps/details?id=com.linkping.app');
+    _openUrl('https://play.google.com/store/apps/details?id=com.drevv.linkping');
   }
 }

@@ -17,6 +17,16 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _isLoading = false;
+  String _friendlyError(Object e, AppLocalizations l10n) {
+    final msg = e.toString();
+    if (msg.contains('[cloud_firestore/permission-denied]')) {
+      return l10n.loginFailed;
+    }
+    if (msg.contains('[cloud_firestore/unavailable]')) {
+      return l10n.loginFailed;
+    }
+    return l10n.loginFailed;
+  }
 
   Future<void> _signInWithGoogle() async {
     setState(() => _isLoading = true);
@@ -54,7 +64,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${l10n.loginFailed}: $e')),
+          SnackBar(content: Text(_friendlyError(e, l10n))),
         );
       }
     } finally {
@@ -89,7 +99,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${l10n.guestLoginFailed}: $e')),
+          SnackBar(content: Text(l10n.guestLoginFailed)),
         );
       }
     } finally {

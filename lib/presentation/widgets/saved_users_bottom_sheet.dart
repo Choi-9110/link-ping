@@ -28,7 +28,8 @@ class SavedUsersBottomSheet extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<SavedUsersBottomSheet> createState() => _SavedUsersBottomSheetState();
+  ConsumerState<SavedUsersBottomSheet> createState() =>
+      _SavedUsersBottomSheetState();
 }
 
 class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
@@ -96,7 +97,7 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
       final completer = Completer<bool>();
 
       if (!adService.isRewardedAdReady) {
-        await adService.loadRewardedAd(useTestAd: true); // TODO: 프로덕션에서는 false로
+        await adService.loadRewardedAd(useTestAd: adService.useTestAds);
 
         for (int i = 0; i < 50; i++) {
           if (adService.isRewardedAdReady) break;
@@ -109,7 +110,7 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
       }
 
       await adService.showRewardedAd(
-        useTestAd: true, // TODO: 프로덕션에서는 false로
+        useTestAd: adService.useTestAds,
         onRewarded: () async {
           dev.log('Rewarded ad: user earned reward');
           await poringNotifier.earnPoring();
@@ -137,7 +138,11 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
   }
 
   /// 윈도우 상태 UI 빌드
-  Widget _buildWindowStatus(BuildContext context, AppLocalizations l10n, ColorScheme colorScheme) {
+  Widget _buildWindowStatus(
+    BuildContext context,
+    AppLocalizations l10n,
+    ColorScheme colorScheme,
+  ) {
     final isWithin = _isWithinWindow();
     final isPremium = ref.watch(userProfileProvider).value?.isPremium ?? false;
 
@@ -157,10 +162,7 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
             Expanded(
               child: Text(
                 l10n.pingWindowClosed,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: colorScheme.error,
-                ),
+                style: TextStyle(fontSize: 12, color: colorScheme.error),
               ),
             ),
           ],
@@ -171,7 +173,8 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
     // 윈도우 내 - 남은 시간 표시
     final minutes = _remainingSeconds ~/ 60;
     final seconds = _remainingSeconds % 60;
-    final timeText = '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    final timeText =
+        '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
     final sentCount = PingWindowService.instance.getPingSentCount();
 
     return Container(
@@ -238,9 +241,9 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
     if (currentUser?.uid == user.uid) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.cannotSendToSelf)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.cannotSendToSelf)));
       }
       return;
     }
@@ -249,9 +252,9 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
     if (!_isWithinWindow()) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.pingWindowClosed)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.pingWindowClosed)));
       }
       return;
     }
@@ -287,9 +290,11 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(l10n.poringCostConfirm),
-          content: Text(hasPoringBalance
-              ? l10n.poringRequiredToSend
-              : l10n.poringWatchAdToEarnAndUse),
+          content: Text(
+            hasPoringBalance
+                ? l10n.poringRequiredToSend
+                : l10n.poringWatchAdToEarnAndUse,
+          ),
           actions: [
             FilledButton(
               onPressed: () => Navigator.pop(context, true),
@@ -304,9 +309,9 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
       final success = await _spendPoringForSend();
       if (!success) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.adLoadFailed)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.adLoadFailed)));
         }
         return;
       }
@@ -319,7 +324,12 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
     }
   }
 
-  Future<void> _sendPing(SavedByUser user, PingType type, String message, int messageIndex) async {
+  Future<void> _sendPing(
+    SavedByUser user,
+    PingType type,
+    String message,
+    int messageIndex,
+  ) async {
     setState(() => _sendingPing.add('${user.uid}_${type.name}'));
 
     try {
@@ -356,9 +366,9 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
     } catch (e) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.sendFailed)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.sendFailed)));
       }
     } finally {
       if (mounted) {
@@ -432,7 +442,8 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
                     final user = users[index];
                     final isMe = user.uid == currentUid;
                     // 같은 나라가 아닌 경우에만 국기 표시
-                    final showCountryFlag = !isMe &&
+                    final showCountryFlag =
+                        !isMe &&
                         user.country != null &&
                         myCountry != null &&
                         user.country != myCountry;
@@ -492,8 +503,11 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
                                   icon: Icons.favorite,
                                   label: l10n.cheer,
                                   color: Colors.pink,
-                                  isLoading: _sendingPing.contains('${user.uid}_cheer'),
-                                  onPressed: () => _showMessageDialog(user, PingType.cheer),
+                                  isLoading: _sendingPing.contains(
+                                    '${user.uid}_cheer',
+                                  ),
+                                  onPressed: () =>
+                                      _showMessageDialog(user, PingType.cheer),
                                 ),
                                 const SizedBox(width: Spacing.xs),
                                 // 약올리기 버튼
@@ -501,8 +515,11 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
                                   icon: Icons.local_fire_department,
                                   label: l10n.tease,
                                   color: Colors.orange,
-                                  isLoading: _sendingPing.contains('${user.uid}_tease'),
-                                  onPressed: () => _showMessageDialog(user, PingType.tease),
+                                  isLoading: _sendingPing.contains(
+                                    '${user.uid}_tease',
+                                  ),
+                                  onPressed: () =>
+                                      _showMessageDialog(user, PingType.tease),
                                 ),
                               ],
                             ),
@@ -616,12 +633,7 @@ class _MessageSelectionDialog extends StatelessWidget {
         children: [
           Icon(icon, color: color, size: 24),
           const SizedBox(width: Spacing.sm),
-          Expanded(
-            child: Text(
-              title,
-              style: theme.textTheme.titleMedium,
-            ),
-          ),
+          Expanded(child: Text(title, style: theme.textTheme.titleMedium)),
         ],
       ),
       content: SizedBox(
@@ -636,21 +648,24 @@ class _MessageSelectionDialog extends StatelessWidget {
               color: colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(12),
               child: InkWell(
-                onTap: () => Navigator.pop(context, {'index': index, 'text': message}),
+                onTap: () =>
+                    Navigator.pop(context, {'index': index, 'text': message}),
                 borderRadius: BorderRadius.circular(12),
                 child: Padding(
                   padding: const EdgeInsets.all(Spacing.md),
-                  child: Text(
-                    message,
-                    style: theme.textTheme.bodyMedium,
-                  ),
+                  child: Text(message, style: theme.textTheme.bodyMedium),
                 ),
               ),
             );
           },
         ),
       ),
-      contentPadding: const EdgeInsets.fromLTRB(Spacing.md, Spacing.sm, Spacing.md, Spacing.md),
+      contentPadding: const EdgeInsets.fromLTRB(
+        Spacing.md,
+        Spacing.sm,
+        Spacing.md,
+        Spacing.md,
+      ),
     );
   }
 }

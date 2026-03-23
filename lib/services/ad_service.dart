@@ -1,14 +1,22 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AdService {
   static final AdService instance = AdService._();
   AdService._();
+  static const bool _forceTestAds = bool.fromEnvironment(
+    'USE_TEST_ADS',
+    defaultValue: false,
+  );
 
   bool _isInitialized = false;
   RewardedAd? _rewardedAd;
   bool _isRewardedAdLoading = false;
+
+  /// 디버그에서는 테스트 광고, 릴리즈에서는 실 광고 사용
+  bool get useTestAds => _forceTestAds || kDebugMode;
 
   /// 배너 광고 단위 ID
   String get bannerAdUnitId {
@@ -97,7 +105,9 @@ class AdService {
   }
 
   /// 앵커드 적응형 배너 사이즈 (화면 너비에 맞춤)
-  Future<AnchoredAdaptiveBannerAdSize?> getAdaptiveBannerSize(double width) async {
+  Future<AnchoredAdaptiveBannerAdSize?> getAdaptiveBannerSize(
+    double width,
+  ) async {
     return await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
       width.truncate(),
     );
@@ -161,11 +171,18 @@ class AdService {
       },
     );
 
-    await _rewardedAd!.show(
-      onUserEarnedReward: (ad, reward) {
-        onRewarded();
-      },
-    );
+    try {
+      await _rewardedAd!.show(
+        onUserEarnedReward: (ad, reward) {
+          onRewarded();
+        },
+      );
+    } catch (e) {
+      _rewardedAd?.dispose();
+      _rewardedAd = null;
+      onAdFailed?.call(e.toString());
+      loadRewardedAd(useTestAd: useTestAd);
+    }
   }
 
   /// 보상형 광고 해제

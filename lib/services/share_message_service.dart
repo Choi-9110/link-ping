@@ -58,6 +58,24 @@ class ShareMessageService {
     "Join me on LinkPing!",
   ];
 
+  /// 링크 공유용 한국어 문구
+  static const _koLinkMessages = [
+    '저장만 하지 말고, 같이 실천해보자!',
+    '이 링크 루틴 같이 해볼래?',
+    '이 시간에 같이 보면 딱 좋다 👀',
+    '미루지 말고 이번엔 진짜 보자!',
+    '혼자보다 같이 하면 더 잘 된다',
+  ];
+
+  /// 링크 공유용 영어 문구
+  static const _enLinkMessages = [
+    'Let’s actually do this together.',
+    'Want to follow this link routine with me?',
+    'Perfect time to check this out.',
+    'No more saving for later.',
+    'Better with accountability.',
+  ];
+
   /// 랜덤 홍보 메시지 가져오기
   static String getRandomMessage({bool isKorean = true}) {
     final messages = isKorean ? _koMessages : _enMessages;
@@ -92,6 +110,42 @@ when signing up for a bonus link! 🎁
 My invite code: $referralCode
 
 Download: https://linkping.app
+''';
+    }
+  }
+
+  /// 링크 공유 메시지 생성
+  static String generateLinkShareMessage({
+    required String title,
+    required String timeText,
+    required String shareUrl,
+    required bool isLocked,
+    bool isKorean = true,
+  }) {
+    final leadList = isKorean ? _koLinkMessages : _enLinkMessages;
+    final lead = leadList[_random.nextInt(leadList.length)];
+
+    if (isKorean) {
+      final lockText = isLocked ? '🔒 고정 알람' : '🔓 자유 알람';
+      return '''
+$lead
+
+$lockText
+📌 $title
+⏰ $timeText
+
+$shareUrl
+''';
+    } else {
+      final lockText = isLocked ? '🔒 Locked schedule' : '🔓 Flexible schedule';
+      return '''
+$lead
+
+$lockText
+📌 $title
+⏰ $timeText
+
+$shareUrl
 ''';
     }
   }

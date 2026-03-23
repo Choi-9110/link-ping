@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -36,8 +37,13 @@ class NotificationService {
 
     // 타임존 초기화 (디바이스 타임존 사용)
     tz_data.initializeTimeZones();
-    final timezoneInfo = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(timezoneInfo.identifier));
+    try {
+      final timezoneInfo = await FlutterTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(timezoneInfo.identifier));
+    } catch (e) {
+      debugPrint('Timezone init fallback to UTC: $e');
+      tz.setLocalLocation(tz.getLocation('UTC'));
+    }
 
     // Android 설정 (액션 버튼 포함)
     const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -124,10 +130,16 @@ class NotificationService {
 
     try {
       // payload 형식: {"url": "...", "hour": 7, "minute": 0, "title": "..."}
-      final data = jsonDecode(payload) as Map<String, dynamic>;
-      final url = data['url'] as String;
-      final hour = data['hour'] as int;
-      final minute = data['minute'] as int;
+      final decoded = jsonDecode(payload);
+      if (decoded is! Map<String, dynamic>) {
+        UrlLauncherService.openUrl(payload);
+        return;
+      }
+      final data = decoded;
+      final url = data['url'] as String?;
+      if (url == null || url.isEmpty) return;
+      final hour = data['hour'] as int? ?? DateTime.now().hour;
+      final minute = data['minute'] as int? ?? DateTime.now().minute;
 
       // 스케줄된 시간 계산 (오늘 날짜 + 설정된 시간)
       final now = DateTime.now();

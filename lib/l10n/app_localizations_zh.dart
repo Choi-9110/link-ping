@@ -923,10 +923,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get soundCategoryNotify => '간단한 효과음';
 
   @override
-  String get soundCategoryAlarmDesc => '멜로디형 (5-15초) · 절대 놓치면 안 되는 중요한 알람에!';
+  String get soundCategoryAlarmDesc => '멜로디형\n(5-15초)\n놓치면 안 되는 중요한 알람용';
 
   @override
-  String get soundCategoryNotifyDesc => '짧은 효과음 (2-5초) · 가볍게 확인하고 넘어갈 리마인더에!';
+  String get soundCategoryNotifyDesc => '짧은 효과음\n(2-5초)\n가볍게 확인할 리마인더용';
 
   @override
   String get currentStreak => '연속 스트릭';

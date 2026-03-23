@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../services/auth_service.dart';
+import '../../../services/firestore_service.dart';
 import 'admin_dashboard_screen.dart';
 
-/// 관리자 로그인 화면 (간단한 비밀번호 인증)
+/// 관리자 로그인 화면 (Firebase 계정 + Firestore 권한 확인)
 class AdminLoginScreen extends StatefulWidget {
   const AdminLoginScreen({super.key});
 
@@ -11,34 +13,43 @@ class AdminLoginScreen extends StatefulWidget {
 }
 
 class _AdminLoginScreenState extends State<AdminLoginScreen> {
-  final _passwordController = TextEditingController();
   bool _isLoading = false;
   String? _error;
-
-  // TODO: 실제 운영시 Firebase Auth나 더 안전한 방식으로 변경
-  static const _adminPassword = 'linkping2025admin';
-
-  @override
-  void dispose() {
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  void _login() {
+  Future<void> _loginWithGoogle() async {
     setState(() {
       _error = null;
       _isLoading = true;
     });
 
-    // 간단한 비밀번호 검증
-    if (_passwordController.text == _adminPassword) {
+    try {
+      final credential = await AuthService.instance.signInWithGoogle();
+      if (credential == null) {
+        setState(() {
+          _error = '로그인이 취소되었습니다';
+          _isLoading = false;
+        });
+        return;
+      }
+
+      final isAdmin = await FirestoreService.instance.isCurrentUserAdmin();
+      if (!isAdmin) {
+        await AuthService.instance.signOut();
+        if (!mounted) return;
+        setState(() {
+          _error = '관리자 권한이 없습니다';
+          _isLoading = false;
+        });
+        return;
+      }
+
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const AdminDashboardScreen()),
       );
-    } else {
+    } catch (_) {
       setState(() {
-        _error = '비밀번호가 올바르지 않습니다';
+        _error = '로그인 중 오류가 발생했습니다';
         _isLoading = false;
       });
     }
@@ -52,11 +63,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF1a1a2e),
-              Color(0xFF16213e),
-              Color(0xFF0f3460),
-            ],
+            colors: [Color(0xFF1a1a2e), Color(0xFF16213e), Color(0xFF0f3460)],
           ),
         ),
         child: Center(
@@ -93,30 +100,25 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                     ),
                     const SizedBox(height: 8),
                     const Text(
-                      '관리자 비밀번호를 입력하세요',
+                      'Google 로그인 후 관리자 권한을 확인합니다',
                       style: TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 32),
 
-                    // 비밀번호 입력
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: '비밀번호',
-                        border: const OutlineInputBorder(),
-                        errorText: _error,
-                        prefixIcon: const Icon(Icons.lock),
+                    if (_error != null) ...[
+                      Text(
+                        _error!,
+                        style: const TextStyle(color: Colors.red),
+                        textAlign: TextAlign.center,
                       ),
-                      onSubmitted: (_) => _login(),
-                    ),
-                    const SizedBox(height: 24),
+                      const SizedBox(height: 16),
+                    ],
 
                     // 로그인 버튼
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
-                        onPressed: _isLoading ? null : _login,
+                        onPressed: _isLoading ? null : _loginWithGoogle,
                         style: FilledButton.styleFrom(
                           backgroundColor: const Color(0xFFe94560),
                           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -130,7 +132,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                                   color: Colors.white,
                                 ),
                               )
-                            : const Text('로그인'),
+                            : const Text('Google로 로그인'),
                       ),
                     ),
                   ],

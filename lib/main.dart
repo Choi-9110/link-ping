@@ -8,9 +8,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 
 import 'core/theme/app_theme.dart';
+import 'data/models/bookmark.dart';
 import 'data/models/link_reminder.dart';
 import 'providers/color_theme_provider.dart';
-import 'presentation/screens/home/home_screen.dart';
+import 'presentation/screens/main/main_shell.dart';
 import 'presentation/screens/onboarding/onboarding_screen.dart';
 import 'presentation/screens/admin/admin_login_screen.dart';
 import 'presentation/screens/privacy/privacy_policy_screen.dart';
@@ -44,7 +45,10 @@ void main() async {
     Hive.registerAdapter(LinkCategoryAdapter());
     Hive.registerAdapter(ReminderTimeAdapter());
     Hive.registerAdapter(LinkReminderAdapter());
+    Hive.registerAdapter(BookmarkCategoryAdapter());
+    Hive.registerAdapter(BookmarkAdapter());
     await Hive.openBox<LinkReminder>('links');
+    await Hive.openBox<Bookmark>('bookmarks');
     await Hive.openBox('settings');
 
     // 알림 서비스 초기화
@@ -200,7 +204,7 @@ class _AuthWrapperState extends ConsumerState<AuthWrapper> {
         if (user != null) {
           // 로그인 후 만료된 수정 요청 처리
           _checkExpiredModificationRequests();
-          return const HomeScreen();
+          return const MainShell();
         }
         // 로그인 안된 상태 → 온보딩
         return const OnboardingScreen();

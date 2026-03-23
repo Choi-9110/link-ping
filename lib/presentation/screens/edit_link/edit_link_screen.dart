@@ -17,10 +17,7 @@ import '../../widgets/wheel_time_picker.dart';
 class EditLinkScreen extends ConsumerStatefulWidget {
   final LinkReminder link;
 
-  const EditLinkScreen({
-    super.key,
-    required this.link,
-  });
+  const EditLinkScreen({super.key, required this.link});
 
   @override
   ConsumerState<EditLinkScreen> createState() => _EditLinkScreenState();
@@ -63,10 +60,14 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
     _titleController = TextEditingController(text: widget.link.title);
 
     // 모든 시간 목록 초기화 (기본 시간 + 추가 시간)
-    _selectedTimes = [TimeOfDay(hour: widget.link.hour, minute: widget.link.minute)];
+    _selectedTimes = [
+      TimeOfDay(hour: widget.link.hour, minute: widget.link.minute),
+    ];
     if (widget.link.additionalTimes != null) {
       _selectedTimes.addAll(
-        widget.link.additionalTimes!.map((t) => TimeOfDay(hour: t.hour, minute: t.minute)),
+        widget.link.additionalTimes!.map(
+          (t) => TimeOfDay(hour: t.hour, minute: t.minute),
+        ),
       );
     }
     _selectedDays = Set<int>.from(widget.link.repeatDays);
@@ -82,13 +83,15 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
     _selectedCategory = widget.link.category;
 
     // 공유받은 링크의 잠금해제 상태 로드
-    _unlockedTimeIndices = TimeUnlockService.getUnlockedTimeIndices(widget.link.id);
+    _unlockedTimeIndices = TimeUnlockService.getUnlockedTimeIndices(
+      widget.link.id,
+    );
 
     // 알람 소리 초기화
     _selectedSoundId = widget.link.soundId;
 
     // 보상형 광고 미리 로드
-    AdService.instance.loadRewardedAd(useTestAd: true); // TODO: 출시 시 false로
+    AdService.instance.loadRewardedAd(useTestAd: AdService.instance.useTestAds);
   }
 
   @override
@@ -185,7 +188,9 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
       setState(() => _isLoadingAd = true);
 
       if (!AdService.instance.isRewardedAdReady) {
-        await AdService.instance.loadRewardedAd(useTestAd: true); // TODO: 출시 시 false로
+        await AdService.instance.loadRewardedAd(
+          useTestAd: AdService.instance.useTestAds,
+        );
         await Future.delayed(const Duration(milliseconds: 1000));
 
         if (!AdService.instance.isRewardedAdReady) {
@@ -198,7 +203,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
       }
 
       await AdService.instance.showRewardedAd(
-        useTestAd: true, // TODO: 출시 시 false로
+        useTestAd: AdService.instance.useTestAds,
         onRewarded: () async {
           if (mounted) {
             await poringNotifier.earnPoring();
@@ -298,7 +303,9 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
       setState(() => _isLoadingAd = true);
 
       if (!AdService.instance.isRewardedAdReady) {
-        await AdService.instance.loadRewardedAd(useTestAd: true); // TODO: 출시 시 false로
+        await AdService.instance.loadRewardedAd(
+          useTestAd: AdService.instance.useTestAds,
+        );
         await Future.delayed(const Duration(milliseconds: 1000));
 
         if (!AdService.instance.isRewardedAdReady) {
@@ -311,7 +318,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
       }
 
       await AdService.instance.showRewardedAd(
-        useTestAd: true, // TODO: 출시 시 false로
+        useTestAd: AdService.instance.useTestAds,
         onRewarded: () async {
           if (mounted) {
             await poringNotifier.earnPoring();
@@ -358,9 +365,10 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
 
     final isPremium = ref.read(userProfileProvider).value?.isPremium ?? false;
     final isSharedLink = widget.link.sharedBy != null;
-    final isMyLockedAlarm = widget.link.isLocked &&
-                            widget.link.sharedBy == null &&
-                            widget.link.sharedLinkId != null;
+    final isMyLockedAlarm =
+        widget.link.isLocked &&
+        widget.link.sharedBy == null &&
+        widget.link.sharedLinkId != null;
 
     // 내가 만든 고정 알람인 경우, 시간/요일이 변경되었는지 확인
     if (isMyLockedAlarm) {
@@ -391,7 +399,10 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
 
     final primaryTime = effectiveTimes.first;
     final additionalTimes = effectiveTimes.length > 1
-        ? effectiveTimes.skip(1).map((t) => ReminderTime(hour: t.hour, minute: t.minute)).toList()
+        ? effectiveTimes
+              .skip(1)
+              .map((t) => ReminderTime(hour: t.hour, minute: t.minute))
+              .toList()
         : null;
 
     if (mounted) {
@@ -407,7 +418,8 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
         'clearEndDate': !_hasEndDate && widget.link.hasEndDate,
         'isLocked': _isLocked,
         'category': _selectedCategory,
-        'clearCategory': _selectedCategory == null && widget.link.category != null,
+        'clearCategory':
+            _selectedCategory == null && widget.link.category != null,
         'soundId': _selectedSoundId,
         'clearSoundId': _selectedSoundId == null && widget.link.soundId != null,
         'needsConsent': isMyLockedAlarm && _hasTimeOrDaysChanged(), // 동의 필요 플래그
@@ -418,7 +430,10 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
   /// 시간 또는 요일이 변경되었는지 확인
   bool _hasTimeOrDaysChanged() {
     // 기본 시간 비교
-    final originalTime = TimeOfDay(hour: widget.link.hour, minute: widget.link.minute);
+    final originalTime = TimeOfDay(
+      hour: widget.link.hour,
+      minute: widget.link.minute,
+    );
     if (_selectedTimes.isEmpty || _selectedTimes.first != originalTime) {
       return true;
     }
@@ -580,11 +595,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
                 ),
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.lock,
-                      color: colorScheme.primary,
-                      size: 24,
-                    ),
+                    Icon(Icons.lock, color: colorScheme.primary, size: 24),
                     const SizedBox(width: Spacing.sm),
                     Expanded(
                       child: Column(
@@ -601,7 +612,9 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
                           Text(
                             l10n.receivedSharedAlarmInfo(widget.link.sharedBy!),
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurface.withValues(alpha: 0.7),
+                              color: colorScheme.onSurface.withValues(
+                                alpha: 0.7,
+                              ),
                             ),
                           ),
                         ],
@@ -613,7 +626,9 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
               const SizedBox(height: Spacing.md),
             ],
             // 내가 만든 고정 알람 안내 배너 (공유한 경우)
-            if (isLocked && widget.link.sharedBy == null && widget.link.sharedLinkId != null) ...[
+            if (isLocked &&
+                widget.link.sharedBy == null &&
+                widget.link.sharedLinkId != null) ...[
               Container(
                 padding: const EdgeInsets.all(Spacing.md),
                 decoration: BoxDecoration(
@@ -646,7 +661,9 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
                           Text(
                             l10n.sharedToOthersInfo,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurface.withValues(alpha: 0.7),
+                              color: colorScheme.onSurface.withValues(
+                                alpha: 0.7,
+                              ),
                             ),
                           ),
                         ],
@@ -710,17 +727,16 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
               children: [
                 Row(
                   children: [
-                    Text(
-                      l10n.reminderTime,
-                      style: theme.textTheme.titleMedium,
-                    ),
+                    Text(l10n.reminderTime, style: theme.textTheme.titleMedium),
                     if (isReceivedLocked) ...[
                       const SizedBox(width: Spacing.xs),
                       Icon(Icons.lock, size: 16, color: colorScheme.outline),
                     ],
                   ],
                 ),
-                if (!isReceivedLocked && isPremium && _selectedTimes.length < _maxTimesForPremium)
+                if (!isReceivedLocked &&
+                    isPremium &&
+                    _selectedTimes.length < _maxTimesForPremium)
                   TextButton.icon(
                     onPressed: _addTime,
                     icon: const Icon(Icons.add, size: 18),
@@ -740,7 +756,9 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
                             size: 18,
                             color: Colors.amber.shade700,
                           ),
-                    label: Text(_isLoadingAd ? l10n.loading : l10n.addTimeWithPoring),
+                    label: Text(
+                      _isLoadingAd ? l10n.loading : l10n.addTimeWithPoring,
+                    ),
                   ),
               ],
             ),
@@ -753,10 +771,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
             // 반복 요일 섹션
             Row(
               children: [
-                Text(
-                  l10n.repeat,
-                  style: theme.textTheme.titleMedium,
-                ),
+                Text(l10n.repeat, style: theme.textTheme.titleMedium),
                 if (isReceivedLocked) ...[
                   const SizedBox(width: Spacing.xs),
                   Icon(Icons.lock, size: 16, color: colorScheme.outline),
@@ -778,8 +793,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
             const SizedBox(height: Spacing.lg),
 
             // 공유 설정 (내가 만든 링크만 수정 가능)
-            if (widget.link.sharedBy == null)
-              _buildLockSection(),
+            if (widget.link.sharedBy == null) _buildLockSection(),
             const SizedBox(height: Spacing.xl),
 
             // 저장 버튼
@@ -807,7 +821,8 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
       final isFirst = index == 0;
 
       // 공유받은 링크 + 무료 사용자 + 첫 번째가 아닌 시간 = 잠금 가능
-      final isTimeLocked = isSharedLink && !isPremium && !_unlockedTimeIndices.contains(index);
+      final isTimeLocked =
+          isSharedLink && !isPremium && !_unlockedTimeIndices.contains(index);
 
       // 전체 isLocked(시간 고정) 또는 개별 시간 잠금
       final showLocked = isLocked || isTimeLocked;
@@ -831,7 +846,10 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
               if (isTimeLocked) ...[
                 const SizedBox(width: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: colorScheme.error.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(4),
@@ -839,11 +857,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.lock,
-                        size: 12,
-                        color: colorScheme.error,
-                      ),
+                      Icon(Icons.lock, size: 12, color: colorScheme.error),
                       const SizedBox(width: 2),
                       Text(
                         l10n.locked,
@@ -861,35 +875,35 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
           ),
           trailing: isTimeLocked
               ? _isLoadingAd
-                  ? const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : IconButton(
-                      icon: Icon(
-                        Icons.play_circle_outline,
-                        color: colorScheme.primary,
-                      ),
-                      tooltip: l10n.poringUnlock,
-                      onPressed: () => _unlockTimeWithPoring(index),
-                    )
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : IconButton(
+                        icon: Icon(
+                          Icons.play_circle_outline,
+                          color: colorScheme.primary,
+                        ),
+                        tooltip: l10n.poringUnlock,
+                        onPressed: () => _unlockTimeWithPoring(index),
+                      )
               : isLocked
-                  ? Icon(Icons.lock, size: 18, color: colorScheme.outline)
-                  : (isFirst
-                      ? const Icon(Icons.chevron_right)
-                      : IconButton(
-                          icon: const Icon(Icons.remove_circle_outline),
-                          onPressed: () => _removeTime(index),
-                        )),
+              ? Icon(Icons.lock, size: 18, color: colorScheme.outline)
+              : (isFirst
+                    ? const Icon(Icons.chevron_right)
+                    : IconButton(
+                        icon: const Icon(Icons.remove_circle_outline),
+                        onPressed: () => _removeTime(index),
+                      )),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
             side: BorderSide(
               color: isTimeLocked
                   ? colorScheme.error.withValues(alpha: 0.5)
                   : (showLocked
-                      ? colorScheme.outline.withValues(alpha: 0.5)
-                      : colorScheme.outline),
+                        ? colorScheme.outline.withValues(alpha: 0.5)
+                        : colorScheme.outline),
             ),
           ),
           onTap: showLocked ? null : () => _selectTime(index),
@@ -902,8 +916,8 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
     final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final isDaily = _selectedDays.length == 7;
-    final isWeekdays = _selectedDays.length == 5 &&
-        _selectedDays.containsAll([1, 2, 3, 4, 5]);
+    final isWeekdays =
+        _selectedDays.length == 5 && _selectedDays.containsAll([1, 2, 3, 4, 5]);
     final isWeekends =
         _selectedDays.length == 2 && _selectedDays.containsAll([0, 6]);
 
@@ -968,7 +982,15 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     // 월화수목금토일 순서 (내부 인덱스: 1,2,3,4,5,6,0)
     final dayOrder = [1, 2, 3, 4, 5, 6, 0];
-    final dayLabels = [l10n.mon, l10n.tue, l10n.wed, l10n.thu, l10n.fri, l10n.sat, l10n.sun];
+    final dayLabels = [
+      l10n.mon,
+      l10n.tue,
+      l10n.wed,
+      l10n.thu,
+      l10n.fri,
+      l10n.sat,
+      l10n.sun,
+    ];
 
     Widget buildDayChip(int dayIndex, String label) {
       final isSelected = _selectedDays.contains(dayIndex);
@@ -1017,13 +1039,19 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
         // 상단: 월화수목금 (5개)
         Wrap(
           spacing: Spacing.xs,
-          children: List.generate(5, (i) => buildDayChip(dayOrder[i], dayLabels[i])),
+          children: List.generate(
+            5,
+            (i) => buildDayChip(dayOrder[i], dayLabels[i]),
+          ),
         ),
         const SizedBox(height: Spacing.xs),
         // 하단: 토일 (2개)
         Wrap(
           spacing: Spacing.xs,
-          children: List.generate(2, (i) => buildDayChip(dayOrder[5 + i], dayLabels[5 + i])),
+          children: List.generate(
+            2,
+            (i) => buildDayChip(dayOrder[5 + i], dayLabels[5 + i]),
+          ),
         ),
       ],
     );
@@ -1061,9 +1089,11 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
           const SizedBox(height: Spacing.sm),
           ListTile(
             leading: const Icon(Icons.event),
-            title: Text(_endDate != null
-                ? '${_endDate!.year}.${_endDate!.month.toString().padLeft(2, '0')}.${_endDate!.day.toString().padLeft(2, '0')}'
-                : l10n.selectEndDate),
+            title: Text(
+              _endDate != null
+                  ? '${_endDate!.year}.${_endDate!.month.toString().padLeft(2, '0')}.${_endDate!.day.toString().padLeft(2, '0')}'
+                  : l10n.selectEndDate,
+            ),
             trailing: const Icon(Icons.chevron_right),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -1099,11 +1129,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.share,
-                size: 20,
-                color: colorScheme.onSurface,
-              ),
+              Icon(Icons.share, size: 20, color: colorScheme.onSurface),
               const SizedBox(width: 8),
               Text(
                 l10n.shareSettings,
@@ -1154,10 +1180,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          l10n.category,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        Text(l10n.category, style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: Spacing.sm),
         Wrap(
           spacing: Spacing.xs,
@@ -1172,19 +1195,28 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 150),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
-                  color: isSelected ? colorScheme.primary : colorScheme.surfaceContainerHighest,
+                  color: isSelected
+                      ? colorScheme.primary
+                      : colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: isSelected ? colorScheme.primary : colorScheme.outline.withValues(alpha: 0.3),
+                    color: isSelected
+                        ? colorScheme.primary
+                        : colorScheme.outline.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Text(
                   category.displayName(isKorean),
                   style: TextStyle(
                     color: isSelected ? Colors.white : colorScheme.onSurface,
-                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                    fontWeight: isSelected
+                        ? FontWeight.w600
+                        : FontWeight.normal,
                   ),
                 ),
               ),
@@ -1217,11 +1249,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
         ),
         child: Column(
           children: [
-            Icon(
-              icon,
-              color: isSelected ? color : Colors.grey,
-              size: 24,
-            ),
+            Icon(icon, color: isSelected ? color : Colors.grey, size: 24),
             const SizedBox(height: 4),
             Text(
               label,
@@ -1255,17 +1283,17 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
     final isPremium = ref.watch(userProfileProvider).value?.isPremium ?? false;
 
     // 현재 선택된 소리 (없으면 전역 설정에서)
-    final currentSoundId = _selectedSoundId ?? AlarmSoundService.instance.getSelectedSoundId();
-    final currentSound = AlarmSoundService.instance.getSoundById(currentSoundId);
+    final currentSoundId =
+        _selectedSoundId ?? AlarmSoundService.instance.getSelectedSoundId();
+    final currentSound = AlarmSoundService.instance.getSoundById(
+      currentSoundId,
+    );
     final soundName = currentSound?.getName(langCode) ?? l10n.alarmSound;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          l10n.alarmSound,
-          style: theme.textTheme.titleMedium,
-        ),
+        Text(l10n.alarmSound, style: theme.textTheme.titleMedium),
         const SizedBox(height: Spacing.sm),
         ListTile(
           leading: Icon(
@@ -1279,8 +1307,8 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
             _selectedSoundId == null
                 ? l10n.alarmSoundDescription
                 : (currentSound?.category == SoundCategory.alarm
-                    ? l10n.soundCategoryAlarm
-                    : l10n.soundCategoryNotify),
+                      ? l10n.soundCategoryAlarm
+                      : l10n.soundCategoryNotify),
           ),
           trailing: const Icon(Icons.chevron_right),
           shape: RoundedRectangleBorder(

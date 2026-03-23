@@ -28,9 +28,10 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 
     // 화면 너비에 맞는 적응형 배너 사이즈
     final width = MediaQuery.of(context).size.width;
-    final adSize = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-      width.truncate(),
-    );
+    final adSize =
+        await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+          width.truncate(),
+        );
 
     if (adSize == null || !mounted) {
       debugPrint('적응형 배너 사이즈를 가져올 수 없음');
@@ -38,7 +39,9 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
     }
 
     _bannerAd = BannerAd(
-      adUnitId: AdService.instance.testBannerAdUnitId, // TODO: 출시 전에 bannerAdUnitId로 변경!
+      adUnitId: AdService.instance.useTestAds
+          ? AdService.instance.testBannerAdUnitId
+          : AdService.instance.bannerAdUnitId,
       size: adSize,
       request: const AdRequest(),
       listener: BannerAdListener(

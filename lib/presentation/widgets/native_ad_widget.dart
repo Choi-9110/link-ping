@@ -23,7 +23,9 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
 
   void _loadAd() {
     _nativeAd = NativeAd(
-      adUnitId: AdService.instance.testNativeAdUnitId, // TODO: 출시 전에 nativeAdUnitId로 변경!
+      adUnitId: AdService.instance.useTestAds
+          ? AdService.instance.testNativeAdUnitId
+          : AdService.instance.nativeAdUnitId,
       listener: NativeAdListener(
         onAdLoaded: (ad) {
           if (mounted) {

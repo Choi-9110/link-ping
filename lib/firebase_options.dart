@@ -47,32 +47,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBearpNiKl9f-mhUxfvrOQLOTKx_Fbv5sY',
-    appId: '1:1067948471437:android:a6649bdd5a416a4b739ec4',
-    messagingSenderId: '1067948471437',
-    projectId: 'linkping-4b337',
-    storageBucket: 'linkping-4b337.firebasestorage.app',
+    apiKey: 'AIzaSyCZjoafmdRBbZzGN20SsO497LpIo2fReAs',
+    appId: '1:458642757197:android:2a482bf2929e32b94cee04',
+    messagingSenderId: '458642757197',
+    projectId: 'linkping-prod',
+    storageBucket: 'linkping-prod.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBsiiCrft8rP5rjo-_kUvKSLRm9ZFEV4hc',
-    appId: '1:1067948471437:ios:657f3fc807befced739ec4',
-    messagingSenderId: '1067948471437',
-    projectId: 'linkping-4b337',
-    storageBucket: 'linkping-4b337.firebasestorage.app',
-    androidClientId: '1067948471437-3b9tgj2081kd204lsmkkis81qralm586.apps.googleusercontent.com',
-    iosClientId: '1067948471437-e3lqis1p7uvl6k7pk5nr4cke02lk8u5v.apps.googleusercontent.com',
-    iosBundleId: 'com.example.linkping',
+    apiKey: 'AIzaSyBHpkeaoABvWCdmzTnFV9vXg-zpYAR43pg',
+    appId: '1:458642757197:ios:82a331feff67c3ef4cee04',
+    messagingSenderId: '458642757197',
+    projectId: 'linkping-prod',
+    storageBucket: 'linkping-prod.firebasestorage.app',
+    iosBundleId: 'com.drevv.linkping',
   );
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDeWqnF4heZig0AAJLjHsvvfm4S1lskFUs',
-    appId: '1:1067948471437:web:c46e5183a3d7d027739ec4',
-    messagingSenderId: '1067948471437',
-    projectId: 'linkping-4b337',
-    authDomain: 'linkping-4b337.firebaseapp.com',
-    storageBucket: 'linkping-4b337.firebasestorage.app',
-    measurementId: 'G-5X28NVEQDM',
+    apiKey: 'AIzaSyBm9aV-oKENVzFEXeSKcQi2lQzvXWaoEsg',
+    appId: '1:458642757197:web:509ef2cd901a99024cee04',
+    messagingSenderId: '458642757197',
+    projectId: 'linkping-prod',
+    authDomain: 'linkping-prod.firebaseapp.com',
+    storageBucket: 'linkping-prod.firebasestorage.app',
+    measurementId: 'G-H7JRY2LV9F',
   );
-
 }

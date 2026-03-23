@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -15,6 +16,16 @@ class PurchaseService {
 
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
   StreamSubscription<List<PurchaseDetails>>? _subscription;
+  static const String _verificationEndpoint = String.fromEnvironment(
+    'IAP_VERIFY_ENDPOINT',
+    defaultValue: '',
+  );
+
+  /// TestFlight/내부 테스트용: 결제 검증 건너뛰기
+  static const bool _skipVerification = bool.fromEnvironment(
+    'SKIP_IAP_VERIFY',
+    defaultValue: false,
+  );
 
   /// 상품 ID (App Store Connect / Google Play Console에서 설정)
   static const String monthlySubscriptionId = 'linkping_premium_monthly';
@@ -85,7 +96,9 @@ class PurchaseService {
     final response = await _inAppPurchase.queryProductDetails(_productIds);
 
     if (response.notFoundIDs.isNotEmpty) {
-      debugPrint('PurchaseService: Products not found: ${response.notFoundIDs}');
+      debugPrint(
+        'PurchaseService: Products not found: ${response.notFoundIDs}',
+      );
     }
 
     products = response.productDetails;
@@ -146,9 +159,65 @@ class PurchaseService {
 
   /// 구매 검증 (서버 검증 권장, 여기선 간단히 처리)
   Future<bool> _verifyPurchase(PurchaseDetails purchase) async {
-    // TODO: 프로덕션에서는 서버에서 영수증 검증 필요
-    // 지금은 클라이언트에서만 처리
-    return true;
+    // TestFlight/내부 테스트: SKIP_IAP_VERIFY=true 로 빌드 시 검증 스킵
+    if (_skipVerification) {
+      debugPrint('PurchaseService: SKIP_IAP_VERIFY enabled, bypassing verification');
+      return true;
+    }
+
+    // 릴리즈에서는 서버 검증 필수 (fail-closed)
+    if (_verificationEndpoint.isEmpty) {
+      if (kDebugMode) {
+        debugPrint(
+          'PurchaseService: IAP_VERIFY_ENDPOINT not set, debug bypass',
+        );
+        return true;
+      }
+      debugPrint(
+        'PurchaseService: IAP_VERIFY_ENDPOINT not set, verification failed',
+      );
+      return false;
+    }
+
+    try {
+      final client = HttpClient();
+      final request = await client.postUrl(Uri.parse(_verificationEndpoint));
+      request.headers.contentType = ContentType.json;
+      request.write(
+        jsonEncode({
+          'platform': Platform.operatingSystem,
+          'productId': purchase.productID,
+          'purchaseId': purchase.purchaseID,
+          'transactionDate': purchase.transactionDate,
+          'status': purchase.status.name,
+          'source': purchase.verificationData.source,
+          'localVerificationData':
+              purchase.verificationData.localVerificationData,
+          'serverVerificationData':
+              purchase.verificationData.serverVerificationData,
+        }),
+      );
+
+      final response = await request.close();
+      final body = await utf8.decodeStream(response);
+      client.close();
+
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        debugPrint(
+          'PurchaseService: verification http failed (${response.statusCode})',
+        );
+        return false;
+      }
+
+      final decoded = jsonDecode(body);
+      if (decoded is Map<String, dynamic>) {
+        return decoded['valid'] == true;
+      }
+      return false;
+    } catch (e) {
+      debugPrint('PurchaseService: verification error: $e');
+      return false;
+    }
   }
 
   /// 상품 전달 (프리미엄 활성화)

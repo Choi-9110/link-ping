@@ -632,6 +632,8 @@ class WebIntroScreen extends StatelessWidget {
 
   void _openPlayStore() {
     // TODO: 실제 Play Store URL로 변경
-    launchUrl(Uri.parse('https://play.google.com/store/apps/details?id=com.linkping.app'));
+    launchUrl(
+      Uri.parse('https://play.google.com/store/apps/details?id=com.drevv.linkping'),
+    );
   }
 }

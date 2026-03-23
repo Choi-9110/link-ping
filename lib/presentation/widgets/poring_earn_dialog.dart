@@ -22,7 +22,7 @@ class _PoringEarnDialogState extends ConsumerState<PoringEarnDialog> {
   void initState() {
     super.initState();
     // 광고 미리 로드
-    AdService.instance.loadRewardedAd(useTestAd: true); // TODO: 출시 시 false로
+    AdService.instance.loadRewardedAd(useTestAd: AdService.instance.useTestAds);
   }
 
   Future<void> _watchAd() async {
@@ -33,7 +33,9 @@ class _PoringEarnDialogState extends ConsumerState<PoringEarnDialog> {
 
     // 광고가 준비되지 않았으면 로딩 시도
     if (!AdService.instance.isRewardedAdReady) {
-      await AdService.instance.loadRewardedAd(useTestAd: true); // TODO: 출시 시 false로
+      await AdService.instance.loadRewardedAd(
+        useTestAd: AdService.instance.useTestAds,
+      );
       await Future.delayed(const Duration(milliseconds: 1000));
 
       if (!AdService.instance.isRewardedAdReady) {
@@ -47,7 +49,7 @@ class _PoringEarnDialogState extends ConsumerState<PoringEarnDialog> {
 
     // 광고 표시
     await AdService.instance.showRewardedAd(
-      useTestAd: true, // TODO: 출시 시 false로
+      useTestAd: AdService.instance.useTestAds,
       onRewarded: () async {
         if (mounted) {
           final success = await ref.read(poringProvider.notifier).earnPoring();
@@ -58,7 +60,9 @@ class _PoringEarnDialogState extends ConsumerState<PoringEarnDialog> {
       },
       onAdDismissed: () {
         // 다음 광고 미리 로드
-        AdService.instance.loadRewardedAd(useTestAd: true);
+        AdService.instance.loadRewardedAd(
+          useTestAd: AdService.instance.useTestAds,
+        );
       },
       onAdFailed: (error) {
         if (mounted) {
@@ -89,10 +93,7 @@ class _PoringEarnDialogState extends ConsumerState<PoringEarnDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: Row(
         children: [
-          Icon(
-            Icons.notifications_active,
-            color: Colors.amber.shade700,
-          ),
+          Icon(Icons.notifications_active, color: Colors.amber.shade700),
           const SizedBox(width: 8),
           Text(l10n.poringEarn),
         ],
@@ -225,7 +226,9 @@ class _PoringEarnDialogState extends ConsumerState<PoringEarnDialog> {
                 style: FilledButton.styleFrom(
                   backgroundColor: Colors.amber.shade700,
                   foregroundColor: Colors.white,
-                  disabledBackgroundColor: colorScheme.outline.withValues(alpha: 0.3),
+                  disabledBackgroundColor: colorScheme.outline.withValues(
+                    alpha: 0.3,
+                  ),
                 ),
               ),
             ),

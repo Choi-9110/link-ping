@@ -1,84 +1,40 @@
 {
   "project_info": {
-    "project_number": "1067948471437",
-    "project_id": "linkping-4b337",
-    "storage_bucket": "linkping-4b337.firebasestorage.app"
+    "project_number": "458642757197",
+    "project_id": "linkping-prod",
+    "storage_bucket": "linkping-prod.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1067948471437:android:3e42bbc64bce02ca739ec4",
+        "mobilesdk_app_id": "1:458642757197:android:8af766e4ba809d764cee04",
         "android_client_info": {
-          "package_name": "app.linkping"
+          "package_name": "com.drevv.linkping"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1067948471437-97rh7m7urak4g54chp6kda51erbaib8v.apps.googleusercontent.com",
+          "client_id": "458642757197-s9q9dupbmaufp2hpcjctu92qd24r8nmi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBearpNiKl9f-mhUxfvrOQLOTKx_Fbv5sY"
+          "current_key": "AIzaSyCZjoafmdRBbZzGN20SsO497LpIo2fReAs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1067948471437-97rh7m7urak4g54chp6kda51erbaib8v.apps.googleusercontent.com",
+              "client_id": "458642757197-s9q9dupbmaufp2hpcjctu92qd24r8nmi.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "1067948471437-e3lqis1p7uvl6k7pk5nr4cke02lk8u5v.apps.googleusercontent.com",
+              "client_id": "458642757197-62k2me1setqsgovud3bm0q47qeo023jf.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.linkping"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1067948471437:android:a6649bdd5a416a4b739ec4",
-        "android_client_info": {
-          "package_name": "com.example.linkping"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1067948471437-3b9tgj2081kd204lsmkkis81qralm586.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.linkping",
-            "certificate_hash": "4d28bca471c78082b293b852b7842fd24da73db6"
-          }
-        },
-        {
-          "client_id": "1067948471437-97rh7m7urak4g54chp6kda51erbaib8v.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBearpNiKl9f-mhUxfvrOQLOTKx_Fbv5sY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1067948471437-97rh7m7urak4g54chp6kda51erbaib8v.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1067948471437-e3lqis1p7uvl6k7pk5nr4cke02lk8u5v.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.linkping"
+                "bundle_id": "com.drevv.linkping"
               }
             }
           ]
