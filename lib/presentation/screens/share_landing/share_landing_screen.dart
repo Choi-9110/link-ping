@@ -238,7 +238,7 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      link.isKorean
+                      Localizations.localeOf(context).languageCode == 'ko'
                           ? '${link.sharedBy}님이 공유'
                           : 'Shared by ${link.sharedBy}',
                       style: TextStyle(
@@ -298,12 +298,12 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
             children: [
               _buildInfoChip(
                 icon: Icons.access_time,
-                label: link.getTimeString(link.isKorean),
+                label: link.getTimeString(Localizations.localeOf(context).languageCode == 'ko'),
               ),
               const SizedBox(width: 12),
               _buildInfoChip(
                 icon: Icons.repeat,
-                label: link.getRepeatString(link.isKorean),
+                label: link.getRepeatString(Localizations.localeOf(context).languageCode == 'ko'),
               ),
             ],
           ),

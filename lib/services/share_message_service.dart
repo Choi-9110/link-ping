@@ -98,7 +98,7 @@ LinkPing 앱 설치하고 가입할 때
 
 내 초대 코드: $referralCode
 
-다운로드: https://linkping.app
+다운로드: https://linkping-prod.web.app
 ''';
     } else {
       return '''
@@ -109,7 +109,7 @@ when signing up for a bonus link! 🎁
 
 My invite code: $referralCode
 
-Download: https://linkping.app
+Download: https://linkping-prod.web.app
 ''';
     }
   }

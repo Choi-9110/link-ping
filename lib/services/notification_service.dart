@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../data/models/link_reminder.dart';
 import 'alarm_sound_service.dart';
@@ -14,6 +15,36 @@ import 'badge_service.dart';
 import 'firestore_service.dart';
 import 'ping_window_service.dart';
 import 'url_launcher_service.dart';
+
+/// payload에서 URL 추출하는 유틸 (top-level에서도 사용)
+String? extractUrlFromPayload(String payload) {
+  try {
+    final decoded = jsonDecode(payload);
+    if (decoded is Map<String, dynamic>) {
+      return decoded['url'] as String?;
+    }
+    return payload;
+  } catch (_) {
+    return payload;
+  }
+}
+
+/// 백그라운드 알림 액션 핸들러 (top-level function 필수)
+@pragma('vm:entry-point')
+void onBackgroundNotificationResponse(NotificationResponse response) {
+  // 스누즈는 백그라운드에서 스케줄 불가하므로 무시
+  if (response.actionId == 'snooze_3min') return;
+
+  final payload = response.payload;
+  if (payload == null || payload.isEmpty) return;
+
+  final url = extractUrlFromPayload(payload);
+  if (url != null && url.isNotEmpty) {
+    final normalizedUrl = UrlLauncherService.ensureScheme(url);
+    final uri = Uri.parse(normalizedUrl);
+    launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+}
 
 class NotificationService {
   static final NotificationService instance = NotificationService._();
@@ -104,12 +135,75 @@ class NotificationService {
         iOS: iosSettings,
       ),
       onDidReceiveNotificationResponse: _onNotificationTapped,
+      onDidReceiveBackgroundNotificationResponse: onBackgroundNotificationResponse,
     );
 
     _initialized = true;
 
     // 알림 권한 요청
     await requestPermission();
+  }
+
+  /// 앱이 종료된 상태에서 알림 탭으로 실행된 경우 처리
+  /// main.dart에서 runApp() 이후에 호출해야 함
+  Future<void> handleAppLaunchNotification() async {
+    final launchDetails = await _plugin.getNotificationAppLaunchDetails();
+    if (launchDetails != null &&
+        launchDetails.didNotificationLaunchApp &&
+        launchDetails.notificationResponse != null) {
+      final response = launchDetails.notificationResponse!;
+      final payload = response.payload;
+      if (payload == null || payload.isEmpty) return;
+
+      // 앱 UI가 완전히 준비될 때까지 대기
+      await Future.delayed(const Duration(milliseconds: 1500));
+
+      // URL 추출 후 바로 열기 (앱을 거치지 않고 바로 링크로)
+      final url = extractUrlFromPayload(payload);
+      if (url != null && url.isNotEmpty) {
+        bool shouldOpen = true;
+        if (UrlLauncherService.isPhoneUrl(url)) {
+          final myPhoneNumber = await _getMyPhoneNumber();
+          if (UrlLauncherService.isMyPhoneNumber(url, myPhoneNumber)) {
+            shouldOpen = false;
+          }
+        }
+
+        if (shouldOpen) {
+          final opened = await UrlLauncherService.openUrl(url);
+          if (!opened) {
+            await Future.delayed(const Duration(milliseconds: 1000));
+            await UrlLauncherService.openUrl(url);
+          }
+        }
+      }
+
+      // 통계 기록
+      final actionId = response.actionId;
+      if (actionId != _actionSnooze) {
+        PingWindowService.instance.recordAlarmFired();
+        final now = DateTime.now();
+        int hour = now.hour;
+        int minute = now.minute;
+        try {
+          final decoded = jsonDecode(payload);
+          if (decoded is Map<String, dynamic>) {
+            hour = decoded['hour'] as int? ?? hour;
+            minute = decoded['minute'] as int? ?? minute;
+          }
+        } catch (_) {}
+
+        var scheduledTime = DateTime(now.year, now.month, now.day, hour, minute);
+        if (scheduledTime.isAfter(now)) {
+          scheduledTime = scheduledTime.subtract(const Duration(days: 1));
+        }
+        BadgeService.instance.recordClick(
+          scheduledTime: scheduledTime,
+          clickTime: now,
+        );
+        FirestoreService.instance.trackNotificationClicked(hour: now.hour);
+      }
+    }
   }
 
   /// 알림 탭/액션 버튼 처리
@@ -125,55 +219,62 @@ class NotificationService {
       return;
     }
 
-    // 알람 응답 시 Ping 윈도우 시작 (응원/약올리기 5분 윈도우)
-    await PingWindowService.instance.recordAlarmFired();
+    // ① URL 먼저 추출
+    String? url;
+    int hour = DateTime.now().hour;
+    int minute = DateTime.now().minute;
 
     try {
-      // payload 형식: {"url": "...", "hour": 7, "minute": 0, "title": "..."}
       final decoded = jsonDecode(payload);
-      if (decoded is! Map<String, dynamic>) {
-        UrlLauncherService.openUrl(payload);
-        return;
+      if (decoded is Map<String, dynamic>) {
+        url = decoded['url'] as String?;
+        hour = decoded['hour'] as int? ?? hour;
+        minute = decoded['minute'] as int? ?? minute;
+      } else {
+        url = payload;
       }
-      final data = decoded;
-      final url = data['url'] as String?;
-      if (url == null || url.isEmpty) return;
-      final hour = data['hour'] as int? ?? DateTime.now().hour;
-      final minute = data['minute'] as int? ?? DateTime.now().minute;
+    } catch (_) {
+      url = payload;
+    }
 
-      // 스케줄된 시간 계산 (오늘 날짜 + 설정된 시간)
-      final now = DateTime.now();
-      var scheduledTime = DateTime(now.year, now.month, now.day, hour, minute);
-
-      // 만약 현재 시간보다 스케줄 시간이 미래면 (자정 넘어서 탭한 경우) 어제로
-      if (scheduledTime.isAfter(now)) {
-        scheduledTime = scheduledTime.subtract(const Duration(days: 1));
-      }
-
-      // 클릭 기록 및 뱃지 체크
-      await BadgeService.instance.recordClick(
-        scheduledTime: scheduledTime,
-        clickTime: now,
-      );
-
-      // 📊 통계 트래킹 (알림 클릭)
-      await FirestoreService.instance.trackNotificationClicked(hour: now.hour);
-
-      // tel: URL인 경우 내 번호인지 확인
+    // ② URL 즉시 열기 (최우선 — 다른 작업보다 먼저)
+    if (url != null && url.isNotEmpty) {
+      // tel: URL인 경우 내 번호인지만 빠르게 확인
+      bool shouldOpen = true;
       if (UrlLauncherService.isPhoneUrl(url)) {
         final myPhoneNumber = await _getMyPhoneNumber();
         if (UrlLauncherService.isMyPhoneNumber(url, myPhoneNumber)) {
-          // 내 번호면 전화하지 않고 앱만 열림
-          return;
+          shouldOpen = false;
         }
       }
 
-      // URL 열기 (이동하기 / 전화걸기 액션 또는 알림 탭)
-      UrlLauncherService.openUrl(url);
-    } catch (e) {
-      // 기존 형식 (URL만) 호환
-      UrlLauncherService.openUrl(payload);
+      if (shouldOpen) {
+        // 앱 포그라운드 전환 대기 후 열기 (iOS는 더 긴 대기 필요)
+        await Future.delayed(const Duration(milliseconds: 500));
+        final opened = await UrlLauncherService.openUrl(url);
+        // 실패 시 재시도 (iOS에서 타이밍 이슈로 실패할 수 있음)
+        if (!opened) {
+          await Future.delayed(const Duration(milliseconds: 1000));
+          await UrlLauncherService.openUrl(url);
+        }
+      }
     }
+
+    // ③ 나머지 작업은 백그라운드로 (URL 열린 후 처리)
+    PingWindowService.instance.recordAlarmFired();
+
+    final now = DateTime.now();
+    var scheduledTime = DateTime(now.year, now.month, now.day, hour, minute);
+    if (scheduledTime.isAfter(now)) {
+      scheduledTime = scheduledTime.subtract(const Duration(days: 1));
+    }
+
+    BadgeService.instance.recordClick(
+      scheduledTime: scheduledTime,
+      clickTime: now,
+    );
+
+    FirestoreService.instance.trackNotificationClicked(hour: now.hour);
   }
 
   /// 3분 후 스누즈 처리
@@ -231,7 +332,7 @@ class NotificationService {
       await _plugin.zonedSchedule(
         DateTime.now().millisecondsSinceEpoch % 100000, // 유니크 ID
         title,
-        isPhone ? '탭하여 전화 걸기' : '탭하여 링크로 이동',
+        isPhone ? 'Tap to call' : 'Tap to open link',
         snoozeTime,
         details,
         payload: newPayload,
@@ -300,7 +401,7 @@ class NotificationService {
 
     // 전화 vs 링크 구분
     final isPhone = UrlLauncherService.isPhoneUrl(link.url);
-    final notificationBody = isPhone ? '탭하여 전화 걸기' : '탭하여 링크로 이동';
+    final notificationBody = isPhone ? 'Tap to call' : 'Tap to open link';
 
     // Android 알림 설정 (액션 버튼 포함)
     final androidDetails = AndroidNotificationDetails(

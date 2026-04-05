@@ -5,6 +5,7 @@ import '../../../l10n/app_localizations.dart';
 
 import '../../../core/theme/spacing.dart';
 import '../../../providers/auth_provider.dart';
+import '../../../providers/links_provider.dart';
 import '../../../providers/user_provider.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/badge_service.dart';
@@ -238,6 +239,18 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             title: l10n.contact,
             trailing: const Icon(Icons.chevron_right),
             onTap: _onContact,
+          ),
+          _buildSettingsTile(
+            icon: Icons.source_outlined,
+            title: l10n.openSourceLicenses,
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              showLicensePage(
+                context: context,
+                applicationName: 'LinkPing',
+                applicationVersion: '1.0.2',
+              );
+            },
           ),
 
           const SizedBox(height: Spacing.xl),

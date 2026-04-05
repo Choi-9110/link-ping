@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
@@ -97,19 +98,12 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
     // 알림 스케줄
     await NotificationService.instance.scheduleReminder(link);
 
-    // Firestore URL 저장 수 증가 (소셜 기능)
-    try {
-      await FirestoreService.instance.incrementUrlSaveCount(urlHash);
-    } catch (_) {
-      // Firestore 오류는 무시 (로컬 저장은 성공)
-    }
-
-    // 공유 링크 저장 기록 (수정/삭제 알림용)
+    // 공유 링크 저장 수 증가 + 기록 (sharedLinkId 기반)
     if (sharedLinkId != null) {
       try {
-        await FirestoreService.instance.recordSharedLinkSave(sharedLinkId);
+        await FirestoreService.instance.incrementSharedLinkSaveCount(sharedLinkId);
       } catch (_) {
-        // 오류 무시
+        // Firestore 오류는 무시 (로컬 저장은 성공)
       }
     }
 
@@ -158,12 +152,14 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
 
     await _repository.deleteLink(id);
 
-    // Firestore URL 저장 수 감소
+    // 공유 링크 저장 수 감소 (sharedLinkId 기반)
     if (link != null) {
-      try {
-        await FirestoreService.instance.decrementUrlSaveCount(link.urlHash);
-      } catch (_) {
-        // Firestore 오류는 무시
+      if (link.sharedLinkId != null) {
+        try {
+          await FirestoreService.instance.decrementSharedLinkSaveCount(link.sharedLinkId!);
+        } catch (_) {
+          // Firestore 오류는 무시
+        }
       }
 
       // 고정 알람 + 공유한 링크 + 내가 만든 링크 → 공유받은 사람들에게 삭제 알림
@@ -209,6 +205,108 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
   /// URL 해시 생성 (간단 버전)
   String _generateUrlHash(String url) {
     return url.hashCode.toRadixString(16);
+  }
+
+  /// 더미 데이터 시드 (스크린샷용)
+  Future<void> seedDummyData() async {
+    final dummyLinks = [
+      (title: 'Morning Yoga Routine', url: 'https://youtube.com/yoga-morning', hour: 6, minute: 30, days: [1,2,3,4,5], cat: LinkCategory.exercise),
+      (title: 'Daily English Practice', url: 'https://duolingo.com', hour: 8, minute: 0, days: [0,1,2,3,4,5,6], cat: LinkCategory.study),
+      (title: 'Read 10 Pages', url: 'https://kindle.amazon.com', hour: 21, minute: 30, days: [0,1,2,3,4,5,6], cat: LinkCategory.study),
+      (title: 'Meditation 15min', url: 'https://headspace.com', hour: 22, minute: 0, days: [0,1,2,3,4,5,6], cat: LinkCategory.selfDev),
+      (title: 'Check Portfolio', url: 'https://robinhood.com', hour: 9, minute: 0, days: [1,3,5], cat: LinkCategory.other),
+      (title: 'Call Mom', url: 'tel:+11234567890', hour: 18, minute: 0, days: [0], cat: LinkCategory.contact),
+      (title: 'Weekly Meal Prep', url: 'https://pinterest.com/meal-prep', hour: 10, minute: 0, days: [0], cat: LinkCategory.other),
+      (title: 'Side Project Todo', url: 'https://notion.so/my-project', hour: 19, minute: 0, days: [1,3,5], cat: LinkCategory.study),
+      (title: 'Stretch & Walk', url: 'https://youtube.com/stretch-walk', hour: 15, minute: 0, days: [1,2,3,4,5], cat: LinkCategory.exercise),
+      (title: 'Journal Writing', url: 'https://docs.google.com/journal', hour: 23, minute: 0, days: [0,1,2,3,4,5,6], cat: LinkCategory.selfDev),
+    ];
+
+    final saveCounts = [175, 89, 13, 42, 8, 6, 11, 7, 9, 5];
+
+    final dummyUsers = [
+      {'uid': 'dummy_01', 'nickname': 'Wandering April Tiger', 'profileEmoji': 'animal_tiger', 'country': 'US'},
+      {'uid': 'dummy_02', 'nickname': 'Dreamy June Owl', 'profileEmoji': 'face_love', 'country': 'GB'},
+      {'uid': 'dummy_03', 'nickname': 'Silent March Fox', 'profileEmoji': 'animal_fox', 'country': 'JP'},
+      {'uid': 'dummy_04', 'nickname': 'Golden Autumn Deer', 'profileEmoji': 'face_starstruck', 'country': 'KR'},
+      {'uid': 'dummy_05', 'nickname': 'Crystal Winter Cat', 'profileEmoji': 'animal_cat', 'country': 'DE'},
+      {'uid': 'dummy_06', 'nickname': 'Velvet Spring Lily', 'profileEmoji': 'nature_tulip', 'country': 'FR'},
+      {'uid': 'dummy_07', 'nickname': 'Sparkling May Firefly', 'profileEmoji': 'face_party', 'country': 'AU'},
+      {'uid': 'dummy_08', 'nickname': 'Midnight July Wolf', 'profileEmoji': 'face_cool', 'country': 'CA'},
+      {'uid': 'dummy_09', 'nickname': 'Gentle Dawn Rabbit', 'profileEmoji': 'animal_rabbit', 'country': 'BR'},
+      {'uid': 'dummy_10', 'nickname': 'Misty October Cloud', 'profileEmoji': 'nature_cherry_blossom', 'country': 'ES'},
+      {'uid': 'dummy_11', 'nickname': 'Curious Summer Breeze', 'profileEmoji': 'face_monocle', 'country': 'IT'},
+      {'uid': 'dummy_12', 'nickname': 'Floating Snow Cherry', 'profileEmoji': 'animal_penguin', 'country': 'NL'},
+    ];
+
+    for (var i = 0; i < dummyLinks.length; i++) {
+      final link = dummyLinks[i];
+      final id = _uuid.v4();
+      final urlHash = _generateUrlHash(link.url);
+
+      // 1. Firestore에 공유 링크 생성
+      String? sharedLinkId;
+      try {
+        sharedLinkId = await FirestoreService.instance.createSharedLink(
+          url: link.url,
+          title: link.title,
+          hour: link.hour,
+          minute: link.minute,
+          repeatDays: link.days,
+          isLocked: false,
+          languageCode: 'en',
+        );
+
+        // 2. Firestore에 더미 savedBy 데이터 주입
+        if (sharedLinkId != null) {
+          await FirestoreService.instance.incrementSharedLinkSaveCount(sharedLinkId);
+
+          // 추가 더미 유저들 직접 넣기
+          final usersToAdd = dummyUsers.take(saveCounts[i].clamp(0, 12)).toList();
+          await FirebaseFirestore.instance
+              .collection('sharedLinks')
+              .doc(sharedLinkId)
+              .update({
+            'saveCount': saveCounts[i],
+            'savedBy': usersToAdd,
+            'savedByUids': usersToAdd.map((u) => u['uid']!).toList(),
+          });
+        }
+      } catch (_) {}
+
+      // 3. 로컬 Hive에 저장
+      final reminder = LinkReminder(
+        id: id,
+        url: link.url,
+        urlHash: urlHash,
+        title: link.title,
+        hour: link.hour,
+        minute: link.minute,
+        repeatDays: link.days,
+        isEnabled: true,
+        category: link.cat,
+        sharedLinkId: sharedLinkId,
+      );
+
+      await _repository.saveLink(reminder);
+    }
+
+    _loadLinks();
+  }
+
+  /// D+ 날짜를 랜덤하게 변경 (스크린샷용)
+  Future<void> randomizeDDays() async {
+    final links = _repository.getAllLinks();
+    final daysAgoList = [3, 7, 14, 21, 30, 45, 60, 90, 120, 150];
+
+    for (var i = 0; i < links.length; i++) {
+      final daysAgo = daysAgoList[i % daysAgoList.length];
+      final newCreatedAt = DateTime.now().subtract(Duration(days: daysAgo));
+      final updated = links[i].copyWith(createdAt: newCreatedAt);
+      await _repository.saveLink(updated);
+    }
+
+    _loadLinks();
   }
 }
 

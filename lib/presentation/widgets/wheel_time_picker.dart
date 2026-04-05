@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 
 /// iOS 스타일 휠 타임 피커
+/// 00~23 연속 스크롤 + AM/PM 자동 전환 + AM/PM 직접 선택 가능
 class WheelTimePicker extends StatefulWidget {
   final TimeOfDay initialTime;
   final ValueChanged<TimeOfDay> onTimeChanged;
@@ -102,30 +103,18 @@ class _WheelTimePickerState extends State<WheelTimePicker> {
   late FixedExtentScrollController _minuteController;
   late FixedExtentScrollController _periodController;
 
-  late int _selectedHour;
+  late int _selectedHour; // 0~23
   late int _selectedMinute;
-  late bool _isPM;
+
+  bool get _isPM => _selectedHour >= 12;
 
   @override
   void initState() {
     super.initState();
-    _initializeValues();
-  }
-
-  void _initializeValues() {
-    if (widget.use24HourFormat) {
-      _selectedHour = widget.initialTime.hour;
-      _isPM = false;
-    } else {
-      _isPM = widget.initialTime.hour >= 12;
-      _selectedHour = widget.initialTime.hour % 12;
-      if (_selectedHour == 0) _selectedHour = 12;
-    }
+    _selectedHour = widget.initialTime.hour;
     _selectedMinute = widget.initialTime.minute;
 
-    _hourController = FixedExtentScrollController(
-      initialItem: widget.use24HourFormat ? _selectedHour : _selectedHour - 1,
-    );
+    _hourController = FixedExtentScrollController(initialItem: _selectedHour);
     _minuteController = FixedExtentScrollController(initialItem: _selectedMinute);
     _periodController = FixedExtentScrollController(initialItem: _isPM ? 1 : 0);
   }
@@ -139,21 +128,44 @@ class _WheelTimePickerState extends State<WheelTimePicker> {
   }
 
   void _notifyTimeChanged() {
-    int hour;
-    if (widget.use24HourFormat) {
-      hour = _selectedHour;
-    } else {
-      hour = _selectedHour % 12;
-      if (_isPM && hour != 12) hour += 12;
-      if (!_isPM && hour == 12) hour = 0;
+    widget.onTimeChanged(TimeOfDay(hour: _selectedHour, minute: _selectedMinute));
+  }
+
+  /// AM/PM 휠을 직접 돌렸을 때 → 시간 ±12 자동 조정
+  void _onPeriodChanged(int index) {
+    final wantPM = index == 1;
+    if (wantPM == _isPM) return; // 이미 같으면 무시
+
+    setState(() {
+      if (wantPM && _selectedHour < 12) {
+        // AM → PM: +12
+        _selectedHour += 12;
+      } else if (!wantPM && _selectedHour >= 12) {
+        // PM → AM: -12
+        _selectedHour -= 12;
+      }
+      // 시간 휠도 동기화
+      _hourController.jumpToItem(_selectedHour);
+    });
+    _notifyTimeChanged();
+  }
+
+  /// 시간 휠을 돌렸을 때 → AM/PM 자동 동기화
+  void _onHourChanged(int hour) {
+    final wasPM = _isPM;
+    setState(() {
+      _selectedHour = hour;
+    });
+    // AM/PM 전환이 발생했으면 period 휠도 동기화
+    if (!widget.use24HourFormat && wasPM != _isPM) {
+      _periodController.jumpToItem(_isPM ? 1 : 0);
     }
-    widget.onTimeChanged(TimeOfDay(hour: hour, minute: _selectedMinute));
+    _notifyTimeChanged();
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Stack(
       alignment: Alignment.center,
@@ -171,12 +183,12 @@ class _WheelTimePickerState extends State<WheelTimePicker> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // AM/PM (12시간 형식일 때)
+            // AM/PM 휠 (직접 선택 가능 + 자동 동기화)
             if (!widget.use24HourFormat) ...[
               _buildPeriodPicker(colorScheme),
               const SizedBox(width: 8),
             ],
-            // 시간
+            // 시간 (00~23)
             _buildHourPicker(colorScheme),
             // 구분자
             Padding(
@@ -205,20 +217,15 @@ class _WheelTimePickerState extends State<WheelTimePicker> {
         scrollController: _periodController,
         itemExtent: 40,
         selectionOverlay: const SizedBox.shrink(),
-        onSelectedItemChanged: (index) {
-          setState(() {
-            _isPM = index == 1;
-          });
-          _notifyTimeChanged();
-        },
+        onSelectedItemChanged: _onPeriodChanged,
         children: ['AM', 'PM']
             .map((period) => Center(
                   child: Text(
                     period,
                     style: TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: colorScheme.onSurface,
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.primary,
                     ),
                   ),
                 ))
@@ -228,34 +235,25 @@ class _WheelTimePickerState extends State<WheelTimePicker> {
   }
 
   Widget _buildHourPicker(ColorScheme colorScheme) {
-    final hours = widget.use24HourFormat
-        ? List.generate(24, (i) => i)
-        : List.generate(12, (i) => i + 1);
-
     return SizedBox(
       width: 60,
       child: CupertinoPicker(
         scrollController: _hourController,
         itemExtent: 40,
         selectionOverlay: const SizedBox.shrink(),
-        onSelectedItemChanged: (index) {
-          setState(() {
-            _selectedHour = widget.use24HourFormat ? index : index + 1;
-          });
-          _notifyTimeChanged();
-        },
-        children: hours
-            .map((hour) => Center(
-                  child: Text(
-                    hour.toString().padLeft(2, '0'),
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: colorScheme.onSurface,
-                    ),
-                  ),
-                ))
-            .toList(),
+        onSelectedItemChanged: _onHourChanged,
+        children: List.generate(24, (hour) {
+          return Center(
+            child: Text(
+              hour.toString().padLeft(2, '0'),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: colorScheme.onSurface,
+              ),
+            ),
+          );
+        }),
       ),
     );
   }
@@ -273,18 +271,18 @@ class _WheelTimePickerState extends State<WheelTimePicker> {
           });
           _notifyTimeChanged();
         },
-        children: List.generate(60, (i) => i)
-            .map((minute) => Center(
-                  child: Text(
-                    minute.toString().padLeft(2, '0'),
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: colorScheme.onSurface,
-                    ),
-                  ),
-                ))
-            .toList(),
+        children: List.generate(60, (minute) {
+          return Center(
+            child: Text(
+              minute.toString().padLeft(2, '0'),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: colorScheme.onSurface,
+              ),
+            ),
+          );
+        }),
       ),
     );
   }

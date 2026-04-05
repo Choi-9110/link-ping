@@ -481,6 +481,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get contactNotReady => 'お問い合わせ（準備中）';
 
   @override
+  String get openSourceLicenses => 'オープンソースライセンス';
+
+  @override
   String get loading => '読み込み中...';
 
   @override

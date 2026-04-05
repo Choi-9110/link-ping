@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../l10n/app_localizations.dart';
@@ -274,68 +276,102 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     }
   }
 
-  /// 전화번호 수정 팝업
+  /// 전화번호 수정 팝업 (국가 선택 드롭다운 포함)
   void _showPhoneNumberEditDialog() {
     final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context);
+    final isKorean = locale.languageCode == 'ko';
     final currentPhone = _getCurrentPhoneNumber() ?? '';
     final countryCode = _getCurrentCountry();
-    final phoneCode = PhoneUtils.getPhoneCode(countryCode);
-    final phoneHint = PhoneUtils.getPhoneHint(countryCode);
     final controller = TextEditingController(text: currentPhone);
     final formKey = GlobalKey<FormState>();
+
+    var selectedCountry = PhoneUtils.getCountryInfo(countryCode);
 
     showDialog(
       context: context,
       builder: (dialogContext) {
         final dialogL10n = AppLocalizations.of(dialogContext)!;
-        return AlertDialog(
-          title: Text(dialogL10n.myPhoneNumber),
-          content: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  controller: controller,
-                  decoration: InputDecoration(
-                    hintText: phoneHint,
-                    prefixIcon: const Icon(Icons.phone),
-                    prefixText: '$phoneCode ',
-                  ),
-                  keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value != null && value.isNotEmpty) {
-                      final cleaned = value.replaceAll(RegExp(r'[\s\-()]'), '');
-                      if (cleaned.length < 8 || cleaned.length > 15) {
-                        return dialogL10n.invalidPhoneNumber;
-                      }
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: Text(dialogL10n.myPhoneNumber),
+              content: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 국가 선택 드롭다운
+                    DropdownButtonFormField<String>(
+                      value: selectedCountry.code,
+                      isExpanded: true,
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        border: OutlineInputBorder(),
+                      ),
+                      items: PhoneUtils.countries.map((country) {
+                        return DropdownMenuItem<String>(
+                          value: country.code,
+                          child: Text(
+                            country.display(isKorean),
+                            style: const TextStyle(fontSize: 14),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (code) {
+                        if (code != null) {
+                          setDialogState(() {
+                            selectedCountry = PhoneUtils.getCountryInfo(code);
+                          });
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    // 전화번호 입력
+                    TextFormField(
+                      controller: controller,
+                      decoration: InputDecoration(
+                        hintText: PhoneUtils.getPhoneHint(selectedCountry.code),
+                        prefixIcon: const Icon(Icons.phone),
+                        prefixText: '${selectedCountry.phoneCode} ',
+                      ),
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value != null && value.isNotEmpty) {
+                          final cleaned = value.replaceAll(RegExp(r'[\s\-()]'), '');
+                          if (cleaned.length < 8 || cleaned.length > 15) {
+                            return dialogL10n.invalidPhoneNumber;
+                          }
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(dialogContext),
+                  child: Text(dialogL10n.cancel),
+                ),
+                FilledButton(
+                  onPressed: () async {
+                    if (!formKey.currentState!.validate()) return;
+
+                    final newPhone = controller.text.trim();
+                    await _savePhoneNumber(newPhone.isEmpty ? null : newPhone);
+
+                    if (dialogContext.mounted) {
+                      Navigator.pop(dialogContext);
                     }
-                    return null;
                   },
+                  child: Text(l10n.save),
                 ),
               ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext),
-              child: Text(dialogL10n.cancel),
-            ),
-            FilledButton(
-              onPressed: () async {
-                if (!formKey.currentState!.validate()) return;
-
-                final newPhone = controller.text.trim();
-                await _savePhoneNumber(newPhone.isEmpty ? null : newPhone);
-
-                if (dialogContext.mounted) {
-                  Navigator.pop(dialogContext);
-                }
-              },
-              child: Text(l10n.save),
-            ),
-          ],
+            );
+          },
         );
       },
     );
@@ -470,11 +506,93 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     );
   }
 
-  Future<void> _linkKakaoAccount() async {
+  Future<void> _linkAppleAccount({bool isChanging = false}) async {
     final l10n = AppLocalizations.of(context)!;
-    // 카카오 연동은 추후 구현
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l10n.kakaoLinkComingSoon)),
+
+    try {
+      setState(() => _isLoading = true);
+
+      final guestNickname = AuthService.instance.getGuestNickname();
+
+      if (isChanging) {
+        // Apple 연동 해제
+        final user = AuthService.instance.currentUser;
+        if (user != null) {
+          await user.unlink('apple.com');
+        }
+      }
+
+      final result = await AuthService.instance.linkWithApple();
+
+      if (result == null) return;
+
+      final user = result.user;
+      if (user != null) {
+        final existingProfile = await FirestoreService.instance.getUserProfile(user.uid);
+        if (existingProfile == null) {
+          final newProfile = UserProfile(
+            uid: user.uid,
+            nickname: guestNickname,
+            country: l10n.notSet,
+            createdAt: DateTime.now(),
+          );
+          await FirestoreService.instance.saveUserProfile(newProfile);
+        }
+      }
+
+      ref.invalidate(authStateProvider);
+      ref.invalidate(userProfileProvider);
+
+      await BadgeService.instance.recordAccountLinked();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.accountLinked)),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        String message = l10n.accountLinkFailed;
+
+        final errorString = e.toString();
+        if (errorString.contains('credential-already-in-use')) {
+          message = l10n.googleAccountAlreadyLinked;
+        } else if (errorString.contains('provider-already-linked')) {
+          message = l10n.providerAlreadyLinked;
+        } else if (errorString.contains('invalid-credential')) {
+          message = l10n.invalidCredential;
+        } else if (errorString.contains('network-request-failed')) {
+          message = l10n.networkError;
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  void _showChangeAppleAccountDialog() {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.changeAccount),
+        content: Text(l10n.changeAccountConfirm),
+        actions: [
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(dialogContext);
+              _linkAppleAccount(isChanging: true);
+            },
+            child: Text(l10n.change),
+          ),
+        ],
+      ),
     );
   }
 
@@ -490,6 +608,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     // 연동된 계정 확인
     final linkedProviders = user?.providerData.map((p) => p.providerId).toList() ?? [];
     final isGoogleLinked = linkedProviders.contains('google.com');
+    final isAppleLinked = linkedProviders.contains('apple.com');
 
     return Scaffold(
       appBar: AppBar(
@@ -598,17 +717,20 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               l10n: l10n,
             ),
 
-            const SizedBox(height: Spacing.sm),
-
-            // 카카오 연동
-            _buildLinkTile(
-              icon: Icons.chat_bubble,
-              iconColor: const Color(0xFFFEE500),
-              title: l10n.kakao,
-              isLinked: false, // 카카오 연동 여부 확인 로직 필요
-              onTap: _isLoading ? null : _linkKakaoAccount,
-              l10n: l10n,
-            ),
+            // Apple 연동 (iOS만)
+            if (Platform.isIOS) ...[
+              const SizedBox(height: Spacing.sm),
+              _buildLinkTile(
+                icon: Icons.apple,
+                iconColor: Colors.black,
+                title: 'Apple',
+                isLinked: isAppleLinked,
+                onTap: _isLoading
+                    ? null
+                    : (isAppleLinked ? _showChangeAppleAccountDialog : _linkAppleAccount),
+                l10n: l10n,
+              ),
+            ],
 
             if (isGuest) ...[
               const SizedBox(height: Spacing.md),

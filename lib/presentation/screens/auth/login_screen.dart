@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../l10n/app_localizations.dart';
@@ -26,6 +28,49 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       return l10n.loginFailed;
     }
     return l10n.loginFailed;
+  }
+
+  Future<void> _signInWithApple() async {
+    setState(() => _isLoading = true);
+
+    try {
+      final authService = ref.read(authServiceProvider);
+      final result = await authService.signInWithApple();
+
+      if (result != null && result.user != null) {
+        final existingProfile = await FirestoreService.instance
+            .getUserProfile(result.user!.uid);
+
+        if (!mounted) return;
+
+        if (existingProfile != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ProfileSetupScreen(),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_friendlyError(e, l10n))),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   Future<void> _signInWithGoogle() async {
@@ -145,6 +190,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
 
               const Spacer(),
+
+              // Apple 로그인 버튼 (iOS만)
+              if (Platform.isIOS) ...[
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton.icon(
+                    onPressed: _isLoading ? null : _signInWithApple,
+                    icon: const Icon(Icons.apple, size: 28),
+                    label: Text(_isLoading ? l10n.loginLoading : 'Sign in with Apple'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorScheme.inverseSurface,
+                      foregroundColor: colorScheme.onInverseSurface,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: Spacing.sm),
+              ],
 
               // Google 로그인 버튼
               SizedBox(

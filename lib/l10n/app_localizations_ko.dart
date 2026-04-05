@@ -482,6 +482,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get contactNotReady => '문의하기 (구현 예정)';
 
   @override
+  String get openSourceLicenses => '오픈소스 라이선스';
+
+  @override
   String get loading => '로딩 중...';
 
   @override

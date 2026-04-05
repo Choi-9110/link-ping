@@ -1,0 +1,13 @@
+{
+  "projects": {},
+  "targets": {
+    "linkping-prod": {
+      "hosting": {
+        "linkping-prod": [
+          "linkping-prod"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

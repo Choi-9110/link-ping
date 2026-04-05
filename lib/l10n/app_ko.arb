@@ -215,6 +215,7 @@
   "privacyPolicyNotReady": "개인정보 처리방침 (구현 예정)",
   "contact": "문의하기",
   "contactNotReady": "문의하기 (구현 예정)",
+  "openSourceLicenses": "오픈소스 라이선스",
 
   "loading": "로딩 중...",
   "error": "오류",

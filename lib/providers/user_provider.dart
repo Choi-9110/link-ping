@@ -39,14 +39,14 @@ final saveUserProfileProvider = Provider<Future<void> Function(UserProfile)>((re
   return (profile) => firestoreService.saveUserProfile(profile);
 });
 
-/// URL 저장 수 Provider (urlHash로 조회)
-final urlSaveCountProvider = StreamProvider.family<int, String>((ref, urlHash) {
-  return ref.watch(firestoreServiceProvider).urlSaveCountStream(urlHash);
+/// 공유 링크 저장 수 Provider (sharedLinkId로 조회)
+final sharedLinkSaveCountProvider = StreamProvider.family<int, String>((ref, sharedLinkId) {
+  return ref.watch(firestoreServiceProvider).sharedLinkSaveCountStream(sharedLinkId);
 });
 
-/// URL을 저장한 유저 목록 Provider
-final savedByUsersProvider = StreamProvider.family<List<SavedByUser>, String>((ref, urlHash) {
-  return ref.watch(firestoreServiceProvider).savedByUsersStream(urlHash);
+/// 공유 링크를 저장한 유저 목록 Provider (sharedLinkId로 조회)
+final sharedLinkSavedByUsersProvider = StreamProvider.family<List<SavedByUser>, String>((ref, sharedLinkId) {
+  return ref.watch(firestoreServiceProvider).sharedLinkSavedByUsersStream(sharedLinkId);
 });
 
 /// 내 알림 목록 Provider

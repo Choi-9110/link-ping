@@ -4,7 +4,7 @@ class AppConstants {
   static const String appName = 'LinkPing';
   static const String publicWebBaseUrl = String.fromEnvironment(
     'PUBLIC_WEB_BASE_URL',
-    defaultValue: 'https://linkping.app',
+    defaultValue: 'https://linkping-prod.web.app',
   );
 
   static String buildShareUrl(String shareId) {

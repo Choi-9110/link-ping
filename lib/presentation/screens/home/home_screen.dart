@@ -10,6 +10,7 @@ import '../../../core/theme/spacing.dart';
 import '../../../core/utils/badge_localizations.dart';
 import '../../../data/models/badge.dart';
 import '../../../data/models/link_reminder.dart';
+import '../../../providers/announcement_provider.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../providers/links_provider.dart';
 import '../../../providers/user_provider.dart';
@@ -207,17 +208,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             padding: EdgeInsets.only(right: 4),
             child: PoringCounterWidget(),
           ),
-          // 알림 아이콘 (읽지 않은 알림 수 표시)
+          // 알림 아이콘 (읽지 않은 알림 + 공지사항 수 표시)
           Consumer(
             builder: (context, ref, _) {
               final unreadCount = ref.watch(unreadNotificationCountProvider);
+              final unreadAnnouncements = ref.watch(unreadAnnouncementCountProvider);
+              final totalUnread = (unreadCount.value ?? 0) + unreadAnnouncements;
               return Stack(
                 children: [
                   IconButton(
                     icon: const Icon(Icons.notifications_outlined),
                     onPressed: () => _onNotifications(context),
                   ),
-                  if ((unreadCount.value ?? 0) > 0)
+                  if (totalUnread > 0)
                     Positioned(
                       right: 8,
                       top: 8,
@@ -232,7 +235,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           minHeight: 16,
                         ),
                         child: Text(
-                          '${(unreadCount.value ?? 0) > 9 ? '9+' : unreadCount.value ?? 0}',
+                          '${totalUnread > 9 ? '9+' : totalUnread}',
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.onError,
                             fontSize: 10,
@@ -668,8 +671,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         languageCode: locale.languageCode, // 공유자의 언어 코드 저장
       );
 
-      // 고정 알람이면 로컬 링크에 sharedLinkId 저장 (삭제/수정 알림용)
-      if (link.isLocked && link.sharedLinkId == null) {
+      // 로컬 링크에 sharedLinkId 저장 (Saved by 표시 + 삭제/수정 알림용)
+      if (link.sharedLinkId == null) {
         final updatedLink = link.copyWith(sharedLinkId: shareId);
         ref.read(linksProvider.notifier).updateLink(updatedLink);
       }
@@ -846,8 +849,10 @@ class _LinkCardWithCount extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final saveCountAsync = ref.watch(urlSaveCountProvider(link.urlHash));
-    final saveCount = saveCountAsync.value ?? 0;
+    // sharedLinkId가 있으면 공유 링크 기반 조회, 없으면 0
+    final saveCount = link.sharedLinkId != null
+        ? (ref.watch(sharedLinkSaveCountProvider(link.sharedLinkId!)).value ?? 0)
+        : 0;
 
     // Hot Link 배지 체크 (10명 이상 저장 시)
     if (saveCount >= 10) {

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkPing Admin</title>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+
+    /* 로그인 */
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      gap: 16px;
+    }
+    #login-screen h1 { font-size: 24px; color: #fff; }
+    #login-screen input {
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid #333;
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 16px;
+      width: 280px;
+      text-align: center;
+    }
+    #login-screen button {
+      padding: 12px 40px;
+      border-radius: 12px;
+      border: none;
+      background: #6C5CE7;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #login-screen button:hover { background: #5A4BD1; }
+    .error { color: #ff6b6b; font-size: 14px; }
+
+    /* 관리자 */
+    #admin-screen { display: none; padding: 20px; max-width: 800px; margin: 0 auto; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #222;
+      margin-bottom: 20px;
+    }
+    header h1 { font-size: 20px; }
+    .btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .btn-primary { background: #6C5CE7; color: #fff; }
+    .btn-primary:hover { background: #5A4BD1; }
+    .btn-danger { background: #ff4757; color: #fff; }
+    .btn-danger:hover { background: #e03e4e; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+    /* 카드 */
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .card-emoji { font-size: 28px; }
+    .card-title { font-size: 16px; font-weight: 600; flex: 1; }
+    .card-badges { display: flex; gap: 6px; }
+    .badge {
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-active { background: #00b894; color: #fff; }
+    .badge-inactive { background: #636e72; color: #fff; }
+    .badge-order { background: #333; color: #aaa; }
+
+    .card-details { font-size: 13px; color: #888; line-height: 1.8; }
+    .card-details span { color: #aaa; }
+    .card-actions { display: flex; gap: 8px; margin-top: 12px; }
+
+    /* 모달 */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 20px;
+      padding: 24px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal h2 { margin-bottom: 20px; font-size: 18px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #333;
+      background: #0a0a0a;
+      color: #fff;
+      font-size: 14px;
+    }
+    .form-group textarea { resize: vertical; min-height: 60px; }
+    .form-row { display: flex; gap: 12px; }
+    .form-row .form-group { flex: 1; }
+    .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+    .toggle {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .toggle input[type="checkbox"] { width: 18px; height: 18px; }
+  </style>
+</head>
+<body>
+
+  <!-- 로그인 화면 -->
+  <div id="login-screen">
+    <h1>LinkPing Admin</h1>
+    <input type="password" id="password" placeholder="Password" onkeydown="if(event.key==='Enter')login()">
+    <button onclick="login()">Enter</button>
+    <div class="error" id="login-error"></div>
+  </div>
+
+  <!-- 관리자 화면 -->
+  <div id="admin-screen">
+    <!-- 탭 -->
+    <div style="display:flex;gap:8px;margin-bottom:20px;">
+      <button class="btn btn-primary" id="tab-links" onclick="switchTab('links')">Recommended Links</button>
+      <button class="btn" id="tab-announcements" style="background:#333;color:#fff;" onclick="switchTab('announcements')">Announcements</button>
+    </div>
+
+    <!-- 추천 링크 탭 -->
+    <div id="links-tab">
+      <header>
+        <h1>Recommended Links</h1>
+        <button class="btn btn-primary" onclick="openAddModal()">+ Add</button>
+      </header>
+      <div id="link-list"></div>
+    </div>
+
+    <!-- 공지사항 탭 -->
+    <div id="announcements-tab" style="display:none;">
+      <header>
+        <h1>Announcements</h1>
+        <button class="btn btn-primary" onclick="openAddAnnouncementModal()">+ Add</button>
+      </header>
+      <div id="announcement-list"></div>
+    </div>
+  </div>
+
+  <!-- 공지사항 모달 -->
+  <div class="modal-overlay" id="ann-modal">
+    <div class="modal">
+      <h2 id="ann-modal-title">Add Announcement</h2>
+      <input type="hidden" id="ann-edit-id">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Type</label>
+          <select id="ann-edit-type">
+            <option value="notice">📢 Notice</option>
+            <option value="event">🎉 Event</option>
+            <option value="update">🆕 Update</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>&nbsp;</label>
+          <div class="toggle">
+            <input type="checkbox" id="ann-edit-active" checked>
+            <label for="ann-edit-active">Active</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Title (KO)</label>
+        <input type="text" id="ann-edit-titleKo" placeholder="한국어 제목">
+      </div>
+      <div class="form-group">
+        <label>Title (EN)</label>
+        <input type="text" id="ann-edit-titleEn" placeholder="English title">
+      </div>
+      <div class="form-group">
+        <label>Body (KO)</label>
+        <textarea id="ann-edit-bodyKo" rows="4" placeholder="한국어 본문"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Body (EN)</label>
+        <textarea id="ann-edit-bodyEn" rows="4" placeholder="English body"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn" style="background:#333;color:#fff;" onclick="closeAnnModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveAnnouncement()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 추가/수정 모달 -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <h2 id="modal-title">Add Link</h2>
+      <input type="hidden" id="edit-id">
+
+      <div class="form-row">
+        <div class="form-group" style="flex: 0 0 80px;">
+          <label>Emoji</label>
+          <input type="text" id="edit-emoji" placeholder="💪" maxlength="4">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="edit-category">
+            <option value="exercise">Exercise</option>
+            <option value="health">Health</option>
+            <option value="mindset">Mindset</option>
+            <option value="nutrition">Nutrition</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Title (KO)</label>
+        <input type="text" id="edit-titleKo" placeholder="사이타마 훈련법">
+      </div>
+      <div class="form-group">
+        <label>Title (EN)</label>
+        <input type="text" id="edit-titleEn" placeholder="Saitama Workout">
+      </div>
+      <div class="form-group">
+        <label>URL</label>
+        <input type="url" id="edit-url" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label>Description (KO)</label>
+        <textarea id="edit-descKo" placeholder="한국어 설명"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Description (EN)</label>
+        <textarea id="edit-descEn" placeholder="English description"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Order</label>
+          <input type="number" id="edit-order" value="0" min="0">
+        </div>
+        <div class="form-group">
+          <label>&nbsp;</label>
+          <div class="toggle">
+            <input type="checkbox" id="edit-active" checked>
+            <label for="edit-active">Active</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn" style="background:#333;color:#fff;" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveLink()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Firebase 설정
+    firebase.initializeApp({
+      apiKey: "AIzaSyBm9aV-oKENVzFEXeSKcQi2lQzvXWaoEsg",
+      authDomain: "linkping-prod.firebaseapp.com",
+      projectId: "linkping-prod",
+      storageBucket: "linkping-prod.firebasestorage.app",
+      messagingSenderId: "458642757197",
+      appId: "1:458642757197:web:509ef2cd901a99024cee04",
+    });
+
+    const db = firebase.firestore();
+    const COLLECTION = "recommendedLinks";
+
+    // 관리자 비밀번호 (나중에 변경하세요!)
+    const ADMIN_PASSWORD = "linkping2026!";
+
+    // 로그인 (비밀번호 확인 + Firebase 익명 인증)
+    async function login() {
+      const pw = document.getElementById("password").value;
+      if (pw !== ADMIN_PASSWORD) {
+        document.getElementById("login-error").textContent = "Wrong password";
+        return;
+      }
+
+      try {
+        document.getElementById("login-error").textContent = "Connecting...";
+        // Firebase 익명 인증으로 Firestore 접근 권한 획득
+        await firebase.auth().signInAnonymously();
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("admin-screen").style.display = "block";
+        loadLinks();
+      } catch (e) {
+        document.getElementById("login-error").textContent = "Connection failed: " + e.message;
+      }
+    }
+
+    // 링크 목록 로드
+    async function loadLinks() {
+      const snapshot = await db.collection(COLLECTION).orderBy("order").get();
+      const list = document.getElementById("link-list");
+      list.innerHTML = "";
+
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        const isActive = d.isActive !== false;
+        list.innerHTML += `
+          <div class="card">
+            <div class="card-header">
+              <span class="card-emoji">${d.emoji || '⭐'}</span>
+              <span class="card-title">${d.titleKo || d.title || 'Untitled'}</span>
+              <div class="card-badges">
+                <span class="badge badge-order">#${d.order ?? 0}</span>
+                <span class="badge ${isActive ? 'badge-active' : 'badge-inactive'}">${isActive ? 'Active' : 'Hidden'}</span>
+              </div>
+            </div>
+            <div class="card-details">
+              <div>EN: <span>${d.titleEn || '-'}</span></div>
+              <div>URL: <span>${(d.url || '').substring(0, 60)}...</span></div>
+              <div>KO: <span>${d.descriptionKo || d.description || '-'}</span></div>
+              <div>EN: <span>${d.descriptionEn || '-'}</span></div>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-primary btn-sm" onclick="openEditModal('${doc.id}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteLink('${doc.id}')">Delete</button>
+            </div>
+          </div>
+        `;
+      });
+
+      if (snapshot.empty) {
+        list.innerHTML = '<p style="text-align:center;color:#666;padding:40px;">No links yet. Click + Add to start.</p>';
+      }
+    }
+
+    // 모달 열기 (추가)
+    function openAddModal() {
+      document.getElementById("modal-title").textContent = "Add Link";
+      document.getElementById("edit-id").value = "";
+      document.getElementById("edit-emoji").value = "";
+      document.getElementById("edit-titleKo").value = "";
+      document.getElementById("edit-titleEn").value = "";
+      document.getElementById("edit-url").value = "";
+      document.getElementById("edit-descKo").value = "";
+      document.getElementById("edit-descEn").value = "";
+      document.getElementById("edit-category").value = "exercise";
+      document.getElementById("edit-order").value = "0";
+      document.getElementById("edit-active").checked = true;
+      document.getElementById("modal").classList.add("active");
+    }
+
+    // 모달 열기 (수정)
+    async function openEditModal(id) {
+      const doc = await db.collection(COLLECTION).doc(id).get();
+      const d = doc.data();
+
+      document.getElementById("modal-title").textContent = "Edit Link";
+      document.getElementById("edit-id").value = id;
+      document.getElementById("edit-emoji").value = d.emoji || "";
+      document.getElementById("edit-titleKo").value = d.titleKo || d.title || "";
+      document.getElementById("edit-titleEn").value = d.titleEn || "";
+      document.getElementById("edit-url").value = d.url || "";
+      document.getElementById("edit-descKo").value = d.descriptionKo || d.description || "";
+      document.getElementById("edit-descEn").value = d.descriptionEn || "";
+      document.getElementById("edit-category").value = d.category || "exercise";
+      document.getElementById("edit-order").value = d.order ?? 0;
+      document.getElementById("edit-active").checked = d.isActive !== false;
+      document.getElementById("modal").classList.add("active");
+    }
+
+    function closeModal() {
+      document.getElementById("modal").classList.remove("active");
+    }
+
+    // 저장
+    async function saveLink() {
+      const id = document.getElementById("edit-id").value;
+      const data = {
+        emoji: document.getElementById("edit-emoji").value || "⭐",
+        titleKo: document.getElementById("edit-titleKo").value,
+        titleEn: document.getElementById("edit-titleEn").value,
+        url: document.getElementById("edit-url").value,
+        descriptionKo: document.getElementById("edit-descKo").value,
+        descriptionEn: document.getElementById("edit-descEn").value,
+        category: document.getElementById("edit-category").value,
+        order: parseInt(document.getElementById("edit-order").value) || 0,
+        isActive: document.getElementById("edit-active").checked,
+      };
+
+      if (!data.titleKo && !data.titleEn) {
+        alert("Title is required");
+        return;
+      }
+
+      if (id) {
+        await db.collection(COLLECTION).doc(id).update(data);
+      } else {
+        data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+        await db.collection(COLLECTION).add(data);
+      }
+
+      closeModal();
+      loadLinks();
+    }
+
+    // 삭제
+    async function deleteLink(id) {
+      if (!confirm("Delete this link?")) return;
+      await db.collection(COLLECTION).doc(id).delete();
+      loadLinks();
+    }
+
+    // ==================== 탭 전환 ====================
+    function switchTab(tab) {
+      document.getElementById("links-tab").style.display = tab === "links" ? "block" : "none";
+      document.getElementById("announcements-tab").style.display = tab === "announcements" ? "block" : "none";
+      document.getElementById("tab-links").style.background = tab === "links" ? "#6C5CE7" : "#333";
+      document.getElementById("tab-announcements").style.background = tab === "announcements" ? "#6C5CE7" : "#333";
+      if (tab === "announcements") loadAnnouncements();
+    }
+
+    // ==================== 공지사항 ====================
+    const ANN_COLLECTION = "announcements";
+
+    async function loadAnnouncements() {
+      const snapshot = await db.collection(ANN_COLLECTION).orderBy("createdAt", "desc").get();
+      const list = document.getElementById("announcement-list");
+      list.innerHTML = "";
+
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        const isActive = d.isActive !== false;
+        const typeEmoji = d.type === "event" ? "🎉" : d.type === "update" ? "🆕" : "📢";
+        list.innerHTML += `
+          <div class="card">
+            <div class="card-header">
+              <span class="card-emoji">${typeEmoji}</span>
+              <span class="card-title">${d.titleKo || 'Untitled'}</span>
+              <div class="card-badges">
+                <span class="badge ${isActive ? 'badge-active' : 'badge-inactive'}">${isActive ? 'Active' : 'Hidden'}</span>
+              </div>
+            </div>
+            <div class="card-details">
+              <div>EN: <span>${d.titleEn || '-'}</span></div>
+              <div>KO: <span>${(d.bodyKo || '').substring(0, 80)}${(d.bodyKo || '').length > 80 ? '...' : ''}</span></div>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-primary btn-sm" onclick="openEditAnnouncementModal('${doc.id}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteAnnouncement('${doc.id}')">Delete</button>
+            </div>
+          </div>
+        `;
+      });
+
+      if (snapshot.empty) {
+        list.innerHTML = '<p style="text-align:center;color:#666;padding:40px;">No announcements yet.</p>';
+      }
+    }
+
+    function openAddAnnouncementModal() {
+      document.getElementById("ann-modal-title").textContent = "Add Announcement";
+      document.getElementById("ann-edit-id").value = "";
+      document.getElementById("ann-edit-type").value = "notice";
+      document.getElementById("ann-edit-titleKo").value = "";
+      document.getElementById("ann-edit-titleEn").value = "";
+      document.getElementById("ann-edit-bodyKo").value = "";
+      document.getElementById("ann-edit-bodyEn").value = "";
+      document.getElementById("ann-edit-active").checked = true;
+      document.getElementById("ann-modal").classList.add("active");
+    }
+
+    async function openEditAnnouncementModal(id) {
+      const doc = await db.collection(ANN_COLLECTION).doc(id).get();
+      const d = doc.data();
+      document.getElementById("ann-modal-title").textContent = "Edit Announcement";
+      document.getElementById("ann-edit-id").value = id;
+      document.getElementById("ann-edit-type").value = d.type || "notice";
+      document.getElementById("ann-edit-titleKo").value = d.titleKo || "";
+      document.getElementById("ann-edit-titleEn").value = d.titleEn || "";
+      document.getElementById("ann-edit-bodyKo").value = d.bodyKo || "";
+      document.getElementById("ann-edit-bodyEn").value = d.bodyEn || "";
+      document.getElementById("ann-edit-active").checked = d.isActive !== false;
+      document.getElementById("ann-modal").classList.add("active");
+    }
+
+    function closeAnnModal() {
+      document.getElementById("ann-modal").classList.remove("active");
+    }
+
+    async function saveAnnouncement() {
+      const id = document.getElementById("ann-edit-id").value;
+      const data = {
+        type: document.getElementById("ann-edit-type").value,
+        titleKo: document.getElementById("ann-edit-titleKo").value,
+        titleEn: document.getElementById("ann-edit-titleEn").value,
+        bodyKo: document.getElementById("ann-edit-bodyKo").value,
+        bodyEn: document.getElementById("ann-edit-bodyEn").value,
+        isActive: document.getElementById("ann-edit-active").checked,
+      };
+
+      if (!data.titleKo && !data.titleEn) {
+        alert("Title is required");
+        return;
+      }
+
+      if (id) {
+        await db.collection(ANN_COLLECTION).doc(id).update(data);
+      } else {
+        data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+        await db.collection(ANN_COLLECTION).add(data);
+      }
+
+      closeAnnModal();
+      loadAnnouncements();
+    }
+
+    async function deleteAnnouncement(id) {
+      if (!confirm("Delete this announcement?")) return;
+      await db.collection(ANN_COLLECTION).doc(id).delete();
+      loadAnnouncements();
+    }
+
+    // ESC로 모달 닫기
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") { closeModal(); closeAnnModal(); }
+    });
+  </script>
+</body>
+</html>

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/spacing.dart';
+import '../../../data/models/announcement.dart';
 import '../../../data/models/ping_notification.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../providers/announcement_provider.dart';
 import '../../../providers/user_provider.dart';
 import '../../../services/firestore_service.dart';
 import '../inquiry/inquiry_detail_screen.dart';
@@ -30,50 +32,186 @@ class NotificationsScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: notificationsAsync.when(
-        data: (notifications) {
-          if (notifications.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.notifications_none,
-                    size: 64,
-                    color: colorScheme.outline,
-                  ),
-                  const SizedBox(height: Spacing.md),
-                  Text(
-                    l10n.noNotifications,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: colorScheme.outline,
-                    ),
-                  ),
-                  const SizedBox(height: Spacing.sm),
-                  Text(
-                    l10n.noNotificationsSubtitle,
+      body: _buildBody(context, ref, theme, colorScheme, l10n, notificationsAsync),
+    );
+  }
+
+  Widget _buildBody(
+    BuildContext context,
+    WidgetRef ref,
+    ThemeData theme,
+    ColorScheme colorScheme,
+    AppLocalizations l10n,
+    AsyncValue<List<PingNotification>> notificationsAsync,
+  ) {
+    final announcementsAsync = ref.watch(announcementsProvider);
+    final readIds = ref.watch(readAnnouncementsProvider);
+    final locale = Localizations.localeOf(context);
+    final isKorean = locale.languageCode == 'ko';
+
+    return notificationsAsync.when(
+      data: (notifications) {
+        final announcements = announcementsAsync.whenOrNull<List<Announcement>>(
+              data: (list) => list,
+            ) ??
+            [];
+
+        if (notifications.isEmpty && announcements.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.notifications_none, size: 64, color: colorScheme.outline),
+                const SizedBox(height: Spacing.md),
+                Text(l10n.noNotifications,
+                    style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.outline)),
+                const SizedBox(height: Spacing.sm),
+                Text(l10n.noNotificationsSubtitle,
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.outline,
+                    style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline)),
+              ],
+            ),
+          );
+        }
+
+        return ListView(
+          padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
+          children: [
+            // 공지사항 섹션
+            ...announcements.map((a) {
+              final isRead = readIds.contains(a.id);
+              return _AnnouncementTile(
+                announcement: a,
+                isKorean: isKorean,
+                isRead: isRead,
+                onTap: () {
+                  ref.read(readAnnouncementsProvider.notifier).markAsRead(a.id);
+                  _showAnnouncementDetail(context, a, isKorean, theme, colorScheme);
+                },
+              );
+            }),
+
+            // 구분선
+            if (announcements.isNotEmpty && notifications.isNotEmpty)
+              const Divider(height: 1),
+
+            // 기존 알림들
+            ...notifications.map((n) => _NotificationTile(notification: n)),
+          ],
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (_, __) => Center(child: Text(l10n.notificationLoadFailed)),
+    );
+  }
+
+  void _showAnnouncementDetail(
+    BuildContext context,
+    Announcement announcement,
+    bool isKorean,
+    ThemeData theme,
+    ColorScheme colorScheme,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(Spacing.lg),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(announcement.typeEmoji, style: const TextStyle(fontSize: 24)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      announcement.title(isKorean),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
               ),
-            );
-          }
-
-          return ListView.builder(
-            padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
-            itemCount: notifications.length,
-            itemBuilder: (context, index) {
-              final notification = notifications[index];
-              return _NotificationTile(notification: notification);
-            },
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, __) => Center(child: Text(l10n.notificationLoadFailed)),
+              const SizedBox(height: Spacing.md),
+              Text(
+                announcement.body(isKorean),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurface.withValues(alpha: 0.8),
+                  height: 1.6,
+                ),
+              ),
+              const SizedBox(height: Spacing.lg),
+            ],
+          ),
+        ),
       ),
+    );
+  }
+}
+
+/// 공지사항 타일
+class _AnnouncementTile extends StatelessWidget {
+  final Announcement announcement;
+  final bool isKorean;
+  final bool isRead;
+  final VoidCallback onTap;
+
+  const _AnnouncementTile({
+    required this.announcement,
+    required this.isKorean,
+    required this.isRead,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return ListTile(
+      leading: Stack(
+        children: [
+          CircleAvatar(
+            backgroundColor: colorScheme.tertiaryContainer,
+            child: Text(announcement.typeEmoji, style: const TextStyle(fontSize: 18)),
+          ),
+          if (!isRead)
+            Positioned(
+              right: 0,
+              top: 0,
+              child: Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(
+                  color: colorScheme.error,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: colorScheme.surface, width: 1.5),
+                ),
+              ),
+            ),
+        ],
+      ),
+      title: Text(
+        announcement.title(isKorean),
+        style: theme.textTheme.bodyMedium?.copyWith(
+          fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
+        ),
+      ),
+      subtitle: Text(
+        announcement.body(isKorean),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: colorScheme.outline,
+        ),
+      ),
+      onTap: onTap,
     );
   }
 }

@@ -23,12 +23,13 @@ class LinkCard extends StatelessWidget {
   });
 
   void _showSavedUsers(BuildContext context) {
+    if (link.sharedLinkId == null) return;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => SavedUsersBottomSheet(
-        urlHash: link.urlHash,
+        sharedLinkId: link.sharedLinkId!,
         urlTitle: link.title,
       ),
     );

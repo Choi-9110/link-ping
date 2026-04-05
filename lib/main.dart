@@ -1,9 +1,15 @@
+import 'dart:async';
+
+import 'dart:ui' show PlatformDispatcher;
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 
@@ -37,6 +43,19 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // Crashlytics + Analytics (웹 제외)
+  if (!kIsWeb) {
+    // 크래시 리포트 자동 수집
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+
+    // Analytics 초기화 (자동 수집)
+    FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
+  }
+
   // 웹이 아닐 때만 네이티브 서비스 초기화
   if (!kIsWeb) {
     // Hive 초기화
@@ -69,6 +88,11 @@ void main() async {
       child: MyApp(),
     ),
   );
+
+  // 앱 UI가 뜬 후, 종료 상태에서 알림 탭으로 실행된 경우 링크 열기
+  if (!kIsWeb) {
+    NotificationService.instance.handleAppLaunchNotification();
+  }
 }
 
 class MyApp extends ConsumerWidget {

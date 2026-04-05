@@ -205,6 +205,7 @@
   "privacyPolicyNotReady": "隐私政策（即将推出）",
   "contact": "联系我们",
   "contactNotReady": "联系我们（即将推出）",
+  "openSourceLicenses": "开源许可证",
 
   "loading": "加载中...",
   "error": "错误",

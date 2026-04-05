@@ -408,31 +408,31 @@ class AppLocalizationsZh extends AppLocalizations {
   String get premiumBuy => '立即购买';
 
   @override
-  String get premiumMonthly => '월간 구독';
+  String get premiumMonthly => 'Monthly';
 
   @override
-  String get premiumYearly => '연간 구독';
+  String get premiumYearly => 'Yearly';
 
   @override
-  String get premiumLifetime => '평생 이용권';
+  String get premiumLifetime => 'Lifetime';
 
   @override
-  String get premiumPurchaseSuccess => '프리미엄 구매가 완료되었습니다!';
+  String get premiumPurchaseSuccess => 'Premium purchase completed!';
 
   @override
-  String get premiumPurchaseFailed => '구매에 실패했습니다. 다시 시도해주세요.';
+  String get premiumPurchaseFailed => 'Purchase failed. Please try again.';
 
   @override
-  String get premiumRestoreSuccess => '구매 내역이 복원되었습니다!';
+  String get premiumRestoreSuccess => 'Purchases restored successfully!';
 
   @override
-  String get restorePurchases => '구매 복원';
+  String get restorePurchases => 'Restore Purchases';
 
   @override
-  String get storeNotAvailable => '스토어에 연결할 수 없습니다';
+  String get storeNotAvailable => 'Store is not available';
 
   @override
-  String get productsNotFound => '상품을 불러올 수 없습니다';
+  String get productsNotFound => 'Could not load products';
 
   @override
   String get retry => '重试';
@@ -478,6 +478,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get contactNotReady => '联系我们（即将推出）';
+
+  @override
+  String get openSourceLicenses => '开源许可证';
 
   @override
   String get loading => '加载中...';
@@ -721,593 +724,607 @@ class AppLocalizationsZh extends AppLocalizations {
   String get watchAdDescription => '免费用户每次闹钟只能发送给1人。\n看广告可以发送更多，或升级到高级版无限发送！';
 
   @override
-  String get selectProfileEmoji => '프로필 이모지 선택';
+  String get selectProfileEmoji => 'Select Profile Emoji';
 
   @override
-  String get profileEmoji => '프로필 이모지';
+  String get profileEmoji => 'Profile Emoji';
 
   @override
-  String get changeEmoji => '이모지 변경';
+  String get changeEmoji => 'Change Emoji';
 
   @override
-  String get profileEmojiDescription => '다른 사람에게 보여지는 프로필 이모지';
+  String get profileEmojiDescription => 'Profile emoji visible to others';
 
   @override
-  String get profileEmojiChanged => '프로필 이모지가 변경되었어요';
+  String get profileEmojiChanged => 'Profile emoji changed';
 
   @override
-  String get myPhoneNumber => '내 전화번호';
+  String get myPhoneNumber => 'My Phone Number';
 
   @override
-  String get phoneNumberNotSet => '설정 안 됨';
+  String get phoneNumberNotSet => 'Not set';
 
   @override
-  String get editNickname => '닉네임 수정';
+  String get editNickname => 'Edit Nickname';
 
   @override
-  String get enterNickname => '닉네임을 입력하세요';
+  String get enterNickname => 'Enter nickname';
 
   @override
-  String get pleaseEnterNickname => '닉네임을 입력해주세요';
+  String get pleaseEnterNickname => 'Please enter a nickname';
 
   @override
-  String get minTwoChars => '2자 이상 입력해주세요';
+  String get minTwoChars => 'At least 2 characters required';
 
   @override
-  String get nicknameChanged => '닉네임이 변경되었어요';
+  String get nicknameChanged => 'Nickname changed';
 
   @override
-  String get checkingDuplicate => '중복 확인 중...';
+  String get checkingDuplicate => 'Checking...';
 
   @override
-  String get nicknameAlreadyInUse => '이미 사용 중인 닉네임이에요';
+  String get nicknameAlreadyInUse => 'Nickname already in use';
 
   @override
-  String get invalidPhoneNumber => '올바른 전화번호를 입력해주세요';
+  String get invalidPhoneNumber => 'Please enter a valid phone number';
 
   @override
-  String get phoneNumberSaved => '전화번호가 저장되었어요';
+  String get phoneNumberSaved => 'Phone number saved';
 
   @override
-  String get phoneNumberDeleted => '전화번호가 삭제되었어요';
+  String get phoneNumberDeleted => 'Phone number deleted';
 
   @override
-  String get changeAccount => '계정 변경';
+  String get changeAccount => 'Change Account';
 
   @override
-  String get changeAccountConfirm => '다른 구글 계정으로 변경하시겠습니까?';
+  String get changeAccountConfirm =>
+      'Do you want to change to a different Google account?';
 
   @override
-  String get change => '변경';
+  String get change => 'Change';
 
   @override
   String cheerReceivedFrom(String name) {
-    return '$name님이 응원을 보냈어요!';
+    return '$name cheered you on!';
   }
 
   @override
   String teaseReceivedFrom(String name) {
-    return '$name님이 약올렸어요!';
+    return '$name poked you!';
   }
 
   @override
-  String get inquiryReplyArrived => '문의 답변 도착';
+  String get inquiryReplyArrived => 'Inquiry reply arrived';
 
   @override
-  String get linkAlarmDeleted => '링크 알람 삭제됨';
+  String get linkAlarmDeleted => 'Link alarm deleted';
 
   @override
-  String get timeModificationRequest => '시간 수정 요청';
+  String get timeModificationRequest => 'Time modification request';
 
   @override
-  String get modificationApproved => '수정 요청 승인됨';
+  String get modificationApproved => 'Modification approved';
 
   @override
-  String get modificationRejected => '수정 요청 거부됨';
+  String get modificationRejected => 'Modification rejected';
 
   @override
-  String get alarmTurnedOff => '알람이 OFF되었습니다';
+  String get alarmTurnedOff => 'Alarm has been turned OFF';
 
   @override
-  String get approve => '승인';
+  String get approve => 'Approve';
 
   @override
-  String get reject => '거절';
+  String get reject => 'Reject';
 
   @override
-  String get approved => '승인했어요!';
+  String get approved => 'Approved!';
 
   @override
-  String get rejected => '거절했어요.';
+  String get rejected => 'Rejected.';
 
   @override
-  String get voteFailed => '투표에 실패했어요';
+  String get voteFailed => 'Failed to vote';
 
   @override
-  String get tapToViewReply => '탭하여 답변 확인하기 →';
+  String get tapToViewReply => 'Tap to view reply →';
 
   @override
-  String get noResponseWarning => '24시간 내 응답하지 않으면 알람이 OFF됩니다';
+  String get noResponseWarning =>
+      'Alarm will be OFF if no response within 24 hours';
 
   @override
-  String get inquiry => '문의';
+  String get inquiry => 'Inquiry';
 
   @override
-  String get googleAccountAlreadyLinked => '이 구글 계정은 이미 다른 계정에 연동되어 있어요';
+  String get googleAccountAlreadyLinked =>
+      'This Google account is already linked to another account';
 
   @override
-  String get providerAlreadyLinked => '이미 구글 계정이 연동되어 있어요';
+  String get providerAlreadyLinked => 'Google account is already linked';
 
   @override
-  String get invalidCredential => '인증 정보가 유효하지 않아요';
+  String get invalidCredential => 'Invalid credentials';
 
   @override
-  String get networkError => '네트워크 연결을 확인해주세요';
+  String get networkError => 'Please check your network connection';
 
   @override
-  String get noInquiries => '문의 내역이 없어요';
+  String get noInquiries => 'No inquiries yet';
 
   @override
-  String get inquiryHint => '궁금한 점이 있으면 문의해주세요!';
+  String get inquiryHint => 'Have a question? Send us an inquiry!';
 
   @override
-  String get inquirySubmitted => '문의가 등록되었습니다';
+  String get inquirySubmitted => 'Inquiry submitted';
 
   @override
-  String get inquirySubmitFailed => '문의 등록 실패';
+  String get inquirySubmitFailed => 'Failed to submit inquiry';
 
   @override
-  String get inquiryTitle => '제목';
+  String get inquiryTitle => 'Title';
 
   @override
-  String get inquiryTitleHint => '문의 제목을 입력하세요';
+  String get inquiryTitleHint => 'Enter inquiry title';
 
   @override
-  String get inquiryTitleRequired => '제목을 입력해주세요';
+  String get inquiryTitleRequired => 'Please enter a title';
 
   @override
-  String get inquiryContent => '내용';
+  String get inquiryContent => 'Content';
 
   @override
-  String get inquiryContentHint => '문의 내용을 자세히 작성해주세요';
+  String get inquiryContentHint => 'Please describe your inquiry in detail';
 
   @override
-  String get inquiryContentRequired => '내용을 입력해주세요';
+  String get inquiryContentRequired => 'Please enter content';
 
   @override
-  String get inquiryContentMinLength => '내용을 10자 이상 입력해주세요';
+  String get inquiryContentMinLength => 'Please enter at least 10 characters';
 
   @override
-  String get submitInquiry => '문의 등록';
+  String get submitInquiry => 'Submit Inquiry';
 
   @override
-  String get inquiryResponsePromise => '문의하신 내용은 빠른 시일 내에 답변드리겠습니다.';
+  String get inquiryResponsePromise =>
+      'We will respond to your inquiry as soon as possible.';
 
   @override
-  String get alarmSound => '알람 소리';
+  String get alarmSound => 'Alarm Sound';
 
   @override
-  String get selectSoundCategory => '어떤 스타일의 소리를 원하세요?';
+  String get selectSoundCategory => 'What style of sound do you want?';
 
   @override
-  String get pingNotificationSound => 'Ping 알림음';
+  String get pingNotificationSound => 'Ping Sound';
 
   @override
-  String get pingNotificationSoundDesc => '찔러보기/응원하기 알림 소리';
+  String get pingNotificationSoundDesc =>
+      'Sound for Ping and Cheer notifications';
 
   @override
-  String get currentSound => '현재 소리';
+  String get currentSound => 'Current Sound';
 
   @override
-  String get freeSounds => '무료 소리';
+  String get freeSounds => 'Free Sounds';
 
   @override
-  String get premiumSounds => '프리미엄 소리';
+  String get premiumSounds => 'Premium Sounds';
 
   @override
-  String get premiumSoundsLocked => '프리미엄으로 업그레이드하면 모든 소리를 사용할 수 있어요';
+  String get premiumSoundsLocked => 'Upgrade to Premium to unlock all sounds';
 
   @override
-  String get soundSelected => '소리가 선택되었어요';
+  String get soundSelected => 'Sound selected';
 
   @override
-  String get soundNotAvailable => '아직 소리 파일이 준비되지 않았어요';
+  String get soundNotAvailable => 'Sound file not available yet';
 
   @override
-  String get alarmSoundDescription => '알림 소리를 선택하세요';
+  String get alarmSoundDescription => 'Choose your notification sound';
 
   @override
-  String get soundCategoryAlarm => '긴 알림';
+  String get soundCategoryAlarm => 'Long Alarm';
 
   @override
-  String get soundCategoryNotify => '간단한 효과음';
+  String get soundCategoryNotify => 'Quick Effect';
 
   @override
-  String get soundCategoryAlarmDesc => '멜로디형\n(5-15초)\n놓치면 안 되는 중요한 알람용';
+  String get soundCategoryAlarmDesc =>
+      'Melodic\n(5-15 sec)\nFor must-not-miss alarms';
 
   @override
-  String get soundCategoryNotifyDesc => '짧은 효과음\n(2-5초)\n가볍게 확인할 리마인더용';
+  String get soundCategoryNotifyDesc =>
+      'Short effect\n(2-5 sec)\nFor quick reminders';
 
   @override
-  String get currentStreak => '연속 스트릭';
+  String get currentStreak => 'Current Streak';
 
   @override
-  String get achievementRate => '달성률';
+  String get achievementRate => 'Achievement';
 
   @override
-  String get badgeCollected => '뱃지 수집';
+  String get badgeCollected => 'Badges';
 
   @override
   String longestStreak(int days) {
-    return '최장: $days일';
+    return 'Longest: $days days';
   }
 
   @override
   String daysCount(int days) {
-    return '$days일';
+    return '$days days';
   }
 
   @override
-  String get badgeEarned => '뱃지 획득!';
+  String get badgeEarned => 'NEW Badge!';
 
   @override
-  String get badgeNotYetEarned => '아직 획득하지 않음';
+  String get badgeNotYetEarned => 'Not yet earned';
 
   @override
   String badgeEarnedOn(String date) {
-    return '$date 획득';
+    return 'Earned on $date';
   }
 
   @override
   String badgeProgress(int progress, int target) {
-    return '진행률: $progress/$target';
+    return 'Progress: $progress/$target';
   }
 
   @override
   String badgeProgressPercent(int percent) {
-    return '$percent% 완료';
+    return '$percent% complete';
   }
 
   @override
-  String get badge_streak3_name => '3일 연속';
+  String get badge_streak3_name => '3-Day Streak';
 
   @override
-  String get badge_streak3_desc => '3일 연속 달성';
+  String get badge_streak3_desc => 'Achieve 3 consecutive days';
 
   @override
-  String get badge_streak7_name => '일주일 불꽃';
+  String get badge_streak7_name => 'Week on Fire';
 
   @override
-  String get badge_streak7_desc => '7일 연속 달성';
+  String get badge_streak7_desc => 'Achieve 7 consecutive days';
 
   @override
-  String get badge_streak30_name => '한 달의 열정';
+  String get badge_streak30_name => 'Month of Passion';
 
   @override
-  String get badge_streak30_desc => '30일 연속 달성';
+  String get badge_streak30_desc => 'Achieve 30 consecutive days';
 
   @override
-  String get badge_streak100_name => '백일의 기적';
+  String get badge_streak100_name => '100-Day Miracle';
 
   @override
-  String get badge_streak100_desc => '100일 연속 달성';
+  String get badge_streak100_desc => 'Achieve 100 consecutive days';
 
   @override
-  String get badge_marathon_name => '마라톤';
+  String get badge_marathon_name => 'Marathon';
 
   @override
-  String get badge_marathon_desc => '365일 연속 달성!';
+  String get badge_marathon_desc => 'Achieve 365 consecutive days!';
 
   @override
-  String get badge_comeback_name => '컴백';
+  String get badge_comeback_name => 'Comeback';
 
   @override
-  String get badge_comeback_desc => '스트릭 끊긴 후 다시 7일 달성';
+  String get badge_comeback_desc => 'Achieve 7 days after breaking streak';
 
   @override
-  String get badge_quickDraw_name => '퀵 드로우';
+  String get badge_quickDraw_name => 'Quick Draw';
 
   @override
-  String get badge_quickDraw_desc => '알림 5초 내 클릭';
+  String get badge_quickDraw_desc => 'Click within 5 seconds of notification';
 
   @override
-  String get badge_speedDemon_name => '스피드 데몬';
+  String get badge_speedDemon_name => 'Speed Demon';
 
   @override
-  String get badge_speedDemon_desc => '알림 후 30초 내 오픈 10회';
+  String get badge_speedDemon_desc => 'Open within 30 seconds 10 times';
 
   @override
-  String get badge_quickResponse_name => '빠른 응답';
+  String get badge_quickResponse_name => 'Quick Response';
 
   @override
-  String get badge_quickResponse_desc => '알림 후 3분 내 오픈 50회';
+  String get badge_quickResponse_desc => 'Open within 3 minutes 50 times';
 
   @override
-  String get badge_morningGlory_name => '모닝 글로리';
+  String get badge_morningGlory_name => 'Morning Glory';
 
   @override
-  String get badge_morningGlory_desc => '오전 5~7시 클릭 5회';
+  String get badge_morningGlory_desc => 'Click at 5-7 AM 5 times';
 
   @override
-  String get badge_earlyBird_name => '얼리버드';
+  String get badge_earlyBird_name => 'Early Bird';
 
   @override
-  String get badge_earlyBird_desc => '오전 7시 전 링크 오픈 10회';
+  String get badge_earlyBird_desc => 'Open links before 7 AM 10 times';
 
   @override
-  String get badge_nightOwl_name => '올빼미';
+  String get badge_nightOwl_name => 'Night Owl';
 
   @override
-  String get badge_nightOwl_desc => '밤 11시 이후 링크 오픈 10회';
+  String get badge_nightOwl_desc => 'Open links after 11 PM 10 times';
 
   @override
-  String get badge_nightShift_name => '야간 근무';
+  String get badge_nightShift_name => 'Night Shift';
 
   @override
-  String get badge_nightShift_desc => '자정~5시 사이 클릭 5회';
+  String get badge_nightShift_desc => 'Click between midnight and 5 AM 5 times';
 
   @override
-  String get badge_perfectWeek_name => '완벽한 일주일';
+  String get badge_perfectWeek_name => 'Perfect Week';
 
   @override
-  String get badge_perfectWeek_desc => '일주일 100% 달성';
+  String get badge_perfectWeek_desc => '100% achievement for a week';
 
   @override
-  String get badge_perfectMonth_name => '완벽한 한 달';
+  String get badge_perfectMonth_name => 'Perfect Month';
 
   @override
-  String get badge_perfectMonth_desc => '한 달 100% 달성';
+  String get badge_perfectMonth_desc => '100% achievement for a month';
 
   @override
-  String get badge_perfectionist_name => '완벽주의자';
+  String get badge_perfectionist_name => 'Perfectionist';
 
   @override
-  String get badge_perfectionist_desc => '달성률 95% 이상 (50회 이상)';
+  String get badge_perfectionist_desc => '95%+ achievement rate (50+ times)';
 
   @override
-  String get badge_firstCheer_name => '첫 응원';
+  String get badge_firstCheer_name => 'First Cheer';
 
   @override
-  String get badge_firstCheer_desc => '첫 응원 보내기';
+  String get badge_firstCheer_desc => 'Send your first cheer';
 
   @override
-  String get badge_cheerLeader_name => '응원단장';
+  String get badge_cheerLeader_name => 'Cheer Leader';
 
   @override
-  String get badge_cheerLeader_desc => '응원 50회 보내기';
+  String get badge_cheerLeader_desc => 'Send 50 cheers';
 
   @override
-  String get badge_firstPoke_name => '첫 찌르기';
+  String get badge_firstPoke_name => 'First Poke';
 
   @override
-  String get badge_firstPoke_desc => '첫 찌르기 보내기';
+  String get badge_firstPoke_desc => 'Send your first poke';
 
   @override
-  String get badge_poker_name => '찌르기 마스터';
+  String get badge_poker_name => 'Poke Master';
 
   @override
-  String get badge_poker_desc => '찌르기 50회 보내기';
+  String get badge_poker_desc => 'Send 50 pokes';
 
   @override
-  String get badge_socialButterfly_name => '소셜 버터플라이';
+  String get badge_socialButterfly_name => 'Social Butterfly';
 
   @override
-  String get badge_socialButterfly_desc => '응원/찌르기 10회 받기';
+  String get badge_socialButterfly_desc => 'Receive 10 cheers/pokes';
 
   @override
-  String get badge_firstLink_name => '첫 링크';
+  String get badge_firstLink_name => 'First Link';
 
   @override
-  String get badge_firstLink_desc => '첫 링크 등록';
+  String get badge_firstLink_desc => 'Register your first link';
 
   @override
-  String get badge_linkCollector_name => '링크 수집가';
+  String get badge_linkCollector_name => 'Link Collector';
 
   @override
-  String get badge_linkCollector_desc => '링크 10개 등록';
+  String get badge_linkCollector_desc => 'Register 10 links';
 
   @override
-  String get badge_linkMaster_name => '링크 마스터';
+  String get badge_linkMaster_name => 'Link Master';
 
   @override
-  String get badge_linkMaster_desc => '링크 50개 등록';
+  String get badge_linkMaster_desc => 'Register 50 links';
 
   @override
-  String get badge_hotLink_name => '핫 링크';
+  String get badge_hotLink_name => 'Hot Link';
 
   @override
-  String get badge_hotLink_desc => '내 링크 10명 이상 저장';
+  String get badge_hotLink_desc => '10+ people saved your link';
 
   @override
-  String get badge_variety_name => '다양성';
+  String get badge_variety_name => 'Variety';
 
   @override
-  String get badge_variety_desc => '5개 이상 다른 도메인 링크';
+  String get badge_variety_desc => '5+ different domain links';
 
   @override
-  String get badge_founder_name => '파운더';
+  String get badge_founder_name => 'Founder';
 
   @override
-  String get badge_founder_desc => '앱 초기 사용자';
+  String get badge_founder_desc => 'Early app user';
 
   @override
-  String get badge_premium_name => '프리미엄';
+  String get badge_premium_name => 'Premium';
 
   @override
-  String get badge_premium_desc => '프리미엄 구독';
+  String get badge_premium_desc => 'Premium subscription';
 
   @override
-  String get badge_badgeCollector_name => '뱃지 수집가';
+  String get badge_badgeCollector_name => 'Badge Collector';
 
   @override
-  String get badge_badgeCollector_desc => '뱃지 10개 획득';
+  String get badge_badgeCollector_desc => 'Earn 10 badges';
 
   @override
-  String get badge_cloudSynced_name => '클라우드 동기화';
+  String get badge_cloudSynced_name => 'Cloud Synced';
 
   @override
-  String get badge_cloudSynced_desc => '계정 연동으로 데이터 동기화';
+  String get badge_cloudSynced_desc => 'Sync data with account linking';
 
   @override
-  String get premiumSoundUnlock => '프리미엄 소리';
+  String get premiumSoundUnlock => 'Premium Sound';
 
   @override
   String get premiumSoundUnlockDesc =>
-      '이 소리는 프리미엄 전용입니다.\n광고를 시청하거나 프리미엄에 가입하세요.';
+      'This sound is premium only.\nWatch an ad or subscribe to premium.';
 
   @override
-  String get watchAdToUnlock => '광고 보고 사용하기';
+  String get watchAdToUnlock => 'Watch Ad to Use';
 
   @override
-  String get upgradeToPremium => '프리미엄 등록하기';
+  String get upgradeToPremium => 'Get Premium';
 
   @override
-  String get adNotReady => '광고를 준비 중입니다. 잠시 후 다시 시도해주세요.';
+  String get adNotReady => 'Ad is loading. Please try again shortly.';
 
   @override
-  String get adWatchSuccess => '광고 시청 완료! 소리가 적용되었습니다.';
+  String get adWatchSuccess => 'Ad completed! Sound has been applied.';
 
   @override
-  String get earnedBadges => '획득한 배지';
+  String get earnedBadges => 'My Badges';
 
   @override
-  String get skip => '건너뛰기';
+  String get skip => 'Skip';
 
   @override
-  String get next => '다음';
+  String get next => 'Next';
 
   @override
-  String get getStarted => '시작하기';
+  String get getStarted => 'Get Started';
 
   @override
-  String get done => '완료';
+  String get done => 'Done';
 
   @override
-  String get send => '보내기';
+  String get send => 'Send';
 
   @override
-  String get close => '닫기';
+  String get close => 'Close';
 
   @override
-  String get confirm => '확인';
+  String get confirm => 'Confirm';
 
   @override
-  String get notSet => '미설정';
+  String get notSet => 'Not set';
 
   @override
-  String get inquiryDetail => '문의 상세';
+  String get inquiryDetail => 'Inquiry Details';
 
   @override
-  String get inquiryNotFound => '문의를 찾을 수 없습니다';
+  String get inquiryNotFound => 'Inquiry not found';
 
   @override
-  String get reply => '답변';
+  String get reply => 'Reply';
 
   @override
   String repliedOn(String date) {
-    return '답변일: $date';
+    return 'Replied on: $date';
   }
 
   @override
-  String get linkPingTeam => 'LinkPing 팀';
+  String get linkPingTeam => 'LinkPing Team';
 
   @override
-  String get waitingForReply => '답변을 기다리고 있어요.\n답변이 등록되면 알림으로 알려드릴게요!';
+  String get waitingForReply =>
+      'Waiting for reply.\nWe\'ll notify you when we respond!';
 
   @override
-  String get linkNotFound => '링크를 찾을 수 없어요';
+  String get linkNotFound => 'Link not found';
 
   @override
-  String get linkLoadFailed => '링크를 불러오는데 실패했어요';
+  String get linkLoadFailed => 'Failed to load link';
 
   @override
-  String get linkNotificationService => '링크 알림 서비스';
+  String get linkNotificationService => 'Link Notification Service';
 
   @override
-  String get timeEditable => '시간 수정 가능';
+  String get timeEditable => 'Time can be edited';
 
   @override
-  String get lockedTimeDesc => '공유자가 설정한 시간 그대로 알림을 받아요';
+  String get lockedTimeDesc =>
+      'You\'ll receive notifications at the time set by the sharer';
 
   @override
-  String get editableTimeDesc => '저장 후 원하는 시간으로 변경할 수 있어요';
+  String get editableTimeDesc => 'You can change the time after saving';
 
   @override
-  String get openInApp => '앱에서 열기';
+  String get openInApp => 'Open in App';
 
   @override
-  String get appRequiredMessage => '앱이 설치되어 있어야 해요';
+  String get appRequiredMessage => 'App installation required';
 
   @override
-  String get openLinkInBrowser => '브라우저에서 링크 열기';
+  String get openLinkInBrowser => 'Open link in browser';
 
   @override
   String viewCount(int count) {
-    return '조회 $count회';
+    return 'Views: $count';
   }
 
   @override
-  String get saveAndChangeTime => '저장 후 원하는 시간으로 변경하여 알림 받기';
+  String get saveAndChangeTime => 'Save and change to your preferred time';
 
   @override
-  String get generatingShareLink => '공유 링크 생성 중...';
+  String get generatingShareLink => 'Generating share link...';
 
   @override
-  String get onboarding1Title => '링크를 저장하세요';
+  String get onboarding1Title => 'Save your links';
 
   @override
-  String get onboarding1Desc => '인스타, 유튜브, 틱톡...\n나중에 볼 링크를 저장해두세요';
+  String get onboarding1Desc =>
+      'Instagram, YouTube, TikTok...\nSave links to view later';
 
   @override
-  String get onboarding2Title => '딱 그 시간에 알림!';
+  String get onboarding2Title => 'Get notified on time!';
 
   @override
-  String get onboarding2Desc => '원하는 시간에 알림을 받고\n저장한 링크를 바로 열어요';
+  String get onboarding2Desc =>
+      'Receive notifications at your preferred time\nand open your saved links instantly';
 
   @override
-  String get onboarding3Title => '장거리 연애 중?';
+  String get onboarding3Title => 'Long-distance relationship?';
 
   @override
-  String get onboarding3Desc => '떨어져 있어도 같은 시간에\n넷플릭스 같이 보기';
+  String get onboarding3Desc =>
+      'Watch Netflix together\nat the same time, even apart';
 
   @override
-  String get onboarding3Sub => '매일 밤 10시, 우리만의 영화 시간';
+  String get onboarding3Sub => 'Every night at 10 PM, our movie time';
 
   @override
-  String get onboarding4Title => '매일 성장하고 싶다면';
+  String get onboarding4Title => 'Want to grow daily?';
 
   @override
-  String get onboarding4Desc => '아침 7시 TED 강연\n점심시간 영어 공부 유튜브';
+  String get onboarding4Desc => '7 AM TED talk\nLunchtime English study video';
 
   @override
-  String get onboarding4Sub => '루틴을 만들어보세요';
+  String get onboarding4Sub => 'Build your routine';
 
   @override
-  String get onboarding5Title => '친구와 함께하면';
+  String get onboarding5Title => 'Better with friends';
 
   @override
-  String get onboarding5Desc => '운동 영상 같이 따라하기\n스터디 자료 공유하기';
+  String get onboarding5Desc =>
+      'Follow workout videos together\nShare study materials';
 
   @override
-  String get onboarding5Sub => '함께하면 실천율 95%!';
+  String get onboarding5Sub => '95% success rate when together!';
 
   @override
-  String get onboarding6Title => '지금 시작하세요';
+  String get onboarding6Title => 'Start now';
 
   @override
-  String get onboarding6Desc => '무료로 2개까지 저장 가능\n프리미엄은 무제한!';
+  String get onboarding6Desc =>
+      'Save up to 2 links free\nPremium for unlimited!';
 
   @override
-  String get loginRequired => '로그인이 필요합니다';
+  String get loginRequired => 'Login required';
 
   @override
-  String get referralCodeQuestion => '친구에게 받은 초대 코드가 있나요?';
+  String get referralCodeQuestion => 'Got a referral code from a friend?';
 
   @override
-  String get referralCodeHelperText => '8자리 코드를 입력하세요';
+  String get referralCodeHelperText => 'Enter 8-character code';
 
   @override
-  String get southKorea => '대한민국';
+  String get southKorea => 'South Korea';
 
   @override
   String get poring => '波灵';

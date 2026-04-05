@@ -18,12 +18,12 @@ import '../../services/ping_window_service.dart';
 import '../../services/pixel_emoji_service.dart';
 
 class SavedUsersBottomSheet extends ConsumerStatefulWidget {
-  final String urlHash;
+  final String sharedLinkId;
   final String urlTitle;
 
   const SavedUsersBottomSheet({
     super.key,
-    required this.urlHash,
+    required this.sharedLinkId,
     required this.urlTitle,
   });
 
@@ -382,7 +382,7 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final savedUsersAsync = ref.watch(savedByUsersProvider(widget.urlHash));
+    final savedUsersAsync = ref.watch(sharedLinkSavedByUsersProvider(widget.sharedLinkId));
     final currentUid = FirebaseAuth.instance.currentUser?.uid;
     final myCountry = _getMyCountry();
 

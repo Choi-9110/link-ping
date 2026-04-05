@@ -492,6 +492,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contactNotReady => 'Contact (coming soon)';
 
   @override
+  String get openSourceLicenses => 'Open Source Licenses';
+
+  @override
   String get loading => 'Loading...';
 
   @override
