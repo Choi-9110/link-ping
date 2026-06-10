@@ -9,7 +9,7 @@ class AppLocalizationsKo extends AppLocalizations {
   AppLocalizationsKo([String locale = 'ko']) : super(locale);
 
   @override
-  String get appName => 'LinkPing';
+  String get appName => '링꾸';
 
   @override
   String get appSlogan => '저장한 링크, 실천하자!';
@@ -513,7 +513,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String shareMessage(String time, String url) {
-    return '나 이거 $time에 알림 받아서 하고 있어! 너도 같이 하자\n\n$url\n\nLinkPing에서 열기';
+    return '나 이거 $time에 알림 받아서 하고 있어! 너도 같이 하자\n\n$url\n\n링꾸에서 열기';
   }
 
   @override
@@ -1218,7 +1218,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get linkPingTeam => 'LinkPing 팀';
+  String get linkPingTeam => '링꾸 팀';
 
   @override
   String get waitingForReply => '답변을 기다리고 있어요.\n답변이 등록되면 알림으로 알려드릴게요!';

@@ -16,6 +16,7 @@ import '../badges/badge_collection_screen.dart';
 import '../inquiry/inquiry_list_screen.dart';
 import '../privacy/privacy_policy_screen.dart';
 import '../terms/terms_of_service_screen.dart';
+import '../verification/blocked_users_screen.dart';
 import 'alarm_sound_screen.dart';
 import 'edit_profile_screen.dart';
 import '../../widgets/share_preview_dialog.dart';
@@ -223,6 +224,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ),
           _buildSettingsTile(
+            icon: Icons.block,
+            title: Localizations.localeOf(context).languageCode == 'ko'
+                ? '차단한 사용자'
+                : 'Blocked Users',
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const BlockedUsersScreen(),
+                ),
+              );
+            },
+          ),
+          _buildSettingsTile(
             icon: Icons.privacy_tip_outlined,
             title: l10n.privacyPolicy,
             trailing: const Icon(Icons.chevron_right),
@@ -247,7 +263,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             onTap: () {
               showLicensePage(
                 context: context,
-                applicationName: 'LinkPing',
+                applicationName: 'Linkku',
                 applicationVersion: '1.0.2',
               );
             },

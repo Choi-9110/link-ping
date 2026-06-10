@@ -1,6 +1,6 @@
 {
-    "name": "LinkPing - 링크 알림 서비스",
-    "short_name": "LinkPing",
+    "name": "Linkku - 링크 알림 서비스",
+    "short_name": "Linkku",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#1a1a2e",

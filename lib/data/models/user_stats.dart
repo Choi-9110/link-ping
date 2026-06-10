@@ -177,14 +177,14 @@ class UserStats {
       } else if (totalLinksCreated > 0) {
         return '$category을 즐기는 $timeType 인간';
       }
-      return '링크핑을 시작한';
+      return '링꾸를 시작한';
     } else {
       if (hour != null && totalNotificationsClicked > 10) {
         return '$timeType who enjoys $category with $sound at $hour:00';
       } else if (totalLinksCreated > 0) {
         return '$timeType who loves $category';
       }
-      return 'New to LinkPing';
+      return 'New to Linkku';
     }
   }
 

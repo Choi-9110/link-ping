@@ -2,32 +2,33 @@ import 'package:hive/hive.dart';
 
 part 'bookmark.g.dart';
 
-/// 북마크 카테고리
+/// 북마크 카테고리 (DEPRECATED - 폴더 모델로 마이그레이션 후 사용 안 함)
+/// 기존 사용자 데이터 호환성을 위해 enum과 adapter는 유지.
 @HiveType(typeId: 4)
 enum BookmarkCategory {
   @HiveField(0)
-  exercise, // 🏃 운동
+  exercise,
 
   @HiveField(1)
-  study, // 📚 공부/학습
+  study,
 
   @HiveField(2)
-  cooking, // 🍳 요리
+  cooking,
 
   @HiveField(3)
-  entertainment, // 🎬 엔터/영상
+  entertainment,
 
   @HiveField(4)
-  shopping, // 🛍️ 쇼핑
+  shopping,
 
   @HiveField(5)
-  news, // 📰 뉴스/아티클
+  news,
 
   @HiveField(6)
-  selfDev, // 💪 자기계발
+  selfDev,
 
   @HiveField(7)
-  other, // ⭐ 기타
+  other,
 }
 
 extension BookmarkCategoryExtension on BookmarkCategory {
@@ -110,8 +111,9 @@ class Bookmark extends HiveObject {
   @HiveField(2)
   final String title;
 
+  /// DEPRECATED: 폴더 모델 도입 이전 카테고리. 새 코드는 folderId를 사용.
   @HiveField(3)
-  final BookmarkCategory category;
+  final BookmarkCategory? category;
 
   @HiveField(4)
   final DateTime createdAt;
@@ -119,13 +121,18 @@ class Bookmark extends HiveObject {
   @HiveField(5)
   final String? memo;
 
+  /// 소속 폴더 ID (BookmarkFolder.id 참조)
+  @HiveField(6)
+  final String? folderId;
+
   Bookmark({
     required this.id,
     required this.url,
     required this.title,
-    required this.category,
+    this.category,
     DateTime? createdAt,
     this.memo,
+    this.folderId,
   }) : createdAt = createdAt ?? DateTime.now();
 
   Bookmark copyWith({
@@ -135,6 +142,7 @@ class Bookmark extends HiveObject {
     BookmarkCategory? category,
     DateTime? createdAt,
     String? memo,
+    String? folderId,
     bool clearMemo = false,
   }) {
     return Bookmark(
@@ -144,6 +152,7 @@ class Bookmark extends HiveObject {
       category: category ?? this.category,
       createdAt: createdAt ?? this.createdAt,
       memo: clearMemo ? null : (memo ?? this.memo),
+      folderId: folderId ?? this.folderId,
     );
   }
 }

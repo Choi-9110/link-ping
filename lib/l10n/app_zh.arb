@@ -1,7 +1,7 @@
 {
   "@@locale": "zh",
 
-  "appName": "LinkPing",
+  "appName": "Linkku",
   "appSlogan": "收藏链接，立即行动！",
 
   "login": "登录",
@@ -218,7 +218,7 @@
   "edit": "编辑",
   "copyLink": "复制链接",
   "linkCopied": "链接已复制",
-  "shareMessage": "我在 {time} 有个小习惯，一起来吧！\n\n{url}\n\n在 LinkPing 中打开",
+  "shareMessage": "我在 {time} 有个小习惯，一起来吧！\n\n{url}\n\n在 Linkku 中打开",
   "@shareMessage": {
     "placeholders": {
       "time": {

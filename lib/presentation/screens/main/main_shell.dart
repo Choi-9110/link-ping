@@ -5,6 +5,7 @@ import '../../../providers/user_provider.dart';
 import '../../widgets/banner_ad_widget.dart';
 import '../home/home_screen.dart';
 import '../bookmark/bookmark_screen.dart';
+import '../verification/verification_prompt_dialog.dart';
 
 class MainShell extends ConsumerStatefulWidget {
   const MainShell({super.key});
@@ -13,13 +14,38 @@ class MainShell extends ConsumerStatefulWidget {
   ConsumerState<MainShell> createState() => _MainShellState();
 }
 
-class _MainShellState extends ConsumerState<MainShell> {
+class _MainShellState extends ConsumerState<MainShell>
+    with WidgetsBindingObserver {
   int _currentIndex = 0;
 
   final _screens = const [
     HomeScreen(),
     BookmarkScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    // 첫 진입 시에도 보류된 인증이 있으면 노출
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) VerificationPromptDialog.showIfPending(context);
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // 알람 → 외부 URL 다녀온 직후 앱 복귀 시 인증 프롬프트
+      if (mounted) VerificationPromptDialog.showIfPending(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +60,7 @@ class _MainShellState extends ConsumerState<MainShell> {
       ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // 배너 광고 (프리미엄 사용자는 제외)
           if (!isPremium) const BannerAdWidget(),
@@ -55,7 +82,7 @@ class _MainShellState extends ConsumerState<MainShell> {
                   index: 0,
                   icon: Icons.notifications_outlined,
                   activeIcon: Icons.notifications,
-                  label: 'LinkPing',
+                  label: 'Linkku',
                   colorScheme: colorScheme,
                 ),
                 _buildNavItem(

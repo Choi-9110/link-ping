@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/spacing.dart';
 import '../../../../data/models/link_reminder.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../providers/verification_provider.dart';
 import '../../../../services/url_launcher_service.dart';
 import '../../../widgets/saved_users_bottom_sheet.dart';
+import '../../verification/verification_gallery_sheet.dart';
 
-class LinkCard extends StatelessWidget {
+class LinkCard extends ConsumerWidget {
   final LinkReminder link;
   final int saveCount;
   final VoidCallback onTap;
@@ -35,11 +38,27 @@ class LinkCard extends StatelessWidget {
     );
   }
 
+  void _showVerifications(BuildContext context) {
+    if (link.sharedLinkId == null) return;
+    VerificationGallerySheet.show(
+      context,
+      sharedLinkId: link.sharedLinkId!,
+      linkTitle: link.title,
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final l10n = AppLocalizations.of(context)!;
+    final verificationCount = link.sharedLinkId == null
+        ? 0
+        : (ref
+                .watch(verificationsBySharedLinkProvider(link.sharedLinkId!))
+                .value
+                ?.length ??
+            0);
 
     return Dismissible(
       key: Key(link.id),
@@ -188,18 +207,63 @@ class LinkCard extends StatelessWidget {
                           color: colorScheme.outline,
                         ),
                       ),
-                      // 저장 수
-                      if (saveCount > 0) ...[
-                        const SizedBox(height: 2),
-                        GestureDetector(
-                          onTap: () => _showSavedUsers(context),
-                          child: Text(
-                            l10n.savedByCount(saveCount),
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: colorScheme.primary,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                      // 저장 수 + 인증 영상
+                      if (saveCount > 0 || verificationCount > 0) ...[
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            if (saveCount > 0)
+                              GestureDetector(
+                                onTap: () => _showSavedUsers(context),
+                                child: Text(
+                                  l10n.savedByCount(saveCount),
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: colorScheme.primary,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            if (saveCount > 0 && verificationCount > 0)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6),
+                                child: Text(
+                                  '·',
+                                  style: TextStyle(
+                                      color: colorScheme.outline),
+                                ),
+                              ),
+                            if (verificationCount > 0)
+                              GestureDetector(
+                                onTap: () => _showVerifications(context),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: colorScheme.tertiaryContainer
+                                        .withValues(alpha: 0.5),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text('🎬',
+                                          style: TextStyle(fontSize: 11)),
+                                      const SizedBox(width: 3),
+                                      Text(
+                                        '$verificationCount',
+                                        style:
+                                            theme.textTheme.bodySmall?.copyWith(
+                                          color: colorScheme.onTertiaryContainer,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ],
                     ],

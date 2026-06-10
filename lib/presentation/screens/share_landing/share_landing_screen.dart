@@ -177,7 +177,7 @@ class _ShareLandingScreenState extends State<ShareLandingScreen> {
         ),
         const SizedBox(height: 16),
         const Text(
-          'LinkPing',
+          'Linkku',
           style: TextStyle(
             color: Colors.white,
             fontSize: 28,

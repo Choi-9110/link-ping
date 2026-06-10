@@ -730,7 +730,7 @@ class FirestoreService {
       await _sendNotificationToUser(
         toUid: request.creatorUid,
         type: 'modification_approved',
-        fromNickname: 'LinkPing',
+        fromNickname: 'Linkku',
         urlTitle: linkTitle,
         message:
             '"$linkTitle" 수정 요청이 승인되었어요! (${request.approvedCount}/${request.respondedCount} 승인)',
@@ -778,7 +778,7 @@ class FirestoreService {
       await _sendNotificationToUser(
         toUid: request.creatorUid,
         type: 'modification_rejected',
-        fromNickname: 'LinkPing',
+        fromNickname: 'Linkku',
         urlTitle: linkTitle,
         message:
             '"$linkTitle" 수정 요청이 거부되었어요. (${request.approvedCount}/${request.respondedCount} 승인)',

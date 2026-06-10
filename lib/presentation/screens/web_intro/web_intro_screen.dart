@@ -83,7 +83,7 @@ class WebIntroScreen extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           const Text(
-            'LinkPing',
+            'Linkku',
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -605,7 +605,7 @@ class WebIntroScreen extends StatelessWidget {
       child: const Column(
         children: [
           Text(
-            'LinkPing',
+            'Linkku',
             style: TextStyle(
               color: Colors.white54,
               fontSize: 14,
@@ -614,7 +614,7 @@ class WebIntroScreen extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Text(
-            '© 2025 LinkPing. All rights reserved.',
+            '© 2025 Linkku. All rights reserved.',
             style: TextStyle(
               color: Colors.white38,
               fontSize: 12,

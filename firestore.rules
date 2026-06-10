@@ -1,0 +1,108 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // === 인증 영상 ===
+    match /verificationVideos/{videoId} {
+      // 로그인한 누구나 읽기 (클라이언트에서 차단/만료 필터링)
+      allow read: if request.auth != null;
+
+      // 생성: uploaderUid 가 본인이어야 함
+      allow create: if request.auth != null
+        && request.resource.data.uploaderUid == request.auth.uid
+        && request.resource.data.keys().hasAll([
+          'uploaderUid', 'uploaderNickname', 'uploaderProfileEmoji',
+          'storagePath', 'videoUrl', 'durationSeconds', 'resolution',
+          'createdAt', 'expiresAt'
+        ]);
+
+      // 업데이트:
+      // - 업로더는 isHidden 등 자기 메타 수정 가능
+      // - 다른 유저는 viewCount/viewedByUids/reportedByUids 만 변경 가능
+      allow update: if request.auth != null && (
+        // 본인이면 자유롭게 수정
+        resource.data.uploaderUid == request.auth.uid
+        ||
+        // 타인은 카운트/배열 필드 외에는 변경 못함
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['viewCount', 'viewedByUids', 'reportedByUids', 'isHidden'])
+      );
+
+      // 삭제: 업로더만
+      allow delete: if request.auth != null
+        && resource.data.uploaderUid == request.auth.uid;
+
+      // 신고 서브컬렉션
+      match /reports/{reportId} {
+        allow create: if request.auth != null
+          && request.resource.data.reporterUid == request.auth.uid;
+        // 관리자 검토용 — 기본 차단
+        allow read, update, delete: if false;
+      }
+    }
+
+    // === 사용자 프로필 ===
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+
+      // 차단 목록 (본인만 접근)
+      match /blockedUsers/{targetId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // 대시보드 통계 (본인만 — totalLinksCreated 등)
+      match /stats/{statsDoc} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // === 사용자 통계 (뱃지/스트릭/소셜) ===
+    // BadgeService 가 직접 사용. 일부 필드는 다른 유저(응원/찌르기 보낸 사람)도 증가시킬 수 있어야 함.
+    match /userStats/{uid} {
+      // 본인만 자기 통계 읽기
+      allow read: if request.auth != null && request.auth.uid == uid;
+
+      // 본인 생성: 자유롭게 (merge:true 로 첫 set 시)
+      allow create: if request.auth != null && request.auth.uid == uid;
+
+      // 본인 업데이트: 자유롭게
+      // 타인 업데이트: cheersReceived / pokesReceived 만 변경 가능
+      allow update: if request.auth != null && (
+        request.auth.uid == uid
+        || request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['cheersReceived', 'pokesReceived'])
+      );
+
+      // 삭제: 본인만
+      allow delete: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // === 그 외 컬렉션 (기본 정책 유지) ===
+    // 기존에 설정해둔 다른 컬렉션 규칙은 그대로. 필요 시 여기서 추가.
+    match /sharedLinks/{linkId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+    match /notifications/{notificationId} {
+      allow read, write: if request.auth != null;
+    }
+    match /inquiries/{inquiryId} {
+      allow read, write: if request.auth != null;
+    }
+    match /modificationRequests/{requestId} {
+      allow read, write: if request.auth != null;
+    }
+    match /analytics/{docId} {
+      allow read, write: if request.auth != null;
+    }
+    match /recommendedLinks/{linkId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}

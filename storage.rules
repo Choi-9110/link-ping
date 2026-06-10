@@ -1,0 +1,29 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // === 인증 영상 ===
+    // 경로: verifications/{uploaderUid}/{videoId}.mp4
+    //       verifications/{uploaderUid}/{videoId}_thumb.jpg
+    match /verifications/{uploaderUid}/{fileName} {
+      // 로그인한 모든 사용자 읽기 (클라이언트에서 차단 필터링)
+      allow read: if request.auth != null;
+
+      // 본인 경로에만 업로드
+      allow write: if request.auth != null
+        && request.auth.uid == uploaderUid
+        && request.resource.size < 30 * 1024 * 1024  // 30MB 제한
+        && (request.resource.contentType.matches('video/.*')
+            || request.resource.contentType.matches('image/.*'));
+
+      // 본인만 삭제
+      allow delete: if request.auth != null
+        && request.auth.uid == uploaderUid;
+    }
+
+    // === 그 외 ===
+    match /{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

@@ -27,22 +27,25 @@ class BookmarksNotifier extends StateNotifier<List<Bookmark>> {
     state = bookmarks;
   }
 
-  Future<void> addBookmark({
+  void refresh() => _loadBookmarks();
+
+  Future<Bookmark> addBookmark({
     required String url,
     required String title,
-    required BookmarkCategory category,
+    required String folderId,
     String? memo,
   }) async {
     final bookmark = Bookmark(
       id: _uuid.v4(),
       url: url,
       title: title,
-      category: category,
+      folderId: folderId,
       memo: memo,
     );
 
     await _repository.saveBookmark(bookmark);
     _loadBookmarks();
+    return bookmark;
   }
 
   Future<void> updateBookmark(Bookmark bookmark) async {
@@ -55,17 +58,3 @@ class BookmarksNotifier extends StateNotifier<List<Bookmark>> {
     _loadBookmarks();
   }
 }
-
-/// 카테고리별 북마크 수
-final bookmarkCountByCategoryProvider =
-    Provider.family<int, BookmarkCategory>((ref, category) {
-  final bookmarks = ref.watch(bookmarksProvider);
-  return bookmarks.where((b) => b.category == category).length;
-});
-
-/// 카테고리별 북마크 목록
-final bookmarksByCategoryProvider =
-    Provider.family<List<Bookmark>, BookmarkCategory>((ref, category) {
-  final bookmarks = ref.watch(bookmarksProvider);
-  return bookmarks.where((b) => b.category == category).toList();
-});

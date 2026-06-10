@@ -1,7 +1,7 @@
 {
   "@@locale": "ja",
 
-  "appName": "LinkPing",
+  "appName": "Linkku",
   "appSlogan": "リンクを保存して、行動に移そう！",
 
   "login": "ログイン",
@@ -218,7 +218,7 @@
   "edit": "編集",
   "copyLink": "リンクをコピー",
   "linkCopied": "リンクをコピーしました",
-  "shareMessage": "{time}に一緒にやろう！\n\n{url}\n\nLinkPingで開く",
+  "shareMessage": "{time}に一緒にやろう！\n\n{url}\n\nLinkkuで開く",
   "@shareMessage": {
     "placeholders": {
       "time": {
@@ -584,7 +584,7 @@
       "date": {"type": "String"}
     }
   },
-  "linkPingTeam": "LinkPingチーム",
+  "linkPingTeam": "Linkkuチーム",
   "waitingForReply": "返信をお待ちください。\n返信が届いたらお知らせします！",
 
   "linkNotFound": "リンクが見つかりません",

@@ -107,7 +107,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In en, this message translates to:
-  /// **'LinkPing'**
+  /// **'Linkku'**
   String get appName;
 
   /// No description provided for @appSlogan.
@@ -1085,7 +1085,7 @@ abstract class AppLocalizations {
   /// No description provided for @shareMessage.
   ///
   /// In en, this message translates to:
-  /// **'Join me at {time}!\n\n{url}\n\nOpen in LinkPing'**
+  /// **'Join me at {time}!\n\n{url}\n\nOpen in Linkku'**
   String shareMessage(String time, String url);
 
   /// No description provided for @selectAction.
@@ -2423,7 +2423,7 @@ abstract class AppLocalizations {
   /// No description provided for @linkPingTeam.
   ///
   /// In en, this message translates to:
-  /// **'LinkPing Team'**
+  /// **'Linkku Team'**
   String get linkPingTeam;
 
   /// No description provided for @waitingForReply.

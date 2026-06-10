@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
 
-  "appName": "LinkPing",
+  "appName": "Linkku",
   "appSlogan": "Save links, take action!",
 
   "login": "Sign In",
@@ -228,7 +228,7 @@
   "edit": "Edit",
   "copyLink": "Copy link",
   "linkCopied": "Link copied",
-  "shareMessage": "Join me at {time}!\n\n{url}\n\nOpen in LinkPing",
+  "shareMessage": "Join me at {time}!\n\n{url}\n\nOpen in Linkku",
   "@shareMessage": {
     "placeholders": {
       "time": {
@@ -587,7 +587,7 @@
       "date": {"type": "String"}
     }
   },
-  "linkPingTeam": "LinkPing Team",
+  "linkPingTeam": "Linkku Team",
   "waitingForReply": "Waiting for reply.\nWe'll notify you when we respond!",
 
   "linkNotFound": "Link not found",

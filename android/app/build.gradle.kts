@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "app.linkping"
+        applicationId = "com.drevv.linkping"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

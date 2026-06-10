@@ -20,16 +20,17 @@ class BookmarkAdapter extends TypeAdapter<Bookmark> {
       id: fields[0] as String,
       url: fields[1] as String,
       title: fields[2] as String,
-      category: fields[3] as BookmarkCategory,
+      category: fields[3] as BookmarkCategory?,
       createdAt: fields[4] as DateTime?,
       memo: fields[5] as String?,
+      folderId: fields[6] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Bookmark obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class BookmarkAdapter extends TypeAdapter<Bookmark> {
       ..writeByte(4)
       ..write(obj.createdAt)
       ..writeByte(5)
-      ..write(obj.memo);
+      ..write(obj.memo)
+      ..writeByte(6)
+      ..write(obj.folderId);
   }
 
   @override
@@ -79,7 +82,7 @@ class BookmarkCategoryAdapter extends TypeAdapter<BookmarkCategory> {
       case 7:
         return BookmarkCategory.other;
       default:
-        return BookmarkCategory.exercise;
+        return BookmarkCategory.other;
     }
   }
 

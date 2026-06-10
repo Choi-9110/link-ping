@@ -2,12 +2,16 @@ import 'dart:async';
 
 import 'dart:ui' show PlatformDispatcher;
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart'
+    show kIsWeb, kReleaseMode, defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,7 +19,9 @@ import 'l10n/app_localizations.dart';
 
 import 'core/theme/app_theme.dart';
 import 'data/models/bookmark.dart';
+import 'data/models/bookmark_folder.dart';
 import 'data/models/link_reminder.dart';
+import 'data/repositories/bookmark_folder_repository.dart';
 import 'providers/color_theme_provider.dart';
 import 'presentation/screens/main/main_shell.dart';
 import 'presentation/screens/onboarding/onboarding_screen.dart';
@@ -26,6 +32,7 @@ import 'presentation/screens/share_landing/share_landing_screen.dart';
 import 'presentation/screens/web_intro/web_intro_screen.dart';
 import 'providers/auth_provider.dart';
 import 'services/ad_service.dart';
+import 'services/bookmark_migration_service.dart';
 import 'services/firestore_service.dart';
 import 'services/notification_service.dart';
 import 'services/poring_service.dart';
@@ -35,6 +42,25 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // 위젯 빌드 실패 시 사용자에게 빨간 에러 박스 노출 방지.
+  // 콘솔에는 그대로 기록되니 디버깅엔 영향 없음.
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    FlutterError.dumpErrorToConsole(details);
+    if (kReleaseMode) {
+      return const SizedBox.shrink();
+    }
+    // 디버그/프로파일: 작은 경고 아이콘만 표시 (자리 차지 작음 → 오버플로우 방지)
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        color: Colors.orange.withValues(alpha: 0.15),
+        child: const Icon(Icons.warning_amber_rounded,
+            color: Colors.orange, size: 18),
+      ),
+    );
+  };
+
   // 웹에서 경로 기반 URL 사용 (/privacy 대신 /#/privacy 방지)
   usePathUrlStrategy();
 
@@ -42,6 +68,28 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Firebase 로컬 에뮬레이터 연결 (테스트용 / release 빌드에서는 절대 활성화 안 됨)
+  // 실행 예: flutter run --dart-define=USE_EMULATOR=true
+  // Android 에뮬레이터는 호스트가 10.0.2.2, 그 외(iOS 시뮬/웹)는 localhost
+  const useEmulator = bool.fromEnvironment('USE_EMULATOR');
+  if (useEmulator && !kReleaseMode) {
+    // iOS 시뮬은 localhost가 IPv6(::1)로 풀려 에뮬레이터(IPv4)에 못 닿는 경우가 있어
+    // 명시적으로 127.0.0.1 사용. Android 에뮬레이터만 게이트웨이 10.0.2.2 필요.
+    final host = !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+        ? '10.0.2.2'
+        : '127.0.0.1';
+    // Firestore 오프라인 캐시 비활성화 — 운영 캐시가 남아있으면 emulator 와 충돌해
+    // [cloud_firestore/unavailable] 가 나는 케이스가 있음.
+    // Settings 는 useFirestoreEmulator 호출 전에 적용해야 함.
+    FirebaseFirestore.instance.settings = const Settings(
+      persistenceEnabled: false,
+    );
+    await FirebaseAuth.instance.useAuthEmulator(host, 9099);
+    FirebaseFirestore.instance.useFirestoreEmulator(host, 8080);
+    await FirebaseStorage.instance.useStorageEmulator(host, 9199);
+    debugPrint('🔥 Firebase Emulator 연결됨 (host: $host)');
+  }
 
   // Crashlytics + Analytics (웹 제외)
   if (!kIsWeb) {
@@ -66,20 +114,24 @@ void main() async {
     Hive.registerAdapter(LinkReminderAdapter());
     Hive.registerAdapter(BookmarkCategoryAdapter());
     Hive.registerAdapter(BookmarkAdapter());
+    Hive.registerAdapter(BookmarkFolderAdapter());
     await Hive.openBox<LinkReminder>('links');
     await Hive.openBox<Bookmark>('bookmarks');
+    await Hive.openBox<BookmarkFolder>(BookmarkFolderRepository.boxName);
     await Hive.openBox('settings');
 
-    // 알림 서비스 초기화
-    await NotificationService.instance.initialize();
+    // 기존 카테고리 enum → 폴더 모델 마이그레이션 (1회성)
+    await BookmarkMigrationService.runIfNeeded();
 
-    // 광고 서비스 초기화
-    await AdService.instance.initialize();
+    // 서비스 병렬 초기화 (3개 서비스가 서로 독립적 → 직렬 await 불필요)
+    // 직렬 대비 첫 프레임까지 1~3초 단축.
+    await Future.wait([
+      NotificationService.instance.initialize(),
+      AdService.instance.initialize(),
+      PurchaseService.instance.initialize(),
+    ]);
 
-    // 인앱 결제 서비스 초기화
-    await PurchaseService.instance.initialize();
-
-    // 포링 일일 카운트 리셋
+    // 포링 일일 카운트 리셋 (UI 차단 안 함)
     PoringService.instance.resetDailyIfNeeded();
   }
 
@@ -107,7 +159,7 @@ class MyApp extends ConsumerWidget {
     AppTheme.setColorTheme(colorTheme);
 
     return MaterialApp(
-      title: 'LinkPing',
+      title: 'Linkku',
       theme: AppTheme.createTheme(colorTheme),
       darkTheme: AppTheme.createTheme(colorTheme),
       themeMode: ThemeMode.system,

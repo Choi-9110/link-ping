@@ -9,7 +9,7 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get appName => 'LinkPing';
+  String get appName => 'Linkku';
 
   @override
   String get appSlogan => '收藏链接，立即行动！';
@@ -511,7 +511,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String shareMessage(String time, String url) {
-    return '我在 $time 有个小习惯，一起来吧！\n\n$url\n\n在 LinkPing 中打开';
+    return '我在 $time 有个小习惯，一起来吧！\n\n$url\n\n在 Linkku 中打开';
   }
 
   @override
@@ -1219,7 +1219,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get linkPingTeam => 'LinkPing Team';
+  String get linkPingTeam => 'Linkku Team';
 
   @override
   String get waitingForReply =>

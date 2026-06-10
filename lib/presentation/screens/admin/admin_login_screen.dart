@@ -92,7 +92,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                     ),
                     const SizedBox(height: 24),
                     const Text(
-                      'LinkPing 관리자',
+                      'Linkku 관리자',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

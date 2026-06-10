@@ -1,7 +1,7 @@
 {
   "@@locale": "es",
 
-  "appName": "LinkPing",
+  "appName": "Linkku",
   "appSlogan": "Guarda enlaces, pasa a la accion!",
 
   "login": "Iniciar sesion",
@@ -218,7 +218,7 @@
   "edit": "Editar",
   "copyLink": "Copiar enlace",
   "linkCopied": "Enlace copiado",
-  "shareMessage": "Unete a mi a las {time}!\n\n{url}\n\nAbrir en LinkPing",
+  "shareMessage": "Unete a mi a las {time}!\n\n{url}\n\nAbrir en Linkku",
   "@shareMessage": {
     "placeholders": {
       "time": {

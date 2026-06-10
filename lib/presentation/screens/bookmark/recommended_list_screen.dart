@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/spacing.dart';
-import '../../../data/models/bookmark.dart';
 import '../../../data/models/recommended_link.dart';
 import '../../../providers/bookmark_provider.dart';
 import '../../../providers/recommended_provider.dart';
 import '../../../services/url_launcher_service.dart';
 import '../../widgets/toast_overlay.dart';
 import '../add_link/add_link_screen.dart';
+import 'folder_picker_sheet.dart';
 
 /// 추천 링크 리스트 화면
 class RecommendedListScreen extends ConsumerWidget {
@@ -219,12 +219,20 @@ class RecommendedListScreen extends ConsumerWidget {
               ListTile(
                 leading: Icon(Icons.bookmark_add, color: colorScheme.secondary),
                 title: Text(isKorean ? '내 북마크에 저장' : 'Save to Bookmarks'),
+                subtitle: Text(
+                  isKorean ? '폴더를 골라서 저장' : 'Pick a folder to save',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.outline,
+                  ),
+                ),
                 onTap: () async {
                   Navigator.pop(ctx);
+                  final folderId = await FolderPickerSheet.show(context);
+                  if (folderId == null) return;
                   await ref.read(bookmarksProvider.notifier).addBookmark(
                         url: link.url,
                         title: link.title(isKorean),
-                        category: BookmarkCategory.selfDev,
+                        folderId: folderId,
                       );
                   if (context.mounted) {
                     ToastOverlay.showSuccess(

@@ -9,7 +9,7 @@ class ShareMessageService {
     // 자기계발/습관
     '저장만 하지 말고 실천하자! 💪',
     '오늘도 갓생 살자! 🔥',
-    '매일 실천하는 습관, 링크핑으로 시작하자',
+    '매일 실천하는 습관, 링꾸로 시작하자',
     '나중에 보려고 저장한 영상,\n진짜 볼 시간이야!',
 
     // 운동
@@ -26,12 +26,12 @@ class ShareMessageService {
     // 학습
     '영어 공부 영상, 이제 진짜 보자 📚',
     '자기계발 콘텐츠 정해진 시간에 알림 받자',
-    '배우고 싶었던 거, 링크핑으로 매일 조금씩',
+    '배우고 싶었던 거, 링꾸로 매일 조금씩',
 
     // 일반
     '링크 저장만 하고 안 보던 시절 끝! ✨',
     '저장 = 실천으로 만들어주는 앱',
-    '같이 시작하자! 너도 링크핑 해봐',
+    '같이 시작하자! 너도 링꾸 해봐',
   ];
 
   /// 영어 홍보 문구 리스트
@@ -55,7 +55,7 @@ class ShareMessageService {
     // General
     "From saving to actually doing ✨",
     "Link it. Ping it. Do it.",
-    "Join me on LinkPing!",
+    "Join me on Linkku!",
   ];
 
   /// 링크 공유용 한국어 문구
@@ -93,7 +93,7 @@ class ShareMessageService {
       return '''
 $randomMessage
 
-LinkPing 앱 설치하고 가입할 때
+링꾸(Linkku) 앱 설치하고 가입할 때
 초대 코드 입력하면 보너스 링크 +1! 🎁
 
 내 초대 코드: $referralCode
@@ -104,7 +104,7 @@ LinkPing 앱 설치하고 가입할 때
       return '''
 $randomMessage
 
-Download LinkPing and enter my code
+Download Linkku and enter my code
 when signing up for a bonus link! 🎁
 
 My invite code: $referralCode

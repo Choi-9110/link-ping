@@ -13,6 +13,7 @@ import 'alarm_sound_service.dart';
 import 'auth_service.dart';
 import 'badge_service.dart';
 import 'firestore_service.dart';
+import 'pending_verification_service.dart';
 import 'ping_window_service.dart';
 import 'url_launcher_service.dart';
 
@@ -160,6 +161,16 @@ class NotificationService {
 
       // URL 추출 후 바로 열기 (앱을 거치지 않고 바로 링크로)
       final url = extractUrlFromPayload(payload);
+      // payload에서 인증용 메타 추출
+      String launchTitle = '';
+      String? launchSharedLinkId;
+      try {
+        final decoded = jsonDecode(payload);
+        if (decoded is Map<String, dynamic>) {
+          launchTitle = decoded['title'] as String? ?? '';
+          launchSharedLinkId = decoded['sharedLinkId'] as String?;
+        }
+      } catch (_) {}
       if (url != null && url.isNotEmpty) {
         bool shouldOpen = true;
         if (UrlLauncherService.isPhoneUrl(url)) {
@@ -170,6 +181,11 @@ class NotificationService {
         }
 
         if (shouldOpen) {
+          await PendingVerificationService.markPending(
+            url: url,
+            title: launchTitle,
+            sharedLinkId: launchSharedLinkId,
+          );
           final opened = await UrlLauncherService.openUrl(url);
           if (!opened) {
             await Future.delayed(const Duration(milliseconds: 1000));
@@ -221,6 +237,8 @@ class NotificationService {
 
     // ① URL 먼저 추출
     String? url;
+    String title = '';
+    String? sharedLinkId;
     int hour = DateTime.now().hour;
     int minute = DateTime.now().minute;
 
@@ -228,6 +246,8 @@ class NotificationService {
       final decoded = jsonDecode(payload);
       if (decoded is Map<String, dynamic>) {
         url = decoded['url'] as String?;
+        title = decoded['title'] as String? ?? '';
+        sharedLinkId = decoded['sharedLinkId'] as String?;
         hour = decoded['hour'] as int? ?? hour;
         minute = decoded['minute'] as int? ?? minute;
       } else {
@@ -249,6 +269,13 @@ class NotificationService {
       }
 
       if (shouldOpen) {
+        // 인증 영상 프롬프트용 pending 마킹 (앱 복귀 시 표시)
+        await PendingVerificationService.markPending(
+          url: url,
+          title: title,
+          sharedLinkId: sharedLinkId,
+        );
+
         // 앱 포그라운드 전환 대기 후 열기 (iOS는 더 긴 대기 필요)
         await Future.delayed(const Duration(milliseconds: 500));
         final opened = await UrlLauncherService.openUrl(url);
@@ -282,7 +309,7 @@ class NotificationService {
     try {
       final data = jsonDecode(payload) as Map<String, dynamic>;
       final url = data['url'] as String;
-      final title = data['title'] as String? ?? 'LinkPing';
+      final title = data['title'] as String? ?? 'Linkku';
       final hour = data['hour'] as int;
       final minute = data['minute'] as int;
 
@@ -463,6 +490,7 @@ class NotificationService {
           'title': link.title,
           'hour': time.hour,
           'minute': time.minute,
+          if (link.sharedLinkId != null) 'sharedLinkId': link.sharedLinkId,
         });
 
         await _plugin.zonedSchedule(
@@ -557,7 +585,7 @@ class NotificationService {
 
     await _plugin.show(
       0,
-      'LinkPing 테스트',
+      'Linkku 테스트',
       '알림이 정상적으로 작동합니다!',
       details,
     );

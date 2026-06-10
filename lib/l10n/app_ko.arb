@@ -1,7 +1,7 @@
 {
   "@@locale": "ko",
 
-  "appName": "LinkPing",
+  "appName": "링꾸",
   "appSlogan": "저장한 링크, 실천하자!",
 
   "login": "로그인",
@@ -228,7 +228,7 @@
   "edit": "수정하기",
   "copyLink": "링크 복사",
   "linkCopied": "링크가 복사되었습니다",
-  "shareMessage": "나 이거 {time}에 알림 받아서 하고 있어! 너도 같이 하자\n\n{url}\n\nLinkPing에서 열기",
+  "shareMessage": "나 이거 {time}에 알림 받아서 하고 있어! 너도 같이 하자\n\n{url}\n\n링꾸에서 열기",
   "@shareMessage": {
     "placeholders": {
       "time": {
@@ -587,7 +587,7 @@
       "date": {"type": "String"}
     }
   },
-  "linkPingTeam": "LinkPing 팀",
+  "linkPingTeam": "링꾸 팀",
   "waitingForReply": "답변을 기다리고 있어요.\n답변이 등록되면 알림으로 알려드릴게요!",
 
   "linkNotFound": "링크를 찾을 수 없어요",
