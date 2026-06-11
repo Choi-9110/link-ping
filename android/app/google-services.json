@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "458642757197-5boo9j4kth3pndobarrg4u6jn29o725h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.drevv.linkping",
+            "certificate_hash": "239f7aeff2c1950bfe26130458a4e0025c604cc4"
+          }
+        },
+        {
           "client_id": "458642757197-s9q9dupbmaufp2hpcjctu92qd24r8nmi.apps.googleusercontent.com",
           "client_type": 3
         }

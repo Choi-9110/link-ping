@@ -70,6 +70,8 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
         nickname: nickname,
         country: countryName,
         createdAt: DateTime.now(),
+        // 전화 로그인 시 Firebase 번호를 프로필에 자동 반영
+        phoneNumber: user.phoneNumber,
       );
 
       // Firestore에 저장

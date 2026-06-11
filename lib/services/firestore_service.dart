@@ -11,6 +11,7 @@ import '../data/models/inquiry.dart';
 import '../data/models/modification_request.dart';
 import '../data/models/announcement.dart';
 import '../data/models/recommended_link.dart';
+import '../data/models/link_reminder.dart';
 import 'auth_service.dart';
 
 class FirestoreService {
@@ -108,6 +109,58 @@ class FirestoreService {
       if (!doc.exists) return null;
       return UserProfile.fromFirestore(doc);
     });
+  }
+
+  // ==================== 링크 클라우드 백업 (프리미엄 전용) ====================
+  // users/{uid}/links/{linkId} 에 사용자 링크를 백업한다.
+  // 호출 측(LinksNotifier)에서 프리미엄 여부를 먼저 거른다.
+
+  CollectionReference<Map<String, dynamic>>? _userLinksCollection() {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return null;
+    return _usersCollection.doc(uid).collection('links');
+  }
+
+  /// 링크 1건 백업(업서트)
+  Future<void> backupLink(LinkReminder link) async {
+    final col = _userLinksCollection();
+    if (col == null) return;
+    await col.doc(link.id).set(link.toMap(), SetOptions(merge: true));
+  }
+
+  /// 백업된 링크 1건 삭제
+  Future<void> deleteBackupLink(String linkId) async {
+    final col = _userLinksCollection();
+    if (col == null) return;
+    await col.doc(linkId).delete();
+  }
+
+  /// 여러 링크 일괄 백업 (구독 직후 초기 업로드 등)
+  Future<void> backupAllLinks(List<LinkReminder> links) async {
+    final col = _userLinksCollection();
+    if (col == null || links.isEmpty) return;
+    final batch = _firestore.batch();
+    for (final link in links) {
+      batch.set(col.doc(link.id), link.toMap(), SetOptions(merge: true));
+    }
+    await batch.commit();
+  }
+
+  /// 클라우드에 백업된 링크 전체 가져오기 (새 기기 복원용)
+  Future<List<LinkReminder>> fetchBackupLinks() async {
+    final col = _userLinksCollection();
+    if (col == null) return [];
+    final snapshot = await col.get();
+    return snapshot.docs
+        .map((doc) {
+          try {
+            return LinkReminder.fromMap(doc.data());
+          } catch (_) {
+            return null;
+          }
+        })
+        .whereType<LinkReminder>()
+        .toList();
   }
 
   /// 현재 로그인 사용자의 관리자 권한 확인

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
+import 'brand_tokens.dart';
 import 'color_themes.dart';
 
 class AppTheme {
@@ -43,6 +44,9 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
+      // 본문/제목 기본 폰트 — Pretendard (브랜드킷)
+      // 픽셀 악센트(Galmuri11)는 BrandTokens.fontPixel로 개별 위젯에서만 사용
+      fontFamily: BrandTokens.fontSans,
       scaffoldBackgroundColor: colors.background,
       colorScheme: ColorScheme.dark(
         primary: colors.primary,
@@ -64,12 +68,13 @@ class AppTheme {
         elevation: 0,
         centerTitle: false,
       ),
-      // 카드 스타일
+      // 카드 스타일 (브랜드킷: 라운드 14 + 1px 라인)
       cardTheme: CardThemeData(
         color: colors.surface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
+          side: BorderSide(color: colors.outline, width: 1),
         ),
       ),
       // FAB 스타일
@@ -83,8 +88,13 @@ class AppTheme {
           backgroundColor: colors.primary,
           foregroundColor: colors.onPrimary,  // ★ Minimal에서 검정색
           minimumSize: const Size(double.infinity, 56),
+          textStyle: const TextStyle(
+            fontFamily: BrandTokens.fontSans,
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(14),  // 브랜드킷 라운드 14
           ),
         ),
       ),
@@ -115,15 +125,15 @@ class AppTheme {
         filled: true,
         fillColor: colors.surface,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide(color: colors.primary, width: 2),
         ),
         labelStyle: TextStyle(color: colors.textSecondary),
@@ -152,6 +162,17 @@ class AppTheme {
       dividerTheme: DividerThemeData(
         color: colors.outline,
         thickness: 0.5,
+      ),
+      // 타이포 — 제목은 Pretendard Bold, 본문은 행간 1.5 (브랜드킷)
+      textTheme: const TextTheme(
+        titleLarge: TextStyle(fontWeight: FontWeight.w700, letterSpacing: -0.2),
+        titleMedium: TextStyle(fontWeight: FontWeight.w600),
+        bodyMedium: TextStyle(height: 1.5),
+        bodySmall: TextStyle(height: 1.45),
+      ).apply(
+        fontFamily: BrandTokens.fontSans,
+        bodyColor: colors.textPrimary,
+        displayColor: colors.textPrimary,
       ),
     );
   }

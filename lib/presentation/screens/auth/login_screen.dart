@@ -7,7 +7,9 @@ import '../../../l10n/app_localizations.dart';
 import '../../../core/theme/spacing.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../services/firestore_service.dart';
+import '../../widgets/linkku_logo.dart';
 import '../home/home_screen.dart';
+import 'phone_login_screen.dart';
 import 'profile_setup_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -168,18 +170,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             children: [
               const Spacer(),
 
-              // 로고 & 타이틀
-              Icon(
-                Icons.link,
-                size: 80,
-                color: colorScheme.primary,
-              ),
-              const SizedBox(height: Spacing.lg),
-              Text(
-                l10n.appName,
-                style: theme.textTheme.headlineLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+              // 브랜드 락업 (심볼 + 워드마크)
+              const LinkkuLockup(
+                variant: LinkkuLockupVariant.color,
+                height: 64,
               ),
               const SizedBox(height: Spacing.sm),
               Text(
@@ -229,6 +223,32 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colorScheme.primary,
                     foregroundColor: colorScheme.onPrimary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: Spacing.sm),
+
+              // 전화번호 로그인 버튼 (애플/구글/전화 3종)
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: OutlinedButton.icon(
+                  onPressed: _isLoading
+                      ? null
+                      : () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const PhoneLoginScreen(),
+                            ),
+                          ),
+                  icon: const Icon(Icons.phone_iphone, size: 24),
+                  label: Text(l10n.phoneSignIn),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: colorScheme.onSurface,
+                    side: BorderSide(color: colorScheme.outline),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

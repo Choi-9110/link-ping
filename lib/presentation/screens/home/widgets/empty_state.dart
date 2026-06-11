@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/spacing.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../widgets/linkku_logo.dart';
 
 class EmptyState extends StatelessWidget {
   final VoidCallback? onAddLink;
@@ -23,11 +24,8 @@ class EmptyState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.notifications_outlined,
-              size: 80,
-              color: colorScheme.primary.withValues(alpha: 0.5),
-            ),
+            // 마스코트 "링꾸" — 빈 화면 브랜드 모먼트
+            const LinkkuSymbol(size: 104),
             const SizedBox(height: Spacing.lg),
             Text(
               l10n.emptyStateTitle,

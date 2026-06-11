@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
@@ -226,6 +225,45 @@ class AuthService {
     final bytes = utf8.encode(input);
     final digest = sha256.convert(bytes);
     return digest.toString();
+  }
+
+  /// 전화번호 인증 — SMS 발송 요청.
+  /// [phoneNumber]는 E.164 형식(예: +821012345678).
+  /// 코드 전송되면 [onCodeSent], 안드로이드 자동 인증 시 [onAutoVerified],
+  /// 실패 시 [onFailed] 호출.
+  Future<void> verifyPhoneNumber({
+    required String phoneNumber,
+    required void Function(String verificationId) onCodeSent,
+    required void Function(FirebaseAuthException e) onFailed,
+    void Function(UserCredential credential)? onAutoVerified,
+  }) async {
+    await _auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        // 안드로이드 자동 코드 인식
+        if (onAutoVerified != null) {
+          final result = await _auth.signInWithCredential(credential);
+          onAutoVerified(result);
+        }
+      },
+      verificationFailed: onFailed,
+      codeSent: (String verificationId, int? resendToken) {
+        onCodeSent(verificationId);
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
+  /// 전화번호 인증 — 입력한 SMS 코드로 로그인.
+  Future<UserCredential> signInWithSmsCode({
+    required String verificationId,
+    required String smsCode,
+  }) {
+    final credential = PhoneAuthProvider.credential(
+      verificationId: verificationId,
+      smsCode: smsCode,
+    );
+    return _auth.signInWithCredential(credential);
   }
 
   /// 익명 로그인 (게스트 모드)

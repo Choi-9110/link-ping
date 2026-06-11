@@ -49,59 +49,67 @@ class NotificationsScreen extends ConsumerWidget {
     final locale = Localizations.localeOf(context);
     final isKorean = locale.languageCode == 'ko';
 
-    return notificationsAsync.when(
-      data: (notifications) {
-        final announcements = announcementsAsync.whenOrNull<List<Announcement>>(
-              data: (list) => list,
-            ) ??
-            [];
+    // 공지사항(공개)과 사용자 알림(로그인 필요)을 독립적으로 처리한다.
+    // 사용자 알림 스트림이 에러(미로그인/권한거부)여도 공지는 그대로 보여줘야
+    // 홈 뱃지 카운트(공지 포함)와 화면이 어긋나지 않는다.
+    final announcements = announcementsAsync.whenOrNull<List<Announcement>>(
+          data: (list) => list,
+        ) ??
+        [];
+    final notifications = notificationsAsync.whenOrNull<List<PingNotification>>(
+          data: (list) => list,
+        ) ??
+        [];
 
-        if (notifications.isEmpty && announcements.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.notifications_none, size: 64, color: colorScheme.outline),
-                const SizedBox(height: Spacing.md),
-                Text(l10n.noNotifications,
-                    style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.outline)),
-                const SizedBox(height: Spacing.sm),
-                Text(l10n.noNotificationsSubtitle,
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline)),
-              ],
-            ),
-          );
-        }
+    // 양쪽 다 아직 로딩 중이고 보여줄 게 없을 때만 스피너
+    if (announcements.isEmpty &&
+        notifications.isEmpty &&
+        (notificationsAsync.isLoading || announcementsAsync.isLoading)) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-        return ListView(
-          padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
+    if (notifications.isEmpty && announcements.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // 공지사항 섹션
-            ...announcements.map((a) {
-              final isRead = readIds.contains(a.id);
-              return _AnnouncementTile(
-                announcement: a,
-                isKorean: isKorean,
-                isRead: isRead,
-                onTap: () {
-                  ref.read(readAnnouncementsProvider.notifier).markAsRead(a.id);
-                  _showAnnouncementDetail(context, a, isKorean, theme, colorScheme);
-                },
-              );
-            }),
-
-            // 구분선
-            if (announcements.isNotEmpty && notifications.isNotEmpty)
-              const Divider(height: 1),
-
-            // 기존 알림들
-            ...notifications.map((n) => _NotificationTile(notification: n)),
+            Icon(Icons.notifications_none, size: 64, color: colorScheme.outline),
+            const SizedBox(height: Spacing.md),
+            Text(l10n.noNotifications,
+                style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.outline)),
+            const SizedBox(height: Spacing.sm),
+            Text(l10n.noNotificationsSubtitle,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline)),
           ],
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (_, __) => Center(child: Text(l10n.notificationLoadFailed)),
+        ),
+      );
+    }
+
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
+      children: [
+        // 공지사항 섹션
+        ...announcements.map((a) {
+          final isRead = readIds.contains(a.id);
+          return _AnnouncementTile(
+            announcement: a,
+            isKorean: isKorean,
+            isRead: isRead,
+            onTap: () {
+              ref.read(readAnnouncementsProvider.notifier).markAsRead(a.id);
+              _showAnnouncementDetail(context, a, isKorean, theme, colorScheme);
+            },
+          );
+        }),
+
+        // 구분선
+        if (announcements.isNotEmpty && notifications.isNotEmpty)
+          const Divider(height: 1),
+
+        // 기존 알림들
+        ...notifications.map((n) => _NotificationTile(notification: n)),
+      ],
     );
   }
 

@@ -1,9 +1,7 @@
 {
   "@@locale": "en",
-
   "appName": "Linkku",
   "appSlogan": "Save links, take action!",
-
   "login": "Sign In",
   "loginWithGoogle": "Continue with Google",
   "loginLoading": "Signing in...",
@@ -12,26 +10,22 @@
   "guestLoginFailed": "Guest sign in failed",
   "logout": "Sign Out",
   "logoutConfirm": "Are you sure you want to sign out?",
-
   "guest": "Guest",
   "guestSyncMessage": "Sign in with Google to sync your data",
-
   "profileSetup": "Profile Setup",
   "profileSetupTitle": "Set up your profile",
   "profileSetupSubtitle": "This information will be visible to other users",
   "nickname": "Nickname",
-  "nicknameHint": "FitnessMike",
+  "nicknameHint": "Enter your nickname",
   "nicknameRequired": "Please enter a nickname",
   "nicknameMinLength": "At least 2 characters required",
   "nicknameMaxLength": "Maximum 20 characters allowed",
   "country": "Country",
   "complete": "Done",
   "profileSaveFailed": "Failed to save profile",
-
   "home": "Home",
   "settings": "Settings",
   "notifications": "Notifications",
-
   "addLink": "Add Link",
   "editLink": "Edit Link",
   "deleteLink": "Delete",
@@ -39,7 +33,6 @@
   "cancel": "Cancel",
   "save": "Save",
   "delete": "Delete",
-
   "url": "URL",
   "urlHint": "https://example.com",
   "urlRequired": "Please enter a URL",
@@ -47,7 +40,6 @@
   "title": "Title",
   "titleHint": "Daily workout routine",
   "titleRequired": "Please enter a title",
-
   "notificationTime": "Notification Time",
   "repeatDays": "Repeat Days",
   "selectRepeatDays": "Please select at least one day",
@@ -69,7 +61,6 @@
   "weekdays": "Weekdays",
   "weekends": "Weekends",
   "repeat": "Repeat",
-
   "linkUrl": "Link or Phone Number",
   "linkUrlHint": "google.com or +1234567890",
   "invalidUrl": "Please enter a valid URL or phone number",
@@ -81,15 +72,12 @@
   "addTimePremium": "Add Time (Premium)",
   "premiumFeature": "Premium Feature",
   "multiTimesPremiumMessage": "Upgrade to Premium to set multiple\nreminder times for a single link!",
-
   "linkAdded": "Link added successfully",
   "linkUpdated": "Link updated successfully",
   "linkDeleted": "Link deleted",
-
   "emptyStateTitle": "No links yet",
   "emptyStateSubtitle": "Add links you want to visit regularly",
   "emptyStateButton": "Add your first link",
-
   "savedByCount": "Saved by {count}",
   "@savedByCount": {
     "placeholders": {
@@ -98,12 +86,10 @@
       }
     }
   },
-
   "savedByTitle": "People who saved this link",
   "noSavedUsers": "No one has saved this yet",
   "me": "Me",
   "loadFailed": "Failed to load",
-
   "cheer": "Cheer",
   "tease": "Poke",
   "cheerSent": "Cheered {nickname}!",
@@ -124,7 +110,6 @@
   },
   "sendFailed": "Failed to send",
   "cannotSendToSelf": "You can't send to yourself",
-
   "noNotifications": "No notifications yet",
   "noNotificationsSubtitle": "When someone sends you cheers or pokes,\nthey'll show up here",
   "markAllRead": "Mark all as read",
@@ -156,18 +141,15 @@
       }
     }
   },
-
   "profile": "Profile",
   "editProfile": "Edit Profile",
   "profileEditNotReady": "Edit Profile (coming soon)",
-
   "notificationSettings": "Notifications",
   "notificationPermission": "Allow Notifications",
   "notificationTest": "Test Notification",
   "notificationTestSubtitle": "Send a test notification",
   "notificationTestSent": "Test notification sent",
   "notificationPermissionRequired": "Notification permission required",
-
   "premium": "Premium",
   "premiumActive": "Premium Active",
   "premiumPurchase": "Get Premium",
@@ -175,17 +157,17 @@
   "premiumHeadline": "Never miss a moment that matters",
   "premiumSubtitle": "Support the people you care about, without limits",
   "premiumBenefit1": "Unlimited Cheers & Pokes",
-  "premiumBenefit1Desc": "Support friends instantly — no Porings needed",
+  "premiumBenefit1Desc": "Support friends instantly — no Pings needed",
   "premiumBenefit2": "Unlimited Links",
   "premiumBenefit2Desc": "Workouts, study, call reminders... build all the habits you want",
   "premiumBenefit3": "Unlimited Alarm Times",
   "premiumBenefit3Desc": "Set morning, afternoon, and evening reminders freely",
-  "premiumBenefit4": "Unlimited Porings",
+  "premiumBenefit4": "Unlimited Pings",
   "premiumBenefit4Desc": "Use any feature instantly, no ads required",
   "premiumBenefit5": "Clean, Ad-Free Experience",
   "premiumBenefit5Desc": "No banners, no rewarded ads — just a clean screen",
-  "premiumBenefit6": "All Premium Sounds",
-  "premiumBenefit6Desc": "Start your day with your own signature alarm sound",
+  "premiumBenefit6": "Cloud Backup & Sync",
+  "premiumBenefit6Desc": "Switch phones anytime — your links restore automatically",
   "premiumPrice": "$2.99/month - $9.99/year - $29.99 lifetime",
   "premiumLater": "Later",
   "premiumBuy": "Purchase",
@@ -200,14 +182,12 @@
   "productsNotFound": "Could not load products",
   "retry": "Retry",
   "premiumPaymentNotReady": "Payment (coming soon)",
-
   "linkLimitReached": "Link limit reached",
   "linkLimitMessage": "Free users can save up to 2 links.\nInvite friends for +1, or upgrade to Premium for unlimited!",
   "linkLimitMessageBase": "Free users can save up to 2 links.",
   "inviteFriendForBonus": "Invite Friends (+1 link)",
   "inviteFriendBonusDesc": "Get a bonus link when a friend joins!",
   "viewPremium": "View Premium",
-
   "account": "Account",
   "info": "About",
   "version": "Version",
@@ -216,14 +196,11 @@
   "contact": "Contact Us",
   "contactNotReady": "Contact (coming soon)",
   "openSourceLicenses": "Open Source Licenses",
-
   "loading": "Loading...",
   "error": "Error",
-  "retry": "Retry",
   "ok": "OK",
   "yes": "Yes",
   "no": "No",
-
   "share": "Share",
   "edit": "Edit",
   "copyLink": "Copy link",
@@ -240,7 +217,6 @@
     }
   },
   "selectAction": "Choose an action",
-
   "profileUpdated": "Profile updated",
   "profileUpdateFailed": "Failed to update profile",
   "accountLink": "Link Account",
@@ -251,12 +227,10 @@
   "guestLinkInfo": "Link your account to sync data across devices",
   "linked": "Linked",
   "link": "Link",
-
   "setEndDate": "Set End Date",
   "endDateEnabled": "Reminders will stop on this date",
   "endDateDisabled": "Repeats forever (no end date)",
   "selectEndDate": "Select end date",
-
   "selectCheerMessage": "Choose a cheer message",
   "selectTeaseMessage": "Choose a poke message",
   "pingRateLimited": "You can send again in {minutes} minutes",
@@ -267,39 +241,33 @@
       }
     }
   },
-
   "addTimeWithAd": "Watch ad to add time",
   "watchAdToAddTime": "Watch a short ad to add another reminder time.\nPremium users can add unlimited times without ads!",
   "watchAd": "Watch Ad",
   "adLoadFailed": "Failed to load ad",
   "timeAddedSuccess": "Time added successfully",
-
   "inviteFriends": "Invite Friends",
   "inviteFriendsMessage": "Invite a friend and get 1 extra link slot!",
   "bonusLinkEarned": "You earned a bonus link!",
   "referralCode": "Referral Code",
   "copyReferralCode": "Copy referral code",
   "referralCodeCopied": "Referral code copied",
-
   "lockedTime": "Locked Time",
   "unlockTimeWithAd": "Watch ad to unlock",
   "watchAdToUnlockTime": "Watch an ad to activate this reminder time.\nPremium users have all times automatically activated!",
   "timeUnlocked": "Reminder time unlocked",
-
   "shareSettings": "Share Settings",
   "editable": "Editable",
   "recipientCanChangeTime": "Recipients can change time",
   "timeLocked": "Time Locked",
   "shareAtThisTime": "Share at this exact time",
   "category": "Category",
-
   "consentRequest": "Consent Request",
   "consentRequestMessage": "Request modification consent from recipients.",
   "consentNote1": "May take up to 24 hours",
   "consentNote2": "You'll be notified when consent is complete",
   "consentNote3": "Original time will be kept if declined",
   "requestConsent": "Request Consent",
-
   "timeLockedAlarm": "Time-locked Alarm",
   "receivedSharedAlarmInfo": "Shared by {nickname}.\nNotification time and repeat days cannot be changed.",
   "@receivedSharedAlarmInfo": {
@@ -311,9 +279,8 @@
   },
   "sharedToOthersInfo": "Recipients will also receive notifications at this time.\nConsent is required to change the time.",
   "locked": "Locked",
-
-  "badgesAndStats": "Badges & Stats",
-  "badgeCollection": "Badge Collection",
+  "badgesAndStats": "Achievements & Stats",
+  "badgeCollection": "Achievement Collection",
   "streakDays": "{days} day streak",
   "@streakDays": {
     "placeholders": {
@@ -344,7 +311,6 @@
       }
     }
   },
-
   "andMore": "+{count} more",
   "@andMore": {
     "placeholders": {
@@ -353,7 +319,6 @@
       }
     }
   },
-
   "pingWindowClosed": "You can only send within 5 minutes after your alarm",
   "pingWindowActive": "Time remaining: {time}",
   "@pingWindowActive": {
@@ -363,12 +328,11 @@
       }
     }
   },
-  "pingFreeRemaining": "1 free ping available",
+  "pingFreeRemaining": "1 free poke available",
   "pingWatchAdForMore": "Watch ad to send more",
   "premiumUnlimited": "Unlimited",
   "watchAdToSendMore": "Watch Ad to Send More",
   "watchAdDescription": "Free users can send 1 ping per alarm window.\nWatch an ad to send more, or upgrade to Premium for unlimited!",
-
   "selectProfileEmoji": "Select Profile Emoji",
   "profileEmoji": "Profile Emoji",
   "changeEmoji": "Change Emoji",
@@ -389,17 +353,20 @@
   "changeAccount": "Change Account",
   "changeAccountConfirm": "Do you want to change to a different Google account?",
   "change": "Change",
-
   "cheerReceivedFrom": "{name} cheered you on!",
   "@cheerReceivedFrom": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "teaseReceivedFrom": "{name} poked you!",
   "@teaseReceivedFrom": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "inquiryReplyArrived": "Inquiry reply arrived",
@@ -416,12 +383,10 @@
   "tapToViewReply": "Tap to view reply →",
   "noResponseWarning": "Alarm will be OFF if no response within 24 hours",
   "inquiry": "Inquiry",
-
   "googleAccountAlreadyLinked": "This Google account is already linked to another account",
   "providerAlreadyLinked": "Google account is already linked",
   "invalidCredential": "Invalid credentials",
   "networkError": "Please check your network connection",
-
   "noInquiries": "No inquiries yet",
   "inquiryHint": "Have a question? Send us an inquiry!",
   "inquirySubmitted": "Inquiry submitted",
@@ -435,11 +400,10 @@
   "inquiryContentMinLength": "Please enter at least 10 characters",
   "submitInquiry": "Submit Inquiry",
   "inquiryResponsePromise": "We will respond to your inquiry as soon as possible.",
-
   "alarmSound": "Alarm Sound",
   "selectSoundCategory": "What style of sound do you want?",
-  "pingNotificationSound": "Ping Sound",
-  "pingNotificationSoundDesc": "Sound for Ping and Cheer notifications",
+  "pingNotificationSound": "Poke Sound",
+  "pingNotificationSoundDesc": "Sound for Poke and Cheer notifications",
   "currentSound": "Current Sound",
   "freeSounds": "Free Sounds",
   "premiumSounds": "Premium Sounds",
@@ -447,50 +411,58 @@
   "soundSelected": "Sound selected",
   "soundNotAvailable": "Sound file not available yet",
   "alarmSoundDescription": "Choose your notification sound",
-
   "soundCategoryAlarm": "Long Alarm",
   "soundCategoryNotify": "Quick Effect",
   "soundCategoryAlarmDesc": "Melodic\n(5-15 sec)\nFor must-not-miss alarms",
   "soundCategoryNotifyDesc": "Short effect\n(2-5 sec)\nFor quick reminders",
-
   "currentStreak": "Current Streak",
   "achievementRate": "Achievement",
-  "badgeCollected": "Badges",
+  "badgeCollected": "Achievements",
   "longestStreak": "Longest: {days} days",
   "@longestStreak": {
     "placeholders": {
-      "days": {"type": "int"}
+      "days": {
+        "type": "int"
+      }
     }
   },
   "daysCount": "{days} days",
   "@daysCount": {
     "placeholders": {
-      "days": {"type": "int"}
+      "days": {
+        "type": "int"
+      }
     }
   },
-
-  "badgeEarned": "NEW Badge!",
+  "badgeEarned": "NEW Achievement!",
   "badgeNotYetEarned": "Not yet earned",
   "badgeEarnedOn": "Earned on {date}",
   "@badgeEarnedOn": {
     "placeholders": {
-      "date": {"type": "String"}
+      "date": {
+        "type": "String"
+      }
     }
   },
   "badgeProgress": "Progress: {progress}/{target}",
   "@badgeProgress": {
     "placeholders": {
-      "progress": {"type": "int"},
-      "target": {"type": "int"}
+      "progress": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
     }
   },
   "badgeProgressPercent": "{percent}% complete",
   "@badgeProgressPercent": {
     "placeholders": {
-      "percent": {"type": "int"}
+      "percent": {
+        "type": "int"
+      }
     }
   },
-
   "badge_streak3_name": "3-Day Streak",
   "badge_streak3_desc": "Achieve 3 consecutive days",
   "badge_streak7_name": "Week on Fire",
@@ -503,14 +475,12 @@
   "badge_marathon_desc": "Achieve 365 consecutive days!",
   "badge_comeback_name": "Comeback",
   "badge_comeback_desc": "Achieve 7 days after breaking streak",
-
   "badge_quickDraw_name": "Quick Draw",
   "badge_quickDraw_desc": "Click within 5 seconds of notification",
   "badge_speedDemon_name": "Speed Demon",
   "badge_speedDemon_desc": "Open within 30 seconds 10 times",
   "badge_quickResponse_name": "Quick Response",
   "badge_quickResponse_desc": "Open within 3 minutes 50 times",
-
   "badge_morningGlory_name": "Morning Glory",
   "badge_morningGlory_desc": "Click at 5-7 AM 5 times",
   "badge_earlyBird_name": "Early Bird",
@@ -519,14 +489,12 @@
   "badge_nightOwl_desc": "Open links after 11 PM 10 times",
   "badge_nightShift_name": "Night Shift",
   "badge_nightShift_desc": "Click between midnight and 5 AM 5 times",
-
   "badge_perfectWeek_name": "Perfect Week",
   "badge_perfectWeek_desc": "100% achievement for a week",
   "badge_perfectMonth_name": "Perfect Month",
   "badge_perfectMonth_desc": "100% achievement for a month",
   "badge_perfectionist_name": "Perfectionist",
   "badge_perfectionist_desc": "95%+ achievement rate (50+ times)",
-
   "badge_firstCheer_name": "First Cheer",
   "badge_firstCheer_desc": "Send your first cheer",
   "badge_cheerLeader_name": "Cheer Leader",
@@ -537,7 +505,6 @@
   "badge_poker_desc": "Send 50 pokes",
   "badge_socialButterfly_name": "Social Butterfly",
   "badge_socialButterfly_desc": "Receive 10 cheers/pokes",
-
   "badge_firstLink_name": "First Link",
   "badge_firstLink_desc": "Register your first link",
   "badge_linkCollector_name": "Link Collector",
@@ -548,24 +515,21 @@
   "badge_hotLink_desc": "10+ people saved your link",
   "badge_variety_name": "Variety",
   "badge_variety_desc": "5+ different domain links",
-
   "badge_founder_name": "Founder",
   "badge_founder_desc": "Early app user",
   "badge_premium_name": "Premium",
   "badge_premium_desc": "Premium subscription",
-  "badge_badgeCollector_name": "Badge Collector",
-  "badge_badgeCollector_desc": "Earn 10 badges",
+  "badge_badgeCollector_name": "Achievement Collector",
+  "badge_badgeCollector_desc": "Earn 10 achievements",
   "badge_cloudSynced_name": "Cloud Synced",
   "badge_cloudSynced_desc": "Sync data with account linking",
-
   "premiumSoundUnlock": "Premium Sound",
   "premiumSoundUnlockDesc": "This sound is premium only.\nWatch an ad or subscribe to premium.",
   "watchAdToUnlock": "Watch Ad to Use",
   "upgradeToPremium": "Get Premium",
   "adNotReady": "Ad is loading. Please try again shortly.",
   "adWatchSuccess": "Ad completed! Sound has been applied.",
-
-  "earnedBadges": "My Badges",
+  "earnedBadges": "My Achievements",
   "skip": "Skip",
   "next": "Next",
   "getStarted": "Get Started",
@@ -573,23 +537,20 @@
   "send": "Send",
   "close": "Close",
   "confirm": "Confirm",
-  "nickname": "Nickname",
-  "country": "Country",
-  "nicknameHint": "Enter your nickname",
   "notSet": "Not set",
-
   "inquiryDetail": "Inquiry Details",
   "inquiryNotFound": "Inquiry not found",
   "reply": "Reply",
   "repliedOn": "Replied on: {date}",
   "@repliedOn": {
     "placeholders": {
-      "date": {"type": "String"}
+      "date": {
+        "type": "String"
+      }
     }
   },
   "linkPingTeam": "Linkku Team",
   "waitingForReply": "Waiting for reply.\nWe'll notify you when we respond!",
-
   "linkNotFound": "Link not found",
   "linkLoadFailed": "Failed to load link",
   "linkNotificationService": "Link Notification Service",
@@ -602,12 +563,13 @@
   "viewCount": "Views: {count}",
   "@viewCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "saveAndChangeTime": "Save and change to your preferred time",
   "generatingShareLink": "Generating share link...",
-
   "onboarding1Title": "Save your links",
   "onboarding1Desc": "Instagram, YouTube, TikTok...\nSave links to view later",
   "onboarding2Title": "Get notified on time!",
@@ -623,68 +585,101 @@
   "onboarding5Sub": "95% success rate when together!",
   "onboarding6Title": "Start now",
   "onboarding6Desc": "Save up to 2 links free\nPremium for unlimited!",
-
   "loginRequired": "Login required",
   "referralCodeQuestion": "Got a referral code from a friend?",
   "referralCodeHelperText": "Enter 8-character code",
   "southKorea": "South Korea",
-
-  "poring": "Poring",
-  "poringBalance": "Poring Balance",
-  "poringEarn": "Earn Poring",
-  "poringEarnDescription": "Watch ads to earn Porings.\nUse Porings to unlock features!",
+  "poring": "Ping",
+  "poringBalance": "Ping Balance",
+  "poringEarn": "Earn Ping",
+  "poringEarnDescription": "Watch ads to earn Pings.\nUse Pings to unlock features!",
   "poringDailyProgress": "{count}/{max} today",
   "@poringDailyProgress": {
     "placeholders": {
-      "count": {"type": "int"},
-      "max": {"type": "int"}
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
     }
   },
-  "poringWatchAd": "Watch Ad (+1 Poring)",
+  "poringWatchAd": "Watch Ad (+1 Ping)",
   "poringCooldown": "Next ad in {seconds}s",
   "@poringCooldown": {
     "placeholders": {
-      "seconds": {"type": "int"}
+      "seconds": {
+        "type": "int"
+      }
     }
   },
   "poringDailyLimitReached": "Daily limit reached! Come back tomorrow.",
   "poringDailyLimitThanks": "Thanks for watching all {max} ads today!",
   "@poringDailyLimitThanks": {
     "placeholders": {
-      "max": {"type": "int"}
+      "max": {
+        "type": "int"
+      }
     }
   },
-  "poringEarned": "Poring +1!",
-  "poringUnlock": "Use Poring to unlock",
-  "poringUnlockConfirm": "Use 1 Poring to unlock?",
-  "poringNotEnough": "Not enough Porings",
-  "poringWatchAdToEarnAndUse": "Not enough Porings. Watch an ad to earn Porings",
-  "poringSpent": "Poring used!",
+  "poringEarned": "Ping +1!",
+  "poringUnlock": "Use Ping to unlock",
+  "poringUnlockConfirm": "Use 1 Ping to unlock?",
+  "poringNotEnough": "Not enough Pings",
+  "poringWatchAdToEarnAndUse": "Not enough Pings. Watch an ad to earn Pings",
+  "poringSpent": "Ping used!",
   "poringPremiumInfinite": "Premium: Unlimited",
-
   "referralAcceptedTitle": "{nickname} accepted your invite",
   "@referralAcceptedTitle": {
     "placeholders": {
-      "nickname": {"type": "String"}
+      "nickname": {
+        "type": "String"
+      }
     }
   },
   "referralBonusLink": "Bonus link +1",
-  "referralBonusPoring": "Poring +{count}",
+  "referralBonusPoring": "Ping +{count}",
   "@referralBonusPoring": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
-  "poringRewardClaimed": "Referral reward: Poring +{count} claimed!",
+  "poringRewardClaimed": "Referral reward: Ping +{count} claimed!",
   "@poringRewardClaimed": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "referralAcceptedMessage": "Invitation accepted",
-
   "addTimeWithPoring": "Add alarm time",
-  "poringCostConfirm": "1 Poring will be used",
-  "poringRequiredToSend": "1 Poring is required to send a message",
-  "deleteTimeConfirm": "Delete this alarm time?"
+  "poringCostConfirm": "1 Ping will be used",
+  "poringRequiredToSend": "1 Ping is required to send a message",
+  "deleteTimeConfirm": "Delete this alarm time?",
+  "linkkuDexTitle": "Linkku Dex",
+  "linkkuDexCollect": "Collect your Linkkus",
+  "linkkuDexComingHint": "New friends are on their way, one by one.",
+  "linkkuDexDefault": "Default",
+  "linkkuDexComingSoon": "Coming soon",
+  "linkkuDexSubtitle": "The alarm slime with a bell",
+  "linkkuPersonality": "Personality",
+  "linkkuTraitCaring": "Caring",
+  "linkkuTraitAttentive": "Attentive",
+  "linkkuPersonalityDesc": "A caring friend who never forgets your time.\nSoon, each Linkku gets its own personality — yours will even talk differently.",
+  "linkkuWhatsNext": "What's next",
+  "linkkuWhatsNextDesc": "Raising, dressing up, and collecting new friends are coming step by step. 🥚",
+  "phoneSignIn": "Sign in with phone",
+  "phoneEnterCode": "Enter the code",
+  "phoneEnterNumber": "Enter your phone number",
+  "phoneNumberLabel": "Phone number",
+  "phoneSendCode": "Send code",
+  "phoneConfirm": "Confirm",
+  "phoneChangeNumber": "Change number",
+  "phoneCodeSent": "Verification code sent",
+  "phoneSendFailed": "Failed to send code",
+  "phoneVerifyFailed": "Verification failed",
+  "phoneGenericError": "Something went wrong"
 }

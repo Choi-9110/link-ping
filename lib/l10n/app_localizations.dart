@@ -797,7 +797,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumBenefit1Desc.
   ///
   /// In en, this message translates to:
-  /// **'Support friends instantly — no Porings needed'**
+  /// **'Support friends instantly — no Pings needed'**
   String get premiumBenefit1Desc;
 
   /// No description provided for @premiumBenefit2.
@@ -827,7 +827,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumBenefit4.
   ///
   /// In en, this message translates to:
-  /// **'Unlimited Porings'**
+  /// **'Unlimited Pings'**
   String get premiumBenefit4;
 
   /// No description provided for @premiumBenefit4Desc.
@@ -851,13 +851,13 @@ abstract class AppLocalizations {
   /// No description provided for @premiumBenefit6.
   ///
   /// In en, this message translates to:
-  /// **'All Premium Sounds'**
+  /// **'Cloud Backup & Sync'**
   String get premiumBenefit6;
 
   /// No description provided for @premiumBenefit6Desc.
   ///
   /// In en, this message translates to:
-  /// **'Start your day with your own signature alarm sound'**
+  /// **'Switch phones anytime — your links restore automatically'**
   String get premiumBenefit6Desc;
 
   /// No description provided for @premiumPrice.
@@ -1385,13 +1385,13 @@ abstract class AppLocalizations {
   /// No description provided for @badgesAndStats.
   ///
   /// In en, this message translates to:
-  /// **'Badges & Stats'**
+  /// **'Achievements & Stats'**
   String get badgesAndStats;
 
   /// No description provided for @badgeCollection.
   ///
   /// In en, this message translates to:
-  /// **'Badge Collection'**
+  /// **'Achievement Collection'**
   String get badgeCollection;
 
   /// No description provided for @streakDays.
@@ -1451,7 +1451,7 @@ abstract class AppLocalizations {
   /// No description provided for @pingFreeRemaining.
   ///
   /// In en, this message translates to:
-  /// **'1 free ping available'**
+  /// **'1 free poke available'**
   String get pingFreeRemaining;
 
   /// No description provided for @pingWatchAdForMore.
@@ -1811,13 +1811,13 @@ abstract class AppLocalizations {
   /// No description provided for @pingNotificationSound.
   ///
   /// In en, this message translates to:
-  /// **'Ping Sound'**
+  /// **'Poke Sound'**
   String get pingNotificationSound;
 
   /// No description provided for @pingNotificationSoundDesc.
   ///
   /// In en, this message translates to:
-  /// **'Sound for Ping and Cheer notifications'**
+  /// **'Sound for Poke and Cheer notifications'**
   String get pingNotificationSoundDesc;
 
   /// No description provided for @currentSound.
@@ -1901,7 +1901,7 @@ abstract class AppLocalizations {
   /// No description provided for @badgeCollected.
   ///
   /// In en, this message translates to:
-  /// **'Badges'**
+  /// **'Achievements'**
   String get badgeCollected;
 
   /// No description provided for @longestStreak.
@@ -1919,7 +1919,7 @@ abstract class AppLocalizations {
   /// No description provided for @badgeEarned.
   ///
   /// In en, this message translates to:
-  /// **'NEW Badge!'**
+  /// **'NEW Achievement!'**
   String get badgeEarned;
 
   /// No description provided for @badgeNotYetEarned.
@@ -2285,13 +2285,13 @@ abstract class AppLocalizations {
   /// No description provided for @badge_badgeCollector_name.
   ///
   /// In en, this message translates to:
-  /// **'Badge Collector'**
+  /// **'Achievement Collector'**
   String get badge_badgeCollector_name;
 
   /// No description provided for @badge_badgeCollector_desc.
   ///
   /// In en, this message translates to:
-  /// **'Earn 10 badges'**
+  /// **'Earn 10 achievements'**
   String get badge_badgeCollector_desc;
 
   /// No description provided for @badge_cloudSynced_name.
@@ -2345,7 +2345,7 @@ abstract class AppLocalizations {
   /// No description provided for @earnedBadges.
   ///
   /// In en, this message translates to:
-  /// **'My Badges'**
+  /// **'My Achievements'**
   String get earnedBadges;
 
   /// No description provided for @skip.
@@ -2621,25 +2621,25 @@ abstract class AppLocalizations {
   /// No description provided for @poring.
   ///
   /// In en, this message translates to:
-  /// **'Poring'**
+  /// **'Ping'**
   String get poring;
 
   /// No description provided for @poringBalance.
   ///
   /// In en, this message translates to:
-  /// **'Poring Balance'**
+  /// **'Ping Balance'**
   String get poringBalance;
 
   /// No description provided for @poringEarn.
   ///
   /// In en, this message translates to:
-  /// **'Earn Poring'**
+  /// **'Earn Ping'**
   String get poringEarn;
 
   /// No description provided for @poringEarnDescription.
   ///
   /// In en, this message translates to:
-  /// **'Watch ads to earn Porings.\nUse Porings to unlock features!'**
+  /// **'Watch ads to earn Pings.\nUse Pings to unlock features!'**
   String get poringEarnDescription;
 
   /// No description provided for @poringDailyProgress.
@@ -2651,7 +2651,7 @@ abstract class AppLocalizations {
   /// No description provided for @poringWatchAd.
   ///
   /// In en, this message translates to:
-  /// **'Watch Ad (+1 Poring)'**
+  /// **'Watch Ad (+1 Ping)'**
   String get poringWatchAd;
 
   /// No description provided for @poringCooldown.
@@ -2675,37 +2675,37 @@ abstract class AppLocalizations {
   /// No description provided for @poringEarned.
   ///
   /// In en, this message translates to:
-  /// **'Poring +1!'**
+  /// **'Ping +1!'**
   String get poringEarned;
 
   /// No description provided for @poringUnlock.
   ///
   /// In en, this message translates to:
-  /// **'Use Poring to unlock'**
+  /// **'Use Ping to unlock'**
   String get poringUnlock;
 
   /// No description provided for @poringUnlockConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Use 1 Poring to unlock?'**
+  /// **'Use 1 Ping to unlock?'**
   String get poringUnlockConfirm;
 
   /// No description provided for @poringNotEnough.
   ///
   /// In en, this message translates to:
-  /// **'Not enough Porings'**
+  /// **'Not enough Pings'**
   String get poringNotEnough;
 
   /// No description provided for @poringWatchAdToEarnAndUse.
   ///
   /// In en, this message translates to:
-  /// **'Not enough Porings. Watch an ad to earn Porings'**
+  /// **'Not enough Pings. Watch an ad to earn Pings'**
   String get poringWatchAdToEarnAndUse;
 
   /// No description provided for @poringSpent.
   ///
   /// In en, this message translates to:
-  /// **'Poring used!'**
+  /// **'Ping used!'**
   String get poringSpent;
 
   /// No description provided for @poringPremiumInfinite.
@@ -2729,13 +2729,13 @@ abstract class AppLocalizations {
   /// No description provided for @referralBonusPoring.
   ///
   /// In en, this message translates to:
-  /// **'Poring +{count}'**
+  /// **'Ping +{count}'**
   String referralBonusPoring(int count);
 
   /// No description provided for @poringRewardClaimed.
   ///
   /// In en, this message translates to:
-  /// **'Referral reward: Poring +{count} claimed!'**
+  /// **'Referral reward: Ping +{count} claimed!'**
   String poringRewardClaimed(int count);
 
   /// No description provided for @referralAcceptedMessage.
@@ -2753,13 +2753,13 @@ abstract class AppLocalizations {
   /// No description provided for @poringCostConfirm.
   ///
   /// In en, this message translates to:
-  /// **'1 Poring will be used'**
+  /// **'1 Ping will be used'**
   String get poringCostConfirm;
 
   /// No description provided for @poringRequiredToSend.
   ///
   /// In en, this message translates to:
-  /// **'1 Poring is required to send a message'**
+  /// **'1 Ping is required to send a message'**
   String get poringRequiredToSend;
 
   /// No description provided for @deleteTimeConfirm.
@@ -2767,6 +2767,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete this alarm time?'**
   String get deleteTimeConfirm;
+
+  /// No description provided for @linkkuDexTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Linkku Dex'**
+  String get linkkuDexTitle;
+
+  /// No description provided for @linkkuDexCollect.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect your Linkkus'**
+  String get linkkuDexCollect;
+
+  /// No description provided for @linkkuDexComingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'New friends are on their way, one by one.'**
+  String get linkkuDexComingHint;
+
+  /// No description provided for @linkkuDexDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get linkkuDexDefault;
+
+  /// No description provided for @linkkuDexComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get linkkuDexComingSoon;
+
+  /// No description provided for @linkkuDexSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The alarm slime with a bell'**
+  String get linkkuDexSubtitle;
+
+  /// No description provided for @linkkuPersonality.
+  ///
+  /// In en, this message translates to:
+  /// **'Personality'**
+  String get linkkuPersonality;
+
+  /// No description provided for @linkkuTraitCaring.
+  ///
+  /// In en, this message translates to:
+  /// **'Caring'**
+  String get linkkuTraitCaring;
+
+  /// No description provided for @linkkuTraitAttentive.
+  ///
+  /// In en, this message translates to:
+  /// **'Attentive'**
+  String get linkkuTraitAttentive;
+
+  /// No description provided for @linkkuPersonalityDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'A caring friend who never forgets your time.\nSoon, each Linkku gets its own personality — yours will even talk differently.'**
+  String get linkkuPersonalityDesc;
+
+  /// No description provided for @linkkuWhatsNext.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s next'**
+  String get linkkuWhatsNext;
+
+  /// No description provided for @linkkuWhatsNextDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Raising, dressing up, and collecting new friends are coming step by step. 🥚'**
+  String get linkkuWhatsNextDesc;
+
+  /// No description provided for @phoneSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with phone'**
+  String get phoneSignIn;
+
+  /// No description provided for @phoneEnterCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code'**
+  String get phoneEnterCode;
+
+  /// No description provided for @phoneEnterNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your phone number'**
+  String get phoneEnterNumber;
+
+  /// No description provided for @phoneNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get phoneNumberLabel;
+
+  /// No description provided for @phoneSendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get phoneSendCode;
+
+  /// No description provided for @phoneConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get phoneConfirm;
+
+  /// No description provided for @phoneChangeNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Change number'**
+  String get phoneChangeNumber;
+
+  /// No description provided for @phoneCodeSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code sent'**
+  String get phoneCodeSent;
+
+  /// No description provided for @phoneSendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send code'**
+  String get phoneSendFailed;
+
+  /// No description provided for @phoneVerifyFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification failed'**
+  String get phoneVerifyFailed;
+
+  /// No description provided for @phoneGenericError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get phoneGenericError;
 }
 
 class _AppLocalizationsDelegate

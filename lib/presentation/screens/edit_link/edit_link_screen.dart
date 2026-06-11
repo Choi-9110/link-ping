@@ -7,10 +7,8 @@ import '../../../data/models/link_reminder.dart';
 import '../../../providers/poring_provider.dart';
 import '../../../providers/user_provider.dart';
 import '../../../services/ad_service.dart';
-import '../../../services/alarm_sound_service.dart';
 import '../../../services/time_unlock_service.dart';
 import '../../../services/url_launcher_service.dart';
-import '../../widgets/sound_picker_bottom_sheet.dart';
 import '../../widgets/toast_overlay.dart';
 import '../../widgets/wheel_time_picker.dart';
 
@@ -46,9 +44,6 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
 
   // 공유받은 링크의 잠금해제된 시간 인덱스
   Set<int> _unlockedTimeIndices = {0}; // 첫 번째 시간은 항상 해제
-
-  // 알람 소리
-  String? _selectedSoundId;
 
   static const int _maxTimesForPremium = 10;
 
@@ -86,9 +81,6 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
     _unlockedTimeIndices = TimeUnlockService.getUnlockedTimeIndices(
       widget.link.id,
     );
-
-    // 알람 소리 초기화
-    _selectedSoundId = widget.link.soundId;
 
     // 보상형 광고 미리 로드
     AdService.instance.loadRewardedAd(useTestAd: AdService.instance.useTestAds);
@@ -420,8 +412,6 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
         'category': _selectedCategory,
         'clearCategory':
             _selectedCategory == null && widget.link.category != null,
-        'soundId': _selectedSoundId,
-        'clearSoundId': _selectedSoundId == null && widget.link.soundId != null,
         'needsConsent': isMyLockedAlarm && _hasTimeOrDaysChanged(), // 동의 필요 플래그
       });
     }
@@ -680,13 +670,20 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
               decoration: InputDecoration(
                 labelText: l10n.linkUrl,
                 hintText: l10n.linkUrlHint,
+                helperText:
+                    Localizations.localeOf(context).languageCode == 'ko'
+                        ? '비워두면 제목만 알림으로 떠요 (밥시간·약시간 등)'
+                        : 'Leave empty for a title-only reminder',
                 prefixIcon: const Icon(Icons.link),
                 border: const OutlineInputBorder(),
               ),
               keyboardType: TextInputType.url,
               textInputAction: TextInputAction.next,
               validator: (value) {
-                if (!_isValidUrl(value)) {
+                // 링크/전화번호는 선택 — 입력한 경우에만 형식 검사
+                if (value != null &&
+                    value.trim().isNotEmpty &&
+                    !_isValidUrl(value)) {
                   return l10n.invalidUrl;
                 }
                 return null;
@@ -715,10 +712,6 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
 
             // 카테고리 선택
             _buildCategorySection(),
-            const SizedBox(height: Spacing.lg),
-
-            // 알람 소리 선택
-            _buildSoundSection(),
             const SizedBox(height: Spacing.lg),
 
             // 알림 시간 섹션
@@ -1271,64 +1264,6 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildSoundSection() {
-    final l10n = AppLocalizations.of(context)!;
-    final locale = Localizations.localeOf(context);
-    final langCode = locale.languageCode;
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final isPremium = ref.watch(userProfileProvider).value?.isPremium ?? false;
-
-    // 현재 선택된 소리 (없으면 전역 설정에서)
-    final currentSoundId =
-        _selectedSoundId ?? AlarmSoundService.instance.getSelectedSoundId();
-    final currentSound = AlarmSoundService.instance.getSoundById(
-      currentSoundId,
-    );
-    final soundName = currentSound?.getName(langCode) ?? l10n.alarmSound;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(l10n.alarmSound, style: theme.textTheme.titleMedium),
-        const SizedBox(height: Spacing.sm),
-        ListTile(
-          leading: Icon(
-            currentSound?.category == SoundCategory.alarm
-                ? Icons.alarm
-                : Icons.notifications_active,
-            color: colorScheme.primary,
-          ),
-          title: Text(soundName),
-          subtitle: Text(
-            _selectedSoundId == null
-                ? l10n.alarmSoundDescription
-                : (currentSound?.category == SoundCategory.alarm
-                      ? l10n.soundCategoryAlarm
-                      : l10n.soundCategoryNotify),
-          ),
-          trailing: const Icon(Icons.chevron_right),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: colorScheme.outline),
-          ),
-          onTap: () async {
-            final selectedId = await SoundCategoryDialog.show(
-              context,
-              initialSoundId: _selectedSoundId,
-              isPremium: isPremium,
-              langCode: langCode,
-            );
-            if (selectedId != null && mounted) {
-              setState(() => _selectedSoundId = selectedId);
-              ToastOverlay.showSuccess(context, l10n.soundSelected);
-            }
-          },
-        ),
-      ],
     );
   }
 }

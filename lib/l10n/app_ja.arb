@@ -1,9 +1,7 @@
 {
   "@@locale": "ja",
-
   "appName": "Linkku",
   "appSlogan": "リンクを保存して、行動に移そう！",
-
   "login": "ログイン",
   "loginWithGoogle": "Googleでログイン",
   "loginLoading": "ログイン中...",
@@ -12,10 +10,8 @@
   "guestLoginFailed": "ゲストログインに失敗しました",
   "logout": "ログアウト",
   "logoutConfirm": "ログアウトしますか？",
-
   "guest": "ゲスト",
   "guestSyncMessage": "Googleでログインしてデータを同期",
-
   "profileSetup": "プロフィール設定",
   "profileSetupTitle": "プロフィールを設定してください",
   "profileSetupSubtitle": "この情報は他のユーザーに表示されます",
@@ -27,11 +23,9 @@
   "country": "国",
   "complete": "完了",
   "profileSaveFailed": "プロフィールの保存に失敗しました",
-
   "home": "ホーム",
   "settings": "設定",
   "notifications": "通知",
-
   "addLink": "リンクを追加",
   "editLink": "リンクを編集",
   "deleteLink": "削除",
@@ -39,7 +33,6 @@
   "cancel": "キャンセル",
   "save": "保存",
   "delete": "削除",
-
   "url": "URL",
   "urlHint": "https://example.com",
   "urlRequired": "URLを入力してください",
@@ -47,7 +40,6 @@
   "title": "タイトル",
   "titleHint": "毎日のワークアウト",
   "titleRequired": "タイトルを入力してください",
-
   "notificationTime": "通知時間",
   "repeatDays": "繰り返し曜日",
   "selectRepeatDays": "繰り返す曜日を選択してください",
@@ -69,7 +61,6 @@
   "weekdays": "平日",
   "weekends": "週末",
   "repeat": "繰り返し",
-
   "linkUrl": "リンクまたは電話番号",
   "linkUrlHint": "google.com または 090-1234-5678",
   "invalidUrl": "有効なURLまたは電話番号を入力してください",
@@ -81,15 +72,12 @@
   "addTimePremium": "時間を追加（プレミアム）",
   "premiumFeature": "プレミアム機能",
   "multiTimesPremiumMessage": "プレミアムにアップグレードすると\n1つのリンクに複数の時間を設定できます！",
-
   "linkAdded": "リンクを追加しました",
   "linkUpdated": "リンクを更新しました",
   "linkDeleted": "リンクを削除しました",
-
   "emptyStateTitle": "まだリンクがありません",
   "emptyStateSubtitle": "定期的にアクセスしたいリンクを追加しましょう",
   "emptyStateButton": "最初のリンクを追加",
-
   "savedByCount": "{count}人が保存",
   "@savedByCount": {
     "placeholders": {
@@ -98,12 +86,10 @@
       }
     }
   },
-
   "savedByTitle": "このリンクを保存した人",
   "noSavedUsers": "まだ誰も保存していません",
   "me": "自分",
   "loadFailed": "読み込みに失敗しました",
-
   "cheer": "応援",
   "tease": "つつく",
   "cheerSent": "{nickname}さんを応援しました！",
@@ -124,7 +110,6 @@
   },
   "sendFailed": "送信に失敗しました",
   "cannotSendToSelf": "自分には送れません",
-
   "noNotifications": "まだ通知がありません",
   "noNotificationsSubtitle": "誰かから応援やつつきが届くと\nここに表示されます",
   "markAllRead": "すべて既読にする",
@@ -156,18 +141,15 @@
       }
     }
   },
-
   "profile": "プロフィール",
   "editProfile": "プロフィールを編集",
   "profileEditNotReady": "プロフィール編集（準備中）",
-
   "notificationSettings": "通知設定",
   "notificationPermission": "通知を許可",
   "notificationTest": "テスト通知",
   "notificationTestSubtitle": "テスト通知を送信",
   "notificationTestSent": "テスト通知を送信しました",
   "notificationPermissionRequired": "通知の許可が必要です",
-
   "premium": "プレミアム",
   "premiumActive": "プレミアム利用中",
   "premiumPurchase": "プレミアムを購入",
@@ -175,29 +157,27 @@
   "premiumHeadline": "大切な瞬間を、見逃さないように",
   "premiumSubtitle": "大切な人を制限なく応援しましょう",
   "premiumBenefit1": "無制限の応援＆つっつき",
-  "premiumBenefit1Desc": "ポリング不要で友達にすぐ応援を送れます",
+  "premiumBenefit1Desc": "ピン不要で友達にすぐ応援を送れます",
   "premiumBenefit2": "リンク無制限登録",
   "premiumBenefit2Desc": "運動、勉強、電話…好きなだけ習慣を作りましょう",
   "premiumBenefit3": "追加アラーム時間が無制限",
   "premiumBenefit3Desc": "1つのリンクに朝・昼・夜のアラームを自由に",
-  "premiumBenefit4": "ポリング無制限",
+  "premiumBenefit4": "ピン無制限",
   "premiumBenefit4Desc": "広告なしで全ての機能をすぐに使えます",
   "premiumBenefit5": "広告なしのクリーンな体験",
   "premiumBenefit5Desc": "バナーもリワード広告もない綺麗な画面",
-  "premiumBenefit6": "全プレミアムサウンド解放",
-  "premiumBenefit6Desc": "自分だけのアラーム音で一日を始めましょう",
+  "premiumBenefit6": "クラウドバックアップ＆同期",
+  "premiumBenefit6Desc": "機種変更しても保存したリンクがそのまま復元されます",
   "premiumPrice": "月額$2.99 / 年額$9.99 / 買い切り$29.99",
   "premiumLater": "後で",
   "premiumBuy": "購入する",
   "premiumPaymentNotReady": "決済機能（準備中）",
-
   "linkLimitReached": "リンクの上限に達しました",
   "linkLimitMessage": "無料版は2件まで登録できます。\n友達招待で+1件、プレミアムで無制限に！",
   "linkLimitMessageBase": "無料版は2件まで登録できます。",
   "inviteFriendForBonus": "友達を招待（+1件）",
   "inviteFriendBonusDesc": "友達が登録するとボーナスリンクをゲット！",
   "viewPremium": "プレミアムを見る",
-
   "account": "アカウント",
   "info": "情報",
   "version": "バージョン",
@@ -206,14 +186,12 @@
   "contact": "お問い合わせ",
   "contactNotReady": "お問い合わせ（準備中）",
   "openSourceLicenses": "オープンソースライセンス",
-
   "loading": "読み込み中...",
   "error": "エラー",
   "retry": "再試行",
   "ok": "OK",
   "yes": "はい",
   "no": "いいえ",
-
   "share": "共有",
   "edit": "編集",
   "copyLink": "リンクをコピー",
@@ -230,7 +208,6 @@
     }
   },
   "selectAction": "アクションを選択",
-
   "profileUpdated": "プロフィールを更新しました",
   "profileUpdateFailed": "プロフィールの更新に失敗しました",
   "accountLink": "アカウント連携",
@@ -241,12 +218,10 @@
   "guestLinkInfo": "アカウントを連携するとデータを同期できます",
   "linked": "連携済み",
   "link": "連携",
-
   "setEndDate": "終了日を設定",
   "endDateEnabled": "この日に自動でリマインダーが停止します",
   "endDateDisabled": "無期限で繰り返し（終了日なし）",
   "selectEndDate": "終了日を選択",
-
   "selectCheerMessage": "応援メッセージを選択",
   "selectTeaseMessage": "つつきメッセージを選択",
   "pingRateLimited": "{minutes}分後に再送信できます",
@@ -257,39 +232,33 @@
       }
     }
   },
-
   "addTimeWithAd": "広告を見て時間を追加",
   "watchAdToAddTime": "広告を視聴するとリマインダー時間を追加できます。\nプレミアムユーザーは広告なしで無制限に追加可能！",
   "watchAd": "広告を見る",
   "adLoadFailed": "広告の読み込みに失敗しました",
   "timeAddedSuccess": "時間を追加しました",
-
   "inviteFriends": "友達を招待",
   "inviteFriendsMessage": "友達を招待するとリンク枠が1つ増えます！",
   "bonusLinkEarned": "ボーナスリンクを獲得しました！",
   "referralCode": "招待コード",
   "copyReferralCode": "招待コードをコピー",
   "referralCodeCopied": "招待コードをコピーしました",
-
   "lockedTime": "ロック中の時間",
   "unlockTimeWithAd": "広告を見て解除",
   "watchAdToUnlockTime": "広告を視聴するとこのリマインダー時間を有効化できます。\nプレミアムユーザーはすべての時間が自動で有効になります！",
   "timeUnlocked": "リマインダー時間を解除しました",
-
   "shareSettings": "共有設定",
   "editable": "編集可能",
   "recipientCanChangeTime": "受信者が時間を変更可能",
   "timeLocked": "時間固定",
   "shareAtThisTime": "この時間で共有",
   "category": "カテゴリー",
-
   "consentRequest": "同意リクエスト",
   "consentRequestMessage": "受信者に変更の同意をリクエストします。",
   "consentNote1": "最大24時間かかる場合があります",
   "consentNote2": "同意が完了したらお知らせします",
   "consentNote3": "拒否された場合は元の時間が維持されます",
   "requestConsent": "同意をリクエスト",
-
   "timeLockedAlarm": "時間固定アラーム",
   "receivedSharedAlarmInfo": "{nickname}さんから共有されたアラームです。\n通知時間と繰り返し曜日は変更できません。",
   "@receivedSharedAlarmInfo": {
@@ -301,9 +270,8 @@
   },
   "sharedToOthersInfo": "受信者も同じ時間に通知を受け取ります。\n時間を変更するには同意が必要です。",
   "locked": "ロック中",
-
-  "badgesAndStats": "バッジ & 統計",
-  "badgeCollection": "バッジコレクション",
+  "badgesAndStats": "実績 & 統計",
+  "badgeCollection": "実績コレクション",
   "streakDays": "{days}日連続",
   "@streakDays": {
     "placeholders": {
@@ -334,7 +302,6 @@
       }
     }
   },
-
   "andMore": "他{count}件",
   "@andMore": {
     "placeholders": {
@@ -343,7 +310,6 @@
       }
     }
   },
-
   "pingWindowClosed": "アラームが鳴ってから5分以内のみ送信できます",
   "pingWindowActive": "残り時間: {time}",
   "@pingWindowActive": {
@@ -358,7 +324,6 @@
   "premiumUnlimited": "無制限",
   "watchAdToSendMore": "広告を見てもっと送る",
   "watchAdDescription": "無料ユーザーは1アラームにつき1人にのみ送信できます。\n広告を見て追加送信、またはプレミアムで無制限に！",
-
   "premiumMonthly": "月額",
   "premiumYearly": "年額",
   "premiumLifetime": "買い切り",
@@ -368,7 +333,6 @@
   "restorePurchases": "購入を復元",
   "storeNotAvailable": "ストアを利用できません",
   "productsNotFound": "商品を読み込めませんでした",
-
   "selectProfileEmoji": "プロフィール絵文字を選択",
   "profileEmoji": "プロフィール絵文字",
   "changeEmoji": "絵文字を変更",
@@ -389,17 +353,20 @@
   "changeAccount": "アカウントを変更",
   "changeAccountConfirm": "別のGoogleアカウントに変更しますか？",
   "change": "変更",
-
   "cheerReceivedFrom": "{name}さんが応援してくれました！",
   "@cheerReceivedFrom": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "teaseReceivedFrom": "{name}さんがつついてきました！",
   "@teaseReceivedFrom": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "inquiryReplyArrived": "お問い合わせへの返信が届きました",
@@ -416,12 +383,10 @@
   "tapToViewReply": "タップして返信を見る →",
   "noResponseWarning": "24時間以内に返答がない場合、アラームはOFFになります",
   "inquiry": "お問い合わせ",
-
   "googleAccountAlreadyLinked": "このGoogleアカウントは既に別のアカウントに連携されています",
   "providerAlreadyLinked": "Googleアカウントは既に連携されています",
   "invalidCredential": "無効な認証情報です",
   "networkError": "ネットワーク接続を確認してください",
-
   "noInquiries": "お問い合わせはまだありません",
   "inquiryHint": "質問がありますか？お問い合わせを送信してください！",
   "inquirySubmitted": "お問い合わせを送信しました",
@@ -435,11 +400,10 @@
   "inquiryContentMinLength": "10文字以上で入力してください",
   "submitInquiry": "お問い合わせを送信",
   "inquiryResponsePromise": "できるだけ早くご返信いたします。",
-
   "alarmSound": "アラーム音",
   "selectSoundCategory": "どんなスタイルの音がいいですか？",
   "pingNotificationSound": "通知音",
-  "pingNotificationSoundDesc": "ピンと応援通知のサウンド",
+  "pingNotificationSoundDesc": "つつきと応援の通知音",
   "currentSound": "現在のサウンド",
   "freeSounds": "無料サウンド",
   "premiumSounds": "プレミアムサウンド",
@@ -447,50 +411,58 @@
   "soundSelected": "サウンドを選択しました",
   "soundNotAvailable": "サウンドファイルはまだ利用できません",
   "alarmSoundDescription": "通知音を選んでください",
-
   "soundCategoryAlarm": "ロングアラーム",
   "soundCategoryNotify": "クイックエフェクト",
   "soundCategoryAlarmDesc": "メロディアスな曲（5-15秒）・見逃せないアラームに！",
   "soundCategoryNotifyDesc": "短いサウンド（2-5秒）・軽くチェックするリマインダーに！",
-
   "currentStreak": "現在の連続日数",
   "achievementRate": "達成率",
-  "badgeCollected": "バッジ",
+  "badgeCollected": "実績",
   "longestStreak": "最長: {days}日",
   "@longestStreak": {
     "placeholders": {
-      "days": {"type": "int"}
+      "days": {
+        "type": "int"
+      }
     }
   },
   "daysCount": "{days}日",
   "@daysCount": {
     "placeholders": {
-      "days": {"type": "int"}
+      "days": {
+        "type": "int"
+      }
     }
   },
-
-  "badgeEarned": "新しいバッジ獲得！",
+  "badgeEarned": "新しい実績獲得！",
   "badgeNotYetEarned": "まだ獲得していません",
   "badgeEarnedOn": "{date}に獲得",
   "@badgeEarnedOn": {
     "placeholders": {
-      "date": {"type": "String"}
+      "date": {
+        "type": "String"
+      }
     }
   },
   "badgeProgress": "進捗: {progress}/{target}",
   "@badgeProgress": {
     "placeholders": {
-      "progress": {"type": "int"},
-      "target": {"type": "int"}
+      "progress": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
     }
   },
   "badgeProgressPercent": "{percent}%達成",
   "@badgeProgressPercent": {
     "placeholders": {
-      "percent": {"type": "int"}
+      "percent": {
+        "type": "int"
+      }
     }
   },
-
   "badge_streak3_name": "3日連続",
   "badge_streak3_desc": "3日連続で達成",
   "badge_streak7_name": "燃える1週間",
@@ -503,14 +475,12 @@
   "badge_marathon_desc": "365日連続で達成！",
   "badge_comeback_name": "カムバック",
   "badge_comeback_desc": "連続記録が途切れた後、7日連続で達成",
-
   "badge_quickDraw_name": "クイックドロー",
   "badge_quickDraw_desc": "通知から5秒以内にクリック",
   "badge_speedDemon_name": "スピードデーモン",
   "badge_speedDemon_desc": "30秒以内に10回オープン",
   "badge_quickResponse_name": "クイックレスポンス",
   "badge_quickResponse_desc": "3分以内に50回オープン",
-
   "badge_morningGlory_name": "朝顔",
   "badge_morningGlory_desc": "午前5-7時に5回クリック",
   "badge_earlyBird_name": "早起き鳥",
@@ -519,14 +489,12 @@
   "badge_nightOwl_desc": "午後11時以降に10回リンクを開く",
   "badge_nightShift_name": "ナイトシフト",
   "badge_nightShift_desc": "深夜0時から午前5時の間に5回クリック",
-
   "badge_perfectWeek_name": "パーフェクトウィーク",
   "badge_perfectWeek_desc": "1週間100%達成",
   "badge_perfectMonth_name": "パーフェクトマンス",
   "badge_perfectMonth_desc": "1ヶ月100%達成",
   "badge_perfectionist_name": "完璧主義者",
   "badge_perfectionist_desc": "95%以上の達成率（50回以上）",
-
   "badge_firstCheer_name": "初めての応援",
   "badge_firstCheer_desc": "初めて応援を送る",
   "badge_cheerLeader_name": "チアリーダー",
@@ -537,7 +505,6 @@
   "badge_poker_desc": "50回つつきを送る",
   "badge_socialButterfly_name": "ソーシャルバタフライ",
   "badge_socialButterfly_desc": "応援/つつきを10回受け取る",
-
   "badge_firstLink_name": "初めてのリンク",
   "badge_firstLink_desc": "最初のリンクを登録",
   "badge_linkCollector_name": "リンクコレクター",
@@ -548,24 +515,21 @@
   "badge_hotLink_desc": "あなたのリンクを10人以上が保存",
   "badge_variety_name": "バラエティ",
   "badge_variety_desc": "5つ以上の異なるドメインのリンク",
-
   "badge_founder_name": "ファウンダー",
   "badge_founder_desc": "初期ユーザー",
   "badge_premium_name": "プレミアム",
   "badge_premium_desc": "プレミアム登録",
-  "badge_badgeCollector_name": "バッジコレクター",
-  "badge_badgeCollector_desc": "10個のバッジを獲得",
+  "badge_badgeCollector_name": "実績コレクター",
+  "badge_badgeCollector_desc": "10個の実績を獲得",
   "badge_cloudSynced_name": "クラウド同期",
   "badge_cloudSynced_desc": "アカウント連携でデータを同期",
-
   "premiumSoundUnlock": "プレミアムサウンド",
   "premiumSoundUnlockDesc": "このサウンドはプレミアム専用です。\n広告を視聴するかプレミアムに登録してください。",
   "watchAdToUnlock": "広告を見て使用",
   "upgradeToPremium": "プレミアムを取得",
   "adNotReady": "広告を読み込み中です。しばらくしてから再度お試しください。",
   "adWatchSuccess": "広告完了！サウンドが適用されました。",
-
-  "earnedBadges": "獲得したバッジ",
+  "earnedBadges": "獲得した実績",
   "skip": "スキップ",
   "next": "次へ",
   "getStarted": "始める",
@@ -574,19 +538,19 @@
   "close": "閉じる",
   "confirm": "確認",
   "notSet": "未設定",
-
   "inquiryDetail": "お問い合わせ詳細",
   "inquiryNotFound": "お問い合わせが見つかりません",
   "reply": "返信",
   "repliedOn": "返信日: {date}",
   "@repliedOn": {
     "placeholders": {
-      "date": {"type": "String"}
+      "date": {
+        "type": "String"
+      }
     }
   },
   "linkPingTeam": "Linkkuチーム",
   "waitingForReply": "返信をお待ちください。\n返信が届いたらお知らせします！",
-
   "linkNotFound": "リンクが見つかりません",
   "linkLoadFailed": "リンクの読み込みに失敗しました",
   "linkNotificationService": "リンク通知サービス",
@@ -599,12 +563,13 @@
   "viewCount": "閲覧数: {count}",
   "@viewCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "saveAndChangeTime": "保存してお好みの時間に変更",
   "generatingShareLink": "共有リンクを生成中...",
-
   "onboarding1Title": "リンクを保存",
   "onboarding1Desc": "Instagram、YouTube、TikTok...\n後で見るリンクを保存",
   "onboarding2Title": "時間通りに通知！",
@@ -620,68 +585,101 @@
   "onboarding5Sub": "一緒だと成功率95%！",
   "onboarding6Title": "今すぐ始めよう",
   "onboarding6Desc": "無料で2つまでリンク保存\nプレミアムで無制限！",
-
   "loginRequired": "ログインが必要です",
   "referralCodeQuestion": "友達から招待コードをもらいましたか？",
   "referralCodeHelperText": "8文字のコードを入力",
   "southKorea": "韓国",
-
-  "poring": "ポリング",
-  "poringBalance": "ポリング残高",
-  "poringEarn": "ポリングを集める",
-  "poringEarnDescription": "広告を視聴してポリングをゲット。\nポリングで機能をアンロック！",
+  "poring": "ピン",
+  "poringBalance": "ピン残高",
+  "poringEarn": "ピンを集める",
+  "poringEarnDescription": "広告を視聴してピンをゲット。\nピンで機能をアンロック！",
   "poringDailyProgress": "今日 {count}/{max}",
   "@poringDailyProgress": {
     "placeholders": {
-      "count": {"type": "int"},
-      "max": {"type": "int"}
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
     }
   },
-  "poringWatchAd": "広告を見る (+1ポリング)",
+  "poringWatchAd": "広告を見る (+1ピン)",
   "poringCooldown": "次の広告まで {seconds}秒",
   "@poringCooldown": {
     "placeholders": {
-      "seconds": {"type": "int"}
+      "seconds": {
+        "type": "int"
+      }
     }
   },
   "poringDailyLimitReached": "今日の上限に達しました！明日また来てください。",
   "poringDailyLimitThanks": "今日は広告{max}本を全て視聴していただきました！ありがとうございます！",
   "@poringDailyLimitThanks": {
     "placeholders": {
-      "max": {"type": "int"}
+      "max": {
+        "type": "int"
+      }
     }
   },
-  "poringEarned": "ポリング +1！",
-  "poringUnlock": "ポリングでアンロック",
-  "poringUnlockConfirm": "ポリング1個を使ってアンロックしますか？",
-  "poringNotEnough": "ポリングが足りません",
-  "poringWatchAdToEarnAndUse": "ポリングが足りません。広告を見てポリングを獲得しましょう",
-  "poringSpent": "ポリング使用完了！",
+  "poringEarned": "ピン +1！",
+  "poringUnlock": "ピンでアンロック",
+  "poringUnlockConfirm": "ピン1個を使ってアンロックしますか？",
+  "poringNotEnough": "ピンが足りません",
+  "poringWatchAdToEarnAndUse": "ピンが足りません。広告を見てピンを獲得しましょう",
+  "poringSpent": "ピン使用完了！",
   "poringPremiumInfinite": "プレミアム：無制限",
-
   "referralAcceptedTitle": "{nickname}さんが招待に応じました",
   "@referralAcceptedTitle": {
     "placeholders": {
-      "nickname": {"type": "String"}
+      "nickname": {
+        "type": "String"
+      }
     }
   },
   "referralBonusLink": "ボーナスリンク +1",
-  "referralBonusPoring": "ポリング +{count}",
+  "referralBonusPoring": "ピン +{count}",
   "@referralBonusPoring": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
-  "poringRewardClaimed": "紹介報酬 ポリング +{count} 受取！",
+  "poringRewardClaimed": "紹介報酬 ピン +{count} 受取！",
   "@poringRewardClaimed": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "referralAcceptedMessage": "招待が承諾されました",
-
   "addTimeWithPoring": "通知時間を追加する",
-  "poringCostConfirm": "ポリング1個が消費されます",
-  "poringRequiredToSend": "メッセージを送るにはポリング1個が必要です",
-  "deleteTimeConfirm": "この通知時間を削除しますか？"
+  "poringCostConfirm": "ピン1個が消費されます",
+  "poringRequiredToSend": "メッセージを送るにはピン1個が必要です",
+  "deleteTimeConfirm": "この通知時間を削除しますか？",
+  "linkkuDexTitle": "Linkku図鑑",
+  "linkkuDexCollect": "Linkkuを集めよう",
+  "linkkuDexComingHint": "新しい仲間が少しずつやってきます。",
+  "linkkuDexDefault": "基本",
+  "linkkuDexComingSoon": "近日登場",
+  "linkkuDexSubtitle": "ベル付きのアラームスライム",
+  "linkkuPersonality": "性格",
+  "linkkuTraitCaring": "やさしい",
+  "linkkuTraitAttentive": "気配り上手",
+  "linkkuPersonalityDesc": "約束の時間を絶対に忘れないやさしい友だち。\nもうすぐそれぞれ性格がついて、あなたのLinkkuは話し方まで変わります。",
+  "linkkuWhatsNext": "これから",
+  "linkkuWhatsNextDesc": "育てて、着せ替えて、新しい仲間を集める機能が少しずつやってきます。🥚",
+  "phoneSignIn": "電話番号でログイン",
+  "phoneEnterCode": "認証コードを入力",
+  "phoneEnterNumber": "電話番号を入力してください",
+  "phoneNumberLabel": "電話番号",
+  "phoneSendCode": "コードを送信",
+  "phoneConfirm": "確認",
+  "phoneChangeNumber": "番号を変更",
+  "phoneCodeSent": "認証コードを送りました",
+  "phoneSendFailed": "認証コードの送信に失敗しました",
+  "phoneVerifyFailed": "認証に失敗しました",
+  "phoneGenericError": "エラーが発生しました"
 }

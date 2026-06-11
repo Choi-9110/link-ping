@@ -11,27 +11,28 @@ import 'app_colors.dart';
 class ColorThemes {
   ColorThemes._();
 
-  /// 🅰️ Vibrant - 현재 스타일 정제 (기본값)
-  /// 코랄 레드 + 민트 조합, 에너지 넘치는 느낌
+  /// 🅰️ Vibrant - Linkku 브랜드킷 기본 테마 (기본값)
+  /// 코랄 레드 + 민트 + 다크 서피스. 브랜드킷 v1.0 토큰 승계.
+  /// 컬러 역할 고정: 코랄=액션/알람/브랜드, 민트=완료/함께/핑, 퍼플=보상.
   static const vibrant = AppColorTheme(
     id: 'vibrant',
     name: 'Vibrant',
     nameKo: '비비드',
     // 주요 컬러
-    primary: Color(0xFFFF5A5F),      // 코랄 레드 - 메인 액션
+    primary: Color(0xFFFF5A5F),      // 코랄 레드 - 메인 액션/알람/브랜드
     onPrimary: Color(0xFFFFFFFF),    // 화이트 - primary 위 텍스트
-    secondary: Color(0xFF00D4AA),    // 민트 - 토글, 성공 상태
+    secondary: Color(0xFF00D4AA),    // 민트 - 완료/함께/핑/성공
     onSecondary: Color(0xFFFFFFFF),  // 화이트 - secondary 위 텍스트
-    tertiary: Color(0xFF6C5CE7),     // 퍼플 - 배지, 카테고리
-    // 배경
-    background: Color(0xFF000000),   // 퓨어 블랙
-    surface: Color(0xFF1C1C1E),      // 다크 그레이
-    surfaceVariant: Color(0xFF2C2C2E), // 라이트 그레이
+    tertiary: Color(0xFF6C5CE7),     // 퍼플 - 보상(뱃지/재화/프리미엄)
+    // 배경 (브랜드킷 다크 서피스 — 순수 #000 대신 #0E0E11)
+    background: Color(0xFF0E0E11),   // 다크 베이스
+    surface: Color(0xFF17171B),      // 카드/시트
+    surfaceVariant: Color(0xFF1F1F25), // 밝은 표면(입력필드 등)
     // 텍스트
     textPrimary: Color(0xFFFFFFFF),  // 화이트
     textSecondary: Color(0xFF8E8E93), // 그레이
     // 시스템
-    outline: Color(0xFF3A3A3C),      // 테두리
+    outline: Color(0xFF2A2A31),      // 테두리/구분선 (브랜드킷 라인)
     error: Color(0xFFFF453A),        // 에러 레드
     // 그라데이션 (공유 페이지용)
     gradientColors: [

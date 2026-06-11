@@ -5,7 +5,6 @@ import '../../../l10n/app_localizations.dart';
 
 import '../../../core/theme/spacing.dart';
 import '../../../providers/auth_provider.dart';
-import '../../../providers/links_provider.dart';
 import '../../../providers/user_provider.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/badge_service.dart';
@@ -13,15 +12,15 @@ import '../../../services/firestore_service.dart';
 import '../../../services/notification_service.dart';
 import '../onboarding/onboarding_screen.dart';
 import '../badges/badge_collection_screen.dart';
+import '../linkku_dex/linkku_dex_screen.dart';
+import '../../widgets/linkku_logo.dart';
 import '../inquiry/inquiry_list_screen.dart';
 import '../privacy/privacy_policy_screen.dart';
 import '../terms/terms_of_service_screen.dart';
 import '../verification/blocked_users_screen.dart';
-import 'alarm_sound_screen.dart';
 import 'edit_profile_screen.dart';
 import '../../widgets/share_preview_dialog.dart';
 import '../../widgets/premium_purchase_sheet.dart';
-import '../../../services/alarm_sound_service.dart';
 import '../../../services/pixel_emoji_service.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -152,6 +151,24 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           // 프로필 섹션
           _buildSectionTitle(l10n.profile),
           _buildProfileTile(colorScheme),
+          // 링꾸 도감 진입 (티저) — 프로필 행과 동일한 아바타 크기/스타일
+          ListTile(
+            leading: CircleAvatar(
+              backgroundColor: colorScheme.surfaceContainerHighest,
+              child: const LinkkuSymbol(size: 28),
+            ),
+            title: const Text('링꾸'),
+            subtitle: Text(
+              Localizations.localeOf(context).languageCode == 'ko'
+                  ? '도감'
+                  : 'Dex',
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const LinkkuDexScreen()),
+            ),
+          ),
 
           const SizedBox(height: Spacing.md),
 
@@ -172,7 +189,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             trailing: const Icon(Icons.chevron_right),
             onTap: _onTestNotification,
           ),
-          _buildAlarmSoundTile(),
 
           const SizedBox(height: Spacing.md),
 
@@ -398,32 +414,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       subtitle: subtitle != null ? Text(subtitle) : null,
       trailing: trailing,
       onTap: onTap,
-    );
-  }
-
-  Widget _buildAlarmSoundTile() {
-    final l10n = AppLocalizations.of(context)!;
-    final langCode = Localizations.localeOf(context).languageCode;
-    final selectedSoundId = AlarmSoundService.instance.getSelectedSoundId();
-    final selectedSound = AlarmSoundService.instance.getSoundById(
-      selectedSoundId,
-    );
-
-    return ListTile(
-      leading: const Icon(Icons.notifications_active_outlined),
-      title: Text(l10n.pingNotificationSound),
-      subtitle: Text(
-        selectedSound?.getName(langCode) ?? l10n.pingNotificationSound,
-      ),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: () async {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const AlarmSoundScreen()),
-        );
-        // 돌아왔을 때 UI 새로고침
-        setState(() {});
-      },
     );
   }
 

@@ -38,6 +38,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
+  # 브랜드 로고/심볼 SVG 렌더링 (Linkku 브랜드킷)
+  flutter_svg: ^2.0.10
+
   # 상태관리
   flutter_riverpod: ^2.4.0
 
@@ -93,6 +96,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # 픽셀 SVG → 앱 아이콘 PNG 래스터화 스크립트(tool/gen_app_icon.dart)용
+  image: ^4.2.0
+
+  # 브랜드 스플래시 생성
+  flutter_native_splash: ^2.4.1
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -107,12 +116,24 @@ dev_dependencies:
   # 앱 아이콘
   flutter_launcher_icons: ^0.14.3
 
+# 브랜드 스플래시 (Linkku) — 다크 베이스 위 마스코트
+flutter_native_splash:
+  color: "#17171B"
+  image: assets/app_icon.png
+  android_12:
+    color: "#17171B"
+    image: assets/app_icon.png
+  android: true
+  ios: true
+  web: false
+
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
+  remove_alpha_ios: true
   image_path: "assets/app_icon.png"
   min_sdk_android: 21
-  adaptive_icon_background: "#2D3250"
+  adaptive_icon_background: "#17171B"
   adaptive_icon_foreground: "assets/app_icon.png"
   web:
     generate: true
@@ -139,8 +160,8 @@ flutter:
   # 앱 에셋
   assets:
     - assets/app_icon.png
-    - assets/sounds/
     - assets/pixel_emojis/
+    - assets/linkku-logo-assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -148,22 +169,23 @@ flutter:
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
 
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
+  # 폰트 (Linkku 브랜드킷)
+  # - Pretendard: 본문/제목 기본 산스 (OFL)
+  # - Galmuri11: 픽셀 악센트 전용 (스트릭/뱃지명/시간 카운터) — 본문 사용 금지 (OFL)
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard-Regular.otf
+          weight: 400
+        - asset: assets/fonts/Pretendard-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Pretendard-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/Pretendard-Bold.otf
+          weight: 700
+    - family: Galmuri11
+      fonts:
+        - asset: assets/fonts/Galmuri11.ttf
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

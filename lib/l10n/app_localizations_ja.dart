@@ -367,7 +367,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumBenefit1 => '無制限の応援＆つっつき';
 
   @override
-  String get premiumBenefit1Desc => 'ポリング不要で友達にすぐ応援を送れます';
+  String get premiumBenefit1Desc => 'ピン不要で友達にすぐ応援を送れます';
 
   @override
   String get premiumBenefit2 => 'リンク無制限登録';
@@ -382,7 +382,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumBenefit3Desc => '1つのリンクに朝・昼・夜のアラームを自由に';
 
   @override
-  String get premiumBenefit4 => 'ポリング無制限';
+  String get premiumBenefit4 => 'ピン無制限';
 
   @override
   String get premiumBenefit4Desc => '広告なしで全ての機能をすぐに使えます';
@@ -394,10 +394,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumBenefit5Desc => 'バナーもリワード広告もない綺麗な画面';
 
   @override
-  String get premiumBenefit6 => '全プレミアムサウンド解放';
+  String get premiumBenefit6 => 'クラウドバックアップ＆同期';
 
   @override
-  String get premiumBenefit6Desc => '自分だけのアラーム音で一日を始めましょう';
+  String get premiumBenefit6Desc => '機種変更しても保存したリンクがそのまま復元されます';
 
   @override
   String get premiumPrice => '月額\$2.99 / 年額\$9.99 / 買い切り\$29.99';
@@ -669,10 +669,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get locked => 'ロック中';
 
   @override
-  String get badgesAndStats => 'バッジ & 統計';
+  String get badgesAndStats => '実績 & 統計';
 
   @override
-  String get badgeCollection => 'バッジコレクション';
+  String get badgeCollection => '実績コレクション';
 
   @override
   String streakDays(int days) {
@@ -900,7 +900,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get pingNotificationSound => '通知音';
 
   @override
-  String get pingNotificationSoundDesc => 'ピンと応援通知のサウンド';
+  String get pingNotificationSoundDesc => 'つつきと応援の通知音';
 
   @override
   String get currentSound => '現在のサウンド';
@@ -942,7 +942,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get achievementRate => '達成率';
 
   @override
-  String get badgeCollected => 'バッジ';
+  String get badgeCollected => '実績';
 
   @override
   String longestStreak(int days) {
@@ -955,7 +955,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get badgeEarned => '新しいバッジ獲得！';
+  String get badgeEarned => '新しい実績獲得！';
 
   @override
   String get badgeNotYetEarned => 'まだ獲得していません';
@@ -1144,10 +1144,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get badge_premium_desc => 'プレミアム登録';
 
   @override
-  String get badge_badgeCollector_name => 'バッジコレクター';
+  String get badge_badgeCollector_name => '実績コレクター';
 
   @override
-  String get badge_badgeCollector_desc => '10個のバッジを獲得';
+  String get badge_badgeCollector_desc => '10個の実績を獲得';
 
   @override
   String get badge_cloudSynced_name => 'クラウド同期';
@@ -1175,7 +1175,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get adWatchSuccess => '広告完了！サウンドが適用されました。';
 
   @override
-  String get earnedBadges => '獲得したバッジ';
+  String get earnedBadges => '獲得した実績';
 
   @override
   String get skip => 'スキップ';
@@ -1317,16 +1317,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get southKorea => '韓国';
 
   @override
-  String get poring => 'ポリング';
+  String get poring => 'ピン';
 
   @override
-  String get poringBalance => 'ポリング残高';
+  String get poringBalance => 'ピン残高';
 
   @override
-  String get poringEarn => 'ポリングを集める';
+  String get poringEarn => 'ピンを集める';
 
   @override
-  String get poringEarnDescription => '広告を視聴してポリングをゲット。\nポリングで機能をアンロック！';
+  String get poringEarnDescription => '広告を視聴してピンをゲット。\nピンで機能をアンロック！';
 
   @override
   String poringDailyProgress(int count, int max) {
@@ -1334,7 +1334,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get poringWatchAd => '広告を見る (+1ポリング)';
+  String get poringWatchAd => '広告を見る (+1ピン)';
 
   @override
   String poringCooldown(int seconds) {
@@ -1350,22 +1350,22 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get poringEarned => 'ポリング +1！';
+  String get poringEarned => 'ピン +1！';
 
   @override
-  String get poringUnlock => 'ポリングでアンロック';
+  String get poringUnlock => 'ピンでアンロック';
 
   @override
-  String get poringUnlockConfirm => 'ポリング1個を使ってアンロックしますか？';
+  String get poringUnlockConfirm => 'ピン1個を使ってアンロックしますか？';
 
   @override
-  String get poringNotEnough => 'ポリングが足りません';
+  String get poringNotEnough => 'ピンが足りません';
 
   @override
-  String get poringWatchAdToEarnAndUse => 'ポリングが足りません。広告を見てポリングを獲得しましょう';
+  String get poringWatchAdToEarnAndUse => 'ピンが足りません。広告を見てピンを獲得しましょう';
 
   @override
-  String get poringSpent => 'ポリング使用完了！';
+  String get poringSpent => 'ピン使用完了！';
 
   @override
   String get poringPremiumInfinite => 'プレミアム：無制限';
@@ -1380,12 +1380,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String referralBonusPoring(int count) {
-    return 'ポリング +$count';
+    return 'ピン +$count';
   }
 
   @override
   String poringRewardClaimed(int count) {
-    return '紹介報酬 ポリング +$count 受取！';
+    return '紹介報酬 ピン +$count 受取！';
   }
 
   @override
@@ -1395,11 +1395,81 @@ class AppLocalizationsJa extends AppLocalizations {
   String get addTimeWithPoring => '通知時間を追加する';
 
   @override
-  String get poringCostConfirm => 'ポリング1個が消費されます';
+  String get poringCostConfirm => 'ピン1個が消費されます';
 
   @override
-  String get poringRequiredToSend => 'メッセージを送るにはポリング1個が必要です';
+  String get poringRequiredToSend => 'メッセージを送るにはピン1個が必要です';
 
   @override
   String get deleteTimeConfirm => 'この通知時間を削除しますか？';
+
+  @override
+  String get linkkuDexTitle => 'Linkku図鑑';
+
+  @override
+  String get linkkuDexCollect => 'Linkkuを集めよう';
+
+  @override
+  String get linkkuDexComingHint => '新しい仲間が少しずつやってきます。';
+
+  @override
+  String get linkkuDexDefault => '基本';
+
+  @override
+  String get linkkuDexComingSoon => '近日登場';
+
+  @override
+  String get linkkuDexSubtitle => 'ベル付きのアラームスライム';
+
+  @override
+  String get linkkuPersonality => '性格';
+
+  @override
+  String get linkkuTraitCaring => 'やさしい';
+
+  @override
+  String get linkkuTraitAttentive => '気配り上手';
+
+  @override
+  String get linkkuPersonalityDesc =>
+      '約束の時間を絶対に忘れないやさしい友だち。\nもうすぐそれぞれ性格がついて、あなたのLinkkuは話し方まで変わります。';
+
+  @override
+  String get linkkuWhatsNext => 'これから';
+
+  @override
+  String get linkkuWhatsNextDesc => '育てて、着せ替えて、新しい仲間を集める機能が少しずつやってきます。🥚';
+
+  @override
+  String get phoneSignIn => '電話番号でログイン';
+
+  @override
+  String get phoneEnterCode => '認証コードを入力';
+
+  @override
+  String get phoneEnterNumber => '電話番号を入力してください';
+
+  @override
+  String get phoneNumberLabel => '電話番号';
+
+  @override
+  String get phoneSendCode => 'コードを送信';
+
+  @override
+  String get phoneConfirm => '確認';
+
+  @override
+  String get phoneChangeNumber => '番号を変更';
+
+  @override
+  String get phoneCodeSent => '認証コードを送りました';
+
+  @override
+  String get phoneSendFailed => '認証コードの送信に失敗しました';
+
+  @override
+  String get phoneVerifyFailed => '認証に失敗しました';
+
+  @override
+  String get phoneGenericError => 'エラーが発生しました';
 }

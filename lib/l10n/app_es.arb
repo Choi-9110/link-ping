@@ -1,9 +1,7 @@
 {
   "@@locale": "es",
-
   "appName": "Linkku",
   "appSlogan": "Guarda enlaces, pasa a la accion!",
-
   "login": "Iniciar sesion",
   "loginWithGoogle": "Continuar con Google",
   "loginLoading": "Iniciando sesion...",
@@ -12,10 +10,8 @@
   "guestLoginFailed": "Error al iniciar como invitado",
   "logout": "Cerrar sesion",
   "logoutConfirm": "Seguro que quieres cerrar sesion?",
-
   "guest": "Invitado",
   "guestSyncMessage": "Inicia sesion con Google para sincronizar tus datos",
-
   "profileSetup": "Configurar perfil",
   "profileSetupTitle": "Configura tu perfil",
   "profileSetupSubtitle": "Esta informacion sera visible para otros usuarios",
@@ -27,11 +23,9 @@
   "country": "Pais",
   "complete": "Listo",
   "profileSaveFailed": "Error al guardar el perfil",
-
   "home": "Inicio",
   "settings": "Ajustes",
   "notifications": "Notificaciones",
-
   "addLink": "Agregar enlace",
   "editLink": "Editar enlace",
   "deleteLink": "Eliminar",
@@ -39,7 +33,6 @@
   "cancel": "Cancelar",
   "save": "Guardar",
   "delete": "Eliminar",
-
   "url": "URL",
   "urlHint": "https://ejemplo.com",
   "urlRequired": "Por favor ingresa una URL",
@@ -47,7 +40,6 @@
   "title": "Titulo",
   "titleHint": "Rutina de ejercicio diaria",
   "titleRequired": "Por favor ingresa un titulo",
-
   "notificationTime": "Hora de notificacion",
   "repeatDays": "Dias de repeticion",
   "selectRepeatDays": "Por favor selecciona al menos un dia",
@@ -69,7 +61,6 @@
   "weekdays": "Entre semana",
   "weekends": "Fines de semana",
   "repeat": "Repetir",
-
   "linkUrl": "Enlace o numero de telefono",
   "linkUrlHint": "google.com o +34612345678",
   "invalidUrl": "Por favor ingresa una URL o numero valido",
@@ -81,15 +72,12 @@
   "addTimePremium": "Agregar hora (Premium)",
   "premiumFeature": "Funcion Premium",
   "multiTimesPremiumMessage": "Actualiza a Premium para configurar\nmultiples horarios para un solo enlace!",
-
   "linkAdded": "Enlace agregado",
   "linkUpdated": "Enlace actualizado",
   "linkDeleted": "Enlace eliminado",
-
   "emptyStateTitle": "Aun no hay enlaces",
   "emptyStateSubtitle": "Agrega enlaces que quieras visitar regularmente",
   "emptyStateButton": "Agrega tu primer enlace",
-
   "savedByCount": "Guardado por {count}",
   "@savedByCount": {
     "placeholders": {
@@ -98,12 +86,10 @@
       }
     }
   },
-
   "savedByTitle": "Personas que guardaron este enlace",
   "noSavedUsers": "Nadie lo ha guardado aun",
   "me": "Yo",
   "loadFailed": "Error al cargar",
-
   "cheer": "Animar",
   "tease": "Provocar",
   "cheerSent": "Animaste a {nickname}!",
@@ -124,7 +110,6 @@
   },
   "sendFailed": "Error al enviar",
   "cannotSendToSelf": "No puedes enviarte a ti mismo",
-
   "noNotifications": "Aun no hay notificaciones",
   "noNotificationsSubtitle": "Cuando alguien te anime o provoque,\naparecera aqui",
   "markAllRead": "Marcar todo como leido",
@@ -156,18 +141,15 @@
       }
     }
   },
-
   "profile": "Perfil",
   "editProfile": "Editar perfil",
   "profileEditNotReady": "Editar perfil (proximamente)",
-
   "notificationSettings": "Notificaciones",
   "notificationPermission": "Permitir notificaciones",
   "notificationTest": "Probar notificacion",
   "notificationTestSubtitle": "Enviar una notificacion de prueba",
   "notificationTestSent": "Notificacion de prueba enviada",
   "notificationPermissionRequired": "Se requiere permiso de notificaciones",
-
   "premium": "Premium",
   "premiumActive": "Premium activo",
   "premiumPurchase": "Obtener Premium",
@@ -175,29 +157,27 @@
   "premiumHeadline": "No te pierdas ningun momento importante",
   "premiumSubtitle": "Anima a tus seres queridos sin limites",
   "premiumBenefit1": "Animos y bromas ilimitados",
-  "premiumBenefit1Desc": "Envia animos a tus amigos sin preocuparte por los Porings",
+  "premiumBenefit1Desc": "Envia animos a tus amigos sin preocuparte por los Pings",
   "premiumBenefit2": "Enlaces ilimitados",
   "premiumBenefit2Desc": "Ejercicio, estudio, llamadas... crea todos los habitos que quieras",
   "premiumBenefit3": "Tiempos de alarma ilimitados",
   "premiumBenefit3Desc": "Configura alarmas de manana, tarde y noche libremente",
-  "premiumBenefit4": "Porings ilimitados",
+  "premiumBenefit4": "Pings ilimitados",
   "premiumBenefit4Desc": "Usa todas las funciones al instante, sin anuncios",
   "premiumBenefit5": "Experiencia limpia sin anuncios",
   "premiumBenefit5Desc": "Sin banners ni anuncios de recompensa",
-  "premiumBenefit6": "Todos los sonidos premium",
-  "premiumBenefit6Desc": "Empieza tu dia con tu tono de alarma favorito",
+  "premiumBenefit6": "Copia en la nube y sincronización",
+  "premiumBenefit6Desc": "Cambia de teléfono y tus enlaces se restauran solos",
   "premiumPrice": "$2.99/mes - $9.99/ano - $29.99 de por vida",
   "premiumLater": "Despues",
   "premiumBuy": "Comprar",
   "premiumPaymentNotReady": "Pagos (proximamente)",
-
   "linkLimitReached": "Limite de enlaces alcanzado",
   "linkLimitMessage": "Los usuarios gratuitos pueden guardar hasta 2 enlaces.\nInvita amigos para +1, o actualiza a Premium para ilimitados!",
   "linkLimitMessageBase": "Los usuarios gratuitos pueden guardar hasta 2 enlaces.",
   "inviteFriendForBonus": "Invitar amigos (+1 enlace)",
   "inviteFriendBonusDesc": "Obtiene un enlace extra cuando un amigo se una!",
   "viewPremium": "Ver Premium",
-
   "account": "Cuenta",
   "info": "Informacion",
   "version": "Version",
@@ -206,14 +186,12 @@
   "contact": "Contactanos",
   "contactNotReady": "Contacto (proximamente)",
   "openSourceLicenses": "Licencias de codigo abierto",
-
   "loading": "Cargando...",
   "error": "Error",
   "retry": "Reintentar",
   "ok": "OK",
   "yes": "Si",
   "no": "No",
-
   "share": "Compartir",
   "edit": "Editar",
   "copyLink": "Copiar enlace",
@@ -230,7 +208,6 @@
     }
   },
   "selectAction": "Elige una accion",
-
   "profileUpdated": "Perfil actualizado",
   "profileUpdateFailed": "Error al actualizar el perfil",
   "accountLink": "Vincular cuenta",
@@ -241,12 +218,10 @@
   "guestLinkInfo": "Vincula tu cuenta para sincronizar datos entre dispositivos",
   "linked": "Vinculado",
   "link": "Vincular",
-
   "setEndDate": "Establecer fecha de fin",
   "endDateEnabled": "Los recordatorios se detendran en esta fecha",
   "endDateDisabled": "Se repite siempre (sin fecha de fin)",
   "selectEndDate": "Seleccionar fecha de fin",
-
   "selectCheerMessage": "Elige un mensaje de animo",
   "selectTeaseMessage": "Elige un mensaje provocador",
   "pingRateLimited": "Puedes enviar de nuevo en {minutes} minutos",
@@ -257,39 +232,33 @@
       }
     }
   },
-
   "addTimeWithAd": "Ver anuncio para agregar hora",
   "watchAdToAddTime": "Ve un anuncio corto para agregar otro horario.\nLos usuarios Premium pueden agregar horarios sin anuncios!",
   "watchAd": "Ver anuncio",
   "adLoadFailed": "Error al cargar el anuncio",
   "timeAddedSuccess": "Hora agregada",
-
   "inviteFriends": "Invitar amigos",
   "inviteFriendsMessage": "Invita un amigo y obtiene 1 enlace extra!",
   "bonusLinkEarned": "Ganaste un enlace extra!",
   "referralCode": "Codigo de referido",
   "copyReferralCode": "Copiar codigo",
   "referralCodeCopied": "Codigo copiado",
-
   "lockedTime": "Hora bloqueada",
   "unlockTimeWithAd": "Ver anuncio para desbloquear",
   "watchAdToUnlockTime": "Ve un anuncio para activar este horario.\nLos usuarios Premium tienen todos los horarios activados!",
   "timeUnlocked": "Horario desbloqueado",
-
   "shareSettings": "Configuracion de compartir",
   "editable": "Editable",
   "recipientCanChangeTime": "El destinatario puede cambiar la hora",
   "timeLocked": "Hora fija",
   "shareAtThisTime": "Compartir a esta hora exacta",
   "category": "Categoria",
-
   "consentRequest": "Solicitud de consentimiento",
   "consentRequestMessage": "Solicitar consentimiento de modificacion a los destinatarios.",
   "consentNote1": "Puede tardar hasta 24 horas",
   "consentNote2": "Se te notificara cuando se complete",
   "consentNote3": "Se mantendra la hora original si se rechaza",
   "requestConsent": "Solicitar consentimiento",
-
   "timeLockedAlarm": "Alarma con hora fija",
   "receivedSharedAlarmInfo": "Compartido por {nickname}.\nNo se puede cambiar la hora ni los dias de repeticion.",
   "@receivedSharedAlarmInfo": {
@@ -301,9 +270,8 @@
   },
   "sharedToOthersInfo": "Los destinatarios tambien recibiran notificaciones a esta hora.\nSe requiere consentimiento para cambiar la hora.",
   "locked": "Bloqueado",
-
-  "badgesAndStats": "Insignias y estadisticas",
-  "badgeCollection": "Coleccion de insignias",
+  "badgesAndStats": "Logros y estadisticas",
+  "badgeCollection": "Coleccion de logros",
   "streakDays": "Racha de {days} dias",
   "@streakDays": {
     "placeholders": {
@@ -334,7 +302,6 @@
       }
     }
   },
-
   "andMore": "+{count} mas",
   "@andMore": {
     "placeholders": {
@@ -343,7 +310,6 @@
       }
     }
   },
-
   "pingWindowClosed": "Solo puedes enviar dentro de 5 minutos despues de tu alarma",
   "pingWindowActive": "Tiempo restante: {time}",
   "@pingWindowActive": {
@@ -353,68 +319,301 @@
       }
     }
   },
-  "pingFreeRemaining": "1 ping gratis disponible",
+  "pingFreeRemaining": "1 toque gratis disponible",
   "pingWatchAdForMore": "Ver anuncio para enviar mas",
   "premiumUnlimited": "Ilimitado",
   "watchAdToSendMore": "Ver anuncio para enviar mas",
   "watchAdDescription": "Los usuarios gratuitos pueden enviar 1 ping por ventana de alarma.\n¡Ve un anuncio para enviar mas, o actualiza a Premium para ilimitado!",
-
-  "poring": "Poring",
-  "poringBalance": "Saldo Poring",
-  "poringEarn": "Ganar Poring",
-  "poringEarnDescription": "Mira anuncios para ganar Porings.\n¡Usa Porings para desbloquear funciones!",
+  "poring": "Ping",
+  "poringBalance": "Saldo Ping",
+  "poringEarn": "Ganar Ping",
+  "poringEarnDescription": "Mira anuncios para ganar Pings.\n¡Usa Pings para desbloquear funciones!",
   "poringDailyProgress": "Hoy {count}/{max}",
   "@poringDailyProgress": {
     "placeholders": {
-      "count": {"type": "int"},
-      "max": {"type": "int"}
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
     }
   },
-  "poringWatchAd": "Ver anuncio (+1 Poring)",
+  "poringWatchAd": "Ver anuncio (+1 Ping)",
   "poringCooldown": "Siguiente anuncio en {seconds}s",
   "@poringCooldown": {
     "placeholders": {
-      "seconds": {"type": "int"}
+      "seconds": {
+        "type": "int"
+      }
     }
   },
   "poringDailyLimitReached": "¡Limite diario alcanzado! Vuelve manana.",
   "poringDailyLimitThanks": "¡Has visto los {max} anuncios de hoy! ¡Gracias!",
   "@poringDailyLimitThanks": {
     "placeholders": {
-      "max": {"type": "int"}
+      "max": {
+        "type": "int"
+      }
     }
   },
-  "poringEarned": "¡Poring +1!",
-  "poringUnlock": "Desbloquear con Poring",
-  "poringUnlockConfirm": "¿Usar 1 Poring para desbloquear?",
-  "poringNotEnough": "No hay suficientes Porings",
-  "poringWatchAdToEarnAndUse": "No hay suficientes Porings. Mira un anuncio para ganar Porings",
-  "poringSpent": "¡Poring usado!",
+  "poringEarned": "¡Ping +1!",
+  "poringUnlock": "Desbloquear con Ping",
+  "poringUnlockConfirm": "¿Usar 1 Ping para desbloquear?",
+  "poringNotEnough": "No hay suficientes Pings",
+  "poringWatchAdToEarnAndUse": "No hay suficientes Pings. Mira un anuncio para ganar Pings",
+  "poringSpent": "¡Ping usado!",
   "poringPremiumInfinite": "Premium: Ilimitado",
-
   "referralAcceptedTitle": "{nickname} aceptó tu invitación",
   "@referralAcceptedTitle": {
     "placeholders": {
-      "nickname": {"type": "String"}
+      "nickname": {
+        "type": "String"
+      }
     }
   },
   "referralBonusLink": "Enlace bonus +1",
-  "referralBonusPoring": "Poring +{count}",
+  "referralBonusPoring": "Ping +{count}",
   "@referralBonusPoring": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
-  "poringRewardClaimed": "¡Recompensa: Poring +{count} reclamado!",
+  "poringRewardClaimed": "¡Recompensa: Ping +{count} reclamado!",
   "@poringRewardClaimed": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "referralAcceptedMessage": "Invitación aceptada",
-
   "addTimeWithPoring": "Añadir hora de alarma",
-  "poringCostConfirm": "Se usará 1 Poring",
-  "poringRequiredToSend": "Se necesita 1 Poring para enviar un mensaje",
-  "deleteTimeConfirm": "¿Eliminar esta hora de alarma?"
+  "poringCostConfirm": "Se usará 1 Ping",
+  "poringRequiredToSend": "Se necesita 1 Ping para enviar un mensaje",
+  "deleteTimeConfirm": "¿Eliminar esta hora de alarma?",
+  "premiumMonthly": "Mensual",
+  "premiumYearly": "Anual",
+  "premiumLifetime": "De por vida",
+  "premiumPurchaseSuccess": "¡Compra premium completada!",
+  "premiumPurchaseFailed": "La compra falló. Inténtalo de nuevo.",
+  "premiumRestoreSuccess": "¡Compras restauradas con éxito!",
+  "restorePurchases": "Restaurar compras",
+  "storeNotAvailable": "La tienda no está disponible",
+  "productsNotFound": "No se pudieron cargar los productos",
+  "selectProfileEmoji": "Elige tu emoji de perfil",
+  "profileEmoji": "Emoji de perfil",
+  "changeEmoji": "Cambiar emoji",
+  "profileEmojiDescription": "Emoji de perfil que verán los demás",
+  "profileEmojiChanged": "Emoji de perfil cambiado",
+  "myPhoneNumber": "Mi número de teléfono",
+  "phoneNumberNotSet": "Sin definir",
+  "editNickname": "Editar apodo",
+  "enterNickname": "Escribe tu apodo",
+  "pleaseEnterNickname": "Escribe un apodo, por favor",
+  "minTwoChars": "Necesitas al menos 2 caracteres",
+  "nicknameChanged": "¡Apodo cambiado!",
+  "checkingDuplicate": "Comprobando...",
+  "nicknameAlreadyInUse": "Ese apodo ya está en uso",
+  "invalidPhoneNumber": "Introduce un número de teléfono válido",
+  "phoneNumberSaved": "¡Número de teléfono guardado!",
+  "phoneNumberDeleted": "Número de teléfono eliminado",
+  "changeAccount": "Cambiar de cuenta",
+  "changeAccountConfirm": "¿Quieres cambiar a otra cuenta de Google?",
+  "change": "Cambiar",
+  "cheerReceivedFrom": "¡{name} te ha animado!",
+  "teaseReceivedFrom": "¡{name} te ha picado!",
+  "inquiryReplyArrived": "Llegó la respuesta a tu consulta",
+  "linkAlarmDeleted": "Recordatorio de enlace eliminado",
+  "timeModificationRequest": "Solicitud para cambiar la hora",
+  "modificationApproved": "Cambio aprobado",
+  "modificationRejected": "Cambio rechazado",
+  "alarmTurnedOff": "El recordatorio se ha DESACTIVADO",
+  "approve": "Aprobar",
+  "reject": "Rechazar",
+  "approved": "¡Aprobado!",
+  "rejected": "Rechazado.",
+  "voteFailed": "No se pudo votar",
+  "tapToViewReply": "Toca para ver la respuesta →",
+  "noResponseWarning": "El recordatorio se DESACTIVARÁ si no respondes en 24 horas",
+  "inquiry": "Consulta",
+  "googleAccountAlreadyLinked": "Esta cuenta de Google ya está vinculada a otra cuenta",
+  "providerAlreadyLinked": "Ya tienes una cuenta de Google vinculada",
+  "invalidCredential": "Las credenciales no son válidas",
+  "networkError": "Revisa tu conexión a internet",
+  "noInquiries": "Todavía no hay consultas",
+  "inquiryHint": "¿Tienes alguna duda? ¡Escríbenos!",
+  "inquirySubmitted": "Consulta enviada",
+  "inquirySubmitFailed": "No se pudo enviar la consulta",
+  "inquiryTitle": "Título",
+  "inquiryTitleHint": "Escribe el título de tu consulta",
+  "inquiryTitleRequired": "Escribe un título, por favor",
+  "inquiryContent": "Contenido",
+  "inquiryContentHint": "Cuéntanos tu consulta con detalle",
+  "inquiryContentRequired": "Escribe el contenido, por favor",
+  "inquiryContentMinLength": "Escribe al menos 10 caracteres",
+  "submitInquiry": "Enviar consulta",
+  "inquiryResponsePromise": "Responderemos a tu consulta lo antes posible.",
+  "alarmSound": "Sonido de alarma",
+  "selectSoundCategory": "¿Qué estilo de sonido prefieres?",
+  "pingNotificationSound": "Sonido de picar",
+  "pingNotificationSoundDesc": "Sonido para las notificaciones de picar y animar",
+  "currentSound": "Sonido actual",
+  "freeSounds": "Sonidos gratis",
+  "premiumSounds": "Sonidos premium",
+  "premiumSoundsLocked": "Pásate a Premium para desbloquear todos los sonidos",
+  "soundSelected": "¡Sonido seleccionado!",
+  "soundNotAvailable": "Este sonido todavía no está disponible",
+  "alarmSoundDescription": "Elige tu sonido de notificación",
+  "soundCategoryAlarm": "Alarma larga",
+  "soundCategoryNotify": "Efecto rápido",
+  "soundCategoryAlarmDesc": "Con melodía\n(5-15 s)\nPara alarmas que no te puedes perder",
+  "soundCategoryNotifyDesc": "Efecto corto\n(2-5 s)\nPara recordatorios rápidos",
+  "currentStreak": "Racha actual",
+  "achievementRate": "Logro",
+  "badgeCollected": "Logros",
+  "longestStreak": "La más larga: {days} días",
+  "daysCount": "{days} días",
+  "badgeEarned": "¡NUEVO logro!",
+  "badgeNotYetEarned": "Aún sin conseguir",
+  "badgeEarnedOn": "Conseguido el {date}",
+  "badgeProgress": "Progreso: {progress}/{target}",
+  "badgeProgressPercent": "{percent}% completado",
+  "badge_streak3_name": "Racha de 3 días",
+  "badge_streak3_desc": "Consigue 3 días seguidos",
+  "badge_streak7_name": "Semana en llamas",
+  "badge_streak7_desc": "Consigue 7 días seguidos",
+  "badge_streak30_name": "Mes de pasión",
+  "badge_streak30_desc": "Consigue 30 días seguidos",
+  "badge_streak100_name": "Milagro de 100 días",
+  "badge_streak100_desc": "Consigue 100 días seguidos",
+  "badge_marathon_name": "Maratón",
+  "badge_marathon_desc": "¡Consigue 365 días seguidos!",
+  "badge_comeback_name": "Regreso",
+  "badge_comeback_desc": "Consigue 7 días tras perder la racha",
+  "badge_quickDraw_name": "Disparo rápido",
+  "badge_quickDraw_desc": "Pulsa en los 5 segundos tras la notificación",
+  "badge_speedDemon_name": "Demonio de la velocidad",
+  "badge_speedDemon_desc": "Abre en menos de 30 segundos 10 veces",
+  "badge_quickResponse_name": "Respuesta rápida",
+  "badge_quickResponse_desc": "Abre en menos de 3 minutos 50 veces",
+  "badge_morningGlory_name": "Gloria mañanera",
+  "badge_morningGlory_desc": "Pulsa entre las 5 y las 7 de la mañana 5 veces",
+  "badge_earlyBird_name": "Madrugador",
+  "badge_earlyBird_desc": "Abre enlaces antes de las 7 de la mañana 10 veces",
+  "badge_nightOwl_name": "Búho nocturno",
+  "badge_nightOwl_desc": "Abre enlaces después de las 11 de la noche 10 veces",
+  "badge_nightShift_name": "Turno de noche",
+  "badge_nightShift_desc": "Pulsa entre medianoche y las 5 de la mañana 5 veces",
+  "badge_perfectWeek_name": "Semana perfecta",
+  "badge_perfectWeek_desc": "100% de cumplimiento durante una semana",
+  "badge_perfectMonth_name": "Mes perfecto",
+  "badge_perfectMonth_desc": "100% de cumplimiento durante un mes",
+  "badge_perfectionist_name": "Perfeccionista",
+  "badge_perfectionist_desc": "95% o más de cumplimiento (más de 50 veces)",
+  "badge_firstCheer_name": "Primer ánimo",
+  "badge_firstCheer_desc": "Envía tu primer ánimo",
+  "badge_cheerLeader_name": "Animador",
+  "badge_cheerLeader_desc": "Envía 50 ánimos",
+  "badge_firstPoke_name": "Primer toque",
+  "badge_firstPoke_desc": "Envía tu primer toque",
+  "badge_poker_name": "Maestro del toque",
+  "badge_poker_desc": "Envía 50 toques",
+  "badge_socialButterfly_name": "Mariposa social",
+  "badge_socialButterfly_desc": "Recibe 10 ánimos o toques",
+  "badge_firstLink_name": "Primer enlace",
+  "badge_firstLink_desc": "Registra tu primer enlace",
+  "badge_linkCollector_name": "Coleccionista de enlaces",
+  "badge_linkCollector_desc": "Registra 10 enlaces",
+  "badge_linkMaster_name": "Maestro de enlaces",
+  "badge_linkMaster_desc": "Registra 50 enlaces",
+  "badge_hotLink_name": "Enlace popular",
+  "badge_hotLink_desc": "Más de 10 personas guardaron tu enlace",
+  "badge_variety_name": "Variedad",
+  "badge_variety_desc": "Más de 5 enlaces de dominios distintos",
+  "badge_founder_name": "Fundador",
+  "badge_founder_desc": "Usuario inicial de la app",
+  "badge_premium_name": "Premium",
+  "badge_premium_desc": "Suscripción premium",
+  "badge_badgeCollector_name": "Coleccionista de logros",
+  "badge_badgeCollector_desc": "Consigue 10 logros",
+  "badge_cloudSynced_name": "Sincronizado en la nube",
+  "badge_cloudSynced_desc": "Sincroniza tus datos vinculando tu cuenta",
+  "premiumSoundUnlock": "Sonido premium",
+  "premiumSoundUnlockDesc": "Este sonido es solo premium.\nMira un anuncio o suscríbete a premium.",
+  "watchAdToUnlock": "Ver anuncio para usar",
+  "upgradeToPremium": "Conseguir Premium",
+  "adNotReady": "El anuncio se está cargando. Inténtalo en un momento.",
+  "adWatchSuccess": "¡Anuncio completado! El sonido ya está aplicado.",
+  "earnedBadges": "Mis logros",
+  "skip": "Saltar",
+  "next": "Siguiente",
+  "getStarted": "Empezar",
+  "done": "Listo",
+  "send": "Enviar",
+  "close": "Cerrar",
+  "confirm": "Aceptar",
+  "notSet": "Sin definir",
+  "inquiryDetail": "Detalles de la consulta",
+  "inquiryNotFound": "No se encontró la consulta",
+  "reply": "Respuesta",
+  "repliedOn": "Respondida el: {date}",
+  "linkPingTeam": "Equipo de Linkku",
+  "waitingForReply": "Estamos preparando tu respuesta.\n¡Te avisaremos en cuanto esté lista!",
+  "linkNotFound": "No se encontró el enlace",
+  "linkLoadFailed": "No se pudo cargar el enlace",
+  "linkNotificationService": "Servicio de notificación de enlaces",
+  "timeEditable": "Puedes cambiar la hora",
+  "lockedTimeDesc": "Recibirás las notificaciones a la hora que fijó quien lo compartió",
+  "editableTimeDesc": "Podrás cambiar la hora después de guardar",
+  "openInApp": "Abrir en la app",
+  "appRequiredMessage": "Necesitas tener la app instalada",
+  "openLinkInBrowser": "Abrir enlace en el navegador",
+  "viewCount": "{count} vistas",
+  "saveAndChangeTime": "Guarda y cámbialo a la hora que prefieras",
+  "generatingShareLink": "Creando enlace para compartir...",
+  "onboarding1Title": "Guarda tus enlaces",
+  "onboarding1Desc": "Instagram, YouTube, TikTok...\nGuarda enlaces para verlos más tarde",
+  "onboarding2Title": "¡Recibe el aviso justo a tiempo!",
+  "onboarding2Desc": "Recibe notificaciones a la hora que prefieras\ny abre tus enlaces guardados al instante",
+  "onboarding3Title": "¿En una relación a distancia?",
+  "onboarding3Desc": "Mirad Netflix juntos\na la misma hora, aunque estéis lejos",
+  "onboarding3Sub": "Cada noche a las 22:00, nuestro momento de pelis",
+  "onboarding4Title": "¿Quieres crecer cada día?",
+  "onboarding4Desc": "Una charla TED a las 7\nun vídeo de inglés a la hora de comer",
+  "onboarding4Sub": "Crea tu rutina",
+  "onboarding5Title": "Mejor con amigos",
+  "onboarding5Desc": "Seguid vídeos de ejercicio juntos\nComparte material de estudio",
+  "onboarding5Sub": "¡95% de éxito cuando lo hacéis juntos!",
+  "onboarding6Title": "Empieza ya",
+  "onboarding6Desc": "Guarda hasta 2 enlaces gratis\n¡Premium para enlaces ilimitados!",
+  "loginRequired": "Necesitas iniciar sesión",
+  "referralCodeQuestion": "¿Un amigo te dio un código de invitación?",
+  "referralCodeHelperText": "Introduce el código de 8 caracteres",
+  "southKorea": "Corea del Sur",
+  "linkkuDexTitle": "Dex de Linkku",
+  "linkkuDexCollect": "Colecciona tus Linkku",
+  "linkkuDexComingHint": "Nuevos amigos llegarán poco a poco.",
+  "linkkuDexDefault": "Por defecto",
+  "linkkuDexComingSoon": "Próximamente",
+  "linkkuDexSubtitle": "El slime-alarma con campana",
+  "linkkuPersonality": "Personalidad",
+  "linkkuTraitCaring": "Cariñoso",
+  "linkkuTraitAttentive": "Atento",
+  "linkkuPersonalityDesc": "Un amigo cariñoso que nunca olvida tu hora.\nPronto cada Linkku tendrá su propia personalidad y hasta hablará distinto.",
+  "linkkuWhatsNext": "Lo que viene",
+  "linkkuWhatsNextDesc": "Criar, vestir y coleccionar nuevos amigos llegará paso a paso. 🥚",
+  "phoneSignIn": "Iniciar sesión con teléfono",
+  "phoneEnterCode": "Introduce el código",
+  "phoneEnterNumber": "Introduce tu número",
+  "phoneNumberLabel": "Número de teléfono",
+  "phoneSendCode": "Enviar código",
+  "phoneConfirm": "Confirmar",
+  "phoneChangeNumber": "Cambiar número",
+  "phoneCodeSent": "Código enviado",
+  "phoneSendFailed": "No se pudo enviar el código",
+  "phoneVerifyFailed": "Verificación fallida",
+  "phoneGenericError": "Algo salió mal"
 }

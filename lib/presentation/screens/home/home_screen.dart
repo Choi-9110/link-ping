@@ -213,7 +213,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             builder: (context, ref, _) {
               final unreadCount = ref.watch(unreadNotificationCountProvider);
               final unreadAnnouncements = ref.watch(unreadAnnouncementCountProvider);
-              final totalUnread = (unreadCount.value ?? 0) + unreadAnnouncements;
+              // valueOrNull: 스트림이 에러(미로그인/권한거부)여도 예외 안 던지고 0 처리
+              final totalUnread = (unreadCount.valueOrNull ?? 0) + unreadAnnouncements;
               return Stack(
                 children: [
                   IconButton(
@@ -557,7 +558,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             endDate: result['endDate'] as DateTime?,
             isLocked: result['isLocked'] as bool? ?? false,
             category: result['category'] as LinkCategory?,
-            soundId: result['soundId'] as String?,
           );
 
       if (context.mounted) {
@@ -734,8 +734,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         isLocked: result['isLocked'] as bool? ?? link.isLocked,
         category: result['category'] as LinkCategory?,
         clearCategory: result['clearCategory'] as bool? ?? false,
-        soundId: result['soundId'] as String?,
-        clearSoundId: result['clearSoundId'] as bool? ?? false,
       );
       ref.read(linksProvider.notifier).updateLink(updatedLink);
 
@@ -851,7 +849,7 @@ class _LinkCardWithCount extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // sharedLinkId가 있으면 공유 링크 기반 조회, 없으면 0
     final saveCount = link.sharedLinkId != null
-        ? (ref.watch(sharedLinkSaveCountProvider(link.sharedLinkId!)).value ?? 0)
+        ? (ref.watch(sharedLinkSaveCountProvider(link.sharedLinkId!)).valueOrNull ?? 0)
         : 0;
 
     // Hot Link 배지 체크 (10명 이상 저장 시)

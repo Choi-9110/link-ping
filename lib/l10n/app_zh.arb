@@ -1,9 +1,7 @@
 {
   "@@locale": "zh",
-
   "appName": "Linkku",
   "appSlogan": "收藏链接，立即行动！",
-
   "login": "登录",
   "loginWithGoogle": "使用 Google 登录",
   "loginLoading": "正在登录...",
@@ -12,10 +10,8 @@
   "guestLoginFailed": "访客登录失败",
   "logout": "退出登录",
   "logoutConfirm": "确定要退出登录吗？",
-
   "guest": "访客",
   "guestSyncMessage": "使用 Google 登录以同步数据",
-
   "profileSetup": "设置资料",
   "profileSetupTitle": "设置您的个人资料",
   "profileSetupSubtitle": "这些信息将对其他用户可见",
@@ -27,11 +23,9 @@
   "country": "国家",
   "complete": "完成",
   "profileSaveFailed": "保存资料失败",
-
   "home": "首页",
   "settings": "设置",
   "notifications": "通知",
-
   "addLink": "添加链接",
   "editLink": "编辑链接",
   "deleteLink": "删除",
@@ -39,7 +33,6 @@
   "cancel": "取消",
   "save": "保存",
   "delete": "删除",
-
   "url": "网址",
   "urlHint": "https://example.com",
   "urlRequired": "请输入网址",
@@ -47,7 +40,6 @@
   "title": "标题",
   "titleHint": "每日健身计划",
   "titleRequired": "请输入标题",
-
   "notificationTime": "提醒时间",
   "repeatDays": "重复日期",
   "selectRepeatDays": "请选择重复的日期",
@@ -69,7 +61,6 @@
   "weekdays": "工作日",
   "weekends": "周末",
   "repeat": "重复",
-
   "linkUrl": "链接或电话号码",
   "linkUrlHint": "google.com 或 13812345678",
   "invalidUrl": "请输入有效的链接或电话号码",
@@ -81,15 +72,12 @@
   "addTimePremium": "添加时间（高级版）",
   "premiumFeature": "高级功能",
   "multiTimesPremiumMessage": "升级高级版可为单个链接\n设置多个提醒时间！",
-
   "linkAdded": "链接已添加",
   "linkUpdated": "链接已更新",
   "linkDeleted": "链接已删除",
-
   "emptyStateTitle": "暂无链接",
   "emptyStateSubtitle": "添加您想定期访问的链接",
   "emptyStateButton": "添加第一个链接",
-
   "savedByCount": "{count}人已收藏",
   "@savedByCount": {
     "placeholders": {
@@ -98,12 +86,10 @@
       }
     }
   },
-
   "savedByTitle": "收藏此链接的用户",
   "noSavedUsers": "暂无人收藏",
   "me": "我",
   "loadFailed": "加载失败",
-
   "cheer": "加油",
   "tease": "催一下",
   "cheerSent": "已为 {nickname} 加油！",
@@ -124,7 +110,6 @@
   },
   "sendFailed": "发送失败",
   "cannotSendToSelf": "不能发送给自己",
-
   "noNotifications": "暂无通知",
   "noNotificationsSubtitle": "当有人给您加油或催促时，\n会显示在这里",
   "markAllRead": "全部标为已读",
@@ -156,18 +141,15 @@
       }
     }
   },
-
   "profile": "个人资料",
   "editProfile": "编辑资料",
   "profileEditNotReady": "编辑资料（即将推出）",
-
   "notificationSettings": "通知设置",
   "notificationPermission": "允许通知",
   "notificationTest": "测试通知",
   "notificationTestSubtitle": "发送测试通知",
   "notificationTestSent": "测试通知已发送",
   "notificationPermissionRequired": "需要通知权限",
-
   "premium": "高级版",
   "premiumActive": "高级版使用中",
   "premiumPurchase": "获取高级版",
@@ -175,29 +157,27 @@
   "premiumHeadline": "每一个重要时刻，都不再错过",
   "premiumSubtitle": "无限制地为重要的人加油",
   "premiumBenefit1": "无限加油和戳一戳",
-  "premiumBenefit1Desc": "无需Poring，直接为朋友送上鼓励",
+  "premiumBenefit1Desc": "无需Ping，直接为朋友送上鼓励",
   "premiumBenefit2": "无限链接",
   "premiumBenefit2Desc": "运动、学习、打电话…随心创建习惯",
   "premiumBenefit3": "无限额外提醒时间",
   "premiumBenefit3Desc": "一个链接自由设置早中晚提醒",
-  "premiumBenefit4": "无限Poring",
+  "premiumBenefit4": "无限Ping",
   "premiumBenefit4Desc": "无需看广告，直接使用所有功能",
   "premiumBenefit5": "无广告清爽体验",
   "premiumBenefit5Desc": "没有横幅广告，没有激励广告",
-  "premiumBenefit6": "解锁全部高级铃声",
-  "premiumBenefit6Desc": "用专属铃声开启每一天",
+  "premiumBenefit6": "云端备份与同步",
+  "premiumBenefit6Desc": "换手机也能自动恢复你保存的链接",
   "premiumPrice": "月付 $2.99 / 年付 $9.99 / 永久 $29.99",
   "premiumLater": "稍后",
   "premiumBuy": "立即购买",
   "premiumPaymentNotReady": "支付功能（即将推出）",
-
   "linkLimitReached": "已达链接上限",
   "linkLimitMessage": "免费用户最多可保存2个链接。\n邀请好友可+1，升级高级版享无限！",
   "linkLimitMessageBase": "免费用户最多可保存2个链接。",
   "inviteFriendForBonus": "邀请好友（+1链接）",
   "inviteFriendBonusDesc": "好友注册后可获得额外链接！",
   "viewPremium": "查看高级版",
-
   "account": "账户",
   "info": "关于",
   "version": "版本",
@@ -206,14 +186,12 @@
   "contact": "联系我们",
   "contactNotReady": "联系我们（即将推出）",
   "openSourceLicenses": "开源许可证",
-
   "loading": "加载中...",
   "error": "错误",
   "retry": "重试",
   "ok": "确定",
   "yes": "是",
   "no": "否",
-
   "share": "分享",
   "edit": "编辑",
   "copyLink": "复制链接",
@@ -230,7 +208,6 @@
     }
   },
   "selectAction": "选择操作",
-
   "profileUpdated": "资料已更新",
   "profileUpdateFailed": "更新资料失败",
   "accountLink": "关联账户",
@@ -241,12 +218,10 @@
   "guestLinkInfo": "关联账户以在多设备间同步数据",
   "linked": "已关联",
   "link": "关联",
-
   "setEndDate": "设置结束日期",
   "endDateEnabled": "提醒将在此日期停止",
   "endDateDisabled": "永久重复（无结束日期）",
   "selectEndDate": "选择结束日期",
-
   "selectCheerMessage": "选择加油消息",
   "selectTeaseMessage": "选择催促消息",
   "pingRateLimited": "{minutes}分钟后可再次发送",
@@ -257,39 +232,33 @@
       }
     }
   },
-
   "addTimeWithAd": "看广告添加时间",
   "watchAdToAddTime": "观看短视频广告即可添加新的提醒时间。\n高级版用户可无限添加，无需看广告！",
   "watchAd": "观看广告",
   "adLoadFailed": "广告加载失败",
   "timeAddedSuccess": "时间已添加",
-
   "inviteFriends": "邀请好友",
   "inviteFriendsMessage": "邀请好友可获得额外1个链接名额！",
   "bonusLinkEarned": "获得额外链接！",
   "referralCode": "邀请码",
   "copyReferralCode": "复制邀请码",
   "referralCodeCopied": "邀请码已复制",
-
   "lockedTime": "锁定的时间",
   "unlockTimeWithAd": "看广告解锁",
   "watchAdToUnlockTime": "观看广告即可激活此提醒时间。\n高级版用户自动激活所有时间！",
   "timeUnlocked": "提醒时间已解锁",
-
   "shareSettings": "分享设置",
   "editable": "可编辑",
   "recipientCanChangeTime": "接收者可更改时间",
   "timeLocked": "时间锁定",
   "shareAtThisTime": "以此时间分享",
   "category": "分类",
-
   "consentRequest": "请求同意",
   "consentRequestMessage": "向接收者请求修改同意。",
   "consentNote1": "最多可能需要24小时",
   "consentNote2": "同意完成后会通知您",
   "consentNote3": "如被拒绝，将保持原时间",
   "requestConsent": "请求同意",
-
   "timeLockedAlarm": "时间锁定闹钟",
   "receivedSharedAlarmInfo": "由{nickname}分享的闹钟。\n无法更改提醒时间和重复日期。",
   "@receivedSharedAlarmInfo": {
@@ -301,9 +270,8 @@
   },
   "sharedToOthersInfo": "接收者也会在同一时间收到通知。\n更改时间需要获得同意。",
   "locked": "已锁定",
-
-  "badgesAndStats": "徽章和统计",
-  "badgeCollection": "徽章收藏",
+  "badgesAndStats": "成就和统计",
+  "badgeCollection": "成就收藏",
   "streakDays": "连续{days}天",
   "@streakDays": {
     "placeholders": {
@@ -334,7 +302,6 @@
       }
     }
   },
-
   "andMore": "另外{count}个",
   "@andMore": {
     "placeholders": {
@@ -343,7 +310,6 @@
       }
     }
   },
-
   "pingWindowClosed": "只能在闹钟响起后5分钟内发送",
   "pingWindowActive": "剩余时间: {time}",
   "@pingWindowActive": {
@@ -358,63 +324,296 @@
   "premiumUnlimited": "无限",
   "watchAdToSendMore": "看广告发送更多",
   "watchAdDescription": "免费用户每次闹钟只能发送给1人。\n看广告可以发送更多，或升级到高级版无限发送！",
-
-  "poring": "波灵",
-  "poringBalance": "波灵余额",
-  "poringEarn": "收集波灵",
-  "poringEarnDescription": "观看广告获得波灵。\n用波灵解锁功能！",
+  "poring": "Ping",
+  "poringBalance": "Ping余额",
+  "poringEarn": "收集Ping",
+  "poringEarnDescription": "观看广告获得Ping。\n用Ping解锁功能！",
   "poringDailyProgress": "今日 {count}/{max}",
   "@poringDailyProgress": {
     "placeholders": {
-      "count": {"type": "int"},
-      "max": {"type": "int"}
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
     }
   },
-  "poringWatchAd": "观看广告 (+1波灵)",
+  "poringWatchAd": "观看广告 (+1Ping)",
   "poringCooldown": "下一个广告还需 {seconds}秒",
   "@poringCooldown": {
     "placeholders": {
-      "seconds": {"type": "int"}
+      "seconds": {
+        "type": "int"
+      }
     }
   },
   "poringDailyLimitReached": "已达今日上限！明天再来吧。",
   "poringDailyLimitThanks": "今天已观看全部{max}个广告！感谢您！",
   "@poringDailyLimitThanks": {
     "placeholders": {
-      "max": {"type": "int"}
+      "max": {
+        "type": "int"
+      }
     }
   },
-  "poringEarned": "波灵 +1！",
-  "poringUnlock": "用波灵解锁",
-  "poringUnlockConfirm": "使用1个波灵解锁？",
-  "poringNotEnough": "波灵不足",
-  "poringWatchAdToEarnAndUse": "波灵不足。观看广告获取波灵",
-  "poringSpent": "波灵已使用！",
+  "poringEarned": "Ping +1！",
+  "poringUnlock": "用Ping解锁",
+  "poringUnlockConfirm": "使用1个Ping解锁？",
+  "poringNotEnough": "Ping不足",
+  "poringWatchAdToEarnAndUse": "Ping不足。观看广告获取Ping",
+  "poringSpent": "Ping已使用！",
   "poringPremiumInfinite": "高级版：无限",
-
   "referralAcceptedTitle": "{nickname}接受了你的邀请",
   "@referralAcceptedTitle": {
     "placeholders": {
-      "nickname": {"type": "String"}
+      "nickname": {
+        "type": "String"
+      }
     }
   },
   "referralBonusLink": "奖励链接 +1",
-  "referralBonusPoring": "波灵 +{count}",
+  "referralBonusPoring": "Ping +{count}",
   "@referralBonusPoring": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
-  "poringRewardClaimed": "推荐奖励 波灵 +{count} 已领取！",
+  "poringRewardClaimed": "推荐奖励 Ping +{count} 已领取！",
   "@poringRewardClaimed": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "referralAcceptedMessage": "邀请已被接受",
-
   "addTimeWithPoring": "添加提醒时间",
-  "poringCostConfirm": "将消耗1个波灵",
-  "poringRequiredToSend": "发送消息需要1个波灵",
-  "deleteTimeConfirm": "删除此提醒时间？"
+  "poringCostConfirm": "将消耗1个Ping",
+  "poringRequiredToSend": "发送消息需要1个Ping",
+  "deleteTimeConfirm": "删除此提醒时间？",
+  "premiumMonthly": "按月订阅",
+  "premiumYearly": "按年订阅",
+  "premiumLifetime": "终身会员",
+  "premiumPurchaseSuccess": "高级版购买完成啦！",
+  "premiumPurchaseFailed": "购买失败，请再试一次。",
+  "premiumRestoreSuccess": "购买记录已成功恢复！",
+  "restorePurchases": "恢复购买",
+  "storeNotAvailable": "无法连接到商店",
+  "productsNotFound": "无法加载商品",
+  "selectProfileEmoji": "选择头像表情",
+  "profileEmoji": "头像表情",
+  "changeEmoji": "更换表情",
+  "profileEmojiDescription": "向他人展示的头像表情",
+  "profileEmojiChanged": "头像表情已更换",
+  "myPhoneNumber": "我的手机号",
+  "phoneNumberNotSet": "未设置",
+  "editNickname": "修改昵称",
+  "enterNickname": "请输入昵称",
+  "pleaseEnterNickname": "请输入昵称",
+  "minTwoChars": "至少需要 2 个字符",
+  "nicknameChanged": "昵称已修改",
+  "checkingDuplicate": "检查中…",
+  "nicknameAlreadyInUse": "这个昵称已经被用啦",
+  "invalidPhoneNumber": "请输入正确的手机号",
+  "phoneNumberSaved": "手机号已保存",
+  "phoneNumberDeleted": "手机号已删除",
+  "changeAccount": "更换账号",
+  "changeAccountConfirm": "要切换到其他 Google 账号吗？",
+  "change": "更换",
+  "cheerReceivedFrom": "{name} 给你加油啦！",
+  "teaseReceivedFrom": "{name} 戳了戳你！",
+  "inquiryReplyArrived": "咨询回复来啦",
+  "linkAlarmDeleted": "链接提醒已删除",
+  "timeModificationRequest": "时间修改请求",
+  "modificationApproved": "修改请求已通过",
+  "modificationRejected": "修改请求已拒绝",
+  "alarmTurnedOff": "提醒已关闭",
+  "approve": "通过",
+  "reject": "拒绝",
+  "approved": "已通过！",
+  "rejected": "已拒绝。",
+  "voteFailed": "投票失败了",
+  "tapToViewReply": "点击查看回复 →",
+  "noResponseWarning": "若 24 小时内未回应，提醒将自动关闭",
+  "inquiry": "咨询",
+  "googleAccountAlreadyLinked": "这个 Google 账号已经绑定到其他账号啦",
+  "providerAlreadyLinked": "已经绑定过 Google 账号啦",
+  "invalidCredential": "认证信息无效",
+  "networkError": "请检查网络连接",
+  "noInquiries": "还没有咨询记录",
+  "inquiryHint": "有问题吗？快来咨询我们吧！",
+  "inquirySubmitted": "咨询已提交",
+  "inquirySubmitFailed": "咨询提交失败",
+  "inquiryTitle": "标题",
+  "inquiryTitleHint": "请输入咨询标题",
+  "inquiryTitleRequired": "请输入标题",
+  "inquiryContent": "内容",
+  "inquiryContentHint": "请详细描述你的问题",
+  "inquiryContentRequired": "请输入内容",
+  "inquiryContentMinLength": "请至少输入 10 个字符",
+  "submitInquiry": "提交咨询",
+  "inquiryResponsePromise": "我们会尽快回复你的咨询。",
+  "alarmSound": "提醒铃声",
+  "selectSoundCategory": "你想要什么风格的声音呢？",
+  "pingNotificationSound": "戳一戳提示音",
+  "pingNotificationSoundDesc": "戳一戳和加油通知的提示音",
+  "currentSound": "当前铃声",
+  "freeSounds": "免费铃声",
+  "premiumSounds": "高级铃声",
+  "premiumSoundsLocked": "升级到高级版即可解锁全部铃声",
+  "soundSelected": "铃声已选好",
+  "soundNotAvailable": "铃声文件还没准备好哦",
+  "alarmSoundDescription": "选择你的通知铃声",
+  "soundCategoryAlarm": "长提醒",
+  "soundCategoryNotify": "快捷音效",
+  "soundCategoryAlarmDesc": "旋律型\n（5-15 秒）\n适合不能错过的重要提醒",
+  "soundCategoryNotifyDesc": "短音效\n（2-5 秒）\n适合轻松查看的提醒",
+  "currentStreak": "当前连续天数",
+  "achievementRate": "成就",
+  "badgeCollected": "成就",
+  "longestStreak": "最长：{days} 天",
+  "daysCount": "{days} 天",
+  "badgeEarned": "解锁新成就！",
+  "badgeNotYetEarned": "尚未获得",
+  "badgeEarnedOn": "{date} 获得",
+  "badgeProgress": "进度：{progress}/{target}",
+  "badgeProgressPercent": "已完成 {percent}%",
+  "badge_streak3_name": "连续 3 天",
+  "badge_streak3_desc": "连续达成 3 天",
+  "badge_streak7_name": "燃烧一周",
+  "badge_streak7_desc": "连续达成 7 天",
+  "badge_streak30_name": "热情一月",
+  "badge_streak30_desc": "连续达成 30 天",
+  "badge_streak100_name": "百日奇迹",
+  "badge_streak100_desc": "连续达成 100 天",
+  "badge_marathon_name": "马拉松",
+  "badge_marathon_desc": "连续达成 365 天！",
+  "badge_comeback_name": "强势回归",
+  "badge_comeback_desc": "中断后重新达成 7 天",
+  "badge_quickDraw_name": "快枪手",
+  "badge_quickDraw_desc": "通知后 5 秒内点击",
+  "badge_speedDemon_name": "极速达人",
+  "badge_speedDemon_desc": "通知后 30 秒内打开 10 次",
+  "badge_quickResponse_name": "快速响应",
+  "badge_quickResponse_desc": "通知后 3 分钟内打开 50 次",
+  "badge_morningGlory_name": "晨曦荣耀",
+  "badge_morningGlory_desc": "凌晨 5-7 点点击 5 次",
+  "badge_earlyBird_name": "早起鸟儿",
+  "badge_earlyBird_desc": "早上 7 点前打开链接 10 次",
+  "badge_nightOwl_name": "夜猫子",
+  "badge_nightOwl_desc": "晚上 11 点后打开链接 10 次",
+  "badge_nightShift_name": "夜班达人",
+  "badge_nightShift_desc": "午夜至凌晨 5 点之间点击 5 次",
+  "badge_perfectWeek_name": "完美一周",
+  "badge_perfectWeek_desc": "一周内 100% 达成",
+  "badge_perfectMonth_name": "完美一月",
+  "badge_perfectMonth_desc": "一个月内 100% 达成",
+  "badge_perfectionist_name": "完美主义者",
+  "badge_perfectionist_desc": "达成率 95% 以上（50 次以上）",
+  "badge_firstCheer_name": "初次加油",
+  "badge_firstCheer_desc": "发送你的第一次加油",
+  "badge_cheerLeader_name": "加油队长",
+  "badge_cheerLeader_desc": "发送 50 次加油",
+  "badge_firstPoke_name": "初次戳戳",
+  "badge_firstPoke_desc": "发送你的第一次戳一戳",
+  "badge_poker_name": "戳戳大师",
+  "badge_poker_desc": "发送 50 次戳一戳",
+  "badge_socialButterfly_name": "社交达人",
+  "badge_socialButterfly_desc": "收到 10 次加油/戳一戳",
+  "badge_firstLink_name": "第一个链接",
+  "badge_firstLink_desc": "注册你的第一个链接",
+  "badge_linkCollector_name": "链接收藏家",
+  "badge_linkCollector_desc": "注册 10 个链接",
+  "badge_linkMaster_name": "链接大师",
+  "badge_linkMaster_desc": "注册 50 个链接",
+  "badge_hotLink_name": "热门链接",
+  "badge_hotLink_desc": "10 人以上保存了你的链接",
+  "badge_variety_name": "多样达人",
+  "badge_variety_desc": "5 个以上不同域名的链接",
+  "badge_founder_name": "创始成员",
+  "badge_founder_desc": "应用的早期用户",
+  "badge_premium_name": "高级会员",
+  "badge_premium_desc": "高级版订阅",
+  "badge_badgeCollector_name": "成就收藏家",
+  "badge_badgeCollector_desc": "获得 10 个成就",
+  "badge_cloudSynced_name": "云端同步",
+  "badge_cloudSynced_desc": "通过账号绑定同步数据",
+  "premiumSoundUnlock": "高级铃声",
+  "premiumSoundUnlockDesc": "这是高级版专属铃声。\n观看广告或订阅高级版即可使用。",
+  "watchAdToUnlock": "看广告解锁使用",
+  "upgradeToPremium": "开通高级版",
+  "adNotReady": "广告加载中，请稍后再试。",
+  "adWatchSuccess": "广告观看完成！铃声已应用。",
+  "earnedBadges": "我的成就",
+  "skip": "跳过",
+  "next": "下一步",
+  "getStarted": "开始使用",
+  "done": "完成",
+  "send": "发送",
+  "close": "关闭",
+  "confirm": "确认",
+  "notSet": "未设置",
+  "inquiryDetail": "咨询详情",
+  "inquiryNotFound": "找不到该咨询",
+  "reply": "回复",
+  "repliedOn": "回复日期：{date}",
+  "linkPingTeam": "Linkku 团队",
+  "waitingForReply": "正在等待回复哦。\n回复来了我们会通知你！",
+  "linkNotFound": "找不到该链接",
+  "linkLoadFailed": "链接加载失败",
+  "linkNotificationService": "链接通知服务",
+  "timeEditable": "时间可修改",
+  "lockedTimeDesc": "你将在分享者设定的时间收到通知",
+  "editableTimeDesc": "保存后可以更改时间",
+  "openInApp": "在应用中打开",
+  "appRequiredMessage": "需要先安装应用",
+  "openLinkInBrowser": "在浏览器中打开链接",
+  "viewCount": "浏览 {count} 次",
+  "saveAndChangeTime": "保存后改成你喜欢的时间来接收提醒",
+  "generatingShareLink": "正在生成分享链接…",
+  "onboarding1Title": "保存你的链接",
+  "onboarding1Desc": "Instagram、YouTube、TikTok…\n保存稍后想看的链接",
+  "onboarding2Title": "准时收到提醒！",
+  "onboarding2Desc": "在你想要的时间收到通知\n立刻打开已保存的链接",
+  "onboarding3Title": "正在异地恋？",
+  "onboarding3Desc": "即使相隔两地\n也能在同一时间一起看 Netflix",
+  "onboarding3Sub": "每晚 10 点，属于我们的电影时间",
+  "onboarding4Title": "想每天进步吗？",
+  "onboarding4Desc": "早上 7 点 TED 演讲\n午休时间英语学习视频",
+  "onboarding4Sub": "打造你的日常习惯",
+  "onboarding5Title": "和朋友一起更带劲",
+  "onboarding5Desc": "一起跟练运动视频\n共享学习资料",
+  "onboarding5Sub": "一起做，实践率高达 95%！",
+  "onboarding6Title": "现在就开始",
+  "onboarding6Desc": "免费可保存 2 个链接\n高级版无限保存！",
+  "loginRequired": "需要先登录",
+  "referralCodeQuestion": "有朋友给你的邀请码吗？",
+  "referralCodeHelperText": "请输入 8 位邀请码",
+  "southKorea": "韩国",
+  "linkkuDexTitle": "Linkku图鉴",
+  "linkkuDexCollect": "收集你的 Linkku",
+  "linkkuDexComingHint": "新朋友会一个一个到来。",
+  "linkkuDexDefault": "默认",
+  "linkkuDexComingSoon": "敬请期待",
+  "linkkuDexSubtitle": "带铃铛的闹钟史莱姆",
+  "linkkuPersonality": "性格",
+  "linkkuTraitCaring": "贴心",
+  "linkkuTraitAttentive": "细心",
+  "linkkuPersonalityDesc": "绝不会忘记你时间的贴心朋友。\n很快每只 Linkku 都会有自己的性格，连说话方式都不一样哦。",
+  "linkkuWhatsNext": "接下来",
+  "linkkuWhatsNextDesc": "养成、装扮、收集新朋友的功能会逐步到来。🥚",
+  "phoneSignIn": "用手机号登录",
+  "phoneEnterCode": "请输入验证码",
+  "phoneEnterNumber": "请输入手机号",
+  "phoneNumberLabel": "手机号",
+  "phoneSendCode": "获取验证码",
+  "phoneConfirm": "确认",
+  "phoneChangeNumber": "重新输入号码",
+  "phoneCodeSent": "验证码已发送",
+  "phoneSendFailed": "验证码发送失败",
+  "phoneVerifyFailed": "验证失败",
+  "phoneGenericError": "出错了"
 }

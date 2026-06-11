@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/spacing.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../widgets/linkku_logo.dart';
 import '../auth/login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -59,9 +60,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         subText: l10n.onboarding5Sub,
         backgroundColor: colors.secondary.withValues(alpha: 0.8), // 민트 변형
       ),
-      // 6. 시작하기
+      // 6. 시작하기 — 마지막 인상은 마스코트(스파크)로 브랜드 각인
       OnboardingPage(
-        pixelEmojiAsset: 'assets/pixel_emojis/item_rocket.webp',
+        useMascot: true,
         title: l10n.onboarding6Title,
         description: l10n.onboarding6Desc,
         backgroundColor: colors.surface, // 다크 그레이
@@ -115,15 +116,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // Skip 버튼
-              Align(
-                alignment: Alignment.topRight,
-                child: TextButton(
-                  onPressed: _goToLogin,
-                  child: Text(
-                    l10n.skip,
-                    style: const TextStyle(color: Colors.white70),
-                  ),
+              // 상단 브랜드 락업 + Skip 버튼
+              Padding(
+                padding: const EdgeInsets.only(left: Spacing.md),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // 컬러 배경 위에서도 또렷하게 읽히는 화이트 락업으로 각인
+                    const LinkkuLockup(
+                      variant: LinkkuLockupVariant.white,
+                      height: 44,
+                    ),
+                    TextButton(
+                      onPressed: _goToLogin,
+                      child: Text(
+                        l10n.skip,
+                        style: const TextStyle(color: Colors.white70),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
@@ -144,8 +155,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          // 마스코트(스파크) — 시작하기 페이지 브랜드 각인
+                          if (page.useMascot)
+                            const LinkkuSymbol(
+                              variant: LinkkuSymbolVariant.spark,
+                              size: 140,
+                            )
                           // 픽셀 이모지
-                          if (page.pixelEmojiAsset != null)
+                          else if (page.pixelEmojiAsset != null)
                             Image.asset(
                               page.pixelEmojiAsset!,
                               width: 120,
@@ -262,6 +279,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 class OnboardingPage {
   final String? emoji;
   final String? pixelEmojiAsset;
+
+  /// true면 일러스트 자리에 마스코트(LinkkuSymbol)를 렌더링.
+  final bool useMascot;
   final String title;
   final String description;
   final String? subText;
@@ -270,6 +290,7 @@ class OnboardingPage {
   OnboardingPage({
     this.emoji,
     this.pixelEmojiAsset,
+    this.useMascot = false,
     required this.title,
     required this.description,
     this.subText,

@@ -372,7 +372,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get premiumBenefit1Desc =>
-      'Support friends instantly — no Porings needed';
+      'Support friends instantly — no Pings needed';
 
   @override
   String get premiumBenefit2 => 'Unlimited Links';
@@ -389,7 +389,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Set morning, afternoon, and evening reminders freely';
 
   @override
-  String get premiumBenefit4 => 'Unlimited Porings';
+  String get premiumBenefit4 => 'Unlimited Pings';
 
   @override
   String get premiumBenefit4Desc =>
@@ -403,11 +403,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'No banners, no rewarded ads — just a clean screen';
 
   @override
-  String get premiumBenefit6 => 'All Premium Sounds';
+  String get premiumBenefit6 => 'Cloud Backup & Sync';
 
   @override
   String get premiumBenefit6Desc =>
-      'Start your day with your own signature alarm sound';
+      'Switch phones anytime — your links restore automatically';
 
   @override
   String get premiumPrice => '\$2.99/month - \$9.99/year - \$29.99 lifetime';
@@ -683,10 +683,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locked => 'Locked';
 
   @override
-  String get badgesAndStats => 'Badges & Stats';
+  String get badgesAndStats => 'Achievements & Stats';
 
   @override
-  String get badgeCollection => 'Badge Collection';
+  String get badgeCollection => 'Achievement Collection';
 
   @override
   String streakDays(int days) {
@@ -727,7 +727,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get pingFreeRemaining => '1 free ping available';
+  String get pingFreeRemaining => '1 free poke available';
 
   @override
   String get pingWatchAdForMore => 'Watch ad to send more';
@@ -916,11 +916,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectSoundCategory => 'What style of sound do you want?';
 
   @override
-  String get pingNotificationSound => 'Ping Sound';
+  String get pingNotificationSound => 'Poke Sound';
 
   @override
   String get pingNotificationSoundDesc =>
-      'Sound for Ping and Cheer notifications';
+      'Sound for Poke and Cheer notifications';
 
   @override
   String get currentSound => 'Current Sound';
@@ -964,7 +964,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get achievementRate => 'Achievement';
 
   @override
-  String get badgeCollected => 'Badges';
+  String get badgeCollected => 'Achievements';
 
   @override
   String longestStreak(int days) {
@@ -977,7 +977,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get badgeEarned => 'NEW Badge!';
+  String get badgeEarned => 'NEW Achievement!';
 
   @override
   String get badgeNotYetEarned => 'Not yet earned';
@@ -1166,10 +1166,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get badge_premium_desc => 'Premium subscription';
 
   @override
-  String get badge_badgeCollector_name => 'Badge Collector';
+  String get badge_badgeCollector_name => 'Achievement Collector';
 
   @override
-  String get badge_badgeCollector_desc => 'Earn 10 badges';
+  String get badge_badgeCollector_desc => 'Earn 10 achievements';
 
   @override
   String get badge_cloudSynced_name => 'Cloud Synced';
@@ -1197,7 +1197,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adWatchSuccess => 'Ad completed! Sound has been applied.';
 
   @override
-  String get earnedBadges => 'My Badges';
+  String get earnedBadges => 'My Achievements';
 
   @override
   String get skip => 'Skip';
@@ -1346,17 +1346,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get southKorea => 'South Korea';
 
   @override
-  String get poring => 'Poring';
+  String get poring => 'Ping';
 
   @override
-  String get poringBalance => 'Poring Balance';
+  String get poringBalance => 'Ping Balance';
 
   @override
-  String get poringEarn => 'Earn Poring';
+  String get poringEarn => 'Earn Ping';
 
   @override
   String get poringEarnDescription =>
-      'Watch ads to earn Porings.\nUse Porings to unlock features!';
+      'Watch ads to earn Pings.\nUse Pings to unlock features!';
 
   @override
   String poringDailyProgress(int count, int max) {
@@ -1364,7 +1364,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get poringWatchAd => 'Watch Ad (+1 Poring)';
+  String get poringWatchAd => 'Watch Ad (+1 Ping)';
 
   @override
   String poringCooldown(int seconds) {
@@ -1381,23 +1381,23 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get poringEarned => 'Poring +1!';
+  String get poringEarned => 'Ping +1!';
 
   @override
-  String get poringUnlock => 'Use Poring to unlock';
+  String get poringUnlock => 'Use Ping to unlock';
 
   @override
-  String get poringUnlockConfirm => 'Use 1 Poring to unlock?';
+  String get poringUnlockConfirm => 'Use 1 Ping to unlock?';
 
   @override
-  String get poringNotEnough => 'Not enough Porings';
+  String get poringNotEnough => 'Not enough Pings';
 
   @override
   String get poringWatchAdToEarnAndUse =>
-      'Not enough Porings. Watch an ad to earn Porings';
+      'Not enough Pings. Watch an ad to earn Pings';
 
   @override
-  String get poringSpent => 'Poring used!';
+  String get poringSpent => 'Ping used!';
 
   @override
   String get poringPremiumInfinite => 'Premium: Unlimited';
@@ -1412,12 +1412,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String referralBonusPoring(int count) {
-    return 'Poring +$count';
+    return 'Ping +$count';
   }
 
   @override
   String poringRewardClaimed(int count) {
-    return 'Referral reward: Poring +$count claimed!';
+    return 'Referral reward: Ping +$count claimed!';
   }
 
   @override
@@ -1427,11 +1427,82 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addTimeWithPoring => 'Add alarm time';
 
   @override
-  String get poringCostConfirm => '1 Poring will be used';
+  String get poringCostConfirm => '1 Ping will be used';
 
   @override
-  String get poringRequiredToSend => '1 Poring is required to send a message';
+  String get poringRequiredToSend => '1 Ping is required to send a message';
 
   @override
   String get deleteTimeConfirm => 'Delete this alarm time?';
+
+  @override
+  String get linkkuDexTitle => 'Linkku Dex';
+
+  @override
+  String get linkkuDexCollect => 'Collect your Linkkus';
+
+  @override
+  String get linkkuDexComingHint => 'New friends are on their way, one by one.';
+
+  @override
+  String get linkkuDexDefault => 'Default';
+
+  @override
+  String get linkkuDexComingSoon => 'Coming soon';
+
+  @override
+  String get linkkuDexSubtitle => 'The alarm slime with a bell';
+
+  @override
+  String get linkkuPersonality => 'Personality';
+
+  @override
+  String get linkkuTraitCaring => 'Caring';
+
+  @override
+  String get linkkuTraitAttentive => 'Attentive';
+
+  @override
+  String get linkkuPersonalityDesc =>
+      'A caring friend who never forgets your time.\nSoon, each Linkku gets its own personality — yours will even talk differently.';
+
+  @override
+  String get linkkuWhatsNext => 'What\'s next';
+
+  @override
+  String get linkkuWhatsNextDesc =>
+      'Raising, dressing up, and collecting new friends are coming step by step. 🥚';
+
+  @override
+  String get phoneSignIn => 'Sign in with phone';
+
+  @override
+  String get phoneEnterCode => 'Enter the code';
+
+  @override
+  String get phoneEnterNumber => 'Enter your phone number';
+
+  @override
+  String get phoneNumberLabel => 'Phone number';
+
+  @override
+  String get phoneSendCode => 'Send code';
+
+  @override
+  String get phoneConfirm => 'Confirm';
+
+  @override
+  String get phoneChangeNumber => 'Change number';
+
+  @override
+  String get phoneCodeSent => 'Verification code sent';
+
+  @override
+  String get phoneSendFailed => 'Failed to send code';
+
+  @override
+  String get phoneVerifyFailed => 'Verification failed';
+
+  @override
+  String get phoneGenericError => 'Something went wrong';
 }

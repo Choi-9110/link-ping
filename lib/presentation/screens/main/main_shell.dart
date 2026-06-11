@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../providers/links_provider.dart';
 import '../../../providers/user_provider.dart';
 import '../../widgets/banner_ad_widget.dart';
 import '../home/home_screen.dart';
@@ -17,6 +18,7 @@ class MainShell extends ConsumerStatefulWidget {
 class _MainShellState extends ConsumerState<MainShell>
     with WidgetsBindingObserver {
   int _currentIndex = 0;
+  bool _cloudRestored = false; // 프리미엄 클라우드 복원 1회 실행 가드
 
   final _screens = const [
     HomeScreen(),
@@ -52,6 +54,14 @@ class _MainShellState extends ConsumerState<MainShell>
     final colorScheme = Theme.of(context).colorScheme;
     final userProfile = ref.watch(userProfileProvider);
     final isPremium = userProfile.value?.isPremium ?? false;
+
+    // 프리미엄 로그인 확인되면 클라우드 백업 → 로컬 복원 1회 실행
+    if (isPremium && !_cloudRestored) {
+      _cloudRestored = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(linksProvider.notifier).syncWithCloud();
+      });
+    }
 
     return Scaffold(
       body: IndexedStack(

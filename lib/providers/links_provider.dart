@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
@@ -17,15 +18,63 @@ final linkRepositoryProvider = Provider<LinkRepository>((ref) {
 
 /// 링크 목록 Provider
 final linksProvider = StateNotifierProvider<LinksNotifier, List<LinkReminder>>((ref) {
-  return LinksNotifier(ref.read(linkRepositoryProvider));
+  return LinksNotifier(ref.read(linkRepositoryProvider), ref);
 });
 
 class LinksNotifier extends StateNotifier<List<LinkReminder>> {
   final LinkRepository _repository;
+  final Ref _ref;
   final _uuid = const Uuid();
 
-  LinksNotifier(this._repository) : super([]) {
+  LinksNotifier(this._repository, this._ref) : super([]) {
     _loadLinks();
+  }
+
+  /// 클라우드 백업 가능 여부 — 프리미엄 + 로그인 회원만 (게스트/무료 제외)
+  bool get _canSyncToCloud =>
+      _ref.read(isPremiumProvider) &&
+      FirebaseAuth.instance.currentUser != null;
+
+  /// 링크 1건 클라우드 백업 (fire-and-forget, 실패 무시)
+  void _backupToCloud(LinkReminder link) {
+    if (!_canSyncToCloud) return;
+    FirestoreService.instance.backupLink(link).catchError((_) {});
+  }
+
+  /// 클라우드 백업에서 링크 1건 제거
+  void _removeFromCloud(String id) {
+    if (!_canSyncToCloud) return;
+    FirestoreService.instance.deleteBackupLink(id).catchError((_) {});
+  }
+
+  /// 프리미엄 로그인 시 클라우드 ↔ 로컬 양방향 동기화.
+  /// - 클라우드에만 있는 링크 → 로컬로 복원(새 기기/재설치)
+  /// - 로컬에만 있는 링크 → 클라우드로 백업(첫 구독 시 기존 데이터 보존)
+  /// main_shell에서 프리미엄 확인 후 1회 호출.
+  Future<void> syncWithCloud() async {
+    if (!_canSyncToCloud) return;
+    try {
+      final cloudLinks = await FirestoreService.instance.fetchBackupLinks();
+      final localLinks = _repository.getAllLinks();
+      final localIds = localLinks.map((l) => l.id).toSet();
+
+      // 1) 클라우드에만 있는 링크 → 로컬 복원
+      for (final link in cloudLinks) {
+        if (!localIds.contains(link.id)) {
+          await _repository.saveLink(link);
+          if (link.isEnabled) {
+            await NotificationService.instance.scheduleReminder(link);
+          }
+        }
+      }
+
+      // 2) 로컬 전체를 클라우드에 백업(로컬에만 있던 것 포함, 같은 id는 병합)
+      await FirestoreService.instance.backupAllLinks(localLinks);
+
+      _loadLinks();
+    } catch (_) {
+      // 동기화 실패는 무시 (기존 로컬 데이터 유지)
+    }
   }
 
   void _loadLinks() {
@@ -48,6 +97,8 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
     for (final link in expiredLinks) {
       final updated = link.copyWith(isEnabled: false);
       await _repository.saveLink(updated);
+      // 프리미엄: 클라우드 백업 (비활성 상태 반영)
+      _backupToCloud(updated);
       // 알림 취소
       await NotificationService.instance.cancelReminder(link.id);
     }
@@ -71,7 +122,6 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
     String? sharedLinkId, // 공유 링크 ID (공유받은 링크인 경우)
     String? creatorUid, // 원본 만든 사람 UID
     LinkCategory? category, // 카테고리
-    String? soundId, // 알람 소리 ID
   }) async {
     final urlHash = _generateUrlHash(url);
 
@@ -90,10 +140,12 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
       sharedLinkId: sharedLinkId,
       creatorUid: creatorUid,
       category: category,
-      soundId: soundId,
     );
 
     await _repository.saveLink(link);
+
+    // 프리미엄: 클라우드 백업
+    _backupToCloud(link);
 
     // 알림 스케줄
     await NotificationService.instance.scheduleReminder(link);
@@ -121,7 +173,7 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
     try {
       await FirestoreService.instance.trackLinkCreated(
         category: category?.name,
-        soundId: soundId,
+        soundId: null, // 커스텀 사운드 제거 (V2에서 재도입 가능)
         hour: hour,
         weekdays: repeatDays,
       );
@@ -137,6 +189,9 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
   Future<void> updateLink(LinkReminder link) async {
     await _repository.saveLink(link);
 
+    // 프리미엄: 클라우드 백업
+    _backupToCloud(link);
+
     // 알림 재스케줄
     await NotificationService.instance.scheduleReminder(link);
 
@@ -151,6 +206,9 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
     await NotificationService.instance.cancelReminder(id);
 
     await _repository.deleteLink(id);
+
+    // 프리미엄: 클라우드 백업에서도 제거
+    _removeFromCloud(id);
 
     // 공유 링크 저장 수 감소 (sharedLinkId 기반)
     if (link != null) {
@@ -191,6 +249,9 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
 
     // 2. 저장소에 저장
     await _repository.saveLink(updated);
+
+    // 프리미엄: 클라우드 백업
+    _backupToCloud(updated);
 
     // 3. 알림 스케줄/취소 (백그라운드)
     if (updated.isEnabled) {
@@ -258,20 +319,18 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
         );
 
         // 2. Firestore에 더미 savedBy 데이터 주입
-        if (sharedLinkId != null) {
-          await FirestoreService.instance.incrementSharedLinkSaveCount(sharedLinkId);
+        await FirestoreService.instance.incrementSharedLinkSaveCount(sharedLinkId);
 
-          // 추가 더미 유저들 직접 넣기
-          final usersToAdd = dummyUsers.take(saveCounts[i].clamp(0, 12)).toList();
-          await FirebaseFirestore.instance
-              .collection('sharedLinks')
-              .doc(sharedLinkId)
-              .update({
-            'saveCount': saveCounts[i],
-            'savedBy': usersToAdd,
-            'savedByUids': usersToAdd.map((u) => u['uid']!).toList(),
-          });
-        }
+        // 추가 더미 유저들 직접 넣기
+        final usersToAdd = dummyUsers.take(saveCounts[i].clamp(0, 12)).toList();
+        await FirebaseFirestore.instance
+            .collection('sharedLinks')
+            .doc(sharedLinkId)
+            .update({
+          'saveCount': saveCounts[i],
+          'savedBy': usersToAdd,
+          'savedByUids': usersToAdd.map((u) => u['uid']!).toList(),
+        });
       } catch (_) {}
 
       // 3. 로컬 Hive에 저장

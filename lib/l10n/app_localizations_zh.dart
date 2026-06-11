@@ -366,7 +366,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get premiumBenefit1 => '无限加油和戳一戳';
 
   @override
-  String get premiumBenefit1Desc => '无需Poring，直接为朋友送上鼓励';
+  String get premiumBenefit1Desc => '无需Ping，直接为朋友送上鼓励';
 
   @override
   String get premiumBenefit2 => '无限链接';
@@ -381,7 +381,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get premiumBenefit3Desc => '一个链接自由设置早中晚提醒';
 
   @override
-  String get premiumBenefit4 => '无限Poring';
+  String get premiumBenefit4 => '无限Ping';
 
   @override
   String get premiumBenefit4Desc => '无需看广告，直接使用所有功能';
@@ -393,10 +393,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get premiumBenefit5Desc => '没有横幅广告，没有激励广告';
 
   @override
-  String get premiumBenefit6 => '解锁全部高级铃声';
+  String get premiumBenefit6 => '云端备份与同步';
 
   @override
-  String get premiumBenefit6Desc => '用专属铃声开启每一天';
+  String get premiumBenefit6Desc => '换手机也能自动恢复你保存的链接';
 
   @override
   String get premiumPrice => '月付 \$2.99 / 年付 \$9.99 / 永久 \$29.99';
@@ -408,31 +408,31 @@ class AppLocalizationsZh extends AppLocalizations {
   String get premiumBuy => '立即购买';
 
   @override
-  String get premiumMonthly => 'Monthly';
+  String get premiumMonthly => '按月订阅';
 
   @override
-  String get premiumYearly => 'Yearly';
+  String get premiumYearly => '按年订阅';
 
   @override
-  String get premiumLifetime => 'Lifetime';
+  String get premiumLifetime => '终身会员';
 
   @override
-  String get premiumPurchaseSuccess => 'Premium purchase completed!';
+  String get premiumPurchaseSuccess => '高级版购买完成啦！';
 
   @override
-  String get premiumPurchaseFailed => 'Purchase failed. Please try again.';
+  String get premiumPurchaseFailed => '购买失败，请再试一次。';
 
   @override
-  String get premiumRestoreSuccess => 'Purchases restored successfully!';
+  String get premiumRestoreSuccess => '购买记录已成功恢复！';
 
   @override
-  String get restorePurchases => 'Restore Purchases';
+  String get restorePurchases => '恢复购买';
 
   @override
-  String get storeNotAvailable => 'Store is not available';
+  String get storeNotAvailable => '无法连接到商店';
 
   @override
-  String get productsNotFound => 'Could not load products';
+  String get productsNotFound => '无法加载商品';
 
   @override
   String get retry => '重试';
@@ -666,10 +666,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get locked => '已锁定';
 
   @override
-  String get badgesAndStats => '徽章和统计';
+  String get badgesAndStats => '成就和统计';
 
   @override
-  String get badgeCollection => '徽章收藏';
+  String get badgeCollection => '成就收藏';
 
   @override
   String streakDays(int days) {
@@ -724,619 +724,604 @@ class AppLocalizationsZh extends AppLocalizations {
   String get watchAdDescription => '免费用户每次闹钟只能发送给1人。\n看广告可以发送更多，或升级到高级版无限发送！';
 
   @override
-  String get selectProfileEmoji => 'Select Profile Emoji';
+  String get selectProfileEmoji => '选择头像表情';
 
   @override
-  String get profileEmoji => 'Profile Emoji';
+  String get profileEmoji => '头像表情';
 
   @override
-  String get changeEmoji => 'Change Emoji';
+  String get changeEmoji => '更换表情';
 
   @override
-  String get profileEmojiDescription => 'Profile emoji visible to others';
+  String get profileEmojiDescription => '向他人展示的头像表情';
 
   @override
-  String get profileEmojiChanged => 'Profile emoji changed';
+  String get profileEmojiChanged => '头像表情已更换';
 
   @override
-  String get myPhoneNumber => 'My Phone Number';
+  String get myPhoneNumber => '我的手机号';
 
   @override
-  String get phoneNumberNotSet => 'Not set';
+  String get phoneNumberNotSet => '未设置';
 
   @override
-  String get editNickname => 'Edit Nickname';
+  String get editNickname => '修改昵称';
 
   @override
-  String get enterNickname => 'Enter nickname';
+  String get enterNickname => '请输入昵称';
 
   @override
-  String get pleaseEnterNickname => 'Please enter a nickname';
+  String get pleaseEnterNickname => '请输入昵称';
 
   @override
-  String get minTwoChars => 'At least 2 characters required';
+  String get minTwoChars => '至少需要 2 个字符';
 
   @override
-  String get nicknameChanged => 'Nickname changed';
+  String get nicknameChanged => '昵称已修改';
 
   @override
-  String get checkingDuplicate => 'Checking...';
+  String get checkingDuplicate => '检查中…';
 
   @override
-  String get nicknameAlreadyInUse => 'Nickname already in use';
+  String get nicknameAlreadyInUse => '这个昵称已经被用啦';
 
   @override
-  String get invalidPhoneNumber => 'Please enter a valid phone number';
+  String get invalidPhoneNumber => '请输入正确的手机号';
 
   @override
-  String get phoneNumberSaved => 'Phone number saved';
+  String get phoneNumberSaved => '手机号已保存';
 
   @override
-  String get phoneNumberDeleted => 'Phone number deleted';
+  String get phoneNumberDeleted => '手机号已删除';
 
   @override
-  String get changeAccount => 'Change Account';
+  String get changeAccount => '更换账号';
 
   @override
-  String get changeAccountConfirm =>
-      'Do you want to change to a different Google account?';
+  String get changeAccountConfirm => '要切换到其他 Google 账号吗？';
 
   @override
-  String get change => 'Change';
+  String get change => '更换';
 
   @override
   String cheerReceivedFrom(String name) {
-    return '$name cheered you on!';
+    return '$name 给你加油啦！';
   }
 
   @override
   String teaseReceivedFrom(String name) {
-    return '$name poked you!';
+    return '$name 戳了戳你！';
   }
 
   @override
-  String get inquiryReplyArrived => 'Inquiry reply arrived';
+  String get inquiryReplyArrived => '咨询回复来啦';
 
   @override
-  String get linkAlarmDeleted => 'Link alarm deleted';
+  String get linkAlarmDeleted => '链接提醒已删除';
 
   @override
-  String get timeModificationRequest => 'Time modification request';
+  String get timeModificationRequest => '时间修改请求';
 
   @override
-  String get modificationApproved => 'Modification approved';
+  String get modificationApproved => '修改请求已通过';
 
   @override
-  String get modificationRejected => 'Modification rejected';
+  String get modificationRejected => '修改请求已拒绝';
 
   @override
-  String get alarmTurnedOff => 'Alarm has been turned OFF';
+  String get alarmTurnedOff => '提醒已关闭';
 
   @override
-  String get approve => 'Approve';
+  String get approve => '通过';
 
   @override
-  String get reject => 'Reject';
+  String get reject => '拒绝';
 
   @override
-  String get approved => 'Approved!';
+  String get approved => '已通过！';
 
   @override
-  String get rejected => 'Rejected.';
+  String get rejected => '已拒绝。';
 
   @override
-  String get voteFailed => 'Failed to vote';
+  String get voteFailed => '投票失败了';
 
   @override
-  String get tapToViewReply => 'Tap to view reply →';
+  String get tapToViewReply => '点击查看回复 →';
 
   @override
-  String get noResponseWarning =>
-      'Alarm will be OFF if no response within 24 hours';
+  String get noResponseWarning => '若 24 小时内未回应，提醒将自动关闭';
 
   @override
-  String get inquiry => 'Inquiry';
+  String get inquiry => '咨询';
 
   @override
-  String get googleAccountAlreadyLinked =>
-      'This Google account is already linked to another account';
+  String get googleAccountAlreadyLinked => '这个 Google 账号已经绑定到其他账号啦';
 
   @override
-  String get providerAlreadyLinked => 'Google account is already linked';
+  String get providerAlreadyLinked => '已经绑定过 Google 账号啦';
 
   @override
-  String get invalidCredential => 'Invalid credentials';
+  String get invalidCredential => '认证信息无效';
 
   @override
-  String get networkError => 'Please check your network connection';
+  String get networkError => '请检查网络连接';
 
   @override
-  String get noInquiries => 'No inquiries yet';
+  String get noInquiries => '还没有咨询记录';
 
   @override
-  String get inquiryHint => 'Have a question? Send us an inquiry!';
+  String get inquiryHint => '有问题吗？快来咨询我们吧！';
 
   @override
-  String get inquirySubmitted => 'Inquiry submitted';
+  String get inquirySubmitted => '咨询已提交';
 
   @override
-  String get inquirySubmitFailed => 'Failed to submit inquiry';
+  String get inquirySubmitFailed => '咨询提交失败';
 
   @override
-  String get inquiryTitle => 'Title';
+  String get inquiryTitle => '标题';
 
   @override
-  String get inquiryTitleHint => 'Enter inquiry title';
+  String get inquiryTitleHint => '请输入咨询标题';
 
   @override
-  String get inquiryTitleRequired => 'Please enter a title';
+  String get inquiryTitleRequired => '请输入标题';
 
   @override
-  String get inquiryContent => 'Content';
+  String get inquiryContent => '内容';
 
   @override
-  String get inquiryContentHint => 'Please describe your inquiry in detail';
+  String get inquiryContentHint => '请详细描述你的问题';
 
   @override
-  String get inquiryContentRequired => 'Please enter content';
+  String get inquiryContentRequired => '请输入内容';
 
   @override
-  String get inquiryContentMinLength => 'Please enter at least 10 characters';
+  String get inquiryContentMinLength => '请至少输入 10 个字符';
 
   @override
-  String get submitInquiry => 'Submit Inquiry';
+  String get submitInquiry => '提交咨询';
 
   @override
-  String get inquiryResponsePromise =>
-      'We will respond to your inquiry as soon as possible.';
+  String get inquiryResponsePromise => '我们会尽快回复你的咨询。';
 
   @override
-  String get alarmSound => 'Alarm Sound';
+  String get alarmSound => '提醒铃声';
 
   @override
-  String get selectSoundCategory => 'What style of sound do you want?';
+  String get selectSoundCategory => '你想要什么风格的声音呢？';
 
   @override
-  String get pingNotificationSound => 'Ping Sound';
+  String get pingNotificationSound => '戳一戳提示音';
 
   @override
-  String get pingNotificationSoundDesc =>
-      'Sound for Ping and Cheer notifications';
+  String get pingNotificationSoundDesc => '戳一戳和加油通知的提示音';
 
   @override
-  String get currentSound => 'Current Sound';
+  String get currentSound => '当前铃声';
 
   @override
-  String get freeSounds => 'Free Sounds';
+  String get freeSounds => '免费铃声';
 
   @override
-  String get premiumSounds => 'Premium Sounds';
+  String get premiumSounds => '高级铃声';
 
   @override
-  String get premiumSoundsLocked => 'Upgrade to Premium to unlock all sounds';
+  String get premiumSoundsLocked => '升级到高级版即可解锁全部铃声';
 
   @override
-  String get soundSelected => 'Sound selected';
+  String get soundSelected => '铃声已选好';
 
   @override
-  String get soundNotAvailable => 'Sound file not available yet';
+  String get soundNotAvailable => '铃声文件还没准备好哦';
 
   @override
-  String get alarmSoundDescription => 'Choose your notification sound';
+  String get alarmSoundDescription => '选择你的通知铃声';
 
   @override
-  String get soundCategoryAlarm => 'Long Alarm';
+  String get soundCategoryAlarm => '长提醒';
 
   @override
-  String get soundCategoryNotify => 'Quick Effect';
+  String get soundCategoryNotify => '快捷音效';
 
   @override
-  String get soundCategoryAlarmDesc =>
-      'Melodic\n(5-15 sec)\nFor must-not-miss alarms';
+  String get soundCategoryAlarmDesc => '旋律型\n（5-15 秒）\n适合不能错过的重要提醒';
 
   @override
-  String get soundCategoryNotifyDesc =>
-      'Short effect\n(2-5 sec)\nFor quick reminders';
+  String get soundCategoryNotifyDesc => '短音效\n（2-5 秒）\n适合轻松查看的提醒';
 
   @override
-  String get currentStreak => 'Current Streak';
+  String get currentStreak => '当前连续天数';
 
   @override
-  String get achievementRate => 'Achievement';
+  String get achievementRate => '成就';
 
   @override
-  String get badgeCollected => 'Badges';
+  String get badgeCollected => '成就';
 
   @override
   String longestStreak(int days) {
-    return 'Longest: $days days';
+    return '最长：$days 天';
   }
 
   @override
   String daysCount(int days) {
-    return '$days days';
+    return '$days 天';
   }
 
   @override
-  String get badgeEarned => 'NEW Badge!';
+  String get badgeEarned => '解锁新成就！';
 
   @override
-  String get badgeNotYetEarned => 'Not yet earned';
+  String get badgeNotYetEarned => '尚未获得';
 
   @override
   String badgeEarnedOn(String date) {
-    return 'Earned on $date';
+    return '$date 获得';
   }
 
   @override
   String badgeProgress(int progress, int target) {
-    return 'Progress: $progress/$target';
+    return '进度：$progress/$target';
   }
 
   @override
   String badgeProgressPercent(int percent) {
-    return '$percent% complete';
+    return '已完成 $percent%';
   }
 
   @override
-  String get badge_streak3_name => '3-Day Streak';
+  String get badge_streak3_name => '连续 3 天';
 
   @override
-  String get badge_streak3_desc => 'Achieve 3 consecutive days';
+  String get badge_streak3_desc => '连续达成 3 天';
 
   @override
-  String get badge_streak7_name => 'Week on Fire';
+  String get badge_streak7_name => '燃烧一周';
 
   @override
-  String get badge_streak7_desc => 'Achieve 7 consecutive days';
+  String get badge_streak7_desc => '连续达成 7 天';
 
   @override
-  String get badge_streak30_name => 'Month of Passion';
+  String get badge_streak30_name => '热情一月';
 
   @override
-  String get badge_streak30_desc => 'Achieve 30 consecutive days';
+  String get badge_streak30_desc => '连续达成 30 天';
 
   @override
-  String get badge_streak100_name => '100-Day Miracle';
+  String get badge_streak100_name => '百日奇迹';
 
   @override
-  String get badge_streak100_desc => 'Achieve 100 consecutive days';
+  String get badge_streak100_desc => '连续达成 100 天';
 
   @override
-  String get badge_marathon_name => 'Marathon';
+  String get badge_marathon_name => '马拉松';
 
   @override
-  String get badge_marathon_desc => 'Achieve 365 consecutive days!';
+  String get badge_marathon_desc => '连续达成 365 天！';
 
   @override
-  String get badge_comeback_name => 'Comeback';
+  String get badge_comeback_name => '强势回归';
 
   @override
-  String get badge_comeback_desc => 'Achieve 7 days after breaking streak';
+  String get badge_comeback_desc => '中断后重新达成 7 天';
 
   @override
-  String get badge_quickDraw_name => 'Quick Draw';
+  String get badge_quickDraw_name => '快枪手';
 
   @override
-  String get badge_quickDraw_desc => 'Click within 5 seconds of notification';
+  String get badge_quickDraw_desc => '通知后 5 秒内点击';
 
   @override
-  String get badge_speedDemon_name => 'Speed Demon';
+  String get badge_speedDemon_name => '极速达人';
 
   @override
-  String get badge_speedDemon_desc => 'Open within 30 seconds 10 times';
+  String get badge_speedDemon_desc => '通知后 30 秒内打开 10 次';
 
   @override
-  String get badge_quickResponse_name => 'Quick Response';
+  String get badge_quickResponse_name => '快速响应';
 
   @override
-  String get badge_quickResponse_desc => 'Open within 3 minutes 50 times';
+  String get badge_quickResponse_desc => '通知后 3 分钟内打开 50 次';
 
   @override
-  String get badge_morningGlory_name => 'Morning Glory';
+  String get badge_morningGlory_name => '晨曦荣耀';
 
   @override
-  String get badge_morningGlory_desc => 'Click at 5-7 AM 5 times';
+  String get badge_morningGlory_desc => '凌晨 5-7 点点击 5 次';
 
   @override
-  String get badge_earlyBird_name => 'Early Bird';
+  String get badge_earlyBird_name => '早起鸟儿';
 
   @override
-  String get badge_earlyBird_desc => 'Open links before 7 AM 10 times';
+  String get badge_earlyBird_desc => '早上 7 点前打开链接 10 次';
 
   @override
-  String get badge_nightOwl_name => 'Night Owl';
+  String get badge_nightOwl_name => '夜猫子';
 
   @override
-  String get badge_nightOwl_desc => 'Open links after 11 PM 10 times';
+  String get badge_nightOwl_desc => '晚上 11 点后打开链接 10 次';
 
   @override
-  String get badge_nightShift_name => 'Night Shift';
+  String get badge_nightShift_name => '夜班达人';
 
   @override
-  String get badge_nightShift_desc => 'Click between midnight and 5 AM 5 times';
+  String get badge_nightShift_desc => '午夜至凌晨 5 点之间点击 5 次';
 
   @override
-  String get badge_perfectWeek_name => 'Perfect Week';
+  String get badge_perfectWeek_name => '完美一周';
 
   @override
-  String get badge_perfectWeek_desc => '100% achievement for a week';
+  String get badge_perfectWeek_desc => '一周内 100% 达成';
 
   @override
-  String get badge_perfectMonth_name => 'Perfect Month';
+  String get badge_perfectMonth_name => '完美一月';
 
   @override
-  String get badge_perfectMonth_desc => '100% achievement for a month';
+  String get badge_perfectMonth_desc => '一个月内 100% 达成';
 
   @override
-  String get badge_perfectionist_name => 'Perfectionist';
+  String get badge_perfectionist_name => '完美主义者';
 
   @override
-  String get badge_perfectionist_desc => '95%+ achievement rate (50+ times)';
+  String get badge_perfectionist_desc => '达成率 95% 以上（50 次以上）';
 
   @override
-  String get badge_firstCheer_name => 'First Cheer';
+  String get badge_firstCheer_name => '初次加油';
 
   @override
-  String get badge_firstCheer_desc => 'Send your first cheer';
+  String get badge_firstCheer_desc => '发送你的第一次加油';
 
   @override
-  String get badge_cheerLeader_name => 'Cheer Leader';
+  String get badge_cheerLeader_name => '加油队长';
 
   @override
-  String get badge_cheerLeader_desc => 'Send 50 cheers';
+  String get badge_cheerLeader_desc => '发送 50 次加油';
 
   @override
-  String get badge_firstPoke_name => 'First Poke';
+  String get badge_firstPoke_name => '初次戳戳';
 
   @override
-  String get badge_firstPoke_desc => 'Send your first poke';
+  String get badge_firstPoke_desc => '发送你的第一次戳一戳';
 
   @override
-  String get badge_poker_name => 'Poke Master';
+  String get badge_poker_name => '戳戳大师';
 
   @override
-  String get badge_poker_desc => 'Send 50 pokes';
+  String get badge_poker_desc => '发送 50 次戳一戳';
 
   @override
-  String get badge_socialButterfly_name => 'Social Butterfly';
+  String get badge_socialButterfly_name => '社交达人';
 
   @override
-  String get badge_socialButterfly_desc => 'Receive 10 cheers/pokes';
+  String get badge_socialButterfly_desc => '收到 10 次加油/戳一戳';
 
   @override
-  String get badge_firstLink_name => 'First Link';
+  String get badge_firstLink_name => '第一个链接';
 
   @override
-  String get badge_firstLink_desc => 'Register your first link';
+  String get badge_firstLink_desc => '注册你的第一个链接';
 
   @override
-  String get badge_linkCollector_name => 'Link Collector';
+  String get badge_linkCollector_name => '链接收藏家';
 
   @override
-  String get badge_linkCollector_desc => 'Register 10 links';
+  String get badge_linkCollector_desc => '注册 10 个链接';
 
   @override
-  String get badge_linkMaster_name => 'Link Master';
+  String get badge_linkMaster_name => '链接大师';
 
   @override
-  String get badge_linkMaster_desc => 'Register 50 links';
+  String get badge_linkMaster_desc => '注册 50 个链接';
 
   @override
-  String get badge_hotLink_name => 'Hot Link';
+  String get badge_hotLink_name => '热门链接';
 
   @override
-  String get badge_hotLink_desc => '10+ people saved your link';
+  String get badge_hotLink_desc => '10 人以上保存了你的链接';
 
   @override
-  String get badge_variety_name => 'Variety';
+  String get badge_variety_name => '多样达人';
 
   @override
-  String get badge_variety_desc => '5+ different domain links';
+  String get badge_variety_desc => '5 个以上不同域名的链接';
 
   @override
-  String get badge_founder_name => 'Founder';
+  String get badge_founder_name => '创始成员';
 
   @override
-  String get badge_founder_desc => 'Early app user';
+  String get badge_founder_desc => '应用的早期用户';
 
   @override
-  String get badge_premium_name => 'Premium';
+  String get badge_premium_name => '高级会员';
 
   @override
-  String get badge_premium_desc => 'Premium subscription';
+  String get badge_premium_desc => '高级版订阅';
 
   @override
-  String get badge_badgeCollector_name => 'Badge Collector';
+  String get badge_badgeCollector_name => '成就收藏家';
 
   @override
-  String get badge_badgeCollector_desc => 'Earn 10 badges';
+  String get badge_badgeCollector_desc => '获得 10 个成就';
 
   @override
-  String get badge_cloudSynced_name => 'Cloud Synced';
+  String get badge_cloudSynced_name => '云端同步';
 
   @override
-  String get badge_cloudSynced_desc => 'Sync data with account linking';
+  String get badge_cloudSynced_desc => '通过账号绑定同步数据';
 
   @override
-  String get premiumSoundUnlock => 'Premium Sound';
+  String get premiumSoundUnlock => '高级铃声';
 
   @override
-  String get premiumSoundUnlockDesc =>
-      'This sound is premium only.\nWatch an ad or subscribe to premium.';
+  String get premiumSoundUnlockDesc => '这是高级版专属铃声。\n观看广告或订阅高级版即可使用。';
 
   @override
-  String get watchAdToUnlock => 'Watch Ad to Use';
+  String get watchAdToUnlock => '看广告解锁使用';
 
   @override
-  String get upgradeToPremium => 'Get Premium';
+  String get upgradeToPremium => '开通高级版';
 
   @override
-  String get adNotReady => 'Ad is loading. Please try again shortly.';
+  String get adNotReady => '广告加载中，请稍后再试。';
 
   @override
-  String get adWatchSuccess => 'Ad completed! Sound has been applied.';
+  String get adWatchSuccess => '广告观看完成！铃声已应用。';
 
   @override
-  String get earnedBadges => 'My Badges';
+  String get earnedBadges => '我的成就';
 
   @override
-  String get skip => 'Skip';
+  String get skip => '跳过';
 
   @override
-  String get next => 'Next';
+  String get next => '下一步';
 
   @override
-  String get getStarted => 'Get Started';
+  String get getStarted => '开始使用';
 
   @override
-  String get done => 'Done';
+  String get done => '完成';
 
   @override
-  String get send => 'Send';
+  String get send => '发送';
 
   @override
-  String get close => 'Close';
+  String get close => '关闭';
 
   @override
-  String get confirm => 'Confirm';
+  String get confirm => '确认';
 
   @override
-  String get notSet => 'Not set';
+  String get notSet => '未设置';
 
   @override
-  String get inquiryDetail => 'Inquiry Details';
+  String get inquiryDetail => '咨询详情';
 
   @override
-  String get inquiryNotFound => 'Inquiry not found';
+  String get inquiryNotFound => '找不到该咨询';
 
   @override
-  String get reply => 'Reply';
+  String get reply => '回复';
 
   @override
   String repliedOn(String date) {
-    return 'Replied on: $date';
+    return '回复日期：$date';
   }
 
   @override
-  String get linkPingTeam => 'Linkku Team';
+  String get linkPingTeam => 'Linkku 团队';
 
   @override
-  String get waitingForReply =>
-      'Waiting for reply.\nWe\'ll notify you when we respond!';
+  String get waitingForReply => '正在等待回复哦。\n回复来了我们会通知你！';
 
   @override
-  String get linkNotFound => 'Link not found';
+  String get linkNotFound => '找不到该链接';
 
   @override
-  String get linkLoadFailed => 'Failed to load link';
+  String get linkLoadFailed => '链接加载失败';
 
   @override
-  String get linkNotificationService => 'Link Notification Service';
+  String get linkNotificationService => '链接通知服务';
 
   @override
-  String get timeEditable => 'Time can be edited';
+  String get timeEditable => '时间可修改';
 
   @override
-  String get lockedTimeDesc =>
-      'You\'ll receive notifications at the time set by the sharer';
+  String get lockedTimeDesc => '你将在分享者设定的时间收到通知';
 
   @override
-  String get editableTimeDesc => 'You can change the time after saving';
+  String get editableTimeDesc => '保存后可以更改时间';
 
   @override
-  String get openInApp => 'Open in App';
+  String get openInApp => '在应用中打开';
 
   @override
-  String get appRequiredMessage => 'App installation required';
+  String get appRequiredMessage => '需要先安装应用';
 
   @override
-  String get openLinkInBrowser => 'Open link in browser';
+  String get openLinkInBrowser => '在浏览器中打开链接';
 
   @override
   String viewCount(int count) {
-    return 'Views: $count';
+    return '浏览 $count 次';
   }
 
   @override
-  String get saveAndChangeTime => 'Save and change to your preferred time';
+  String get saveAndChangeTime => '保存后改成你喜欢的时间来接收提醒';
 
   @override
-  String get generatingShareLink => 'Generating share link...';
+  String get generatingShareLink => '正在生成分享链接…';
 
   @override
-  String get onboarding1Title => 'Save your links';
+  String get onboarding1Title => '保存你的链接';
 
   @override
-  String get onboarding1Desc =>
-      'Instagram, YouTube, TikTok...\nSave links to view later';
+  String get onboarding1Desc => 'Instagram、YouTube、TikTok…\n保存稍后想看的链接';
 
   @override
-  String get onboarding2Title => 'Get notified on time!';
+  String get onboarding2Title => '准时收到提醒！';
 
   @override
-  String get onboarding2Desc =>
-      'Receive notifications at your preferred time\nand open your saved links instantly';
+  String get onboarding2Desc => '在你想要的时间收到通知\n立刻打开已保存的链接';
 
   @override
-  String get onboarding3Title => 'Long-distance relationship?';
+  String get onboarding3Title => '正在异地恋？';
 
   @override
-  String get onboarding3Desc =>
-      'Watch Netflix together\nat the same time, even apart';
+  String get onboarding3Desc => '即使相隔两地\n也能在同一时间一起看 Netflix';
 
   @override
-  String get onboarding3Sub => 'Every night at 10 PM, our movie time';
+  String get onboarding3Sub => '每晚 10 点，属于我们的电影时间';
 
   @override
-  String get onboarding4Title => 'Want to grow daily?';
+  String get onboarding4Title => '想每天进步吗？';
 
   @override
-  String get onboarding4Desc => '7 AM TED talk\nLunchtime English study video';
+  String get onboarding4Desc => '早上 7 点 TED 演讲\n午休时间英语学习视频';
 
   @override
-  String get onboarding4Sub => 'Build your routine';
+  String get onboarding4Sub => '打造你的日常习惯';
 
   @override
-  String get onboarding5Title => 'Better with friends';
+  String get onboarding5Title => '和朋友一起更带劲';
 
   @override
-  String get onboarding5Desc =>
-      'Follow workout videos together\nShare study materials';
+  String get onboarding5Desc => '一起跟练运动视频\n共享学习资料';
 
   @override
-  String get onboarding5Sub => '95% success rate when together!';
+  String get onboarding5Sub => '一起做，实践率高达 95%！';
 
   @override
-  String get onboarding6Title => 'Start now';
+  String get onboarding6Title => '现在就开始';
 
   @override
-  String get onboarding6Desc =>
-      'Save up to 2 links free\nPremium for unlimited!';
+  String get onboarding6Desc => '免费可保存 2 个链接\n高级版无限保存！';
 
   @override
-  String get loginRequired => 'Login required';
+  String get loginRequired => '需要先登录';
 
   @override
-  String get referralCodeQuestion => 'Got a referral code from a friend?';
+  String get referralCodeQuestion => '有朋友给你的邀请码吗？';
 
   @override
-  String get referralCodeHelperText => 'Enter 8-character code';
+  String get referralCodeHelperText => '请输入 8 位邀请码';
 
   @override
-  String get southKorea => 'South Korea';
+  String get southKorea => '韩国';
 
   @override
-  String get poring => '波灵';
+  String get poring => 'Ping';
 
   @override
-  String get poringBalance => '波灵余额';
+  String get poringBalance => 'Ping余额';
 
   @override
-  String get poringEarn => '收集波灵';
+  String get poringEarn => '收集Ping';
 
   @override
-  String get poringEarnDescription => '观看广告获得波灵。\n用波灵解锁功能！';
+  String get poringEarnDescription => '观看广告获得Ping。\n用Ping解锁功能！';
 
   @override
   String poringDailyProgress(int count, int max) {
@@ -1344,7 +1329,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get poringWatchAd => '观看广告 (+1波灵)';
+  String get poringWatchAd => '观看广告 (+1Ping)';
 
   @override
   String poringCooldown(int seconds) {
@@ -1360,22 +1345,22 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get poringEarned => '波灵 +1！';
+  String get poringEarned => 'Ping +1！';
 
   @override
-  String get poringUnlock => '用波灵解锁';
+  String get poringUnlock => '用Ping解锁';
 
   @override
-  String get poringUnlockConfirm => '使用1个波灵解锁？';
+  String get poringUnlockConfirm => '使用1个Ping解锁？';
 
   @override
-  String get poringNotEnough => '波灵不足';
+  String get poringNotEnough => 'Ping不足';
 
   @override
-  String get poringWatchAdToEarnAndUse => '波灵不足。观看广告获取波灵';
+  String get poringWatchAdToEarnAndUse => 'Ping不足。观看广告获取Ping';
 
   @override
-  String get poringSpent => '波灵已使用！';
+  String get poringSpent => 'Ping已使用！';
 
   @override
   String get poringPremiumInfinite => '高级版：无限';
@@ -1390,12 +1375,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String referralBonusPoring(int count) {
-    return '波灵 +$count';
+    return 'Ping +$count';
   }
 
   @override
   String poringRewardClaimed(int count) {
-    return '推荐奖励 波灵 +$count 已领取！';
+    return '推荐奖励 Ping +$count 已领取！';
   }
 
   @override
@@ -1405,11 +1390,81 @@ class AppLocalizationsZh extends AppLocalizations {
   String get addTimeWithPoring => '添加提醒时间';
 
   @override
-  String get poringCostConfirm => '将消耗1个波灵';
+  String get poringCostConfirm => '将消耗1个Ping';
 
   @override
-  String get poringRequiredToSend => '发送消息需要1个波灵';
+  String get poringRequiredToSend => '发送消息需要1个Ping';
 
   @override
   String get deleteTimeConfirm => '删除此提醒时间？';
+
+  @override
+  String get linkkuDexTitle => 'Linkku图鉴';
+
+  @override
+  String get linkkuDexCollect => '收集你的 Linkku';
+
+  @override
+  String get linkkuDexComingHint => '新朋友会一个一个到来。';
+
+  @override
+  String get linkkuDexDefault => '默认';
+
+  @override
+  String get linkkuDexComingSoon => '敬请期待';
+
+  @override
+  String get linkkuDexSubtitle => '带铃铛的闹钟史莱姆';
+
+  @override
+  String get linkkuPersonality => '性格';
+
+  @override
+  String get linkkuTraitCaring => '贴心';
+
+  @override
+  String get linkkuTraitAttentive => '细心';
+
+  @override
+  String get linkkuPersonalityDesc =>
+      '绝不会忘记你时间的贴心朋友。\n很快每只 Linkku 都会有自己的性格，连说话方式都不一样哦。';
+
+  @override
+  String get linkkuWhatsNext => '接下来';
+
+  @override
+  String get linkkuWhatsNextDesc => '养成、装扮、收集新朋友的功能会逐步到来。🥚';
+
+  @override
+  String get phoneSignIn => '用手机号登录';
+
+  @override
+  String get phoneEnterCode => '请输入验证码';
+
+  @override
+  String get phoneEnterNumber => '请输入手机号';
+
+  @override
+  String get phoneNumberLabel => '手机号';
+
+  @override
+  String get phoneSendCode => '获取验证码';
+
+  @override
+  String get phoneConfirm => '确认';
+
+  @override
+  String get phoneChangeNumber => '重新输入号码';
+
+  @override
+  String get phoneCodeSent => '验证码已发送';
+
+  @override
+  String get phoneSendFailed => '验证码发送失败';
+
+  @override
+  String get phoneVerifyFailed => '验证失败';
+
+  @override
+  String get phoneGenericError => '出错了';
 }

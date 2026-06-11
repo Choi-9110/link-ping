@@ -367,7 +367,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get premiumBenefit1 => '무제한 응원 & 약올리기';
 
   @override
-  String get premiumBenefit1Desc => '포링 걱정 없이 친구에게 바로 응원을 보내세요';
+  String get premiumBenefit1Desc => '핑 걱정 없이 친구에게 바로 응원을 보내세요';
 
   @override
   String get premiumBenefit2 => '링크 무제한 등록';
@@ -382,7 +382,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get premiumBenefit3Desc => '하나의 링크에 아침, 점심, 저녁 알림을 자유롭게';
 
   @override
-  String get premiumBenefit4 => '포링 무제한';
+  String get premiumBenefit4 => '핑 무제한';
 
   @override
   String get premiumBenefit4Desc => '광고 없이 모든 기능을 바로 사용하세요';
@@ -394,10 +394,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get premiumBenefit5Desc => '배너도, 보상형 광고도 없는 깨끗한 화면';
 
   @override
-  String get premiumBenefit6 => '모든 프리미엄 소리 해금';
+  String get premiumBenefit6 => '클라우드 백업 & 동기화';
 
   @override
-  String get premiumBenefit6Desc => '나만의 알림음으로 하루를 시작하세요';
+  String get premiumBenefit6Desc => '폰을 바꿔도 저장한 링크가 그대로 복원돼요';
 
   @override
   String get premiumPrice => '월 \$2.99 / 연 \$9.99 / 평생 \$29.99';
@@ -671,10 +671,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get locked => '잠김';
 
   @override
-  String get badgesAndStats => '뱃지 & 통계';
+  String get badgesAndStats => '업적 & 통계';
 
   @override
-  String get badgeCollection => '뱃지 컬렉션';
+  String get badgeCollection => '업적 컬렉션';
 
   @override
   String streakDays(int days) {
@@ -899,7 +899,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get selectSoundCategory => '어떤 스타일의 소리를 원하세요?';
 
   @override
-  String get pingNotificationSound => 'Ping 알림음';
+  String get pingNotificationSound => '찌르기 알림음';
 
   @override
   String get pingNotificationSoundDesc => '찔러보기/응원하기 알림 소리';
@@ -944,7 +944,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get achievementRate => '달성률';
 
   @override
-  String get badgeCollected => '뱃지 수집';
+  String get badgeCollected => '업적 수집';
 
   @override
   String longestStreak(int days) {
@@ -957,7 +957,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get badgeEarned => '뱃지 획득!';
+  String get badgeEarned => '업적 획득!';
 
   @override
   String get badgeNotYetEarned => '아직 획득하지 않음';
@@ -1146,10 +1146,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get badge_premium_desc => '프리미엄 구독';
 
   @override
-  String get badge_badgeCollector_name => '뱃지 수집가';
+  String get badge_badgeCollector_name => '업적 수집가';
 
   @override
-  String get badge_badgeCollector_desc => '뱃지 10개 획득';
+  String get badge_badgeCollector_desc => '업적 10개 획득';
 
   @override
   String get badge_cloudSynced_name => '클라우드 동기화';
@@ -1177,7 +1177,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get adWatchSuccess => '광고 시청 완료! 소리가 적용되었습니다.';
 
   @override
-  String get earnedBadges => '획득한 배지';
+  String get earnedBadges => '획득한 업적';
 
   @override
   String get skip => '건너뛰기';
@@ -1319,17 +1319,16 @@ class AppLocalizationsKo extends AppLocalizations {
   String get southKorea => '대한민국';
 
   @override
-  String get poring => '포링';
+  String get poring => '핑';
 
   @override
-  String get poringBalance => '포링 잔액';
+  String get poringBalance => '핑 잔액';
 
   @override
-  String get poringEarn => '포링 모으기';
+  String get poringEarn => '핑 모으기';
 
   @override
-  String get poringEarnDescription =>
-      '광고를 시청하면 포링을 받을 수 있어요.\n포링으로 기능을 잠금해제하세요!';
+  String get poringEarnDescription => '광고를 시청하면 핑을 받을 수 있어요.\n핑으로 기능을 잠금해제하세요!';
 
   @override
   String poringDailyProgress(int count, int max) {
@@ -1337,7 +1336,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get poringWatchAd => '광고 보기 (+1 포링)';
+  String get poringWatchAd => '광고 보기 (+1 핑)';
 
   @override
   String poringCooldown(int seconds) {
@@ -1353,22 +1352,22 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get poringEarned => '포링 +1!';
+  String get poringEarned => '핑 +1!';
 
   @override
-  String get poringUnlock => '포링으로 잠금해제';
+  String get poringUnlock => '핑으로 잠금해제';
 
   @override
-  String get poringUnlockConfirm => '포링 1개를 사용하여 잠금해제할까요?';
+  String get poringUnlockConfirm => '핑 1개를 사용하여 잠금해제할까요?';
 
   @override
-  String get poringNotEnough => '포링이 부족합니다';
+  String get poringNotEnough => '핑이 부족합니다';
 
   @override
-  String get poringWatchAdToEarnAndUse => '포링이 부족합니다. 광고를 보고 포링을 획득하세요';
+  String get poringWatchAdToEarnAndUse => '핑이 부족합니다. 광고를 보고 핑을 획득하세요';
 
   @override
-  String get poringSpent => '포링 사용 완료!';
+  String get poringSpent => '핑 사용 완료!';
 
   @override
   String get poringPremiumInfinite => '프리미엄: 무제한';
@@ -1383,12 +1382,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String referralBonusPoring(int count) {
-    return '포링 +$count';
+    return '핑 +$count';
   }
 
   @override
   String poringRewardClaimed(int count) {
-    return '추천 보상 포링 +$count 수령!';
+    return '추천 보상 핑 +$count 수령!';
   }
 
   @override
@@ -1398,11 +1397,82 @@ class AppLocalizationsKo extends AppLocalizations {
   String get addTimeWithPoring => '알림 시간 추가하기';
 
   @override
-  String get poringCostConfirm => '포링 1개가 소모됩니다';
+  String get poringCostConfirm => '핑 1개가 소모됩니다';
 
   @override
-  String get poringRequiredToSend => '메시지를 보내려면 포링 1개가 필요합니다';
+  String get poringRequiredToSend => '메시지를 보내려면 핑 1개가 필요합니다';
 
   @override
   String get deleteTimeConfirm => '추가된 알림 시간을 삭제하시겠습니까?';
+
+  @override
+  String get linkkuDexTitle => '링꾸 도감';
+
+  @override
+  String get linkkuDexCollect => '링꾸를 모아보세요';
+
+  @override
+  String get linkkuDexComingHint => '곧 새로운 친구들이 하나씩 찾아와요.';
+
+  @override
+  String get linkkuDexDefault => '기본';
+
+  @override
+  String get linkkuDexComingSoon => '곧 만나요';
+
+  @override
+  String get linkkuDexSubtitle => '벨 달린 알람 슬라임';
+
+  @override
+  String get linkkuPersonality => '성격';
+
+  @override
+  String get linkkuTraitCaring => '다정한';
+
+  @override
+  String get linkkuTraitAttentive => '챙겨주는';
+
+  @override
+  String get linkkuPersonalityDesc =>
+      '약속 시간을 절대 안 까먹는 다정한 친구.\n곧 저마다 다른 성격이 생겨서, 너만의 링꾸는 말투까지 달라질 거예요.';
+
+  @override
+  String get linkkuWhatsNext => '앞으로';
+
+  @override
+  String get linkkuWhatsNextDesc =>
+      '링꾸를 키우고, 꾸미고, 새 친구들을 모으는 기능이 차근차근 찾아와요. 🥚';
+
+  @override
+  String get phoneSignIn => '전화번호로 로그인';
+
+  @override
+  String get phoneEnterCode => '인증번호를 입력하세요';
+
+  @override
+  String get phoneEnterNumber => '휴대폰 번호를 입력하세요';
+
+  @override
+  String get phoneNumberLabel => '휴대폰 번호';
+
+  @override
+  String get phoneSendCode => '인증번호 받기';
+
+  @override
+  String get phoneConfirm => '확인';
+
+  @override
+  String get phoneChangeNumber => '번호 다시 입력';
+
+  @override
+  String get phoneCodeSent => '인증번호를 보냈어요';
+
+  @override
+  String get phoneSendFailed => '인증번호 전송 실패';
+
+  @override
+  String get phoneVerifyFailed => '인증 실패';
+
+  @override
+  String get phoneGenericError => '오류가 발생했어요';
 }

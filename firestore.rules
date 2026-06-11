@@ -55,6 +55,11 @@ service cloud.firestore {
       match /stats/{statsDoc} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
       }
+
+      // 링크 클라우드 백업 (프리미엄) — 본인만 접근
+      match /links/{linkId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
     }
 
     // === 사용자 통계 (뱃지/스트릭/소셜) ===

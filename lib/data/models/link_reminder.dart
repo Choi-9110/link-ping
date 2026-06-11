@@ -240,6 +240,70 @@ class LinkReminder extends HiveObject {
     );
   }
 
+  /// Firestore 클라우드 백업용 직렬화 (프리미엄 동기화)
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'url': url,
+        'urlHash': urlHash,
+        'title': title,
+        'hour': hour,
+        'minute': minute,
+        'repeatDays': repeatDays,
+        'isEnabled': isEnabled,
+        'createdAt': createdAt.toIso8601String(),
+        'additionalTimes': additionalTimes
+            ?.map((t) => {'hour': t.hour, 'minute': t.minute})
+            .toList(),
+        'endDate': endDate?.toIso8601String(),
+        'isLocked': isLocked,
+        'sharedBy': sharedBy,
+        'sharedLinkId': sharedLinkId,
+        'creatorUid': creatorUid,
+        'category': category?.name,
+        'soundId': soundId,
+      };
+
+  /// Firestore 백업 데이터 → 모델 복원
+  factory LinkReminder.fromMap(Map<String, dynamic> m) {
+    return LinkReminder(
+      id: m['id'] as String,
+      url: m['url'] as String? ?? '',
+      urlHash: m['urlHash'] as String? ?? '',
+      title: m['title'] as String? ?? '',
+      hour: (m['hour'] as num?)?.toInt() ?? 0,
+      minute: (m['minute'] as num?)?.toInt() ?? 0,
+      repeatDays:
+          (m['repeatDays'] as List?)?.map((e) => (e as num).toInt()).toList() ??
+              const [],
+      isEnabled: m['isEnabled'] as bool? ?? true,
+      createdAt: m['createdAt'] != null
+          ? DateTime.tryParse(m['createdAt'] as String)
+          : null,
+      additionalTimes: (m['additionalTimes'] as List?)
+          ?.map((e) => ReminderTime(
+                hour: (e['hour'] as num).toInt(),
+                minute: (e['minute'] as num).toInt(),
+              ))
+          .toList(),
+      endDate:
+          m['endDate'] != null ? DateTime.tryParse(m['endDate'] as String) : null,
+      isLocked: m['isLocked'] as bool? ?? false,
+      sharedBy: m['sharedBy'] as String?,
+      sharedLinkId: m['sharedLinkId'] as String?,
+      creatorUid: m['creatorUid'] as String?,
+      category: _categoryFromName(m['category'] as String?),
+      soundId: m['soundId'] as String?,
+    );
+  }
+
+  static LinkCategory? _categoryFromName(String? name) {
+    if (name == null) return null;
+    for (final c in LinkCategory.values) {
+      if (c.name == name) return c;
+    }
+    return null;
+  }
+
   /// 종료일이 지났는지 확인
   bool get isExpired {
     if (endDate == null) return false;

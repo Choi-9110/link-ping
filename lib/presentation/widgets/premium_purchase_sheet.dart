@@ -207,7 +207,7 @@ class _PremiumPurchaseSheetState extends ConsumerState<PremiumPurchaseSheet> {
                   colorScheme: colorScheme,
                 ),
                 _buildBenefitItem(
-                  icon: Icons.music_note,
+                  icon: Icons.cloud_done,
                   iconColor: Colors.purple,
                   title: l10n.premiumBenefit6,
                   desc: l10n.premiumBenefit6Desc,

@@ -199,14 +199,16 @@ class LinkCard extends ConsumerWidget {
                           ),
                         );
                       }),
-                      const SizedBox(height: 2),
-                      // 서비스명
-                      Text(
-                        _getServiceName(link.url),
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: colorScheme.outline,
+                      // 서비스명 (제목만 알림이면 URL 없으니 숨김)
+                      if (link.url.trim().isNotEmpty) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          _getServiceName(link.url),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: colorScheme.outline,
+                          ),
                         ),
-                      ),
+                      ],
                       // 저장 수 + 인증 영상
                       if (saveCount > 0 || verificationCount > 0) ...[
                         const SizedBox(height: 4),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/theme/brand_tokens.dart';
 import '../../l10n/app_localizations.dart';
 import '../../providers/poring_provider.dart';
 import '../../services/ad_service.dart';
 import '../../services/poring_service.dart';
+import 'linkku_logo.dart';
 import 'toast_overlay.dart';
 
 /// 포링 획득 전용 다이얼로그
@@ -93,7 +95,8 @@ class _PoringEarnDialogState extends ConsumerState<PoringEarnDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: Row(
         children: [
-          Icon(Icons.notifications_active, color: Colors.amber.shade700),
+          // 재화 "핑" 퍼플 오브
+          const LinkkuCurrency(size: 24),
           const SizedBox(width: 8),
           Text(l10n.poringEarn),
         ],
@@ -101,35 +104,32 @@ class _PoringEarnDialogState extends ConsumerState<PoringEarnDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // 보유 포링
+          // 보유 핑 (재화 = 퍼플)
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.amber.withValues(alpha: 0.1),
+              color: BrandTokens.purple.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.amber.withValues(alpha: 0.3)),
+              border:
+                  Border.all(color: BrandTokens.purple.withValues(alpha: 0.3)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.notifications_active,
-                  size: 28,
-                  color: Colors.amber.shade700,
-                ),
+                const LinkkuCurrency(size: 28),
                 const SizedBox(width: 8),
                 Text(
                   '$balance',
                   style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Colors.amber.shade800,
+                    color: BrandTokens.purpleShade,
                   ),
                 ),
                 const SizedBox(width: 4),
                 Text(
                   l10n.poring,
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: Colors.amber.shade700,
+                    color: BrandTokens.purple,
                   ),
                 ),
               ],
@@ -158,7 +158,9 @@ class _PoringEarnDialogState extends ConsumerState<PoringEarnDialog> {
                     minHeight: 8,
                     backgroundColor: colorScheme.outline.withValues(alpha: 0.2),
                     valueColor: AlwaysStoppedAnimation(
-                      dailyLimitReached ? Colors.green : Colors.amber.shade700,
+                      dailyLimitReached
+                          ? BrandTokens.mint
+                          : BrandTokens.purple,
                     ),
                   ),
                 ),
@@ -180,19 +182,21 @@ class _PoringEarnDialogState extends ConsumerState<PoringEarnDialog> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.1),
+                color: BrandTokens.mint.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.check_circle, color: Colors.green, size: 20),
+                  // 완료 = 민트
+                  const Icon(Icons.check_circle,
+                      color: BrandTokens.mint, size: 20),
                   const SizedBox(width: 8),
                   Flexible(
                     child: Text(
                       l10n.poringDailyLimitThanks(maxDaily),
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.green.shade700,
+                        color: BrandTokens.mintShade,
                         fontWeight: FontWeight.w500,
                       ),
                       textAlign: TextAlign.center,
@@ -224,7 +228,7 @@ class _PoringEarnDialogState extends ConsumerState<PoringEarnDialog> {
                       : l10n.poringWatchAd,
                 ),
                 style: FilledButton.styleFrom(
-                  backgroundColor: Colors.amber.shade700,
+                  backgroundColor: BrandTokens.purple,
                   foregroundColor: Colors.white,
                   disabledBackgroundColor: colorScheme.outline.withValues(
                     alpha: 0.3,

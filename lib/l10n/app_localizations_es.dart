@@ -373,7 +373,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get premiumBenefit1Desc =>
-      'Envia animos a tus amigos sin preocuparte por los Porings';
+      'Envia animos a tus amigos sin preocuparte por los Pings';
 
   @override
   String get premiumBenefit2 => 'Enlaces ilimitados';
@@ -390,7 +390,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Configura alarmas de manana, tarde y noche libremente';
 
   @override
-  String get premiumBenefit4 => 'Porings ilimitados';
+  String get premiumBenefit4 => 'Pings ilimitados';
 
   @override
   String get premiumBenefit4Desc =>
@@ -403,11 +403,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get premiumBenefit5Desc => 'Sin banners ni anuncios de recompensa';
 
   @override
-  String get premiumBenefit6 => 'Todos los sonidos premium';
+  String get premiumBenefit6 => 'Copia en la nube y sincronización';
 
   @override
   String get premiumBenefit6Desc =>
-      'Empieza tu dia con tu tono de alarma favorito';
+      'Cambia de teléfono y tus enlaces se restauran solos';
 
   @override
   String get premiumPrice => '\$2.99/mes - \$9.99/ano - \$29.99 de por vida';
@@ -419,31 +419,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get premiumBuy => 'Comprar';
 
   @override
-  String get premiumMonthly => 'Monthly';
+  String get premiumMonthly => 'Mensual';
 
   @override
-  String get premiumYearly => 'Yearly';
+  String get premiumYearly => 'Anual';
 
   @override
-  String get premiumLifetime => 'Lifetime';
+  String get premiumLifetime => 'De por vida';
 
   @override
-  String get premiumPurchaseSuccess => 'Premium purchase completed!';
+  String get premiumPurchaseSuccess => '¡Compra premium completada!';
 
   @override
-  String get premiumPurchaseFailed => 'Purchase failed. Please try again.';
+  String get premiumPurchaseFailed => 'La compra falló. Inténtalo de nuevo.';
 
   @override
-  String get premiumRestoreSuccess => 'Purchases restored successfully!';
+  String get premiumRestoreSuccess => '¡Compras restauradas con éxito!';
 
   @override
-  String get restorePurchases => 'Restore Purchases';
+  String get restorePurchases => 'Restaurar compras';
 
   @override
-  String get storeNotAvailable => 'Store is not available';
+  String get storeNotAvailable => 'La tienda no está disponible';
 
   @override
-  String get productsNotFound => 'Could not load products';
+  String get productsNotFound => 'No se pudieron cargar los productos';
 
   @override
   String get retry => 'Reintentar';
@@ -686,10 +686,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get locked => 'Bloqueado';
 
   @override
-  String get badgesAndStats => 'Insignias y estadisticas';
+  String get badgesAndStats => 'Logros y estadisticas';
 
   @override
-  String get badgeCollection => 'Coleccion de insignias';
+  String get badgeCollection => 'Coleccion de logros';
 
   @override
   String streakDays(int days) {
@@ -730,7 +730,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get pingFreeRemaining => '1 ping gratis disponible';
+  String get pingFreeRemaining => '1 toque gratis disponible';
 
   @override
   String get pingWatchAdForMore => 'Ver anuncio para enviar mas';
@@ -746,620 +746,635 @@ class AppLocalizationsEs extends AppLocalizations {
       'Los usuarios gratuitos pueden enviar 1 ping por ventana de alarma.\n¡Ve un anuncio para enviar mas, o actualiza a Premium para ilimitado!';
 
   @override
-  String get selectProfileEmoji => 'Select Profile Emoji';
+  String get selectProfileEmoji => 'Elige tu emoji de perfil';
 
   @override
-  String get profileEmoji => 'Profile Emoji';
+  String get profileEmoji => 'Emoji de perfil';
 
   @override
-  String get changeEmoji => 'Change Emoji';
+  String get changeEmoji => 'Cambiar emoji';
 
   @override
-  String get profileEmojiDescription => 'Profile emoji visible to others';
+  String get profileEmojiDescription => 'Emoji de perfil que verán los demás';
 
   @override
-  String get profileEmojiChanged => 'Profile emoji changed';
+  String get profileEmojiChanged => 'Emoji de perfil cambiado';
 
   @override
-  String get myPhoneNumber => 'My Phone Number';
+  String get myPhoneNumber => 'Mi número de teléfono';
 
   @override
-  String get phoneNumberNotSet => 'Not set';
+  String get phoneNumberNotSet => 'Sin definir';
 
   @override
-  String get editNickname => 'Edit Nickname';
+  String get editNickname => 'Editar apodo';
 
   @override
-  String get enterNickname => 'Enter nickname';
+  String get enterNickname => 'Escribe tu apodo';
 
   @override
-  String get pleaseEnterNickname => 'Please enter a nickname';
+  String get pleaseEnterNickname => 'Escribe un apodo, por favor';
 
   @override
-  String get minTwoChars => 'At least 2 characters required';
+  String get minTwoChars => 'Necesitas al menos 2 caracteres';
 
   @override
-  String get nicknameChanged => 'Nickname changed';
+  String get nicknameChanged => '¡Apodo cambiado!';
 
   @override
-  String get checkingDuplicate => 'Checking...';
+  String get checkingDuplicate => 'Comprobando...';
 
   @override
-  String get nicknameAlreadyInUse => 'Nickname already in use';
+  String get nicknameAlreadyInUse => 'Ese apodo ya está en uso';
 
   @override
-  String get invalidPhoneNumber => 'Please enter a valid phone number';
+  String get invalidPhoneNumber => 'Introduce un número de teléfono válido';
 
   @override
-  String get phoneNumberSaved => 'Phone number saved';
+  String get phoneNumberSaved => '¡Número de teléfono guardado!';
 
   @override
-  String get phoneNumberDeleted => 'Phone number deleted';
+  String get phoneNumberDeleted => 'Número de teléfono eliminado';
 
   @override
-  String get changeAccount => 'Change Account';
+  String get changeAccount => 'Cambiar de cuenta';
 
   @override
   String get changeAccountConfirm =>
-      'Do you want to change to a different Google account?';
+      '¿Quieres cambiar a otra cuenta de Google?';
 
   @override
-  String get change => 'Change';
+  String get change => 'Cambiar';
 
   @override
   String cheerReceivedFrom(String name) {
-    return '$name cheered you on!';
+    return '¡$name te ha animado!';
   }
 
   @override
   String teaseReceivedFrom(String name) {
-    return '$name poked you!';
+    return '¡$name te ha picado!';
   }
 
   @override
-  String get inquiryReplyArrived => 'Inquiry reply arrived';
+  String get inquiryReplyArrived => 'Llegó la respuesta a tu consulta';
 
   @override
-  String get linkAlarmDeleted => 'Link alarm deleted';
+  String get linkAlarmDeleted => 'Recordatorio de enlace eliminado';
 
   @override
-  String get timeModificationRequest => 'Time modification request';
+  String get timeModificationRequest => 'Solicitud para cambiar la hora';
 
   @override
-  String get modificationApproved => 'Modification approved';
+  String get modificationApproved => 'Cambio aprobado';
 
   @override
-  String get modificationRejected => 'Modification rejected';
+  String get modificationRejected => 'Cambio rechazado';
 
   @override
-  String get alarmTurnedOff => 'Alarm has been turned OFF';
+  String get alarmTurnedOff => 'El recordatorio se ha DESACTIVADO';
 
   @override
-  String get approve => 'Approve';
+  String get approve => 'Aprobar';
 
   @override
-  String get reject => 'Reject';
+  String get reject => 'Rechazar';
 
   @override
-  String get approved => 'Approved!';
+  String get approved => '¡Aprobado!';
 
   @override
-  String get rejected => 'Rejected.';
+  String get rejected => 'Rechazado.';
 
   @override
-  String get voteFailed => 'Failed to vote';
+  String get voteFailed => 'No se pudo votar';
 
   @override
-  String get tapToViewReply => 'Tap to view reply →';
+  String get tapToViewReply => 'Toca para ver la respuesta →';
 
   @override
   String get noResponseWarning =>
-      'Alarm will be OFF if no response within 24 hours';
+      'El recordatorio se DESACTIVARÁ si no respondes en 24 horas';
 
   @override
-  String get inquiry => 'Inquiry';
+  String get inquiry => 'Consulta';
 
   @override
   String get googleAccountAlreadyLinked =>
-      'This Google account is already linked to another account';
+      'Esta cuenta de Google ya está vinculada a otra cuenta';
 
   @override
-  String get providerAlreadyLinked => 'Google account is already linked';
+  String get providerAlreadyLinked =>
+      'Ya tienes una cuenta de Google vinculada';
 
   @override
-  String get invalidCredential => 'Invalid credentials';
+  String get invalidCredential => 'Las credenciales no son válidas';
 
   @override
-  String get networkError => 'Please check your network connection';
+  String get networkError => 'Revisa tu conexión a internet';
 
   @override
-  String get noInquiries => 'No inquiries yet';
+  String get noInquiries => 'Todavía no hay consultas';
 
   @override
-  String get inquiryHint => 'Have a question? Send us an inquiry!';
+  String get inquiryHint => '¿Tienes alguna duda? ¡Escríbenos!';
 
   @override
-  String get inquirySubmitted => 'Inquiry submitted';
+  String get inquirySubmitted => 'Consulta enviada';
 
   @override
-  String get inquirySubmitFailed => 'Failed to submit inquiry';
+  String get inquirySubmitFailed => 'No se pudo enviar la consulta';
 
   @override
-  String get inquiryTitle => 'Title';
+  String get inquiryTitle => 'Título';
 
   @override
-  String get inquiryTitleHint => 'Enter inquiry title';
+  String get inquiryTitleHint => 'Escribe el título de tu consulta';
 
   @override
-  String get inquiryTitleRequired => 'Please enter a title';
+  String get inquiryTitleRequired => 'Escribe un título, por favor';
 
   @override
-  String get inquiryContent => 'Content';
+  String get inquiryContent => 'Contenido';
 
   @override
-  String get inquiryContentHint => 'Please describe your inquiry in detail';
+  String get inquiryContentHint => 'Cuéntanos tu consulta con detalle';
 
   @override
-  String get inquiryContentRequired => 'Please enter content';
+  String get inquiryContentRequired => 'Escribe el contenido, por favor';
 
   @override
-  String get inquiryContentMinLength => 'Please enter at least 10 characters';
+  String get inquiryContentMinLength => 'Escribe al menos 10 caracteres';
 
   @override
-  String get submitInquiry => 'Submit Inquiry';
+  String get submitInquiry => 'Enviar consulta';
 
   @override
   String get inquiryResponsePromise =>
-      'We will respond to your inquiry as soon as possible.';
+      'Responderemos a tu consulta lo antes posible.';
 
   @override
-  String get alarmSound => 'Alarm Sound';
+  String get alarmSound => 'Sonido de alarma';
 
   @override
-  String get selectSoundCategory => 'What style of sound do you want?';
+  String get selectSoundCategory => '¿Qué estilo de sonido prefieres?';
 
   @override
-  String get pingNotificationSound => 'Ping Sound';
+  String get pingNotificationSound => 'Sonido de picar';
 
   @override
   String get pingNotificationSoundDesc =>
-      'Sound for Ping and Cheer notifications';
+      'Sonido para las notificaciones de picar y animar';
 
   @override
-  String get currentSound => 'Current Sound';
+  String get currentSound => 'Sonido actual';
 
   @override
-  String get freeSounds => 'Free Sounds';
+  String get freeSounds => 'Sonidos gratis';
 
   @override
-  String get premiumSounds => 'Premium Sounds';
+  String get premiumSounds => 'Sonidos premium';
 
   @override
-  String get premiumSoundsLocked => 'Upgrade to Premium to unlock all sounds';
+  String get premiumSoundsLocked =>
+      'Pásate a Premium para desbloquear todos los sonidos';
 
   @override
-  String get soundSelected => 'Sound selected';
+  String get soundSelected => '¡Sonido seleccionado!';
 
   @override
-  String get soundNotAvailable => 'Sound file not available yet';
+  String get soundNotAvailable => 'Este sonido todavía no está disponible';
 
   @override
-  String get alarmSoundDescription => 'Choose your notification sound';
+  String get alarmSoundDescription => 'Elige tu sonido de notificación';
 
   @override
-  String get soundCategoryAlarm => 'Long Alarm';
+  String get soundCategoryAlarm => 'Alarma larga';
 
   @override
-  String get soundCategoryNotify => 'Quick Effect';
+  String get soundCategoryNotify => 'Efecto rápido';
 
   @override
   String get soundCategoryAlarmDesc =>
-      'Melodic\n(5-15 sec)\nFor must-not-miss alarms';
+      'Con melodía\n(5-15 s)\nPara alarmas que no te puedes perder';
 
   @override
   String get soundCategoryNotifyDesc =>
-      'Short effect\n(2-5 sec)\nFor quick reminders';
+      'Efecto corto\n(2-5 s)\nPara recordatorios rápidos';
 
   @override
-  String get currentStreak => 'Current Streak';
+  String get currentStreak => 'Racha actual';
 
   @override
-  String get achievementRate => 'Achievement';
+  String get achievementRate => 'Logro';
 
   @override
-  String get badgeCollected => 'Badges';
+  String get badgeCollected => 'Logros';
 
   @override
   String longestStreak(int days) {
-    return 'Longest: $days days';
+    return 'La más larga: $days días';
   }
 
   @override
   String daysCount(int days) {
-    return '$days days';
+    return '$days días';
   }
 
   @override
-  String get badgeEarned => 'NEW Badge!';
+  String get badgeEarned => '¡NUEVO logro!';
 
   @override
-  String get badgeNotYetEarned => 'Not yet earned';
+  String get badgeNotYetEarned => 'Aún sin conseguir';
 
   @override
   String badgeEarnedOn(String date) {
-    return 'Earned on $date';
+    return 'Conseguido el $date';
   }
 
   @override
   String badgeProgress(int progress, int target) {
-    return 'Progress: $progress/$target';
+    return 'Progreso: $progress/$target';
   }
 
   @override
   String badgeProgressPercent(int percent) {
-    return '$percent% complete';
+    return '$percent% completado';
   }
 
   @override
-  String get badge_streak3_name => '3-Day Streak';
+  String get badge_streak3_name => 'Racha de 3 días';
 
   @override
-  String get badge_streak3_desc => 'Achieve 3 consecutive days';
+  String get badge_streak3_desc => 'Consigue 3 días seguidos';
 
   @override
-  String get badge_streak7_name => 'Week on Fire';
+  String get badge_streak7_name => 'Semana en llamas';
 
   @override
-  String get badge_streak7_desc => 'Achieve 7 consecutive days';
+  String get badge_streak7_desc => 'Consigue 7 días seguidos';
 
   @override
-  String get badge_streak30_name => 'Month of Passion';
+  String get badge_streak30_name => 'Mes de pasión';
 
   @override
-  String get badge_streak30_desc => 'Achieve 30 consecutive days';
+  String get badge_streak30_desc => 'Consigue 30 días seguidos';
 
   @override
-  String get badge_streak100_name => '100-Day Miracle';
+  String get badge_streak100_name => 'Milagro de 100 días';
 
   @override
-  String get badge_streak100_desc => 'Achieve 100 consecutive days';
+  String get badge_streak100_desc => 'Consigue 100 días seguidos';
 
   @override
-  String get badge_marathon_name => 'Marathon';
+  String get badge_marathon_name => 'Maratón';
 
   @override
-  String get badge_marathon_desc => 'Achieve 365 consecutive days!';
+  String get badge_marathon_desc => '¡Consigue 365 días seguidos!';
 
   @override
-  String get badge_comeback_name => 'Comeback';
+  String get badge_comeback_name => 'Regreso';
 
   @override
-  String get badge_comeback_desc => 'Achieve 7 days after breaking streak';
+  String get badge_comeback_desc => 'Consigue 7 días tras perder la racha';
 
   @override
-  String get badge_quickDraw_name => 'Quick Draw';
+  String get badge_quickDraw_name => 'Disparo rápido';
 
   @override
-  String get badge_quickDraw_desc => 'Click within 5 seconds of notification';
+  String get badge_quickDraw_desc =>
+      'Pulsa en los 5 segundos tras la notificación';
 
   @override
-  String get badge_speedDemon_name => 'Speed Demon';
+  String get badge_speedDemon_name => 'Demonio de la velocidad';
 
   @override
-  String get badge_speedDemon_desc => 'Open within 30 seconds 10 times';
+  String get badge_speedDemon_desc => 'Abre en menos de 30 segundos 10 veces';
 
   @override
-  String get badge_quickResponse_name => 'Quick Response';
+  String get badge_quickResponse_name => 'Respuesta rápida';
 
   @override
-  String get badge_quickResponse_desc => 'Open within 3 minutes 50 times';
+  String get badge_quickResponse_desc => 'Abre en menos de 3 minutos 50 veces';
 
   @override
-  String get badge_morningGlory_name => 'Morning Glory';
+  String get badge_morningGlory_name => 'Gloria mañanera';
 
   @override
-  String get badge_morningGlory_desc => 'Click at 5-7 AM 5 times';
+  String get badge_morningGlory_desc =>
+      'Pulsa entre las 5 y las 7 de la mañana 5 veces';
 
   @override
-  String get badge_earlyBird_name => 'Early Bird';
+  String get badge_earlyBird_name => 'Madrugador';
 
   @override
-  String get badge_earlyBird_desc => 'Open links before 7 AM 10 times';
+  String get badge_earlyBird_desc =>
+      'Abre enlaces antes de las 7 de la mañana 10 veces';
 
   @override
-  String get badge_nightOwl_name => 'Night Owl';
+  String get badge_nightOwl_name => 'Búho nocturno';
 
   @override
-  String get badge_nightOwl_desc => 'Open links after 11 PM 10 times';
+  String get badge_nightOwl_desc =>
+      'Abre enlaces después de las 11 de la noche 10 veces';
 
   @override
-  String get badge_nightShift_name => 'Night Shift';
+  String get badge_nightShift_name => 'Turno de noche';
 
   @override
-  String get badge_nightShift_desc => 'Click between midnight and 5 AM 5 times';
+  String get badge_nightShift_desc =>
+      'Pulsa entre medianoche y las 5 de la mañana 5 veces';
 
   @override
-  String get badge_perfectWeek_name => 'Perfect Week';
+  String get badge_perfectWeek_name => 'Semana perfecta';
 
   @override
-  String get badge_perfectWeek_desc => '100% achievement for a week';
+  String get badge_perfectWeek_desc =>
+      '100% de cumplimiento durante una semana';
 
   @override
-  String get badge_perfectMonth_name => 'Perfect Month';
+  String get badge_perfectMonth_name => 'Mes perfecto';
 
   @override
-  String get badge_perfectMonth_desc => '100% achievement for a month';
+  String get badge_perfectMonth_desc => '100% de cumplimiento durante un mes';
 
   @override
-  String get badge_perfectionist_name => 'Perfectionist';
+  String get badge_perfectionist_name => 'Perfeccionista';
 
   @override
-  String get badge_perfectionist_desc => '95%+ achievement rate (50+ times)';
+  String get badge_perfectionist_desc =>
+      '95% o más de cumplimiento (más de 50 veces)';
 
   @override
-  String get badge_firstCheer_name => 'First Cheer';
+  String get badge_firstCheer_name => 'Primer ánimo';
 
   @override
-  String get badge_firstCheer_desc => 'Send your first cheer';
+  String get badge_firstCheer_desc => 'Envía tu primer ánimo';
 
   @override
-  String get badge_cheerLeader_name => 'Cheer Leader';
+  String get badge_cheerLeader_name => 'Animador';
 
   @override
-  String get badge_cheerLeader_desc => 'Send 50 cheers';
+  String get badge_cheerLeader_desc => 'Envía 50 ánimos';
 
   @override
-  String get badge_firstPoke_name => 'First Poke';
+  String get badge_firstPoke_name => 'Primer toque';
 
   @override
-  String get badge_firstPoke_desc => 'Send your first poke';
+  String get badge_firstPoke_desc => 'Envía tu primer toque';
 
   @override
-  String get badge_poker_name => 'Poke Master';
+  String get badge_poker_name => 'Maestro del toque';
 
   @override
-  String get badge_poker_desc => 'Send 50 pokes';
+  String get badge_poker_desc => 'Envía 50 toques';
 
   @override
-  String get badge_socialButterfly_name => 'Social Butterfly';
+  String get badge_socialButterfly_name => 'Mariposa social';
 
   @override
-  String get badge_socialButterfly_desc => 'Receive 10 cheers/pokes';
+  String get badge_socialButterfly_desc => 'Recibe 10 ánimos o toques';
 
   @override
-  String get badge_firstLink_name => 'First Link';
+  String get badge_firstLink_name => 'Primer enlace';
 
   @override
-  String get badge_firstLink_desc => 'Register your first link';
+  String get badge_firstLink_desc => 'Registra tu primer enlace';
 
   @override
-  String get badge_linkCollector_name => 'Link Collector';
+  String get badge_linkCollector_name => 'Coleccionista de enlaces';
 
   @override
-  String get badge_linkCollector_desc => 'Register 10 links';
+  String get badge_linkCollector_desc => 'Registra 10 enlaces';
 
   @override
-  String get badge_linkMaster_name => 'Link Master';
+  String get badge_linkMaster_name => 'Maestro de enlaces';
 
   @override
-  String get badge_linkMaster_desc => 'Register 50 links';
+  String get badge_linkMaster_desc => 'Registra 50 enlaces';
 
   @override
-  String get badge_hotLink_name => 'Hot Link';
+  String get badge_hotLink_name => 'Enlace popular';
 
   @override
-  String get badge_hotLink_desc => '10+ people saved your link';
+  String get badge_hotLink_desc => 'Más de 10 personas guardaron tu enlace';
 
   @override
-  String get badge_variety_name => 'Variety';
+  String get badge_variety_name => 'Variedad';
 
   @override
-  String get badge_variety_desc => '5+ different domain links';
+  String get badge_variety_desc => 'Más de 5 enlaces de dominios distintos';
 
   @override
-  String get badge_founder_name => 'Founder';
+  String get badge_founder_name => 'Fundador';
 
   @override
-  String get badge_founder_desc => 'Early app user';
+  String get badge_founder_desc => 'Usuario inicial de la app';
 
   @override
   String get badge_premium_name => 'Premium';
 
   @override
-  String get badge_premium_desc => 'Premium subscription';
+  String get badge_premium_desc => 'Suscripción premium';
 
   @override
-  String get badge_badgeCollector_name => 'Badge Collector';
+  String get badge_badgeCollector_name => 'Coleccionista de logros';
 
   @override
-  String get badge_badgeCollector_desc => 'Earn 10 badges';
+  String get badge_badgeCollector_desc => 'Consigue 10 logros';
 
   @override
-  String get badge_cloudSynced_name => 'Cloud Synced';
+  String get badge_cloudSynced_name => 'Sincronizado en la nube';
 
   @override
-  String get badge_cloudSynced_desc => 'Sync data with account linking';
+  String get badge_cloudSynced_desc =>
+      'Sincroniza tus datos vinculando tu cuenta';
 
   @override
-  String get premiumSoundUnlock => 'Premium Sound';
+  String get premiumSoundUnlock => 'Sonido premium';
 
   @override
   String get premiumSoundUnlockDesc =>
-      'This sound is premium only.\nWatch an ad or subscribe to premium.';
+      'Este sonido es solo premium.\nMira un anuncio o suscríbete a premium.';
 
   @override
-  String get watchAdToUnlock => 'Watch Ad to Use';
+  String get watchAdToUnlock => 'Ver anuncio para usar';
 
   @override
-  String get upgradeToPremium => 'Get Premium';
+  String get upgradeToPremium => 'Conseguir Premium';
 
   @override
-  String get adNotReady => 'Ad is loading. Please try again shortly.';
+  String get adNotReady =>
+      'El anuncio se está cargando. Inténtalo en un momento.';
 
   @override
-  String get adWatchSuccess => 'Ad completed! Sound has been applied.';
+  String get adWatchSuccess =>
+      '¡Anuncio completado! El sonido ya está aplicado.';
 
   @override
-  String get earnedBadges => 'My Badges';
+  String get earnedBadges => 'Mis logros';
 
   @override
-  String get skip => 'Skip';
+  String get skip => 'Saltar';
 
   @override
-  String get next => 'Next';
+  String get next => 'Siguiente';
 
   @override
-  String get getStarted => 'Get Started';
+  String get getStarted => 'Empezar';
 
   @override
-  String get done => 'Done';
+  String get done => 'Listo';
 
   @override
-  String get send => 'Send';
+  String get send => 'Enviar';
 
   @override
-  String get close => 'Close';
+  String get close => 'Cerrar';
 
   @override
-  String get confirm => 'Confirm';
+  String get confirm => 'Aceptar';
 
   @override
-  String get notSet => 'Not set';
+  String get notSet => 'Sin definir';
 
   @override
-  String get inquiryDetail => 'Inquiry Details';
+  String get inquiryDetail => 'Detalles de la consulta';
 
   @override
-  String get inquiryNotFound => 'Inquiry not found';
+  String get inquiryNotFound => 'No se encontró la consulta';
 
   @override
-  String get reply => 'Reply';
+  String get reply => 'Respuesta';
 
   @override
   String repliedOn(String date) {
-    return 'Replied on: $date';
+    return 'Respondida el: $date';
   }
 
   @override
-  String get linkPingTeam => 'Linkku Team';
+  String get linkPingTeam => 'Equipo de Linkku';
 
   @override
   String get waitingForReply =>
-      'Waiting for reply.\nWe\'ll notify you when we respond!';
+      'Estamos preparando tu respuesta.\n¡Te avisaremos en cuanto esté lista!';
 
   @override
-  String get linkNotFound => 'Link not found';
+  String get linkNotFound => 'No se encontró el enlace';
 
   @override
-  String get linkLoadFailed => 'Failed to load link';
+  String get linkLoadFailed => 'No se pudo cargar el enlace';
 
   @override
-  String get linkNotificationService => 'Link Notification Service';
+  String get linkNotificationService => 'Servicio de notificación de enlaces';
 
   @override
-  String get timeEditable => 'Time can be edited';
+  String get timeEditable => 'Puedes cambiar la hora';
 
   @override
   String get lockedTimeDesc =>
-      'You\'ll receive notifications at the time set by the sharer';
+      'Recibirás las notificaciones a la hora que fijó quien lo compartió';
 
   @override
-  String get editableTimeDesc => 'You can change the time after saving';
+  String get editableTimeDesc => 'Podrás cambiar la hora después de guardar';
 
   @override
-  String get openInApp => 'Open in App';
+  String get openInApp => 'Abrir en la app';
 
   @override
-  String get appRequiredMessage => 'App installation required';
+  String get appRequiredMessage => 'Necesitas tener la app instalada';
 
   @override
-  String get openLinkInBrowser => 'Open link in browser';
+  String get openLinkInBrowser => 'Abrir enlace en el navegador';
 
   @override
   String viewCount(int count) {
-    return 'Views: $count';
+    return '$count vistas';
   }
 
   @override
-  String get saveAndChangeTime => 'Save and change to your preferred time';
+  String get saveAndChangeTime => 'Guarda y cámbialo a la hora que prefieras';
 
   @override
-  String get generatingShareLink => 'Generating share link...';
+  String get generatingShareLink => 'Creando enlace para compartir...';
 
   @override
-  String get onboarding1Title => 'Save your links';
+  String get onboarding1Title => 'Guarda tus enlaces';
 
   @override
   String get onboarding1Desc =>
-      'Instagram, YouTube, TikTok...\nSave links to view later';
+      'Instagram, YouTube, TikTok...\nGuarda enlaces para verlos más tarde';
 
   @override
-  String get onboarding2Title => 'Get notified on time!';
+  String get onboarding2Title => '¡Recibe el aviso justo a tiempo!';
 
   @override
   String get onboarding2Desc =>
-      'Receive notifications at your preferred time\nand open your saved links instantly';
+      'Recibe notificaciones a la hora que prefieras\ny abre tus enlaces guardados al instante';
 
   @override
-  String get onboarding3Title => 'Long-distance relationship?';
+  String get onboarding3Title => '¿En una relación a distancia?';
 
   @override
   String get onboarding3Desc =>
-      'Watch Netflix together\nat the same time, even apart';
+      'Mirad Netflix juntos\na la misma hora, aunque estéis lejos';
 
   @override
-  String get onboarding3Sub => 'Every night at 10 PM, our movie time';
+  String get onboarding3Sub =>
+      'Cada noche a las 22:00, nuestro momento de pelis';
 
   @override
-  String get onboarding4Title => 'Want to grow daily?';
+  String get onboarding4Title => '¿Quieres crecer cada día?';
 
   @override
-  String get onboarding4Desc => '7 AM TED talk\nLunchtime English study video';
+  String get onboarding4Desc =>
+      'Una charla TED a las 7\nun vídeo de inglés a la hora de comer';
 
   @override
-  String get onboarding4Sub => 'Build your routine';
+  String get onboarding4Sub => 'Crea tu rutina';
 
   @override
-  String get onboarding5Title => 'Better with friends';
+  String get onboarding5Title => 'Mejor con amigos';
 
   @override
   String get onboarding5Desc =>
-      'Follow workout videos together\nShare study materials';
+      'Seguid vídeos de ejercicio juntos\nComparte material de estudio';
 
   @override
-  String get onboarding5Sub => '95% success rate when together!';
+  String get onboarding5Sub => '¡95% de éxito cuando lo hacéis juntos!';
 
   @override
-  String get onboarding6Title => 'Start now';
+  String get onboarding6Title => 'Empieza ya';
 
   @override
   String get onboarding6Desc =>
-      'Save up to 2 links free\nPremium for unlimited!';
+      'Guarda hasta 2 enlaces gratis\n¡Premium para enlaces ilimitados!';
 
   @override
-  String get loginRequired => 'Login required';
+  String get loginRequired => 'Necesitas iniciar sesión';
 
   @override
-  String get referralCodeQuestion => 'Got a referral code from a friend?';
+  String get referralCodeQuestion =>
+      '¿Un amigo te dio un código de invitación?';
 
   @override
-  String get referralCodeHelperText => 'Enter 8-character code';
+  String get referralCodeHelperText => 'Introduce el código de 8 caracteres';
 
   @override
-  String get southKorea => 'South Korea';
+  String get southKorea => 'Corea del Sur';
 
   @override
-  String get poring => 'Poring';
+  String get poring => 'Ping';
 
   @override
-  String get poringBalance => 'Saldo Poring';
+  String get poringBalance => 'Saldo Ping';
 
   @override
-  String get poringEarn => 'Ganar Poring';
+  String get poringEarn => 'Ganar Ping';
 
   @override
   String get poringEarnDescription =>
-      'Mira anuncios para ganar Porings.\n¡Usa Porings para desbloquear funciones!';
+      'Mira anuncios para ganar Pings.\n¡Usa Pings para desbloquear funciones!';
 
   @override
   String poringDailyProgress(int count, int max) {
@@ -1367,7 +1382,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get poringWatchAd => 'Ver anuncio (+1 Poring)';
+  String get poringWatchAd => 'Ver anuncio (+1 Ping)';
 
   @override
   String poringCooldown(int seconds) {
@@ -1384,23 +1399,23 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get poringEarned => '¡Poring +1!';
+  String get poringEarned => '¡Ping +1!';
 
   @override
-  String get poringUnlock => 'Desbloquear con Poring';
+  String get poringUnlock => 'Desbloquear con Ping';
 
   @override
-  String get poringUnlockConfirm => '¿Usar 1 Poring para desbloquear?';
+  String get poringUnlockConfirm => '¿Usar 1 Ping para desbloquear?';
 
   @override
-  String get poringNotEnough => 'No hay suficientes Porings';
+  String get poringNotEnough => 'No hay suficientes Pings';
 
   @override
   String get poringWatchAdToEarnAndUse =>
-      'No hay suficientes Porings. Mira un anuncio para ganar Porings';
+      'No hay suficientes Pings. Mira un anuncio para ganar Pings';
 
   @override
-  String get poringSpent => '¡Poring usado!';
+  String get poringSpent => '¡Ping usado!';
 
   @override
   String get poringPremiumInfinite => 'Premium: Ilimitado';
@@ -1415,12 +1430,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String referralBonusPoring(int count) {
-    return 'Poring +$count';
+    return 'Ping +$count';
   }
 
   @override
   String poringRewardClaimed(int count) {
-    return '¡Recompensa: Poring +$count reclamado!';
+    return '¡Recompensa: Ping +$count reclamado!';
   }
 
   @override
@@ -1430,12 +1445,83 @@ class AppLocalizationsEs extends AppLocalizations {
   String get addTimeWithPoring => 'Añadir hora de alarma';
 
   @override
-  String get poringCostConfirm => 'Se usará 1 Poring';
+  String get poringCostConfirm => 'Se usará 1 Ping';
 
   @override
   String get poringRequiredToSend =>
-      'Se necesita 1 Poring para enviar un mensaje';
+      'Se necesita 1 Ping para enviar un mensaje';
 
   @override
   String get deleteTimeConfirm => '¿Eliminar esta hora de alarma?';
+
+  @override
+  String get linkkuDexTitle => 'Dex de Linkku';
+
+  @override
+  String get linkkuDexCollect => 'Colecciona tus Linkku';
+
+  @override
+  String get linkkuDexComingHint => 'Nuevos amigos llegarán poco a poco.';
+
+  @override
+  String get linkkuDexDefault => 'Por defecto';
+
+  @override
+  String get linkkuDexComingSoon => 'Próximamente';
+
+  @override
+  String get linkkuDexSubtitle => 'El slime-alarma con campana';
+
+  @override
+  String get linkkuPersonality => 'Personalidad';
+
+  @override
+  String get linkkuTraitCaring => 'Cariñoso';
+
+  @override
+  String get linkkuTraitAttentive => 'Atento';
+
+  @override
+  String get linkkuPersonalityDesc =>
+      'Un amigo cariñoso que nunca olvida tu hora.\nPronto cada Linkku tendrá su propia personalidad y hasta hablará distinto.';
+
+  @override
+  String get linkkuWhatsNext => 'Lo que viene';
+
+  @override
+  String get linkkuWhatsNextDesc =>
+      'Criar, vestir y coleccionar nuevos amigos llegará paso a paso. 🥚';
+
+  @override
+  String get phoneSignIn => 'Iniciar sesión con teléfono';
+
+  @override
+  String get phoneEnterCode => 'Introduce el código';
+
+  @override
+  String get phoneEnterNumber => 'Introduce tu número';
+
+  @override
+  String get phoneNumberLabel => 'Número de teléfono';
+
+  @override
+  String get phoneSendCode => 'Enviar código';
+
+  @override
+  String get phoneConfirm => 'Confirmar';
+
+  @override
+  String get phoneChangeNumber => 'Cambiar número';
+
+  @override
+  String get phoneCodeSent => 'Código enviado';
+
+  @override
+  String get phoneSendFailed => 'No se pudo enviar el código';
+
+  @override
+  String get phoneVerifyFailed => 'Verificación fallida';
+
+  @override
+  String get phoneGenericError => 'Algo salió mal';
 }

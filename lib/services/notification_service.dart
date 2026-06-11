@@ -9,7 +9,6 @@ import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../data/models/link_reminder.dart';
-import 'alarm_sound_service.dart';
 import 'auth_service.dart';
 import 'badge_service.dart';
 import 'firestore_service.dart';
@@ -419,16 +418,12 @@ class NotificationService {
 
     if (!link.isEnabled) return;
 
-    // 링크별 소리 가져오기 (없으면 전역 설정 사용)
-    final soundId = link.soundId ?? AlarmSoundService.instance.getSelectedSoundId();
-    final sound = AlarmSoundService.instance.getSoundById(soundId);
-
-    // 사운드 파일이 실제로 존재하는지 확인
-    final useCustomSound = sound != null && sound.isAvailable;
-
-    // 전화 vs 링크 구분
-    final isPhone = UrlLauncherService.isPhoneUrl(link.url);
-    final notificationBody = isPhone ? 'Tap to call' : 'Tap to open link';
+    // 링크/전화 대상 유무 (제목만 알림 지원 — URL 비어있으면 타깃 없음)
+    final hasTarget = link.url.trim().isNotEmpty;
+    final isPhone = hasTarget && UrlLauncherService.isPhoneUrl(link.url);
+    final notificationBody = !hasTarget
+        ? '' // 제목만 알림 (밥시간·약시간 등) — 열 대상 없음
+        : (isPhone ? 'Tap to call' : 'Tap to open link');
 
     // Android 알림 설정 (액션 버튼 포함)
     final androidDetails = AndroidNotificationDetails(
@@ -438,30 +433,31 @@ class NotificationService {
       importance: Importance.high,
       priority: Priority.high,
       icon: '@mipmap/ic_launcher',
-      sound: useCustomSound
-          ? RawResourceAndroidNotificationSound(sound.fileName)
-          : null,
+      // 시스템 기본 알림음 사용 (커스텀 사운드 제거)
       playSound: true,
-      // 🔔 액션 버튼 추가
-      actions: isPhone
+      // 🔔 액션 버튼: 타깃 없으면(제목만) 스누즈만
+      actions: !hasTarget
           ? <AndroidNotificationAction>[
-              const AndroidNotificationAction(_actionCall, '전화걸기'),
               const AndroidNotificationAction(_actionSnooze, '3분 후'),
             ]
-          : <AndroidNotificationAction>[
-              const AndroidNotificationAction(_actionOpenLink, '이동하기'),
-              const AndroidNotificationAction(_actionSnooze, '3분 후'),
-            ],
+          : isPhone
+              ? <AndroidNotificationAction>[
+                  const AndroidNotificationAction(_actionCall, '전화걸기'),
+                  const AndroidNotificationAction(_actionSnooze, '3분 후'),
+                ]
+              : <AndroidNotificationAction>[
+                  const AndroidNotificationAction(_actionOpenLink, '이동하기'),
+                  const AndroidNotificationAction(_actionSnooze, '3분 후'),
+                ],
     );
 
-    // iOS 알림 설정 (카테고리로 액션 버튼 지정)
+    // iOS 알림 설정 (카테고리로 액션 버튼 지정 — 타깃 없으면 액션 없음)
     final iosDetails = DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
-      sound: useCustomSound ? '${sound.fileName}.caf' : null,
-      // 🔔 카테고리로 액션 버튼 지정
-      categoryIdentifier: isPhone ? _categoryPhone : _categoryLink,
+      categoryIdentifier:
+          !hasTarget ? null : (isPhone ? _categoryPhone : _categoryLink),
     );
 
     final details = NotificationDetails(

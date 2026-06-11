@@ -1,30 +1,13 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+// 링꾸 기본 스모크 테스트.
+// (이전의 flutter create 기본 카운터 테스트는 이 앱과 무관해 교체함)
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:linkping/main.dart';
+import 'package:linkping/services/auth_service.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  test('RandomNicknameGenerator는 비어있지 않은 닉네임을 만든다', () {
+    expect(RandomNicknameGenerator.generateKorean(), isNotEmpty);
+    expect(RandomNicknameGenerator.generateEnglish(), isNotEmpty);
+    expect(RandomNicknameGenerator.generate(isKorean: true), isNotEmpty);
+    expect(RandomNicknameGenerator.generate(isKorean: false), isNotEmpty);
   });
 }
