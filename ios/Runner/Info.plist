@@ -4,6 +4,14 @@
 	<dict>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
+		<!-- 표준 HTTPS만 사용 — 수출 규정 면제 (업로드 시 암호화 질문 생략) -->
+		<key>ITSAppUsesNonExemptEncryption</key>
+		<false/>
+		<!-- Flutter 내장 딥링크 비활성 (기본값 ON) — 켜져 있으면 전화인증 reCAPTCHA/
+		     구글 로그인 복귀 URL을 라우트로 push 해서 온보딩이 화면을 덮어버린다.
+		     딥링크는 app_links 로 직접 처리 (MainShell). -->
+		<key>FlutterDeepLinkingEnabled</key>
+		<false/>
 		<key>CFBundleDisplayName</key>
 		<string>Linkku</string>
 		<key>CFBundleExecutable</key>
@@ -13,7 +21,7 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>linkping</string>
+		<string>Linkku</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>

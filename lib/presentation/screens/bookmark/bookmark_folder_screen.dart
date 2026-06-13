@@ -87,7 +87,7 @@ class _BookmarkFolderScreenState extends ConsumerState<BookmarkFolderScreen> {
           Icon(
             Icons.link,
             size: 56,
-            color: colorScheme.outline.withValues(alpha: 0.4),
+            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
           ),
           const SizedBox(height: Spacing.md),
           Text(
@@ -96,7 +96,7 @@ class _BookmarkFolderScreenState extends ConsumerState<BookmarkFolderScreen> {
                 : 'No links yet\nTap + below to add one',
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: colorScheme.outline,
+              color: colorScheme.onSurfaceVariant,
               height: 1.5,
             ),
           ),
@@ -146,7 +146,7 @@ class _BookmarkFolderScreenState extends ConsumerState<BookmarkFolderScreen> {
                 Text(
                   bookmark.memo!,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.outline,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,

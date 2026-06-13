@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
+import '../../widgets/dialog_actions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../l10n/app_localizations.dart';
 
@@ -352,23 +354,25 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 ),
               ),
               actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(dialogContext),
-                  child: Text(dialogL10n.cancel),
-                ),
-                FilledButton(
-                  onPressed: () async {
-                    if (!formKey.currentState!.validate()) return;
+                DialogActions(buttons: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(dialogContext),
+                    child: Text(dialogL10n.cancel),
+                  ),
+                  FilledButton(
+                    onPressed: () async {
+                      if (!formKey.currentState!.validate()) return;
 
-                    final newPhone = controller.text.trim();
-                    await _savePhoneNumber(newPhone.isEmpty ? null : newPhone);
+                      final newPhone = controller.text.trim();
+                      await _savePhoneNumber(newPhone.isEmpty ? null : newPhone);
 
-                    if (dialogContext.mounted) {
-                      Navigator.pop(dialogContext);
-                    }
-                  },
-                  child: Text(l10n.save),
-                ),
+                      if (dialogContext.mounted) {
+                        Navigator.pop(dialogContext);
+                      }
+                    },
+                    child: Text(l10n.save),
+                  ),
+                ]),
               ],
             );
           },
@@ -386,16 +390,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       // 게스트: 로컬에 저장
       await AuthService.instance.saveGuestPhoneNumber(phoneNumber);
     } else {
-      // 회원: Firestore에 저장
-      final currentProfile = ref.read(userProfileProvider).value;
-      if (currentProfile != null) {
-        final updatedProfile = currentProfile.copyWith(
-          phoneNumber: phoneNumber,
-          updatedAt: DateTime.now(),
-        );
-        await FirestoreService.instance.saveUserProfile(updatedProfile);
-        ref.invalidate(userProfileProvider);
-      }
+      // 회원: private 서브컬렉션에 저장 (공개 프로필 문서에 두면 노출됨)
+      await FirestoreService.instance.savePhoneNumber(phoneNumber);
+      ref.invalidate(userProfileProvider);
     }
 
     setState(() {}); // UI 새로고침
@@ -685,7 +682,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   _getCurrentPhoneNumber() ?? l10n.phoneNumberNotSet,
                   style: TextStyle(
                     color: _getCurrentPhoneNumber() == null
-                        ? colorScheme.outline
+                        ? colorScheme.onSurfaceVariant
                         : null,
                   ),
                 ),
@@ -812,7 +809,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   const SizedBox(width: 4),
                   Icon(
                     Icons.chevron_right,
-                    color: colorScheme.outline,
+                    color: colorScheme.onSurfaceVariant,
                     size: 20,
                   ),
                 ],

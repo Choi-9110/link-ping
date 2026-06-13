@@ -6,8 +6,11 @@ import '../../../data/models/announcement.dart';
 import '../../../data/models/ping_notification.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../providers/announcement_provider.dart';
+import '../../../providers/share_inbox_provider.dart';
 import '../../../providers/user_provider.dart';
 import '../../../services/firestore_service.dart';
+import '../../../services/share_inbox_service.dart';
+import '../../widgets/share_accept_flow.dart';
 import '../inquiry/inquiry_detail_screen.dart';
 
 class NotificationsScreen extends ConsumerWidget {
@@ -46,6 +49,7 @@ class NotificationsScreen extends ConsumerWidget {
   ) {
     final announcementsAsync = ref.watch(announcementsProvider);
     final readIds = ref.watch(readAnnouncementsProvider);
+    final pendingShares = ref.watch(shareInboxProvider);
     final locale = Localizations.localeOf(context);
     final isKorean = locale.languageCode == 'ko';
 
@@ -61,26 +65,29 @@ class NotificationsScreen extends ConsumerWidget {
         ) ??
         [];
 
-    // 양쪽 다 아직 로딩 중이고 보여줄 게 없을 때만 스피너
+    // 다 비어있고 로딩 중일 때만 스피너
     if (announcements.isEmpty &&
         notifications.isEmpty &&
+        pendingShares.isEmpty &&
         (notificationsAsync.isLoading || announcementsAsync.isLoading)) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (notifications.isEmpty && announcements.isEmpty) {
+    if (notifications.isEmpty &&
+        announcements.isEmpty &&
+        pendingShares.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.notifications_none, size: 64, color: colorScheme.outline),
+            Icon(Icons.notifications_none, size: 64, color: colorScheme.onSurfaceVariant),
             const SizedBox(height: Spacing.md),
             Text(l10n.noNotifications,
-                style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.outline)),
+                style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurfaceVariant)),
             const SizedBox(height: Spacing.sm),
             Text(l10n.noNotificationsSubtitle,
                 textAlign: TextAlign.center,
-                style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline)),
+                style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant)),
           ],
         ),
       );
@@ -89,6 +96,23 @@ class NotificationsScreen extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
       children: [
+        // 공유받은 링크 대기함 — 수락/거절 전까지 보관
+        if (pendingShares.isNotEmpty) ...[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+                Spacing.md, Spacing.sm, Spacing.md, Spacing.xs),
+            child: Text(
+              l10n.inboxSectionTitle(pendingShares.length),
+              style: theme.textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: colorScheme.secondary,
+              ),
+            ),
+          ),
+          ...pendingShares.map((p) => _PendingShareTile(share: p)),
+          const Divider(height: Spacing.md),
+        ],
+
         // 공지사항 섹션
         ...announcements.map((a) {
           final isRead = readIds.contains(a.id);
@@ -216,7 +240,7 @@ class _AnnouncementTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: theme.textTheme.bodySmall?.copyWith(
-          color: colorScheme.outline,
+          color: colorScheme.onSurfaceVariant,
         ),
       ),
       onTap: onTap,
@@ -459,7 +483,7 @@ class _NotificationTileState extends State<_NotificationTile> {
                         Icon(
                           isInquiryReply ? Icons.help_outline : Icons.link,
                           size: 14,
-                          color: colorScheme.outline,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                         const SizedBox(width: 4),
                         Expanded(
@@ -468,7 +492,7 @@ class _NotificationTileState extends State<_NotificationTile> {
                                 ? (notification.inquiryTitle ?? l10n.inquiry)
                                 : notification.urlTitle,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: colorScheme.outline,
+                              color: colorScheme.onSurfaceVariant,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -476,7 +500,7 @@ class _NotificationTileState extends State<_NotificationTile> {
                         Text(
                           _formatTime(notification.createdAt),
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: colorScheme.outline,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -540,7 +564,7 @@ class _NotificationTileState extends State<_NotificationTile> {
                       Text(
                         l10n.noResponseWarning,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: colorScheme.outline,
+                          color: colorScheme.onSurfaceVariant,
                           fontSize: 11,
                         ),
                       ),
@@ -582,5 +606,76 @@ class _NotificationTileState extends State<_NotificationTile> {
     } else {
       return '${time.month}/${time.day}';
     }
+  }
+}
+
+/// 공유받은 링크 대기 항목 — [거절] / [추가] 로 처리.
+class _PendingShareTile extends ConsumerWidget {
+  const _PendingShareTile({required this.share});
+
+  final PendingShare share;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(
+          horizontal: Spacing.md, vertical: Spacing.xs),
+      padding: const EdgeInsets.all(Spacing.md),
+      decoration: BoxDecoration(
+        color: colorScheme.secondary.withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(14),
+        border:
+            Border.all(color: colorScheme.secondary.withValues(alpha: 0.35)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            share.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.titleSmall
+                ?.copyWith(fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            l10n.inboxFrom(share.sharedBy, share.timeText),
+            style: theme.textTheme.bodySmall
+                ?.copyWith(color: colorScheme.onSurfaceVariant),
+          ),
+          const SizedBox(height: Spacing.sm),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () async {
+                    await ref
+                        .read(shareInboxProvider.notifier)
+                        .remove(share.shareId);
+                  },
+                  child: Text(l10n.inboxDecline),
+                ),
+              ),
+              const SizedBox(width: Spacing.sm),
+              Expanded(
+                child: FilledButton(
+                  onPressed: () => promptSaveSharedLink(
+                    context,
+                    ref,
+                    share.shareId,
+                    fromInbox: true,
+                  ),
+                  child: Text(l10n.inboxAdd),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

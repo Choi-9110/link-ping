@@ -263,7 +263,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Text(
                   l10n.loginLater,
                   style: TextStyle(
-                    color: colorScheme.outline,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
               ),

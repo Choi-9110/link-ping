@@ -39,7 +39,7 @@ class EmptyState extends StatelessWidget {
               l10n.emptyStateSubtitle,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: colorScheme.outline,
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: Spacing.xl),

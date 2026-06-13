@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:camera/camera.dart' hide ImageFormat;
 import 'package:flutter/material.dart';
+
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -41,7 +43,7 @@ class _VerificationRecordScreenState
   Timer? _timer;
   String? _recordedPath;
   String? _thumbnailPath;
-  bool _frontCamera = true;
+  bool _frontCamera = false; // 인증은 후면 카메라 기본 (얼굴 노출 방지)
 
   @override
   void initState() {
@@ -74,7 +76,7 @@ class _VerificationRecordScreenState
     if (cameras.isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('카메라를 찾을 수 없어요')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.cameraNotFound)),
         );
       }
       return;
@@ -110,7 +112,7 @@ class _VerificationRecordScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('카메라 초기화 실패: $e')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.cameraInitFailed('$e'))),
         );
       }
     }
@@ -157,7 +159,7 @@ class _VerificationRecordScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('녹화 시작 실패: $e')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.recordStartFailed('$e'))),
         );
       }
     }
@@ -201,7 +203,7 @@ class _VerificationRecordScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('녹화 정지 실패: $e')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.recordStopFailed('$e'))),
         );
       }
     }

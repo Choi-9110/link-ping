@@ -41,7 +41,7 @@ class LinkkuDexScreen extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .bodyMedium
-                ?.copyWith(color: colorScheme.outline),
+                ?.copyWith(color: colorScheme.onSurfaceVariant),
           ),
           const SizedBox(height: Spacing.md),
           Align(
@@ -76,7 +76,7 @@ class LinkkuDexScreen extends StatelessWidget {
             children: [
               _DexCard(
                 unlocked: true,
-                name: '링꾸',
+                name: l10n.appName,
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -133,7 +133,7 @@ class _DexCard extends StatelessWidget {
                   child: Icon(
                     Icons.help_outline,
                     size: 60,
-                    color: colorScheme.outline,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
               const SizedBox(height: Spacing.sm),
@@ -141,7 +141,7 @@ class _DexCard extends StatelessWidget {
                 name,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  color: unlocked ? colorScheme.onSurface : colorScheme.outline,
+                  color: unlocked ? colorScheme.onSurface : colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 2),
@@ -149,7 +149,7 @@ class _DexCard extends StatelessWidget {
                 unlocked ? l10n.linkkuDexDefault : l10n.linkkuDexComingSoon,
                 style: TextStyle(
                   fontSize: 11,
-                  color: unlocked ? BrandTokens.mint : colorScheme.outline,
+                  color: unlocked ? BrandTokens.mint : colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
@@ -171,7 +171,7 @@ class LinkkuDexDetailScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('링꾸')),
+      appBar: AppBar(title: Text(l10n.appName)),
       body: ListView(
         padding: const EdgeInsets.all(Spacing.lg),
         children: [
@@ -191,10 +191,10 @@ class LinkkuDexDetailScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.lg),
-          const Center(
+          Center(
             child: Text(
-              '링꾸',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+              l10n.appName,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
             ),
           ),
           const SizedBox(height: 4),
@@ -202,7 +202,7 @@ class LinkkuDexDetailScreen extends StatelessWidget {
             child: Text(
               l10n.linkkuDexSubtitle,
               style: theme.textTheme.bodyMedium
-                  ?.copyWith(color: colorScheme.outline),
+                  ?.copyWith(color: colorScheme.onSurfaceVariant),
             ),
           ),
           const SizedBox(height: Spacing.lg),
@@ -236,7 +236,7 @@ class LinkkuDexDetailScreen extends StatelessWidget {
             child: Text(
               l10n.linkkuWhatsNextDesc,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: colorScheme.outline,
+                color: colorScheme.onSurfaceVariant,
                 height: 1.5,
               ),
             ),

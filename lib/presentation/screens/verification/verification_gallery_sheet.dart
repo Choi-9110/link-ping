@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../services/verification_media_cache.dart';
 
 import '../../../core/theme/spacing.dart';
 import '../../../data/models/verification_video.dart';
@@ -82,7 +85,7 @@ class VerificationGallerySheet extends ConsumerWidget {
                         Text(
                           linkTitle,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: colorScheme.outline,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -108,7 +111,7 @@ class VerificationGallerySheet extends ConsumerWidget {
                               : 'No proofs yet.\nUpload the first one to motivate friends 💪',
                           textAlign: TextAlign.center,
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: colorScheme.outline,
+                            color: colorScheme.onSurfaceVariant,
                             height: 1.5,
                           ),
                         ),
@@ -185,10 +188,13 @@ class VerificationGallerySheet extends ConsumerWidget {
                   fit: StackFit.expand,
                   children: [
                     if (video.thumbnailUrl != null)
-                      Image.network(
-                        video.thumbnailUrl!,
+                      CachedNetworkImage(
+                        imageUrl: video.thumbnailUrl!,
+                        cacheManager: VerificationMediaCache.instance,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Container(
+                        // 타일 크기에 맞춰 디코딩 — 메모리/스크롤 버벅임 방지
+                        memCacheWidth: 400,
+                        errorWidget: (_, __, ___) => Container(
                           color: Colors.black,
                           child: Center(
                             child: Icon(

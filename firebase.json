@@ -84,6 +84,14 @@
         "destination": "/terms.html"
       },
       {
+        "source": "/support",
+        "destination": "/support.html"
+      },
+      {
+        "source": "/landing",
+        "destination": "/landing.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

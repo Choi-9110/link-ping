@@ -2,13 +2,27 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // ── 공통 헬퍼 ─────────────────────────────────────────
+    function signedIn() {
+      return request.auth != null;
+    }
+    // 관리자: users/{uid}.isAdmin == true (콘솔에서만 부여 — 아래 users 규칙이
+    // 클라이언트의 isAdmin 자가 변경을 차단한다)
+    function isAdmin() {
+      return signedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+    function affectedKeys() {
+      return request.resource.data.diff(resource.data).affectedKeys();
+    }
+
     // === 인증 영상 ===
     match /verificationVideos/{videoId} {
       // 로그인한 누구나 읽기 (클라이언트에서 차단/만료 필터링)
-      allow read: if request.auth != null;
+      allow read: if signedIn();
 
       // 생성: uploaderUid 가 본인이어야 함
-      allow create: if request.auth != null
+      allow create: if signedIn()
         && request.resource.data.uploaderUid == request.auth.uid
         && request.resource.data.keys().hasAll([
           'uploaderUid', 'uploaderNickname', 'uploaderProfileEmoji',
@@ -17,24 +31,21 @@ service cloud.firestore {
         ]);
 
       // 업데이트:
-      // - 업로더는 isHidden 등 자기 메타 수정 가능
-      // - 다른 유저는 viewCount/viewedByUids/reportedByUids 만 변경 가능
-      allow update: if request.auth != null && (
-        // 본인이면 자유롭게 수정
+      // - 업로더는 자기 메타 수정 가능
+      // - 다른 유저는 조회/신고 카운트 필드만 변경 가능
+      allow update: if signedIn() && (
         resource.data.uploaderUid == request.auth.uid
         ||
-        // 타인은 카운트/배열 필드 외에는 변경 못함
-        request.resource.data.diff(resource.data).affectedKeys()
-          .hasOnly(['viewCount', 'viewedByUids', 'reportedByUids', 'isHidden'])
+        affectedKeys().hasOnly(['viewCount', 'viewedByUids', 'reportedByUids', 'isHidden'])
       );
 
       // 삭제: 업로더만
-      allow delete: if request.auth != null
+      allow delete: if signedIn()
         && resource.data.uploaderUid == request.auth.uid;
 
       // 신고 서브컬렉션
       match /reports/{reportId} {
-        allow create: if request.auth != null
+        allow create: if signedIn()
           && request.resource.data.reporterUid == request.auth.uid;
         // 관리자 검토용 — 기본 차단
         allow read, update, delete: if false;
@@ -42,72 +53,155 @@ service cloud.firestore {
     }
 
     // === 사용자 프로필 ===
+    // read 는 로그인 유저 전체 허용 (추천코드 조회·인증영상 시청자 닉네임 표시에 필요).
+    // ※ 민감정보(전화번호)는 본 문서가 아닌 private 서브컬렉션에 저장한다.
     match /users/{userId} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.uid == userId;
+      allow read: if signedIn();
+
+      // 생성: 본인 + isAdmin 자가 부여 금지
+      allow create: if signedIn() && request.auth.uid == userId
+        && request.resource.data.get('isAdmin', false) != true;
+
+      // 본인 업데이트: isAdmin 변경 금지 + pendingPoringReward 증가 금지(수령/리셋만)
+      // 타인 업데이트: 추천 보상 필드만 (pendingPoringReward / bonusLinks / updatedAt)
+      allow update: if signedIn() && (
+        (
+          request.auth.uid == userId
+          && !affectedKeys().hasAny(['isAdmin'])
+          && (
+            !affectedKeys().hasAny(['pendingPoringReward'])
+            || request.resource.data.get('pendingPoringReward', 0)
+                 <= resource.data.get('pendingPoringReward', 0)
+          )
+        )
+        ||
+        affectedKeys().hasOnly(['pendingPoringReward', 'bonusLinks', 'updatedAt'])
+      );
+
+      // 삭제: 본인만 (회원 탈퇴)
+      allow delete: if signedIn() && request.auth.uid == userId;
+
+      // 민감정보 (전화번호 등) — 본인만 접근
+      match /private/{docId} {
+        allow read, write: if signedIn() && request.auth.uid == userId;
+      }
 
       // 차단 목록 (본인만 접근)
       match /blockedUsers/{targetId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
+        allow read, write: if signedIn() && request.auth.uid == userId;
       }
 
-      // 대시보드 통계 (본인만 — totalLinksCreated 등)
+      // 대시보드 통계 (본인만)
       match /stats/{statsDoc} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
+        allow read, write: if signedIn() && request.auth.uid == userId;
       }
 
-      // 링크 클라우드 백업 (프리미엄) — 본인만 접근
+      // 링크 클라우드 백업 — 본인만 접근
       match /links/{linkId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
+        allow read, write: if signedIn() && request.auth.uid == userId;
       }
     }
 
     // === 사용자 통계 (뱃지/스트릭/소셜) ===
-    // BadgeService 가 직접 사용. 일부 필드는 다른 유저(응원/찌르기 보낸 사람)도 증가시킬 수 있어야 함.
     match /userStats/{uid} {
-      // 본인만 자기 통계 읽기
-      allow read: if request.auth != null && request.auth.uid == uid;
-
-      // 본인 생성: 자유롭게 (merge:true 로 첫 set 시)
-      allow create: if request.auth != null && request.auth.uid == uid;
-
-      // 본인 업데이트: 자유롭게
-      // 타인 업데이트: cheersReceived / pokesReceived 만 변경 가능
-      allow update: if request.auth != null && (
+      allow read: if signedIn() && request.auth.uid == uid;
+      // 생성: 본인 자유 / 타인은 응원·찌르기 카운터만
+      // (상대가 아직 userStats 문서가 없을 때 첫 응원이 set(merge)=create 로
+      //  평가되므로, 카운터 전용 생성을 허용해야 첫 응원이 안 깨진다)
+      allow create: if signedIn() && (
         request.auth.uid == uid
-        || request.resource.data.diff(resource.data).affectedKeys()
-            .hasOnly(['cheersReceived', 'pokesReceived'])
+        || request.resource.data.keys().hasOnly(['cheersReceived', 'pokesReceived'])
       );
-
-      // 삭제: 본인만
-      allow delete: if request.auth != null && request.auth.uid == uid;
+      // 본인: 자유 / 타인: 받은 응원·찌르기 카운트만
+      allow update: if signedIn() && (
+        request.auth.uid == uid
+        || affectedKeys().hasOnly(['cheersReceived', 'pokesReceived'])
+      );
+      allow delete: if signedIn() && request.auth.uid == uid;
     }
 
-    // === 그 외 컬렉션 (기본 정책 유지) ===
-    // 기존에 설정해둔 다른 컬렉션 규칙은 그대로. 필요 시 여기서 추가.
+    // === 공유 링크 ===
+    // 생성: creatorUid 본인 / 삭제: 생성자
+    // 업데이트: 생성자는 자유, 비생성자는 저장·조회 카운트와
+    //           수정요청 가결 반영(hour/minute/repeatDays)만
     match /sharedLinks/{linkId} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null;
+      // get: 누구나 (공유 랜딩 페이지는 비로그인 웹 방문자가 본다 —
+      //      문서 ID가 추측 불가능한 키 역할. 이게 막혀 있으면 공유 자체가 죽는다)
+      // list: 로그인 유저만 (전체 열거 방지)
+      allow get: if true;
+      allow list: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.get('creatorUid', '') == request.auth.uid;
+      allow update: if signedIn() && (
+        resource.data.get('creatorUid', '') == request.auth.uid
+        || affectedKeys().hasOnly([
+             'saveCount', 'savedBy', 'savedByUids', 'viewCount',
+             'hour', 'minute', 'repeatDays'
+           ])
+      );
+      allow delete: if signedIn()
+        && resource.data.get('creatorUid', '') == request.auth.uid;
     }
-    match /notifications/{notificationId} {
-      allow read, write: if request.auth != null;
+
+    // === 인앱 알림 수신함 (응원/찌르기/시스템) ===
+    // 실제 경로: notifications/{userId}/items/{itemId}
+    // 읽기/읽음처리/삭제 = 수신자 본인
+    // 생성 = 보낸 사람(fromUid 본인 명시) 또는 관리자(문의 답변 등 fromUid 없는 시스템 알림)
+    match /notifications/{userId}/items/{itemId} {
+      allow read, update, delete: if signedIn() && request.auth.uid == userId;
+      allow create: if signedIn()
+        && (request.resource.data.get('fromUid', '') == request.auth.uid
+            || isAdmin());
     }
+
+    // === 문의 ===
+    // 본인 문의만 읽기/쓰기. 관리자는 전체 열람 + 답변(update) 가능.
     match /inquiries/{inquiryId} {
-      allow read, write: if request.auth != null;
+      allow read: if signedIn()
+        && (resource.data.get('userId', '') == request.auth.uid || isAdmin());
+      allow create: if signedIn()
+        && request.resource.data.get('userId', '') == request.auth.uid;
+      allow update: if signedIn()
+        && (resource.data.get('userId', '') == request.auth.uid || isAdmin());
+      allow delete: if signedIn()
+        && (resource.data.get('userId', '') == request.auth.uid || isAdmin());
     }
+
+    // === 알람 수정 요청 (공유 링크 시간 변경 투표) ===
+    // 생성: 요청자 본인 / 읽기·투표: 관련자(요청자 또는 투표 대상자)
     match /modificationRequests/{requestId} {
-      allow read, write: if request.auth != null;
+      allow read: if signedIn() && (
+        resource.data.get('creatorUid', '') == request.auth.uid
+        || request.auth.uid in resource.data.get('voterUids', [])
+      );
+      allow create: if signedIn()
+        && request.resource.data.get('creatorUid', '') == request.auth.uid;
+      allow update: if signedIn() && (
+        resource.data.get('creatorUid', '') == request.auth.uid
+        || request.auth.uid in resource.data.get('voterUids', [])
+      );
+      allow delete: if signedIn()
+        && resource.data.get('creatorUid', '') == request.auth.uid;
     }
+
+    // === 분석 (사운드 통계 등 — 현재 미사용 레거시) ===
     match /analytics/{docId} {
-      allow read, write: if request.auth != null;
+      allow read, write: if isAdmin();
+      match /{path=**} {
+        allow read, write: if isAdmin();
+      }
     }
+
+    // === 추천 링크 (운영 큐레이션) ===
     match /recommendedLinks/{linkId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
+
+    // === 공지사항 ===
     match /announcements/{announcementId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
   }
 }

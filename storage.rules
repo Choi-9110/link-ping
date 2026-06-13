@@ -21,9 +21,7 @@ service firebase.storage {
         && request.auth.uid == uploaderUid;
     }
 
-    // === 그 외 ===
-    match /{allPaths=**} {
-      allow read, write: if request.auth != null;
-    }
+    // ※ 그 외 경로는 기본 거부.
+    //   (이전의 전체 허용 catch-all 은 위 본인-경로 보호를 무력화했으므로 제거)
   }
 }

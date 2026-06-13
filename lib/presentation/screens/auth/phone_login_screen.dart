@@ -232,7 +232,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                         },
                   child: Text(
                     l10n.phoneChangeNumber,
-                    style: TextStyle(color: colorScheme.outline),
+                    style: TextStyle(color: colorScheme.onSurfaceVariant),
                   ),
                 ),
               ],

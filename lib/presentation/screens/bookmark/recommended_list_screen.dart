@@ -63,13 +63,13 @@ class RecommendedListScreen extends ConsumerWidget {
           Icon(
             Icons.star_outline,
             size: 64,
-            color: colorScheme.outline.withValues(alpha: 0.5),
+            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
           ),
           const SizedBox(height: Spacing.md),
           Text(
             isKorean ? '추천 링크가 곧 업데이트됩니다!' : 'Recommended links coming soon!',
             style: theme.textTheme.titleMedium?.copyWith(
-              color: colorScheme.outline,
+              color: colorScheme.onSurfaceVariant,
             ),
           ),
         ],
@@ -117,13 +117,13 @@ class RecommendedListScreen extends ConsumerWidget {
             ? Text(
                 link.description(isKorean),
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: colorScheme.outline,
+                  color: colorScheme.onSurfaceVariant,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               )
             : null,
-        trailing: Icon(Icons.more_horiz, color: colorScheme.outline),
+        trailing: Icon(Icons.more_horiz, color: colorScheme.onSurfaceVariant),
         onTap: () => _showActions(context, ref, link, isKorean),
       ),
     );
@@ -170,7 +170,7 @@ class RecommendedListScreen extends ConsumerWidget {
                             Text(
                               link.description(isKorean),
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: colorScheme.outline,
+                                color: colorScheme.onSurfaceVariant,
                               ),
                             ),
                         ],
@@ -201,7 +201,7 @@ class RecommendedListScreen extends ConsumerWidget {
                       ? '매일 알림 받고 꾸준히 실천하기'
                       : 'Get daily reminders to stay consistent',
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.outline,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
                 onTap: () {
@@ -222,7 +222,7 @@ class RecommendedListScreen extends ConsumerWidget {
                 subtitle: Text(
                   isKorean ? '폴더를 골라서 저장' : 'Pick a folder to save',
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.outline,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
                 onTap: () async {

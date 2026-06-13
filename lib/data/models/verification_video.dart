@@ -12,6 +12,9 @@ class VerificationVideo {
   /// 어느 공유 링크에 대한 인증인지 (private 알람이면 null)
   final String? sharedLinkId;
 
+  /// 공유 체인의 뿌리 ID — 릴레이 링 노출 범위 계산용 (레거시 null)
+  final String? rootShareId;
+
   /// Firebase Storage 경로 (verifications/{uploaderUid}/{id}.mp4)
   final String storagePath;
 
@@ -50,6 +53,7 @@ class VerificationVideo {
     required this.uploaderNickname,
     required this.uploaderProfileEmoji,
     this.sharedLinkId,
+    this.rootShareId,
     required this.storagePath,
     required this.videoUrl,
     this.thumbnailUrl,
@@ -72,6 +76,7 @@ class VerificationVideo {
       uploaderProfileEmoji:
           data['uploaderProfileEmoji'] as String? ?? 'face_grinning',
       sharedLinkId: data['sharedLinkId'] as String?,
+      rootShareId: data['rootShareId'] as String?,
       storagePath: data['storagePath'] as String? ?? '',
       videoUrl: data['videoUrl'] as String? ?? '',
       thumbnailUrl: data['thumbnailUrl'] as String?,
@@ -94,6 +99,7 @@ class VerificationVideo {
       'uploaderNickname': uploaderNickname,
       'uploaderProfileEmoji': uploaderProfileEmoji,
       if (sharedLinkId != null) 'sharedLinkId': sharedLinkId,
+      if (rootShareId != null) 'rootShareId': rootShareId,
       'storagePath': storagePath,
       'videoUrl': videoUrl,
       if (thumbnailUrl != null) 'thumbnailUrl': thumbnailUrl,

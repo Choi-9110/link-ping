@@ -21,10 +21,15 @@ class SavedUsersBottomSheet extends ConsumerStatefulWidget {
   final String sharedLinkId;
   final String urlTitle;
 
+  /// 릴레이 링: 내가 뿌린 고리 문서 ID — 받은 고리와 합쳐서
+  /// "나와 직접 주고받은 사람" 전체를 보여준다.
+  final String? outgoingShareId;
+
   const SavedUsersBottomSheet({
     super.key,
     required this.sharedLinkId,
     required this.urlTitle,
+    this.outgoingShareId,
   });
 
   @override
@@ -382,7 +387,24 @@ class _SavedUsersBottomSheetState extends ConsumerState<SavedUsersBottomSheet> {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final savedUsersAsync = ref.watch(sharedLinkSavedByUsersProvider(widget.sharedLinkId));
+    // 받은 고리 + (릴레이면) 내가 뿌린 고리의 참여자 합집합
+    final primaryAsync =
+        ref.watch(sharedLinkSavedByUsersProvider(widget.sharedLinkId));
+    final secondaryId = (widget.outgoingShareId != null &&
+            widget.outgoingShareId != widget.sharedLinkId)
+        ? widget.outgoingShareId
+        : null;
+    final secondaryUsers = secondaryId == null
+        ? const <SavedByUser>[]
+        : (ref.watch(sharedLinkSavedByUsersProvider(secondaryId)).valueOrNull ??
+            const <SavedByUser>[]);
+    final savedUsersAsync = primaryAsync.whenData((users) {
+      final merged = <String, SavedByUser>{for (final u in users) u.uid: u};
+      for (final u in secondaryUsers) {
+        merged.putIfAbsent(u.uid, () => u);
+      }
+      return merged.values.toList();
+    });
     final currentUid = FirebaseAuth.instance.currentUser?.uid;
     final myCountry = _getMyCountry();
 

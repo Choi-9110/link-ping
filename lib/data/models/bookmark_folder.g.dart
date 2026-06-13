@@ -21,8 +21,8 @@ class BookmarkFolderAdapter extends TypeAdapter<BookmarkFolder> {
       name: fields[1] as String,
       emoji: fields[2] as String,
       createdAt: fields[3] as DateTime?,
-      order: fields[4] as int? ?? 0,
-      isDefault: fields[5] as bool? ?? false,
+      order: fields[4] as int,
+      isDefault: fields[5] as bool,
     );
   }
 

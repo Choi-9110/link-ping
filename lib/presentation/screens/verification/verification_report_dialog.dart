@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../widgets/dialog_actions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/spacing.dart';
@@ -77,29 +79,31 @@ class _VerificationReportDialogState
                 ? '신고는 24시간 이내 검토됩니다.'
                 : 'Reports are reviewed within 24 hours.',
             style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.outline,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ],
       ),
       actions: [
-        TextButton(
-          onPressed: _submitting ? null : () => Navigator.pop(context),
-          child: Text(isKorean ? '취소' : 'Cancel'),
-        ),
-        FilledButton(
-          onPressed: (_reason == null || _submitting) ? null : _submit,
-          child: _submitting
-              ? const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
-                  ),
-                )
-              : Text(isKorean ? '제출' : 'Submit'),
-        ),
+        DialogActions(buttons: [
+          TextButton(
+            onPressed: _submitting ? null : () => Navigator.pop(context),
+            child: Text(isKorean ? '취소' : 'Cancel'),
+          ),
+          FilledButton(
+            onPressed: (_reason == null || _submitting) ? null : _submit,
+            child: _submitting
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                : Text(isKorean ? '제출' : 'Submit'),
+          ),
+        ]),
       ],
     );
   }

@@ -595,7 +595,7 @@ class _AddLinkScreenState extends ConsumerState<AddLinkScreen> {
           subtitle: Text(
             _hasEndDate ? l10n.endDateEnabled : l10n.endDateDisabled,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.outline,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           value: _hasEndDate,

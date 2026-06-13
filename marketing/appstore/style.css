@@ -1,0 +1,107 @@
+/* 링꾸 앱스토어 스크린샷 공통 스타일 — 1290x2796 (6.7") */
+:root{
+  --bg:#0E0E11; --surface:#17171B; --surface2:#1F1F25; --line:#2A2A31;
+  --ink:#FFFFFF; --sub:#8E8E93; --dim:#5A5A60;
+  --coral:#FF5A5F; --coral-light:#FF8A8D; --mint:#00D4AA; --purple:#6C5CE7;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1290px;height:2796px;overflow:hidden}
+body{
+  font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
+  background:var(--bg);color:var(--ink);
+  display:flex;flex-direction:column;align-items:center;
+  -webkit-font-smoothing:antialiased;position:relative;
+}
+/* 배경 글로우 */
+body::before{content:'';position:absolute;top:-300px;left:50%;transform:translateX(-50%);
+  width:1600px;height:1200px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,90,95,.16),transparent 70%);pointer-events:none}
+body.glow-mint::before{background:radial-gradient(closest-side,rgba(0,212,170,.14),transparent 70%)}
+body.glow-purple::before{background:radial-gradient(closest-side,rgba(108,92,231,.16),transparent 70%)}
+
+/* 상단 카피 */
+.copy{padding:170px 90px 0;text-align:center;position:relative;z-index:2}
+.eyebrow{display:inline-flex;align-items:center;gap:14px;font-size:38px;font-weight:800;
+  color:var(--mint);letter-spacing:.5px;margin-bottom:36px}
+.eyebrow .pill{background:rgba(0,212,170,.13);padding:10px 30px;border-radius:50px}
+h1{font-size:104px;line-height:1.22;font-weight:900;letter-spacing:-2.5px}
+h1 .c{color:var(--coral)} h1 .m{color:var(--mint)} h1 .p{color:#9286F0}
+.sub{margin-top:34px;font-size:44px;line-height:1.5;color:#B8B8BE;font-weight:500}
+
+/* 폰 목업 */
+.stage{flex:1;display:flex;align-items:flex-end;justify-content:center;width:100%;position:relative;z-index:1}
+.phone{width:1010px;height:2120px;background:#000;border-radius:130px;
+  border:14px solid #2E2E35;box-shadow:0 60px 160px rgba(0,0,0,.6);
+  overflow:hidden;position:relative;margin-bottom:-330px}
+.phone .island{position:absolute;top:34px;left:50%;transform:translateX(-50%);
+  width:280px;height:78px;background:#000;border-radius:50px;z-index:50}
+.screen{width:100%;height:100%;background:var(--bg);padding:150px 44px 0;overflow:hidden;position:relative}
+
+/* 앱바 */
+.appbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+.appbar .who{display:flex;align-items:center;gap:18px;font-size:48px;font-weight:700}
+.appbar .ava{width:84px;height:84px;border-radius:24px;overflow:hidden;background:var(--surface)}
+.appbar .ava img{width:100%;height:100%;image-rendering:pixelated}
+.appbar .right{display:flex;align-items:center;gap:22px}
+.poring{display:flex;align-items:center;gap:12px;background:rgba(108,92,231,.15);
+  padding:14px 28px;border-radius:40px;font-size:38px;font-weight:800;color:#9286F0}
+.bell{position:relative;font-size:48px}
+.bell .dot{position:absolute;top:-2px;right:-6px;width:26px;height:26px;border-radius:50%;background:var(--coral)}
+
+/* 링크 카드 (앱 link_card 재현) */
+.card{background:var(--surface);border:2px solid var(--line);border-radius:32px;
+  padding:36px 38px;margin-bottom:28px;position:relative}
+.card .cat{display:inline-block;font-size:26px;font-weight:700;padding:8px 18px;border-radius:12px;margin-bottom:14px}
+.cat.mint{background:rgba(0,212,170,.14);color:var(--mint)}
+.cat.coral{background:rgba(255,90,95,.14);color:var(--coral)}
+.cat.purple{background:rgba(108,92,231,.16);color:#9286F0}
+.card .title{font-size:44px;font-weight:700;letter-spacing:-.5px;display:flex;align-items:center;gap:16px}
+.card .meta{margin-top:14px;font-size:32px;color:var(--sub);display:flex;align-items:center;gap:18px}
+.card .meta .src{display:flex;align-items:center;gap:10px}
+.card .time{position:absolute;right:38px;top:50%;transform:translateY(-50%);text-align:right}
+.card .time .t{font-size:52px;font-weight:800;color:var(--coral);letter-spacing:-1px}
+.card .time .d{font-size:28px;color:var(--sub);margin-top:6px}
+.card.on{border-color:rgba(255,90,95,.45)}
+.card .days{margin-top:18px;display:flex;gap:10px}
+.card .days span{width:46px;height:46px;border-radius:50%;background:var(--surface2);
+  color:var(--dim);font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.card .days span.sel{background:rgba(255,90,95,.16);color:var(--coral)}
+.toggle{width:96px;height:54px;border-radius:30px;background:var(--mint);position:relative}
+.toggle::after{content:'';position:absolute;top:6px;right:6px;width:42px;height:42px;border-radius:50%;background:#fff}
+.toggle.off{background:var(--line)} .toggle.off::after{right:auto;left:6px;background:var(--sub)}
+
+/* FAB */
+.fab{position:absolute;bottom:520px;right:60px;width:140px;height:140px;border-radius:44px;
+  background:var(--coral);display:flex;align-items:center;justify-content:center;
+  font-size:80px;font-weight:300;color:#fff;box-shadow:0 20px 50px rgba(255,90,95,.4)}
+
+/* 시트/모달 */
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--surface);
+  border-radius:48px 48px 0 0;padding:36px 48px 60px;border-top:2px solid var(--line)}
+.sheet .handle{width:90px;height:9px;border-radius:5px;background:var(--line);margin:0 auto 36px}
+.sheet h3{font-size:46px;font-weight:800;margin-bottom:10px}
+.sheet .hint{font-size:32px;color:var(--sub);margin-bottom:34px}
+.person{display:flex;align-items:center;gap:26px;padding:24px 0}
+.person .pava{width:96px;height:96px;border-radius:50%;background:var(--surface2);
+  display:flex;align-items:center;justify-content:center;font-size:52px}
+.person .nm{font-size:40px;font-weight:700}
+.person .st{font-size:28px;color:var(--mint);margin-top:6px}
+.person .acts{margin-left:auto;display:flex;gap:16px}
+.chipbtn{padding:18px 30px;border-radius:30px;font-size:32px;font-weight:700}
+.chipbtn.mint{background:rgba(0,212,170,.14);color:var(--mint)}
+.chipbtn.coral{background:rgba(255,90,95,.14);color:var(--coral)}
+
+/* 토스트 */
+.toast{position:absolute;left:50%;transform:translateX(-50%);
+  background:#26262E;border:2px solid var(--line);border-radius:28px;
+  padding:28px 44px;font-size:36px;font-weight:600;display:flex;gap:18px;align-items:center;
+  box-shadow:0 24px 60px rgba(0,0,0,.5);white-space:nowrap;z-index:40}
+
+/* 하단 탭바 */
+.tabbar{position:absolute;left:0;right:0;bottom:0;height:170px;background:rgba(23,23,27,.96);
+  border-top:2px solid var(--line);display:flex;align-items:center;justify-content:space-around;padding:0 60px}
+.tabbar .ti{font-size:50px;color:var(--dim);text-align:center}
+.tabbar .ti.sel{color:var(--coral)}
+.tabbar .ti small{display:block;font-size:24px;margin-top:6px;font-weight:700}
+
+.pixel{image-rendering:pixelated}

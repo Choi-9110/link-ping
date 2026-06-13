@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/dialog_actions.dart';
+
 import '../../../core/theme/spacing.dart';
 import '../../../services/pending_verification_service.dart';
 import 'verification_record_screen.dart';
@@ -96,6 +98,7 @@ class _PromptDialog extends StatelessWidget {
         ],
       ),
       actions: [
+        DialogActions(buttons: [
         TextButton(
           onPressed: () async {
             await PendingVerificationService.clear();
@@ -121,6 +124,7 @@ class _PromptDialog extends StatelessWidget {
             );
           },
         ),
+        ]),
       ],
     );
   }

@@ -681,5 +681,176 @@
   "phoneCodeSent": "Verification code sent",
   "phoneSendFailed": "Failed to send code",
   "phoneVerifyFailed": "Verification failed",
-  "phoneGenericError": "Something went wrong"
+  "phoneGenericError": "Something went wrong",
+  "deleteAccount": "Delete Account",
+  "deleteAccountConfirm": "Delete your account? Your account, links, stats and proof videos will be permanently deleted. This cannot be undone.",
+  "deleteAccountReauth": "For security, please sign in again and then retry.",
+  "deleteAccountFailed": "Failed to delete account. Please try again later.",
+  "ringModeTitle": "How should this connect?",
+  "ringModeAllName": "Everyone Ring",
+  "ringModeAllDesc": "Together with everyone who has the link",
+  "ringModeChainName": "Relay Ring",
+  "ringModeChainDesc": "Together with the people you shared with",
+  "ringModeFixedNote": "This choice is fixed for this alarm",
+  "ringModeHelpTooltip": "Details",
+  "ringModeHelpTitle": "What's the difference?",
+  "ringModeHelpBody": "🔗 Everyone Ring\nA creates it, shares to B, B passes to C\n→ A, B and C are all in one group.\nEveryone sees and cheers each other's 3-sec proofs.\n\n🤝 Relay Ring\nPassed along A → B → C → D\n→ C only sees B (who shared it) and D (who C shared to). Not A.\nYour 3-sec proofs are visible only to people you directly exchanged with.\n\n💡 It changes who can see your proof videos.\nFamily & close friends = Relay Ring,\ncrews & study groups = Everyone Ring!",
+  "ringModeHelpOk": "Got it!",
+  "ringBannerAll": "🔗 Everyone Ring — proofs visible to everyone with this link",
+  "ringBannerChain": "🤝 Relay Ring — proofs visible only to people you share with",
+  "shareAlreadySaved": "Already saved",
+  "shareNotFound": "Shared link not found",
+  "shareDuplicateAlarm": "You already have this alarm",
+  "shareRepeatWeekly": "{count}x/week",
+  "@shareRepeatWeekly": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "shareArrivedTitle": "A shared alarm arrived 💌",
+  "shareArrivedWith": "Get reminded together with {nickname}",
+  "@shareArrivedWith": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "shareLater": "Later",
+  "shareAddToMyAlarms": "Add to my alarms",
+  "shareKeptInInbox": "📥 Saved to \"Shared links\" in your inbox",
+  "shareAddedTogether": "Alarm added! You're in this together 🔔",
+  "shareAddFailed": "Could not add alarm",
+  "slotFullTitle": "No alarm slots left",
+  "slotFullAdBody": "All your free alarm slots are in use.\nWatch an ad to add this shared alarm!\n\n(Premium = unlimited, no ads ✨)",
+  "slotFullLater": "Later",
+  "slotFullWatchAd": "Watch ad & add",
+  "adNotCompleted": "Ad was not completed",
+  "inboxSectionTitle": "📥 Shared links ({count})",
+  "@inboxSectionTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "inboxFrom": "From {nickname} · ⏰ {time}",
+  "@inboxFrom": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "inboxDecline": "Decline",
+  "inboxAdd": "Add",
+  "pingCheerToast": "📣 {nickname} cheered you on!",
+  "@pingCheerToast": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "pingPokeToast": "👉 {nickname} poked you!",
+  "@pingPokeToast": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "pingReferralToast": "🎁 A friend joined with your code!",
+  "pingInquiryToast": "💬 Your inquiry got a reply",
+  "pingGenericToast": "🔔 New notification",
+  "proofGalleryTitle": "Proof Gallery",
+  "proofLoadFailed": "Failed to load. Pull to refresh",
+  "proofNoSharedAlarms": "No shared alarms yet",
+  "proofNoSharedAlarmsHint": "Share a link with friends and\ncollect 3-sec proofs together here 💪",
+  "proofLatest": "latest {time}",
+  "@proofLatest": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "proofNoneYet": "No proofs yet",
+  "proofRecordMine": "Record proof",
+  "proofVerifyWindowClosed": "You can only record a proof within {minutes} min after the alarm",
+  "@proofVerifyWindowClosed": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "proofMineBadge": "Mine",
+  "timeAgoMinutes": "{count}m ago",
+  "@timeAgoMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeAgoHours": "{count}h ago",
+  "@timeAgoHours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeAgoDays": "{count}d ago",
+  "@timeAgoDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "guestPurchaseTitle": "Account required",
+  "guestPurchaseBody": "To keep your purchase safe across devices,\nplease link a Google or Apple account first.\n\nYour alarms and history will be kept!",
+  "guestPurchaseLink": "Link account",
+  "lockedSlotTitle": "Locked alarm slot",
+  "lockedSlotSubtitle": "Invite a friend +1 · Premium = unlimited",
+  "dayChipLabels": "M,T,W,T,F,S,S",
+  "cameraNotFound": "Camera not found",
+  "cameraInitFailed": "Camera init failed: {error}",
+  "@cameraInitFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "recordStartFailed": "Failed to start recording: {error}",
+  "@recordStartFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "recordStopFailed": "Failed to stop recording: {error}",
+  "@recordStopFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "proofDeleteFailed": "Delete failed: {error}",
+  "@proofDeleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "shareRepeatDaily": "Daily"
 }

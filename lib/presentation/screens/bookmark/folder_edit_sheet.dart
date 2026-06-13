@@ -22,9 +22,12 @@ class FolderEditSheet extends ConsumerStatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (_) => Padding(
+      // ※ 반드시 시트 자신의 context 로 viewInsets 를 읽어야
+      //   키보드가 올라올 때 패딩이 같이 올라간다.
+      //   (바깥 context 로 읽으면 빌더가 리빌드되지 않아 키보드에 가려짐)
+      builder: (sheetContext) => Padding(
         padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+          bottom: MediaQuery.of(sheetContext).viewInsets.bottom,
         ),
         child: FolderEditSheet(folder: folder),
       ),

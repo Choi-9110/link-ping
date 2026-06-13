@@ -733,22 +733,11 @@ class BadgeService {
     if (doc == null) return [];
 
     final stats = await getStats();
-    final newBadges = <BadgeType>[];
 
-    // Social Butterfly 체크 (받은 응원/찌르기 10개 이상)
-    final totalReceived = stats.cheersReceived + stats.pokesReceived;
-    if (totalReceived >= 10 &&
-        !stats.badges.any((b) => b.type == BadgeType.socialButterfly)) {
-      newBadges.add(BadgeType.socialButterfly);
-    }
-
-    // Badge Collector 체크 (뱃지 10개 이상)
-    final totalBadges = stats.badges.length + newBadges.length;
-    if (totalBadges >= 10 &&
-        !stats.badges.any((b) => b.type == BadgeType.badgeCollector) &&
-        !newBadges.contains(BadgeType.badgeCollector)) {
-      newBadges.add(BadgeType.badgeCollector);
-    }
+    // 현재 통계 기준으로 모든 stat 기반 뱃지를 재검사한다.
+    // 클릭 시점에 누락됐거나(저장 경합/개명 마이그레이션 등) 임계치를 채웠는데도
+    // 부여되지 않은 뱃지(예: 퀵드로우)를 여기서 회수해 활성화한다.
+    final newBadges = _checkBadges(stats, stats);
 
     // 새 뱃지가 있으면 저장
     if (newBadges.isNotEmpty) {

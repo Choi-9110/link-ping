@@ -235,7 +235,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
                 badge.type.localizedName(context),
                 style: theme.textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: isEarned ? null : colorScheme.outline,
+                  color: isEarned ? null : colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
@@ -247,7 +247,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
               Text(
                 _formatDate(badge.earned!.earnedAt),
                 style: theme.textTheme.labelSmall?.copyWith(
-                  color: colorScheme.outline,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               )
             else if (hasProgress)
@@ -268,7 +268,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
                       child: LinearProgressIndicator(
                         value: progressRatio,
                         minHeight: 4,
-                        backgroundColor: colorScheme.outline.withValues(alpha: 0.2),
+                        backgroundColor: colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
                         valueColor: AlwaysStoppedAnimation(colorScheme.primary),
                       ),
                     ),
@@ -319,7 +319,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
               Text(
                 badge.type.localizedDescription(sheetContext),
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.outline,
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -361,7 +361,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
                         child: LinearProgressIndicator(
                           value: progressRatio,
                           minHeight: 10,
-                          backgroundColor: theme.colorScheme.outline.withValues(alpha: 0.2),
+                          backgroundColor: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
                           valueColor: AlwaysStoppedAnimation(theme.colorScheme.primary),
                         ),
                       ),
@@ -370,7 +370,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
                     Text(
                       l10n.badgeProgressPercent((progressRatio * 100).toInt()),
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.outline,
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -388,7 +388,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
                   child: Text(
                     l10n.badgeNotYetEarned,
                     style: TextStyle(
-                      color: theme.colorScheme.outline,
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ),

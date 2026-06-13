@@ -136,7 +136,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
             Text(
               l10n.profileSetupSubtitle,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.outline,
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
 
@@ -269,7 +269,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
             Text(
               l10n.referralCodeQuestion,
               style: theme.textTheme.bodySmall?.copyWith(
-                color: colorScheme.outline,
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: Spacing.sm),
@@ -282,7 +282,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                 prefixIcon: const Icon(Icons.card_giftcard),
                 border: const OutlineInputBorder(),
                 helperText: l10n.referralCodeHelperText,
-                helperStyle: TextStyle(color: colorScheme.outline),
+                helperStyle: TextStyle(color: colorScheme.onSurfaceVariant),
               ),
               maxLength: 8,
             ),

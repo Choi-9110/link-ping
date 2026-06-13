@@ -36,7 +36,7 @@ class InquiryDetailScreen extends StatelessWidget {
                   Icon(
                     Icons.error_outline,
                     size: 64,
-                    color: colorScheme.outline,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                   const SizedBox(height: Spacing.md),
                   Text(l10n.inquiryNotFound),
@@ -78,7 +78,7 @@ class InquiryDetailScreen extends StatelessWidget {
                     Text(
                       _formatDateTime(inquiry.createdAt),
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: colorScheme.outline,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -122,7 +122,7 @@ class InquiryDetailScreen extends StatelessWidget {
                         child: Text(
                           l10n.reply,
                           style: theme.textTheme.labelMedium?.copyWith(
-                            color: colorScheme.outline,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ),

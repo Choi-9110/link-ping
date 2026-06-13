@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -6,6 +7,8 @@ import '../../core/theme/spacing.dart';
 import '../../l10n/app_localizations.dart';
 import '../../services/badge_service.dart';
 import '../../services/purchase_service.dart';
+import '../screens/settings/edit_profile_screen.dart';
+import 'dialog_actions.dart';
 
 /// 프리미엄 구매 바텀시트
 class PremiumPurchaseSheet extends ConsumerStatefulWidget {
@@ -46,10 +49,13 @@ class _PremiumPurchaseSheetState extends ConsumerState<PremiumPurchaseSheet> {
       // 프리미엄 뱃지 지급
       BadgeService.instance.recordPremiumPurchase();
 
+      // pop 이후엔 이 State 의 context 를 쓸 수 없으므로 먼저 캡처
+      final messenger = ScaffoldMessenger.of(context);
+      final message = AppLocalizations.of(context)!.premiumPurchaseSuccess;
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.premiumPurchaseSuccess),
+          content: Text(message),
           backgroundColor: Colors.green,
         ),
       );
@@ -67,22 +73,71 @@ class _PremiumPurchaseSheetState extends ConsumerState<PremiumPurchaseSheet> {
   void _onPurchaseRestored() {
     if (!mounted) return;
 
+    final messenger = ScaffoldMessenger.of(context);
+    final message = AppLocalizations.of(context)!.premiumRestoreSuccess;
     Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
+    messenger.showSnackBar(
       SnackBar(
-        content: Text(AppLocalizations.of(context)!.premiumRestoreSuccess),
+        content: Text(message),
         backgroundColor: Colors.green,
       ),
     );
   }
 
   Future<void> _buyProduct(ProductDetails product) async {
+    // 게스트 구매 차단 — 결제가 계정에 묶여 있어야 기기 변경/재설치 시
+    // 프리미엄과 데이터가 함께 복구된다. (연동해도 기존 데이터는 그대로 유지됨)
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null || user.isAnonymous) {
+      final gateL10n = AppLocalizations.of(context)!;
+      final go = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: Text(gateL10n.guestPurchaseTitle),
+          content: Text(gateL10n.guestPurchaseBody),
+          actions: [
+            DialogActions(buttons: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext, false),
+                child: Text(gateL10n.shareLater),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(dialogContext, true),
+                child: Text(gateL10n.guestPurchaseLink),
+              ),
+            ]),
+          ],
+        ),
+      );
+      if (go == true && mounted) {
+        Navigator.pop(context); // 결제 시트 닫기
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const EditProfileScreen()),
+        );
+      }
+      return;
+    }
+
     setState(() {
       _isLoading = true;
       _selectedProductId = product.id;
     });
 
-    await PurchaseService.instance.buyProduct(product);
+    // 시작 자체가 거부되면(스토어 불가/직전 거래 잔류 등) 스피너를 풀어준다
+    final started = await PurchaseService.instance.buyProduct(product);
+    if (!started && mounted) {
+      setState(() {
+        _isLoading = false;
+        _selectedProductId = null;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text(AppLocalizations.of(context)!.premiumPurchaseFailed),
+        ),
+      );
+    }
   }
 
   Future<void> _restorePurchases() async {
@@ -111,7 +166,7 @@ class _PremiumPurchaseSheetState extends ConsumerState<PremiumPurchaseSheet> {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: colorScheme.outline.withValues(alpha: 0.5),
+              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -158,7 +213,7 @@ class _PremiumPurchaseSheetState extends ConsumerState<PremiumPurchaseSheet> {
                 Text(
                   l10n.premiumSubtitle,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.outline,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -346,7 +401,7 @@ class _PremiumPurchaseSheetState extends ConsumerState<PremiumPurchaseSheet> {
                 Text(
                   desc,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.outline,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -384,7 +439,7 @@ class _PremiumPurchaseSheetState extends ConsumerState<PremiumPurchaseSheet> {
               border: Border.all(
                 color: isRecommended
                     ? colorScheme.primary
-                    : colorScheme.outline.withValues(alpha: 0.3),
+                    : colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
                 width: isRecommended ? 2 : 1,
               ),
             ),
@@ -445,7 +500,7 @@ class _PremiumPurchaseSheetState extends ConsumerState<PremiumPurchaseSheet> {
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 16,
-                    color: colorScheme.outline,
+                    color: colorScheme.onSurfaceVariant,
                   ),
               ],
             ),

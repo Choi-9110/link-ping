@@ -122,6 +122,8 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
     String? sharedLinkId, // 공유 링크 ID (공유받은 링크인 경우)
     String? creatorUid, // 원본 만든 사람 UID
     LinkCategory? category, // 카테고리
+    String? rootShareId, // 공유 체인 뿌리 ID (중복 등록 방지 기준)
+    String? shareVisibility, // 'all'=다같이 링 / 'chain'=릴레이 링
   }) async {
     final urlHash = _generateUrlHash(url);
 
@@ -140,6 +142,8 @@ class LinksNotifier extends StateNotifier<List<LinkReminder>> {
       sharedLinkId: sharedLinkId,
       creatorUid: creatorUid,
       category: category,
+      rootShareId: rootShareId,
+      shareVisibility: shareVisibility,
     );
 
     await _repository.saveLink(link);

@@ -2905,6 +2905,396 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong'**
   String get phoneGenericError;
+
+  /// No description provided for @deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteAccountConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your account? Your account, links, stats and proof videos will be permanently deleted. This cannot be undone.'**
+  String get deleteAccountConfirm;
+
+  /// No description provided for @deleteAccountReauth.
+  ///
+  /// In en, this message translates to:
+  /// **'For security, please sign in again and then retry.'**
+  String get deleteAccountReauth;
+
+  /// No description provided for @deleteAccountFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete account. Please try again later.'**
+  String get deleteAccountFailed;
+
+  /// No description provided for @ringModeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How should this connect?'**
+  String get ringModeTitle;
+
+  /// No description provided for @ringModeAllName.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone Ring'**
+  String get ringModeAllName;
+
+  /// No description provided for @ringModeAllDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Together with everyone who has the link'**
+  String get ringModeAllDesc;
+
+  /// No description provided for @ringModeChainName.
+  ///
+  /// In en, this message translates to:
+  /// **'Relay Ring'**
+  String get ringModeChainName;
+
+  /// No description provided for @ringModeChainDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Together with the people you shared with'**
+  String get ringModeChainDesc;
+
+  /// No description provided for @ringModeFixedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This choice is fixed for this alarm'**
+  String get ringModeFixedNote;
+
+  /// No description provided for @ringModeHelpTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get ringModeHelpTooltip;
+
+  /// No description provided for @ringModeHelpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s the difference?'**
+  String get ringModeHelpTitle;
+
+  /// No description provided for @ringModeHelpBody.
+  ///
+  /// In en, this message translates to:
+  /// **'🔗 Everyone Ring\nA creates it, shares to B, B passes to C\n→ A, B and C are all in one group.\nEveryone sees and cheers each other\'s 3-sec proofs.\n\n🤝 Relay Ring\nPassed along A → B → C → D\n→ C only sees B (who shared it) and D (who C shared to). Not A.\nYour 3-sec proofs are visible only to people you directly exchanged with.\n\n💡 It changes who can see your proof videos.\nFamily & close friends = Relay Ring,\ncrews & study groups = Everyone Ring!'**
+  String get ringModeHelpBody;
+
+  /// No description provided for @ringModeHelpOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it!'**
+  String get ringModeHelpOk;
+
+  /// No description provided for @ringBannerAll.
+  ///
+  /// In en, this message translates to:
+  /// **'🔗 Everyone Ring — proofs visible to everyone with this link'**
+  String get ringBannerAll;
+
+  /// No description provided for @ringBannerChain.
+  ///
+  /// In en, this message translates to:
+  /// **'🤝 Relay Ring — proofs visible only to people you share with'**
+  String get ringBannerChain;
+
+  /// No description provided for @shareAlreadySaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Already saved'**
+  String get shareAlreadySaved;
+
+  /// No description provided for @shareNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared link not found'**
+  String get shareNotFound;
+
+  /// No description provided for @shareDuplicateAlarm.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have this alarm'**
+  String get shareDuplicateAlarm;
+
+  /// No description provided for @shareRepeatWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}x/week'**
+  String shareRepeatWeekly(int count);
+
+  /// No description provided for @shareArrivedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A shared alarm arrived 💌'**
+  String get shareArrivedTitle;
+
+  /// No description provided for @shareArrivedWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Get reminded together with {nickname}'**
+  String shareArrivedWith(String nickname);
+
+  /// No description provided for @shareLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get shareLater;
+
+  /// No description provided for @shareAddToMyAlarms.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to my alarms'**
+  String get shareAddToMyAlarms;
+
+  /// No description provided for @shareKeptInInbox.
+  ///
+  /// In en, this message translates to:
+  /// **'📥 Saved to \"Shared links\" in your inbox'**
+  String get shareKeptInInbox;
+
+  /// No description provided for @shareAddedTogether.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm added! You\'re in this together 🔔'**
+  String get shareAddedTogether;
+
+  /// No description provided for @shareAddFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not add alarm'**
+  String get shareAddFailed;
+
+  /// No description provided for @slotFullTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No alarm slots left'**
+  String get slotFullTitle;
+
+  /// No description provided for @slotFullAdBody.
+  ///
+  /// In en, this message translates to:
+  /// **'All your free alarm slots are in use.\nWatch an ad to add this shared alarm!\n\n(Premium = unlimited, no ads ✨)'**
+  String get slotFullAdBody;
+
+  /// No description provided for @slotFullLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get slotFullLater;
+
+  /// No description provided for @slotFullWatchAd.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch ad & add'**
+  String get slotFullWatchAd;
+
+  /// No description provided for @adNotCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad was not completed'**
+  String get adNotCompleted;
+
+  /// No description provided for @inboxSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'📥 Shared links ({count})'**
+  String inboxSectionTitle(int count);
+
+  /// No description provided for @inboxFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From {nickname} · ⏰ {time}'**
+  String inboxFrom(String nickname, String time);
+
+  /// No description provided for @inboxDecline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get inboxDecline;
+
+  /// No description provided for @inboxAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get inboxAdd;
+
+  /// No description provided for @pingCheerToast.
+  ///
+  /// In en, this message translates to:
+  /// **'📣 {nickname} cheered you on!'**
+  String pingCheerToast(String nickname);
+
+  /// No description provided for @pingPokeToast.
+  ///
+  /// In en, this message translates to:
+  /// **'👉 {nickname} poked you!'**
+  String pingPokeToast(String nickname);
+
+  /// No description provided for @pingReferralToast.
+  ///
+  /// In en, this message translates to:
+  /// **'🎁 A friend joined with your code!'**
+  String get pingReferralToast;
+
+  /// No description provided for @pingInquiryToast.
+  ///
+  /// In en, this message translates to:
+  /// **'💬 Your inquiry got a reply'**
+  String get pingInquiryToast;
+
+  /// No description provided for @pingGenericToast.
+  ///
+  /// In en, this message translates to:
+  /// **'🔔 New notification'**
+  String get pingGenericToast;
+
+  /// No description provided for @proofGalleryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Proof Gallery'**
+  String get proofGalleryTitle;
+
+  /// No description provided for @proofLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load. Pull to refresh'**
+  String get proofLoadFailed;
+
+  /// No description provided for @proofNoSharedAlarms.
+  ///
+  /// In en, this message translates to:
+  /// **'No shared alarms yet'**
+  String get proofNoSharedAlarms;
+
+  /// No description provided for @proofNoSharedAlarmsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Share a link with friends and\ncollect 3-sec proofs together here 💪'**
+  String get proofNoSharedAlarmsHint;
+
+  /// No description provided for @proofLatest.
+  ///
+  /// In en, this message translates to:
+  /// **'latest {time}'**
+  String proofLatest(String time);
+
+  /// No description provided for @proofNoneYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No proofs yet'**
+  String get proofNoneYet;
+
+  /// No description provided for @proofRecordMine.
+  ///
+  /// In en, this message translates to:
+  /// **'Record proof'**
+  String get proofRecordMine;
+
+  /// No description provided for @proofVerifyWindowClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'You can only record a proof within {minutes} min after the alarm'**
+  String proofVerifyWindowClosed(int minutes);
+
+  /// No description provided for @proofMineBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Mine'**
+  String get proofMineBadge;
+
+  /// No description provided for @timeAgoMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}m ago'**
+  String timeAgoMinutes(int count);
+
+  /// No description provided for @timeAgoHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}h ago'**
+  String timeAgoHours(int count);
+
+  /// No description provided for @timeAgoDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}d ago'**
+  String timeAgoDays(int count);
+
+  /// No description provided for @guestPurchaseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account required'**
+  String get guestPurchaseTitle;
+
+  /// No description provided for @guestPurchaseBody.
+  ///
+  /// In en, this message translates to:
+  /// **'To keep your purchase safe across devices,\nplease link a Google or Apple account first.\n\nYour alarms and history will be kept!'**
+  String get guestPurchaseBody;
+
+  /// No description provided for @guestPurchaseLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Link account'**
+  String get guestPurchaseLink;
+
+  /// No description provided for @lockedSlotTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked alarm slot'**
+  String get lockedSlotTitle;
+
+  /// No description provided for @lockedSlotSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite a friend +1 · Premium = unlimited'**
+  String get lockedSlotSubtitle;
+
+  /// No description provided for @dayChipLabels.
+  ///
+  /// In en, this message translates to:
+  /// **'M,T,W,T,F,S,S'**
+  String get dayChipLabels;
+
+  /// No description provided for @cameraNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera not found'**
+  String get cameraNotFound;
+
+  /// No description provided for @cameraInitFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera init failed: {error}'**
+  String cameraInitFailed(String error);
+
+  /// No description provided for @recordStartFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start recording: {error}'**
+  String recordStartFailed(String error);
+
+  /// No description provided for @recordStopFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to stop recording: {error}'**
+  String recordStopFailed(String error);
+
+  /// No description provided for @proofDeleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete failed: {error}'**
+  String proofDeleteFailed(String error);
+
+  /// No description provided for @shareRepeatDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get shareRepeatDaily;
 }
 
 class _AppLocalizationsDelegate

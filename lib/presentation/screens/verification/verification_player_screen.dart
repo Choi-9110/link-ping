@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+
+import '../../../l10n/app_localizations.dart';
+
+import '../../widgets/dialog_actions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 
@@ -8,6 +14,7 @@ import '../../../providers/user_provider.dart';
 import '../../../providers/verification_provider.dart';
 import '../../../services/pixel_emoji_service.dart';
 import '../../../services/verification_video_service.dart';
+import '../../../services/verification_media_cache.dart';
 import 'verification_report_dialog.dart';
 import 'verification_viewers_screen.dart';
 
@@ -36,8 +43,18 @@ class _VerificationPlayerScreenState
 
   Future<void> _init() async {
     try {
-      final controller =
-          VideoPlayerController.networkUrl(Uri.parse(widget.video.videoUrl));
+      // 로컬 캐시 우선: 처음엔 받아서 저장, 다음부터는 로컬 파일에서 즉시 재생.
+      // 캐시 조회/다운로드 실패 시 기존처럼 네트워크 스트리밍으로 폴백.
+      VideoPlayerController controller;
+      try {
+        final path =
+            await VerificationMediaCache.videoFilePath(widget.video.videoUrl);
+        if (!mounted) return;
+        controller = VideoPlayerController.file(File(path));
+      } catch (_) {
+        controller =
+            VideoPlayerController.networkUrl(Uri.parse(widget.video.videoUrl));
+      }
       if (mounted) setState(() => _controller = controller);
       await controller.initialize();
       if (!mounted) return;
@@ -74,17 +91,19 @@ class _VerificationPlayerScreenState
               : 'This cannot be undone. Viewers will lose access.',
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text(isKorean ? '취소' : 'Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: Text(
-              isKorean ? '삭제' : 'Delete',
-              style: TextStyle(color: Theme.of(context).colorScheme.error),
+          DialogActions(buttons: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(isKorean ? '취소' : 'Cancel'),
             ),
-          ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: Text(
+                isKorean ? '삭제' : 'Delete',
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+          ]),
         ],
       ),
     );
@@ -101,7 +120,7 @@ class _VerificationPlayerScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('삭제 실패: $e')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.proofDeleteFailed('$e'))),
         );
       }
     }

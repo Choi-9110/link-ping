@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
+import '../../widgets/dialog_actions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import '../../../l10n/app_localizations.dart';
@@ -26,6 +28,7 @@ import '../notifications/notifications_screen.dart';
 import '../settings/settings_screen.dart';
 // banner_ad_widget은 MainShell에서 통합 관리
 import '../../widgets/native_ad_widget.dart';
+import '../../widgets/premium_purchase_sheet.dart';
 import '../../widgets/share_preview_dialog.dart';
 import '../../widgets/link_share_preview_dialog.dart';
 import '../../widgets/poring_counter_widget.dart';
@@ -274,12 +277,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       final adCount = isPremium
                           ? 0
                           : (links.length / adInterval).floor();
-                      final totalItems = links.length + adCount;
+                      // 한도 가득 찬 무료 유저에겐 맨 아래 "잠긴 칸" 카드 노출
+                      final showLockedSlot = !isPremium && !canAddMore;
+                      final totalItems =
+                          links.length + adCount + (showLockedSlot ? 1 : 0);
 
                       return ListView.builder(
                         padding: const EdgeInsets.all(Spacing.md),
                         itemCount: totalItems,
                         itemBuilder: (context, index) {
+                          // 맨 아래: 잠긴 알람 칸 (탭하면 해제 방법 안내)
+                          if (showLockedSlot && index == totalItems - 1) {
+                            return _LockedSlotCard(
+                              onTap: () => _showPremiumDialog(context),
+                            );
+                          }
+
                           // 프리미엄이면 광고 없이 링크만
                           if (isPremium) {
                             final link = links[index];
@@ -508,7 +521,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           child: LinearProgressIndicator(
                             value: target > 0 ? progress / target : 0,
                             minHeight: 6,
-                            backgroundColor: colorScheme.outline.withValues(
+                            backgroundColor: colorScheme.onSurfaceVariant.withValues(
                               alpha: 0.2,
                             ),
                             valueColor: AlwaysStoppedAnimation(
@@ -646,35 +659,213 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _doShare(context, link);
   }
 
+  /// 연결 모드 선택 — 링꾸 시그니처: 다같이 링 🔗 / 릴레이 링 🤝
+  Future<String?> _pickShareMode(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
+    Widget modeCard({
+      required String emoji,
+      required String name,
+      required String desc,
+      required String value,
+      required Color accent,
+      required BuildContext dialogContext,
+    }) {
+      return InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () => Navigator.pop(dialogContext, value),
+        child: Container(
+          width: double.maxFinite,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: accent.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: accent.withValues(alpha: 0.5)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('$emoji $name',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                    color: accent,
+                  )),
+              const SizedBox(height: 6),
+              Text(desc,
+                  style: TextStyle(
+                    fontSize: 13,
+                    height: 1.4,
+                    color: colorScheme.onSurfaceVariant,
+                  )),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // ❕ 상세 설명 (A·B·C 예시) — 인증 노출 범위가 핵심
+    void showModeHelp(BuildContext outerContext) {
+      showDialog(
+        context: outerContext,
+        builder: (helpContext) => AlertDialog(
+          title: Text(l10n.ringModeHelpTitle),
+          content: SingleChildScrollView(
+            child: Text(
+              l10n.ringModeHelpBody,
+              style: const TextStyle(fontSize: 14, height: 1.6),
+            ),
+          ),
+          actions: [
+            DialogActions(buttons: [
+              FilledButton(
+                onPressed: () => Navigator.pop(helpContext),
+                child: Text(l10n.ringModeHelpOk),
+              ),
+            ]),
+          ],
+        ),
+      );
+    }
+
+    return showDialog<String>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Row(
+          children: [
+            Expanded(
+              child: Text(l10n.ringModeTitle),
+            ),
+            // ❕ 자세한 설명 (A·B·C 예시)
+            IconButton(
+              icon: Icon(Icons.help_outline,
+                  color: colorScheme.onSurfaceVariant, size: 22),
+              tooltip: l10n.ringModeHelpTooltip,
+              onPressed: () => showModeHelp(dialogContext),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            modeCard(
+              emoji: '🔗',
+              name: l10n.ringModeAllName,
+              desc: l10n.ringModeAllDesc,
+              value: 'all',
+              accent: colorScheme.primary,
+              dialogContext: dialogContext,
+            ),
+            const SizedBox(height: 12),
+            modeCard(
+              emoji: '🤝',
+              name: l10n.ringModeChainName,
+              desc: l10n.ringModeChainDesc,
+              value: 'chain',
+              accent: colorScheme.secondary,
+              dialogContext: dialogContext,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.ringModeFixedNote,
+              style: TextStyle(
+                fontSize: 11,
+                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _doShare(BuildContext context, LinkReminder link) async {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context);
     final isKorean = locale.languageCode == 'ko';
 
-    // 로딩 표시
-    ToastOverlay.show(
-      context,
-      message: l10n.generatingShareLink,
-      icon: Icons.link,
-      duration: const Duration(seconds: 1),
-    );
-
     try {
-      // Firestore에 공유 링크 생성 (링크의 isLocked 값 + 언어 코드)
-      final shareId = await FirestoreService.instance.createSharedLink(
-        url: link.url,
-        title: link.title,
-        hour: link.hour,
-        minute: link.minute,
-        repeatDays: link.repeatDays,
-        isLocked: link.isLocked,
-        languageCode: locale.languageCode, // 공유자의 언어 코드 저장
-      );
+      // 공유 문서 결정 규칙:
+      // 1) 내가 이미 뿌린 고리(outgoingShareId)가 있으면 그대로 재사용 (URL 고정)
+      // 2) 첫 공유(원작자)면 연결 모드 선택 → 뿌리 문서 생성
+      // 3) 공유받은 링크 재공유:
+      //    - 다같이 링: 같은 문서 재사용 (전원 한 그룹)
+      //    - 릴레이 링: 내 고리(자식 문서) 생성 — 뿌리 ID로 묶임
+      final String shareId;
+      String? shareMode; // 공유 미리보기 안내용 ('all'/'chain')
+      if (link.outgoingShareId != null) {
+        shareId = link.outgoingShareId!;
+        shareMode = link.shareVisibility;
+      } else if (link.sharedLinkId == null) {
+        // 원작자 첫 공유 — 연결 모드 선택 (시그니처 모먼트)
+        final mode = await _pickShareMode(context);
+        if (mode == null) return; // 취소
+        shareMode = mode;
 
-      // 로컬 링크에 sharedLinkId 저장 (Saved by 표시 + 삭제/수정 알림용)
-      if (link.sharedLinkId == null) {
-        final updatedLink = link.copyWith(sharedLinkId: shareId);
-        ref.read(linksProvider.notifier).updateLink(updatedLink);
+        if (!context.mounted) return;
+        ToastOverlay.show(
+          context,
+          message: l10n.generatingShareLink,
+          icon: Icons.link,
+          duration: const Duration(seconds: 1),
+        );
+
+        shareId = await FirestoreService.instance.createSharedLink(
+          url: link.url,
+          title: link.title,
+          hour: link.hour,
+          minute: link.minute,
+          repeatDays: link.repeatDays,
+          isLocked: link.isLocked,
+          languageCode: locale.languageCode,
+          visibility: mode,
+        );
+
+        ref.read(linksProvider.notifier).updateLink(link.copyWith(
+              sharedLinkId: shareId,
+              outgoingShareId: shareId,
+              rootShareId: shareId,
+              shareVisibility: mode,
+            ));
+      } else {
+        // 공유받은 링크 재공유 — 모드는 원본을 따라감 (레거시는 다같이)
+        var mode = link.shareVisibility;
+        if (mode == null) {
+          final origin =
+              await FirestoreService.instance.getSharedLink(link.sharedLinkId!);
+          mode = origin?.visibility ?? 'all';
+        }
+        shareMode = mode;
+
+        if (mode == 'chain') {
+          // 릴레이 링: 내 고리(자식 문서) 생성
+          final rootId = link.rootShareId ?? link.sharedLinkId!;
+          shareId = await FirestoreService.instance.createSharedLink(
+            url: link.url,
+            title: link.title,
+            hour: link.hour,
+            minute: link.minute,
+            repeatDays: link.repeatDays,
+            isLocked: link.isLocked,
+            languageCode: locale.languageCode,
+            visibility: 'chain',
+            rootShareId: rootId,
+          );
+          ref.read(linksProvider.notifier).updateLink(link.copyWith(
+                outgoingShareId: shareId,
+                rootShareId: rootId,
+                shareVisibility: 'chain',
+              ));
+        } else {
+          // 다같이 링: 같은 문서 재사용
+          shareId = link.sharedLinkId!;
+          ref.read(linksProvider.notifier).updateLink(link.copyWith(
+                outgoingShareId: shareId,
+                rootShareId: link.rootShareId ?? shareId,
+                shareVisibility: 'all',
+              ));
+        }
       }
 
       // 공유 URL 생성
@@ -689,6 +880,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         shareUrl: shareUrl,
         isLocked: link.isLocked,
         isKorean: isKorean,
+        visibility: shareMode, // 모드 안내줄 (재공유자는 안내만, 변경 불가)
       );
     } catch (e) {
       if (context.mounted) {
@@ -800,7 +992,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Text(
               l10n.inviteFriendBonusDesc,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.outline,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               textAlign: TextAlign.center,
             ),
@@ -810,9 +1002,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           FilledButton(
             onPressed: () {
               Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              // 설정 거치지 않고 결제 바텀시트 바로 띄움 (전환 마찰 최소화)
+              showModalBottomSheet(
+                context: this.context,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                builder: (context) => const PremiumPurchaseSheet(),
               );
             },
             child: Text(l10n.viewPremium),
@@ -863,6 +1061,80 @@ class _LinkCardWithCount extends ConsumerWidget {
       onTap: onTap,
       onToggle: onToggle,
       onDelete: onDelete,
+    );
+  }
+}
+
+/// 한도가 가득 찬 무료 유저에게 보여주는 "잠긴 알람 칸" 카드.
+/// 리스트에서 한도의 존재를 보이게 하고, 탭하면 해제 방법(친구 초대/프리미엄) 안내.
+class _LockedSlotCard extends StatelessWidget {
+  const _LockedSlotCard({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Spacing.sm),
+      child: Material(
+        color: colorScheme.surface.withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(16),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            padding: const EdgeInsets.all(Spacing.md),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: colorScheme.outline),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHighest
+                        .withValues(alpha: 0.6),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(Icons.lock_outline,
+                      color: colorScheme.onSurfaceVariant),
+                ),
+                const SizedBox(width: Spacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.lockedSlotTitle,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        l10n.lockedSlotSubtitle,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant
+                              .withValues(alpha: 0.8),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(Icons.chevron_right,
+                    color: colorScheme.onSurfaceVariant),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

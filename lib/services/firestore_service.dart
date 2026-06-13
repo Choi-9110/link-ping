@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 
 import '../data/models/user_profile.dart';
@@ -97,18 +98,65 @@ class FirestoreService {
   }
 
   /// 사용자 프로필 가져오기
+  /// 본인 조회면 private 서브컬렉션의 전화번호를 머지한다.
   Future<UserProfile?> getUserProfile(String uid) async {
     final doc = await _usersCollection.doc(uid).get();
     if (!doc.exists) return null;
-    return UserProfile.fromFirestore(doc);
+    var profile = UserProfile.fromFirestore(doc);
+    if (uid == _auth.currentUser?.uid) {
+      final phone = await _fetchPrivatePhoneNumber(uid);
+      if (phone != null) profile = profile.copyWith(phoneNumber: phone);
+    }
+    return profile;
   }
 
   /// 사용자 프로필 스트림 (실시간 업데이트)
+  /// 본인 스트림이면 private 전화번호를 머지한다.
   Stream<UserProfile?> userProfileStream(String uid) {
-    return _usersCollection.doc(uid).snapshots().map((doc) {
+    return _usersCollection.doc(uid).snapshots().asyncMap((doc) async {
       if (!doc.exists) return null;
-      return UserProfile.fromFirestore(doc);
+      var profile = UserProfile.fromFirestore(doc);
+      if (uid == _auth.currentUser?.uid) {
+        final phone = await _fetchPrivatePhoneNumber(uid);
+        if (phone != null) profile = profile.copyWith(phoneNumber: phone);
+      }
+      return profile;
     });
+  }
+
+  // ==================== 민감정보 (private 서브컬렉션) ====================
+  // 전화번호는 공개 프로필(users/{uid})이 아닌 users/{uid}/private/profile 에
+  // 저장한다. users 문서는 로그인 유저 전체가 읽을 수 있기 때문(보안 규칙 참조).
+
+  DocumentReference<Map<String, dynamic>> _privateProfileDoc(String uid) =>
+      _usersCollection.doc(uid).collection('private').doc('profile');
+
+  Future<String?> _fetchPrivatePhoneNumber(String uid) async {
+    try {
+      final doc = await _privateProfileDoc(uid).get();
+      final phone = doc.data()?['phoneNumber'] as String?;
+      if (phone != null) return phone;
+    } catch (_) {}
+    // 레거시: 과거 공개 문서에 저장돼 있던 값 fallback (savePhoneNumber 시 제거됨)
+    return null;
+  }
+
+  /// 내 전화번호 저장/삭제 (null 이면 삭제)
+  Future<void> savePhoneNumber(String? phoneNumber) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+
+    await _privateProfileDoc(uid).set({
+      'phoneNumber': phoneNumber ?? FieldValue.delete(),
+      'updatedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+
+    // 마이그레이션: 공개 문서에 남아있던 레거시 전화번호 제거
+    try {
+      await _usersCollection.doc(uid).update({
+        'phoneNumber': FieldValue.delete(),
+      });
+    } catch (_) {}
   }
 
   // ==================== 링크 클라우드 백업 (프리미엄 전용) ====================
@@ -212,13 +260,14 @@ class FirestoreService {
     final uid = _auth.currentUser?.uid;
     if (uid == null) return;
 
-    await _usersCollection.doc(uid).update({
+    // set(merge): 문서가 아직 없어도(게스트→첫 결제 등) NOT_FOUND 로 터지지 않게
+    await _usersCollection.doc(uid).set({
       'isPremium': isPremium,
       'premiumProductId': productId,
       'premiumPurchaseToken': purchaseToken,
       'premiumUpdatedAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
-    });
+    }, SetOptions(merge: true));
   }
 
   // ==================== URL 통계 (소셜 기능) ====================
@@ -520,11 +569,15 @@ class FirestoreService {
     required List<int> repeatDays,
     bool isLocked = false,
     String languageCode = 'en', // 공유자의 언어 코드
+    String visibility = 'all', // 'all'=다같이 링 / 'chain'=릴레이 링
+    String? rootShareId, // 릴레이 자식 문서일 때 뿌리 ID (null=내가 뿌리)
   }) async {
     final user = _auth.currentUser;
     if (user == null) throw Exception('로그인이 필요합니다');
 
     final nickname = await _getCurrentNickname();
+    final emoji = await _getCurrentEmoji();
+    final country = await _getCurrentCountry();
 
     final docRef = _sharedLinksCollection.doc();
     final sharedLink = SharedLink(
@@ -539,9 +592,25 @@ class FirestoreService {
       createdAt: DateTime.now(),
       isLocked: isLocked,
       languageCode: languageCode,
+      visibility: visibility,
+      rootShareId: rootShareId,
     );
 
-    await docRef.set(sharedLink.toJson());
+    // 공유자 본인도 "함께 하는 사람"의 1번으로 포함한다 —
+    // 빠뜨리면 받은 쪽 목록에 자기 자신만 보이고 공유자가 없다.
+    await docRef.set({
+      ...sharedLink.toJson(),
+      'saveCount': 1,
+      'savedBy': [
+        {
+          'uid': user.uid,
+          'nickname': nickname,
+          'profileEmoji': emoji,
+          if (country != null) 'country': country,
+        },
+      ],
+      'savedByUids': [user.uid],
+    });
 
     return docRef.id;
   }
@@ -578,11 +647,10 @@ class FirestoreService {
     for (final uid in sharedLink.savedByUids) {
       if (uid == user.uid) continue; // 자기 자신 제외
 
-      final notificationRef = _firestore
-          .collection('users')
-          .doc(uid)
-          .collection('notifications')
-          .doc();
+      // ※ 알림 수신함의 실제 경로는 notifications/{uid}/items
+      //   (기존 users/{uid}/notifications 는 아무도 읽지 않는 죽은 경로였음)
+      final notificationRef =
+          _notificationsCollection.doc(uid).collection('items').doc();
 
       await notificationRef.set({
         'type': 'link_deleted',
@@ -678,12 +746,10 @@ class FirestoreService {
     await docRef.set(request.toFirestore());
 
     // 투표 대상자들에게 알림 보내기
+    // ※ 알림 수신함의 실제 경로는 notifications/{uid}/items
     for (final uid in voterUids) {
-      final notificationRef = _firestore
-          .collection('users')
-          .doc(uid)
-          .collection('notifications')
-          .doc();
+      final notificationRef =
+          _notificationsCollection.doc(uid).collection('items').doc();
 
       await notificationRef.set({
         'type': 'modification_request',
@@ -850,11 +916,9 @@ class FirestoreService {
     String? sharedLinkId,
     String? modificationRequestId,
   }) async {
-    final notificationRef = _firestore
-        .collection('users')
-        .doc(toUid)
-        .collection('notifications')
-        .doc();
+    // ※ 알림 수신함의 실제 경로는 notifications/{uid}/items
+    final notificationRef =
+        _notificationsCollection.doc(toUid).collection('items').doc();
 
     await notificationRef.set({
       'type': type,
@@ -1101,14 +1165,14 @@ class FirestoreService {
             });
       }
     } else {
-      // 2번째+ 추천 → 포링 +5
-      await addPendingPoringReward(referrerUid, 5);
+      // 2번째+ 추천 → 포링 +3 (첫 초대만 칸 +1 — 다단계 방지)
+      await addPendingPoringReward(referrerUid, 3);
       await _notificationsCollection.doc(referrerUid).collection('items').add({
         'type': 'referral_accepted',
         'fromUid': newUserUid,
         'fromNickname': nickname,
         'urlTitle': '',
-        'message': '$nickname accepted your invite! Poring +5',
+        'message': '$nickname accepted your invite! Poring +3',
         'createdAt': FieldValue.serverTimestamp(),
         'isRead': false,
       });
@@ -1132,13 +1196,14 @@ class FirestoreService {
       final doc = await _usersCollection.doc(uid).get();
       if (!doc.exists) return 0;
 
-      final pending = doc.data()?['pendingPoringReward'] ?? 0;
+      // Firestore 숫자는 int/double 어느 쪽으로도 올 수 있어 num으로 안전 변환.
+      final pending = (doc.data()?['pendingPoringReward'] as num?)?.toInt() ?? 0;
       if (pending <= 0) return 0;
 
       // Firestore에서 0으로 리셋
       await _usersCollection.doc(uid).update({'pendingPoringReward': 0});
 
-      return pending as int;
+      return pending;
     } catch (e) {
       return 0;
     }
@@ -1425,6 +1490,89 @@ class FirestoreService {
       }, SetOptions(merge: true));
     } catch (e) {
       // 통계 실패는 무시
+    }
+  }
+
+  // ==================== 회원 탈퇴 ====================
+
+  /// 회원 탈퇴: 본인 클라우드 데이터 전체 삭제.
+  /// 반드시 Firebase Auth 계정 삭제(user.delete()) **전에** 호출해야 한다 —
+  /// Auth 가 사라지면 보안 규칙 때문에 더 이상 본인 데이터를 지울 수 없다.
+  Future<void> deleteAllUserData() async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+
+    // 1. users/{uid} 서브컬렉션 (차단목록/대시보드/링크백업/민감정보)
+    for (final sub in ['blockedUsers', 'stats', 'links', 'private']) {
+      await _deleteSubcollection(_usersCollection.doc(uid).collection(sub));
+    }
+    // 1-1. 알림 수신함 (실제 경로: notifications/{uid}/items)
+    await _deleteSubcollection(
+        _notificationsCollection.doc(uid).collection('items'));
+
+    // 2. 내가 올린 인증 영상 문서 + Storage 파일
+    try {
+      final videos = await _firestore
+          .collection('verificationVideos')
+          .where('uploaderUid', isEqualTo: uid)
+          .get();
+      for (final doc in videos.docs) {
+        await doc.reference.delete();
+      }
+    } catch (e) {
+      debugPrint('탈퇴: 인증영상 문서 삭제 실패: $e');
+    }
+    try {
+      final files = await FirebaseStorage.instance.ref('verifications/$uid').listAll();
+      for (final item in files.items) {
+        await item.delete();
+      }
+    } catch (e) {
+      debugPrint('탈퇴: 인증영상 파일 삭제 실패: $e');
+    }
+
+    // 3. 내 문의
+    try {
+      final inquiries = await _firestore
+          .collection('inquiries')
+          .where('userId', isEqualTo: uid)
+          .get();
+      for (final doc in inquiries.docs) {
+        await doc.reference.delete();
+      }
+    } catch (e) {
+      debugPrint('탈퇴: 문의 삭제 실패: $e');
+    }
+
+    // 4. 뱃지/통계 + 프로필 문서 (프로필은 마지막 — isAdmin 규칙 참조 대상)
+    try {
+      await _firestore.collection('userStats').doc(uid).delete();
+    } catch (e) {
+      debugPrint('탈퇴: userStats 삭제 실패: $e');
+    }
+    try {
+      await _usersCollection.doc(uid).delete();
+    } catch (e) {
+      debugPrint('탈퇴: 프로필 삭제 실패: $e');
+    }
+  }
+
+  /// 서브컬렉션 문서 일괄 삭제 (배치 200개씩)
+  Future<void> _deleteSubcollection(
+      CollectionReference<Map<String, dynamic>> col) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snap;
+      do {
+        snap = await col.limit(200).get();
+        if (snap.docs.isEmpty) break;
+        final batch = _firestore.batch();
+        for (final d in snap.docs) {
+          batch.delete(d.reference);
+        }
+        await batch.commit();
+      } while (snap.docs.length == 200);
+    } catch (e) {
+      debugPrint('탈퇴: 서브컬렉션 삭제 실패(${col.path}): $e');
     }
   }
 }

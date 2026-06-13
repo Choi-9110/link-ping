@@ -56,8 +56,11 @@ class UserProfile {
       'profileEmoji': profileEmoji,
       'bonusLinks': bonusLinks,
       if (referredBy != null) 'referredBy': referredBy,
-      if (phoneNumber != null) 'phoneNumber': phoneNumber,
-      'pendingPoringReward': pendingPoringReward,
+      // phoneNumber: 공개 문서에 저장 금지 — users/{uid}/private/profile 에만
+      //   저장한다 (FirestoreService.savePhoneNumber). users 문서는 모든 로그인
+      //   유저가 읽을 수 있어 여기 두면 전화번호가 노출된다.
+      // pendingPoringReward: increment/claim 으로만 변경 — 여기서 다시 쓰면
+      //   저장 사이에 적립된 보상을 옛값으로 덮어쓴다(lost update).
     };
   }
 

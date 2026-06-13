@@ -134,7 +134,7 @@ class _VerificationUploadSheetState
                 _error!,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall
-                    ?.copyWith(color: colorScheme.outline),
+                    ?.copyWith(color: colorScheme.onSurfaceVariant),
               ),
               const SizedBox(height: Spacing.lg),
               SizedBox(
@@ -157,7 +157,7 @@ class _VerificationUploadSheetState
               Text(
                 isKorean ? '함께 공유받은 친구들에게 전해질 거예요' : 'Your friends will see it',
                 style: theme.textTheme.bodySmall
-                    ?.copyWith(color: colorScheme.outline),
+                    ?.copyWith(color: colorScheme.onSurfaceVariant),
               ),
             ] else ...[
               Text(
@@ -177,7 +177,7 @@ class _VerificationUploadSheetState
               Text(
                 '${(_progress * 100).clamp(0, 100).toStringAsFixed(0)}%',
                 style: theme.textTheme.bodySmall
-                    ?.copyWith(color: colorScheme.outline),
+                    ?.copyWith(color: colorScheme.onSurfaceVariant),
               ),
               const SizedBox(height: Spacing.lg),
               Text(
@@ -185,7 +185,7 @@ class _VerificationUploadSheetState
                     ? '잠시만 기다려주세요 (보통 5초 이내)'
                     : 'Just a moment (usually under 5s)',
                 style: theme.textTheme.bodySmall
-                    ?.copyWith(color: colorScheme.outline),
+                    ?.copyWith(color: colorScheme.onSurfaceVariant),
               ),
             ],
           ],

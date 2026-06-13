@@ -141,7 +141,7 @@ class _PoringEarnDialogState extends ConsumerState<PoringEarnDialog> {
           Text(
             l10n.poringEarnDescription,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: colorScheme.outline,
+              color: colorScheme.onSurfaceVariant,
             ),
             textAlign: TextAlign.center,
           ),

@@ -85,6 +85,20 @@ class VerificationVideoService {
       }
     }
 
+    // 2-1. 릴레이 링 노출 범위 계산용 rootShareId 파생
+    //      (공유 문서에서 읽음 — 호출부 5곳에 일일이 흘려보내지 않기 위함)
+    String? rootShareId;
+    if (sharedLinkId != null) {
+      try {
+        final shareDoc =
+            await _firestore.collection('sharedLinks').doc(sharedLinkId).get();
+        rootShareId =
+            shareDoc.data()?['rootShareId'] as String? ?? sharedLinkId;
+      } catch (_) {
+        rootShareId = sharedLinkId;
+      }
+    }
+
     // 3. Firestore 메타데이터 저장
     final now = DateTime.now();
     final video = VerificationVideo(
@@ -93,6 +107,7 @@ class VerificationVideoService {
       uploaderNickname: uploaderNickname,
       uploaderProfileEmoji: uploaderProfileEmoji,
       sharedLinkId: sharedLinkId,
+      rootShareId: rootShareId,
       storagePath: storagePath,
       videoUrl: videoUrl,
       thumbnailUrl: thumbnailUrl,
@@ -102,7 +117,54 @@ class VerificationVideoService {
       expiresAt: now.add(retention),
     );
     await _collection.doc(id).set(video.toFirestore());
+
+    // 같은 링크에 내가 올린 이전 인증은 정리 (재인증 = 최신 1개로 교체, 중복 누적 방지).
+    // 새 영상 저장이 끝난 뒤에 지워서, 실패해도 기존 영상이 사라지지 않게 함.
+    if (sharedLinkId != null) {
+      await _deleteMyPreviousVerifications(
+        uid: uid,
+        sharedLinkId: sharedLinkId,
+        exceptId: id,
+      );
+    }
     return video;
+  }
+
+  /// 같은 sharedLinkId 에 내가 올린 다른(이전) 인증 영상을 모두 삭제.
+  /// 재인증 시 "내 인증은 항상 최신 1개"를 보장한다.
+  Future<void> _deleteMyPreviousVerifications({
+    required String uid,
+    required String sharedLinkId,
+    required String exceptId,
+  }) async {
+    try {
+      // equality 두 개라 별도 복합 인덱스 없이 동작 (orderBy 미사용).
+      final snapshot = await _collection
+          .where('uploaderUid', isEqualTo: uid)
+          .where('sharedLinkId', isEqualTo: sharedLinkId)
+          .get();
+      for (final doc in snapshot.docs) {
+        if (doc.id == exceptId) continue;
+        final old = VerificationVideo.fromFirestore(doc);
+        try {
+          await _storage.ref().child(old.storagePath).delete();
+        } catch (_) {}
+        if (old.thumbnailUrl != null) {
+          try {
+            await _storage
+                .ref()
+                .child(old.storagePath.replaceFirst('.mp4', '_thumb.jpg'))
+                .delete();
+          } catch (_) {}
+        }
+        try {
+          await doc.reference.delete();
+        } catch (_) {}
+      }
+    } catch (e) {
+      // 정리 실패는 치명적이지 않음 (새 영상은 이미 저장됨).
+      debugPrint('Failed to clean previous verifications: $e');
+    }
   }
 
   /// 특정 공유 링크의 인증 영상 목록 (만료/숨김/차단된 영상은 제외).
@@ -126,6 +188,36 @@ class VerificationVideoService {
           .toList();
     } catch (e) {
       debugPrint('Failed to fetch verification videos: $e');
+      return [];
+    }
+  }
+
+  /// 릴레이 링: 같은 체인(rootShareId)의 인증 중 **내 이웃(peer)** 것만.
+  /// peer = 나에게 공유해준 고리 + 내가 공유한 고리의 참여자들.
+  Future<List<VerificationVideo>> getVideosForChain({
+    required String rootShareId,
+    required Set<String> peerUids,
+  }) async {
+    try {
+      final snapshot = await _collection
+          .where('rootShareId', isEqualTo: rootShareId)
+          .where('isHidden', isEqualTo: false)
+          .limit(100)
+          .get();
+
+      final blockedUids = await _getBlockedUids();
+      final now = DateTime.now();
+
+      final list = snapshot.docs
+          .map(VerificationVideo.fromFirestore)
+          .where((v) => peerUids.contains(v.uploaderUid))
+          .where((v) => v.expiresAt.isAfter(now))
+          .where((v) => !blockedUids.contains(v.uploaderUid))
+          .toList()
+        ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      return list;
+    } catch (e) {
+      debugPrint('Failed to fetch chain verification videos: $e');
       return [];
     }
   }

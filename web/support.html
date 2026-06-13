@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linkku · 고객지원 / Support</title>
+  <meta name="robots" content="index,follow">
+  <style>
+    :root{ --bg:#0E0E11; --surface:#17171B; --line:#2A2A31; --ink:#FFFFFF; --sub:#8E8E93; --coral:#FF5A5F; --mint:#00D4AA; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Apple SD Gothic Neo',sans-serif;background:var(--bg);color:#D8D8DC;line-height:1.75;padding:20px}
+    .container{max-width:780px;margin:0 auto;padding:48px 20px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--ink);font-size:20px;letter-spacing:-.3px}
+    .dot{width:12px;height:12px;border-radius:3px;background:var(--coral);box-shadow:6px 0 0 var(--mint)}
+    h1{font-size:26px;color:var(--ink);margin:28px 0 6px;letter-spacing:-.4px}
+    .subtitle{color:var(--sub);font-size:13px;margin-bottom:28px}
+    .lang-toggle{display:flex;gap:8px;margin-bottom:28px}
+    .lang-toggle button{padding:7px 18px;border:1px solid var(--line);border-radius:20px;background:transparent;color:var(--sub);cursor:pointer;font-size:13px}
+    .lang-toggle button.active{background:var(--coral);color:#fff;border-color:var(--coral)}
+    .section{margin-bottom:24px}
+    h2{font-size:17px;color:var(--ink);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+    ol,ul{padding-left:20px}
+    li{margin-bottom:6px}
+    a{color:var(--mint);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .card{background:var(--surface);padding:18px;border-radius:12px;margin:12px 0;border:1px solid var(--line)}
+    .mail{display:inline-block;margin-top:8px;background:var(--coral);color:#fff;padding:10px 18px;border-radius:10px;font-weight:700}
+    .footer{margin-top:48px;padding-top:24px;border-top:1px solid var(--line);color:var(--sub);font-size:13px;text-align:center}
+    .footer a{margin:0 8px}
+    [lang="en"]{display:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="brand"><span class="dot"></span> Linkku · 링꾸</div>
+
+    <div class="lang-toggle">
+      <button id="btn-ko" class="active" onclick="setLang('ko')">한국어</button>
+      <button id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+
+    <!-- 한국어 -->
+    <div lang="ko" style="display:block">
+      <h1>고객지원</h1>
+      <p class="subtitle">링꾸(Linkku) · 운영자: DREVV</p>
+
+      <div class="card">
+        <strong>문의하기</strong>
+        <p>버그 제보, 기능 제안, 결제·계정 문제 등 무엇이든 보내주세요. 보통 영업일 기준 1~2일 내 답변드립니다.</p>
+        <a class="mail" href="mailto:admin@drevv.co.kr?subject=[Linkku]%20문의">이메일 보내기</a>
+        <p style="margin-top:8px">또는 앱 내 <em>설정 → 문의하기</em>에서 바로 보낼 수 있어요.</p>
+      </div>
+
+      <div class="section">
+        <h2>계정 및 데이터 삭제</h2>
+        <p>언제든지 계정과 모든 데이터를 삭제할 수 있습니다.</p>
+        <ol>
+          <li>앱에서 <em>설정 → 계정 → 회원 탈퇴</em> 선택</li>
+          <li>안내에 따라 확인하면 계정·링크·통계·업로드한 인증 영상이 <strong>즉시 삭제</strong>되며 복구되지 않습니다.</li>
+          <li>앱을 직접 열 수 없는 경우, 위 이메일로 가입에 사용한 정보(닉네임/연동 이메일 또는 전화번호)와 함께 삭제를 요청하세요.</li>
+        </ol>
+        <p>게스트(미연동) 이용자의 데이터는 기기에만 저장되며 앱을 삭제하면 함께 제거됩니다. 자세한 내용은 <a href="/privacy">개인정보처리방침</a> 참조.</p>
+      </div>
+
+      <div class="section">
+        <h2>자주 묻는 질문</h2>
+        <ul>
+          <li><strong>알림이 안 와요.</strong> 기기 설정에서 링꾸 알림 권한이 켜져 있는지, 방해금지/배터리 최적화에서 제외됐는지 확인해주세요.</li>
+          <li><strong>구독 해지·환불은?</strong> Apple App Store 또는 Google Play의 구독 관리에서 처리됩니다(스토어 정책 적용).</li>
+          <li><strong>부적절한 인증 영상을 봤어요.</strong> 영상의 신고/차단 기능을 이용해주세요. 신고 건은 24시간 이내 검토합니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- English -->
+    <div lang="en">
+      <h1>Support</h1>
+      <p class="subtitle">Linkku · Operator: DREVV</p>
+
+      <div class="card">
+        <strong>Contact us</strong>
+        <p>Send bug reports, feature ideas, or payment/account issues. We usually reply within 1–2 business days.</p>
+        <a class="mail" href="mailto:admin@drevv.co.kr?subject=[Linkku]%20Support">Send email</a>
+        <p style="margin-top:8px">Or use <em>Settings → Contact</em> inside the app.</p>
+      </div>
+
+      <div class="section">
+        <h2>Account & Data Deletion</h2>
+        <p>You can delete your account and all data anytime.</p>
+        <ol>
+          <li>In the app, go to <em>Settings → Account → Delete account</em>.</li>
+          <li>After confirming, your account, links, stats, and uploaded proof videos are <strong>deleted immediately</strong> and cannot be recovered.</li>
+          <li>If you can't open the app, email us above with your sign-up info (nickname / linked email or phone) to request deletion.</li>
+        </ol>
+        <p>Guest (unlinked) data is stored on-device only and is removed when the app is deleted. See the <a href="/privacy">Privacy Policy</a>.</p>
+      </div>
+
+      <div class="section">
+        <h2>FAQ</h2>
+        <ul>
+          <li><strong>Notifications aren't arriving.</strong> Check that Linkku's notification permission is on and that it's excluded from Do Not Disturb / battery optimization.</li>
+          <li><strong>Cancellation/refund?</strong> Manage subscriptions in the Apple App Store or Google Play (store policies apply).</li>
+          <li><strong>I saw inappropriate proof content.</strong> Use the report/block feature on the video. Reports are reviewed within 24 hours.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="/">Linkku</a> · <a href="/privacy">개인정보처리방침</a> · <a href="/terms">이용약관</a> · <a href="/support">고객지원</a>
+    </div>
+  </div>
+
+  <script>
+    function setLang(l){
+      document.querySelectorAll('[lang="ko"]').forEach(e=>e.style.display = l==='ko'?'block':'none');
+      document.querySelectorAll('[lang="en"]').forEach(e=>e.style.display = l==='en'?'block':'none');
+      document.getElementById('btn-ko').classList.toggle('active', l==='ko');
+      document.getElementById('btn-en').classList.toggle('active', l==='en');
+      document.documentElement.lang = l;
+    }
+    var p = new URLSearchParams(location.search).get('lang');
+    if(p==='en') setLang('en');
+  </script>
+</body>
+</html>

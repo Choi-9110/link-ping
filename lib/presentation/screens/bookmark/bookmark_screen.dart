@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../widgets/dialog_actions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/spacing.dart';
@@ -109,7 +111,7 @@ class _BookmarkScreenState extends ConsumerState<BookmarkScreen> {
           Icon(
             Icons.folder_open,
             size: 64,
-            color: colorScheme.outline.withValues(alpha: 0.4),
+            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
           ),
           const SizedBox(height: Spacing.md),
           Text(
@@ -118,7 +120,7 @@ class _BookmarkScreenState extends ConsumerState<BookmarkScreen> {
                 : 'No folders yet\nTap + below to create your first folder',
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: colorScheme.outline,
+              color: colorScheme.onSurfaceVariant,
               height: 1.5,
             ),
           ),
@@ -171,12 +173,12 @@ class _BookmarkScreenState extends ConsumerState<BookmarkScreen> {
               ? (isKorean ? '$count개 링크' : '$count links')
               : (isKorean ? '건강한 습관 만들기' : 'Build healthy habits'),
           style: theme.textTheme.bodySmall?.copyWith(
-            color: colorScheme.outline,
+            color: colorScheme.onSurfaceVariant,
           ),
         ),
         trailing: Icon(
           Icons.chevron_right,
-          color: colorScheme.outline,
+          color: colorScheme.onSurfaceVariant,
         ),
         onTap: () {
           Navigator.push(
@@ -229,10 +231,10 @@ class _BookmarkScreenState extends ConsumerState<BookmarkScreen> {
         subtitle: Text(
           isKorean ? '$count개 링크' : '$count links',
           style: theme.textTheme.bodySmall?.copyWith(
-            color: colorScheme.outline,
+            color: colorScheme.onSurfaceVariant,
           ),
         ),
-        trailing: Icon(Icons.chevron_right, color: colorScheme.outline),
+        trailing: Icon(Icons.chevron_right, color: colorScheme.onSurfaceVariant),
         onTap: () {
           Navigator.push(
             context,
@@ -306,17 +308,19 @@ class _BookmarkScreenState extends ConsumerState<BookmarkScreen> {
               : (isKorean ? '되돌릴 수 없어요.' : 'This cannot be undone.'),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text(isKorean ? '취소' : 'Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: Text(
-              isKorean ? '삭제' : 'Delete',
-              style: TextStyle(color: Theme.of(context).colorScheme.error),
+          DialogActions(buttons: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(isKorean ? '취소' : 'Cancel'),
             ),
-          ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: Text(
+                isKorean ? '삭제' : 'Delete',
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+          ]),
         ],
       ),
     );

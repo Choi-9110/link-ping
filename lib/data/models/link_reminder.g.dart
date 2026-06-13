@@ -71,13 +71,16 @@ class LinkReminderAdapter extends TypeAdapter<LinkReminder> {
       creatorUid: fields[14] as String?,
       category: fields[15] as LinkCategory?,
       soundId: fields[16] as String?,
+      outgoingShareId: fields[17] as String?,
+      rootShareId: fields[18] as String?,
+      shareVisibility: fields[19] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, LinkReminder obj) {
     writer
-      ..writeByte(17)
+      ..writeByte(20)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -111,7 +114,13 @@ class LinkReminderAdapter extends TypeAdapter<LinkReminder> {
       ..writeByte(15)
       ..write(obj.category)
       ..writeByte(16)
-      ..write(obj.soundId);
+      ..write(obj.soundId)
+      ..writeByte(17)
+      ..write(obj.outgoingShareId)
+      ..writeByte(18)
+      ..write(obj.rootShareId)
+      ..writeByte(19)
+      ..write(obj.shareVisibility);
   }
 
   @override

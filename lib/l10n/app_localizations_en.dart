@@ -1505,4 +1505,238 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get phoneGenericError => 'Something went wrong';
+
+  @override
+  String get deleteAccount => 'Delete Account';
+
+  @override
+  String get deleteAccountConfirm =>
+      'Delete your account? Your account, links, stats and proof videos will be permanently deleted. This cannot be undone.';
+
+  @override
+  String get deleteAccountReauth =>
+      'For security, please sign in again and then retry.';
+
+  @override
+  String get deleteAccountFailed =>
+      'Failed to delete account. Please try again later.';
+
+  @override
+  String get ringModeTitle => 'How should this connect?';
+
+  @override
+  String get ringModeAllName => 'Everyone Ring';
+
+  @override
+  String get ringModeAllDesc => 'Together with everyone who has the link';
+
+  @override
+  String get ringModeChainName => 'Relay Ring';
+
+  @override
+  String get ringModeChainDesc => 'Together with the people you shared with';
+
+  @override
+  String get ringModeFixedNote => 'This choice is fixed for this alarm';
+
+  @override
+  String get ringModeHelpTooltip => 'Details';
+
+  @override
+  String get ringModeHelpTitle => 'What\'s the difference?';
+
+  @override
+  String get ringModeHelpBody =>
+      '🔗 Everyone Ring\nA creates it, shares to B, B passes to C\n→ A, B and C are all in one group.\nEveryone sees and cheers each other\'s 3-sec proofs.\n\n🤝 Relay Ring\nPassed along A → B → C → D\n→ C only sees B (who shared it) and D (who C shared to). Not A.\nYour 3-sec proofs are visible only to people you directly exchanged with.\n\n💡 It changes who can see your proof videos.\nFamily & close friends = Relay Ring,\ncrews & study groups = Everyone Ring!';
+
+  @override
+  String get ringModeHelpOk => 'Got it!';
+
+  @override
+  String get ringBannerAll =>
+      '🔗 Everyone Ring — proofs visible to everyone with this link';
+
+  @override
+  String get ringBannerChain =>
+      '🤝 Relay Ring — proofs visible only to people you share with';
+
+  @override
+  String get shareAlreadySaved => 'Already saved';
+
+  @override
+  String get shareNotFound => 'Shared link not found';
+
+  @override
+  String get shareDuplicateAlarm => 'You already have this alarm';
+
+  @override
+  String shareRepeatWeekly(int count) {
+    return '${count}x/week';
+  }
+
+  @override
+  String get shareArrivedTitle => 'A shared alarm arrived 💌';
+
+  @override
+  String shareArrivedWith(String nickname) {
+    return 'Get reminded together with $nickname';
+  }
+
+  @override
+  String get shareLater => 'Later';
+
+  @override
+  String get shareAddToMyAlarms => 'Add to my alarms';
+
+  @override
+  String get shareKeptInInbox => '📥 Saved to \"Shared links\" in your inbox';
+
+  @override
+  String get shareAddedTogether => 'Alarm added! You\'re in this together 🔔';
+
+  @override
+  String get shareAddFailed => 'Could not add alarm';
+
+  @override
+  String get slotFullTitle => 'No alarm slots left';
+
+  @override
+  String get slotFullAdBody =>
+      'All your free alarm slots are in use.\nWatch an ad to add this shared alarm!\n\n(Premium = unlimited, no ads ✨)';
+
+  @override
+  String get slotFullLater => 'Later';
+
+  @override
+  String get slotFullWatchAd => 'Watch ad & add';
+
+  @override
+  String get adNotCompleted => 'Ad was not completed';
+
+  @override
+  String inboxSectionTitle(int count) {
+    return '📥 Shared links ($count)';
+  }
+
+  @override
+  String inboxFrom(String nickname, String time) {
+    return 'From $nickname · ⏰ $time';
+  }
+
+  @override
+  String get inboxDecline => 'Decline';
+
+  @override
+  String get inboxAdd => 'Add';
+
+  @override
+  String pingCheerToast(String nickname) {
+    return '📣 $nickname cheered you on!';
+  }
+
+  @override
+  String pingPokeToast(String nickname) {
+    return '👉 $nickname poked you!';
+  }
+
+  @override
+  String get pingReferralToast => '🎁 A friend joined with your code!';
+
+  @override
+  String get pingInquiryToast => '💬 Your inquiry got a reply';
+
+  @override
+  String get pingGenericToast => '🔔 New notification';
+
+  @override
+  String get proofGalleryTitle => 'Proof Gallery';
+
+  @override
+  String get proofLoadFailed => 'Failed to load. Pull to refresh';
+
+  @override
+  String get proofNoSharedAlarms => 'No shared alarms yet';
+
+  @override
+  String get proofNoSharedAlarmsHint =>
+      'Share a link with friends and\ncollect 3-sec proofs together here 💪';
+
+  @override
+  String proofLatest(String time) {
+    return 'latest $time';
+  }
+
+  @override
+  String get proofNoneYet => 'No proofs yet';
+
+  @override
+  String get proofRecordMine => 'Record proof';
+
+  @override
+  String proofVerifyWindowClosed(int minutes) {
+    return 'You can only record a proof within $minutes min after the alarm';
+  }
+
+  @override
+  String get proofMineBadge => 'Mine';
+
+  @override
+  String timeAgoMinutes(int count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String timeAgoHours(int count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String timeAgoDays(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String get guestPurchaseTitle => 'Account required';
+
+  @override
+  String get guestPurchaseBody =>
+      'To keep your purchase safe across devices,\nplease link a Google or Apple account first.\n\nYour alarms and history will be kept!';
+
+  @override
+  String get guestPurchaseLink => 'Link account';
+
+  @override
+  String get lockedSlotTitle => 'Locked alarm slot';
+
+  @override
+  String get lockedSlotSubtitle => 'Invite a friend +1 · Premium = unlimited';
+
+  @override
+  String get dayChipLabels => 'M,T,W,T,F,S,S';
+
+  @override
+  String get cameraNotFound => 'Camera not found';
+
+  @override
+  String cameraInitFailed(String error) {
+    return 'Camera init failed: $error';
+  }
+
+  @override
+  String recordStartFailed(String error) {
+    return 'Failed to start recording: $error';
+  }
+
+  @override
+  String recordStopFailed(String error) {
+    return 'Failed to stop recording: $error';
+  }
+
+  @override
+  String proofDeleteFailed(String error) {
+    return 'Delete failed: $error';
+  }
+
+  @override
+  String get shareRepeatDaily => 'Daily';
 }

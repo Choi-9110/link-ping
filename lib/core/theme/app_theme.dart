@@ -139,6 +139,20 @@ class AppTheme {
         labelStyle: TextStyle(color: colors.textSecondary),
         hintStyle: TextStyle(color: colors.textSecondary),
       ),
+      // 스낵바 스타일 — 다크 배경 위 흰 글자로 가독성 보장(기존엔 글자가 어두웠음)
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: colors.surfaceVariant,
+        contentTextStyle: TextStyle(
+          color: colors.textPrimary,
+          fontFamily: BrandTokens.fontSans,
+          fontSize: 14,
+        ),
+        actionTextColor: colors.primary,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
       // 바텀시트 스타일
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: colors.surface,

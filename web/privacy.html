@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linkku · 개인정보처리방침 / Privacy Policy</title>
+  <meta name="robots" content="index,follow">
+  <style>
+    :root{ --bg:#0E0E11; --surface:#17171B; --line:#2A2A31; --ink:#FFFFFF; --sub:#8E8E93; --coral:#FF5A5F; --mint:#00D4AA; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Apple SD Gothic Neo',sans-serif;background:var(--bg);color:#D8D8DC;line-height:1.75;padding:20px}
+    .container{max-width:780px;margin:0 auto;padding:48px 20px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--ink);font-size:20px;letter-spacing:-.3px}
+    .dot{width:12px;height:12px;border-radius:3px;background:var(--coral);box-shadow:6px 0 0 var(--mint)}
+    h1{font-size:26px;color:var(--ink);margin:28px 0 6px;letter-spacing:-.4px}
+    .subtitle{color:var(--sub);font-size:13px;margin-bottom:28px}
+    .lang-toggle{display:flex;gap:8px;margin-bottom:28px}
+    .lang-toggle button{padding:7px 18px;border:1px solid var(--line);border-radius:20px;background:transparent;color:var(--sub);cursor:pointer;font-size:13px}
+    .lang-toggle button.active{background:var(--coral);color:#fff;border-color:var(--coral)}
+    .section{margin-bottom:26px}
+    h2{font-size:17px;color:var(--ink);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+    ul{padding-left:20px}
+    li{margin-bottom:6px}
+    a{color:var(--mint);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .highlight{background:var(--surface);padding:16px;border-radius:12px;margin:12px 0;border-left:3px solid var(--coral)}
+    table{width:100%;border-collapse:collapse;margin:8px 0;font-size:14px}
+    th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+    th{background:var(--surface);color:var(--ink)}
+    .footer{margin-top:48px;padding-top:24px;border-top:1px solid var(--line);color:var(--sub);font-size:13px;text-align:center}
+    .footer a{margin:0 8px}
+    [lang="en"]{display:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="brand"><span class="dot"></span> Linkku · 링꾸</div>
+
+    <div class="lang-toggle">
+      <button id="btn-ko" class="active" onclick="setLang('ko')">한국어</button>
+      <button id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+
+    <!-- ================= 한국어 ================= -->
+    <div lang="ko" style="display:block">
+      <h1>개인정보처리방침</h1>
+      <p class="subtitle">서비스명: 링꾸(Linkku) · 운영자: DREVV · 최종 수정일: 2026년 6월 12일</p>
+
+      <div class="highlight">링꾸는 "저장한 링크를 정한 시간에 알려주는" 알람 앱입니다. 서비스 제공에 꼭 필요한 최소한의 정보만 수집하며, 광고/분석 목적의 데이터는 아래에 투명하게 고지합니다.</div>
+
+      <div class="section">
+        <h2>1. 수집하는 개인정보</h2>
+        <table>
+          <tr><th>항목</th><th>목적</th><th>필수/선택</th></tr>
+          <tr><td>닉네임</td><td>사용자 식별·소셜 기능</td><td>필수(회원)</td></tr>
+          <tr><td>이메일</td><td>Google/Apple 로그인 연동</td><td>선택</td></tr>
+          <tr><td>전화번호</td><td>전화번호 로그인·전화 알림</td><td>선택</td></tr>
+          <tr><td>링크·알림 설정</td><td>핵심 알림 기능 제공</td><td>필수</td></tr>
+          <tr><td>인증 영상(3초)</td><td>실천 인증·친구 공유(사용자가 직접 촬영·업로드)</td><td>선택</td></tr>
+          <tr><td>기기 식별자</td><td>광고 제공(Google AdMob)</td><td>자동</td></tr>
+          <tr><td>앱 사용·크래시 로그</td><td>서비스 개선·안정성(Firebase Analytics/Crashlytics)</td><td>자동</td></tr>
+          <tr><td>결제 정보</td><td>인앱결제(App Store/Google Play가 처리, 링꾸는 직접 저장하지 않음)</td><td>구매 시</td></tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>2. 카메라·마이크 및 인증 영상</h2>
+        <ul>
+          <li>인증 영상 촬영 시에만 <strong>카메라·마이크</strong> 접근 권한을 사용합니다. 사용자가 직접 촬영·업로드한 영상만 저장됩니다.</li>
+          <li>업로드한 인증 영상은 클라우드(Firebase Storage)에 저장되며, 같은 링크를 공유받은 이용자에게 공개될 수 있습니다.</li>
+          <li>영상은 사용자가 앱에서 <strong>언제든 삭제</strong>할 수 있고, 삭제 시 저장소에서 제거됩니다.</li>
+          <li>부적절한 영상은 신고·차단할 수 있으며, 신고 건은 24시간 이내 검토합니다(이용약관 참조).</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>3. 클라우드 백업·동기화</h2>
+        <ul>
+          <li>계정 연동 시 링크·설정·통계가 클라우드(Cloud Firestore)에 백업되어 기기 간 동기화됩니다.</li>
+          <li>게스트(미연동) 이용자의 데이터는 기기에만 저장되며 앱 삭제 시 함께 삭제됩니다.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>4. 개인정보 이용 목적</h2>
+        <ul>
+          <li>링크 알림 서비스 제공 및 기기 간 동기화</li>
+          <li>이용자 간 소셜 기능(응원·찌르기·공유·인증 영상)</li>
+          <li>배지·통계·인앱 재화(포링) 운영</li>
+          <li>맞춤형 광고 제공(Google AdMob) 및 사용 분석(Firebase Analytics)</li>
+          <li>앱 오류 감지·안정성 개선(Firebase Crashlytics), 프리미엄 구독 관리</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>5. 보관 기간</h2>
+        <ul>
+          <li>회원 탈퇴 시 계정 데이터 및 업로드 콘텐츠 즉시 삭제(법령상 보관 의무가 있는 경우 해당 기간 보관)</li>
+          <li>크래시 로그: 수집일로부터 90일 후 자동 삭제</li>
+          <li>분석 데이터: 수집일로부터 14개월 후 자동 삭제</li>
+          <li>게스트 데이터: 기기에만 저장, 앱 삭제 시 삭제</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>6. 제3자 서비스</h2>
+        <ul>
+          <li>Firebase Authentication / Cloud Firestore / Storage / Analytics / Crashlytics (Google) — 인증·저장·분석</li>
+          <li>Google AdMob (Google) — 광고 제공</li>
+          <li>Apple / Google — 인앱결제 처리</li>
+        </ul>
+        <p>각 서비스는 Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">개인정보처리방침</a> 및 Apple <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">개인정보 정책</a>을 따릅니다.</p>
+      </div>
+
+      <div class="section">
+        <h2>7. 이용자 권리 및 계정·데이터 삭제</h2>
+        <ul>
+          <li>이용자는 개인정보 열람·수정·삭제·처리정지를 요청할 수 있습니다.</li>
+          <li><strong>계정/데이터 삭제:</strong> 앱 내 <em>설정 → 계정 → 회원 탈퇴</em>에서 직접 삭제하거나, 아래 이메일로 요청할 수 있습니다. 자세한 안내는 <a href="/support">고객지원</a> 페이지를 참고하세요.</li>
+          <li>만 14세 미만 아동의 개인정보는 수집하지 않습니다.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>8. 광고 및 추적</h2>
+        <p>Google AdMob을 통해 광고가 제공되며, 프리미엄 이용자는 광고가 제거됩니다. iOS의 추적 허용(ATT)·기기 광고 설정에서 맞춤 광고를 끌 수 있습니다.</p>
+      </div>
+
+      <div class="section">
+        <h2>9. 문의처</h2>
+        <p>운영자: DREVV · 이메일: <a href="mailto:admin@drevv.co.kr">admin@drevv.co.kr</a></p>
+      </div>
+    </div>
+
+    <!-- ================= English ================= -->
+    <div lang="en">
+      <h1>Privacy Policy</h1>
+      <p class="subtitle">Service: Linkku · Operator: DREVV · Last updated: June 12, 2026</p>
+
+      <div class="highlight">Linkku is an app that reminds you of your saved links at the time you choose. We collect only the minimum data needed to run the service, and we disclose ad/analytics data transparently below.</div>
+
+      <div class="section">
+        <h2>1. Information We Collect</h2>
+        <table>
+          <tr><th>Item</th><th>Purpose</th><th>Required</th></tr>
+          <tr><td>Nickname</td><td>User identification & social features</td><td>Required (members)</td></tr>
+          <tr><td>Email</td><td>Google/Apple sign-in</td><td>Optional</td></tr>
+          <tr><td>Phone number</td><td>Phone sign-in & phone alerts</td><td>Optional</td></tr>
+          <tr><td>Links & alarm settings</td><td>Core reminder feature</td><td>Required</td></tr>
+          <tr><td>3-sec proof videos</td><td>Habit proof & sharing (user-recorded)</td><td>Optional</td></tr>
+          <tr><td>Device identifiers</td><td>Ads (Google AdMob)</td><td>Automatic</td></tr>
+          <tr><td>Usage & crash logs</td><td>Improvement & stability (Firebase Analytics/Crashlytics)</td><td>Automatic</td></tr>
+          <tr><td>Payment info</td><td>In-app purchases (handled by App Store/Google Play; not stored by Linkku)</td><td>On purchase</td></tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>2. Camera, Microphone & Proof Videos</h2>
+        <ul>
+          <li>Camera and microphone are used only when you record a proof video. Only videos you record and upload are stored.</li>
+          <li>Uploaded videos are stored in the cloud (Firebase Storage) and may be visible to users who received the same shared link.</li>
+          <li>You can delete your videos anytime in the app; deletion removes them from storage.</li>
+          <li>Inappropriate videos can be reported/blocked; reports are reviewed within 24 hours (see Terms).</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>3. Cloud Backup & Sync</h2>
+        <ul>
+          <li>When you link an account, your links/settings/stats are backed up to the cloud (Cloud Firestore) and synced across devices.</li>
+          <li>Guest (unlinked) data is stored on-device only and removed when the app is deleted.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>4. How We Use Information</h2>
+        <ul>
+          <li>Provide link reminders and cross-device sync</li>
+          <li>Social features (cheer, poke, share, proof videos)</li>
+          <li>Badges, stats, and in-app currency (Poring)</li>
+          <li>Personalized ads (Google AdMob) and usage analytics (Firebase Analytics)</li>
+          <li>Crash detection/stability (Firebase Crashlytics) and premium subscription management</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>5. Retention</h2>
+        <ul>
+          <li>On account deletion, account data and uploaded content are deleted immediately (except where law requires retention)</li>
+          <li>Crash logs: auto-deleted 90 days after collection</li>
+          <li>Analytics data: auto-deleted 14 months after collection</li>
+          <li>Guest data: on-device only; deleted with the app</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>6. Third-Party Services</h2>
+        <ul>
+          <li>Firebase Authentication / Firestore / Storage / Analytics / Crashlytics (Google)</li>
+          <li>Google AdMob (Google) — advertising</li>
+          <li>Apple / Google — in-app purchase processing</li>
+        </ul>
+        <p>These follow Google's <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and Apple's <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+      </div>
+
+      <div class="section">
+        <h2>7. Your Rights & Account/Data Deletion</h2>
+        <ul>
+          <li>You may request access, correction, deletion, or restriction of your data.</li>
+          <li><strong>Account/Data deletion:</strong> Delete in-app via <em>Settings → Account → Delete account</em>, or email us. See the <a href="/support">Support</a> page for details.</li>
+          <li>We do not knowingly collect data from children under 14.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>8. Ads & Tracking</h2>
+        <p>Ads are served via Google AdMob; premium users have ads removed. You can disable personalized ads via iOS App Tracking Transparency and your device's ad settings.</p>
+      </div>
+
+      <div class="section">
+        <h2>9. Contact</h2>
+        <p>Operator: DREVV · Email: <a href="mailto:admin@drevv.co.kr">admin@drevv.co.kr</a></p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="/">Linkku</a> · <a href="/privacy">개인정보처리방침</a> · <a href="/terms">이용약관</a> · <a href="/support">고객지원</a>
+    </div>
+  </div>
+
+  <script>
+    function setLang(l){
+      document.querySelectorAll('[lang="ko"]').forEach(e=>e.style.display = l==='ko'?'block':'none');
+      document.querySelectorAll('[lang="en"]').forEach(e=>e.style.display = l==='en'?'block':'none');
+      document.getElementById('btn-ko').classList.toggle('active', l==='ko');
+      document.getElementById('btn-en').classList.toggle('active', l==='en');
+      document.documentElement.lang = l;
+    }
+    var p = new URLSearchParams(location.search).get('lang');
+    if(p==='en') setLang('en');
+  </script>
+</body>
+</html>

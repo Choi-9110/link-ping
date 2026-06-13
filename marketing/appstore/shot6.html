@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><link rel="stylesheet" href="style.css">
+<style>
+  .hero-mascot{display:flex;flex-direction:column;align-items:center;margin-top:120px}
+  .tile{width:560px;height:560px;border-radius:140px;overflow:hidden;border:4px solid var(--line);
+    box-shadow:0 60px 160px rgba(255,90,95,.25)}
+  .tile img{width:100%;height:100%;image-rendering:pixelated}
+  .bubble{margin-top:70px;background:var(--surface);border:3px solid var(--line);border-radius:44px;
+    padding:40px 64px;font-size:46px;font-weight:700;position:relative}
+  .bubble::before{content:'';position:absolute;top:-22px;left:50%;transform:translateX(-50%) rotate(45deg);
+    width:40px;height:40px;background:var(--surface);border-left:3px solid var(--line);border-top:3px solid var(--line)}
+  .features{display:flex;gap:30px;margin-top:90px;padding:0 90px;width:100%}
+  .feat{flex:1;background:var(--surface);border:2px solid var(--line);border-radius:36px;padding:44px 30px;text-align:center}
+  .feat .fi{font-size:72px}
+  .feat .ft{font-size:34px;font-weight:800;margin-top:18px}
+  .feat .fd{font-size:27px;color:var(--sub);margin-top:10px;line-height:1.45}
+</style></head>
+<body>
+  <div class="copy">
+    <div class="eyebrow"><span class="pill">🔔 벨 달린 알람 슬라임</span></div>
+    <h1>다정한 알람 친구,<br><span class="c">링꾸</span></h1>
+    <p class="sub">혼내지 않아요. 약속한 시간에 옆에서 톡 —<br>"시간 됐어! 같이 하자" 하고 챙겨줄 뿐.</p>
+  </div>
+  <div class="hero-mascot">
+    <div class="tile"><img src="../../web/icons/Icon-512.png"></div>
+    <div class="bubble">"오늘도 같이 해볼까? 핑! 🔔"</div>
+  </div>
+  <div class="features">
+    <div class="feat"><div class="fi">⏰</div><div class="ft">정시 알림</div><div class="fd">저장한 링크를<br>딱 그 시간에</div></div>
+    <div class="feat"><div class="fi">👯</div><div class="ft">함께 실천</div><div class="fd">친구·가족과<br>같은 시간에</div></div>
+    <div class="feat"><div class="fi">📣</div><div class="ft">응원·찌르기</div><div class="fd">서로 챙겨주는<br>다정한 핑</div></div>
+    <div class="feat"><div class="fi">🏅</div><div class="ft">배지 수집</div><div class="fd">꾸준함이<br>기록이 되는 재미</div></div>
+  </div>
+</body></html>

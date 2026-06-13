@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+
+import '../../widgets/dialog_actions.dart';
+import '../../widgets/toast_overlay.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../data/models/bookmark.dart';
+import '../../../data/models/link_reminder.dart';
 
 import '../../../core/theme/spacing.dart';
 import '../../../providers/auth_provider.dart';
@@ -88,31 +94,118 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         title: Text(l10n.logout),
         content: Text(l10n.logoutConfirm),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context);
+          DialogActions(buttons: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(l10n.cancel),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
 
-              await ref.read(authServiceProvider).signOut();
+                await ref.read(authServiceProvider).signOut();
 
-              if (mounted) {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const OnboardingScreen(),
-                  ),
-                  (route) => false,
-                );
-              }
-            },
-            child: Text(l10n.logout),
-          ),
+                if (mounted) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OnboardingScreen(),
+                    ),
+                    (route) => false,
+                  );
+                }
+              },
+              child: Text(l10n.logout),
+            ),
+          ]),
         ],
       ),
     );
+  }
+
+  /// 회원 탈퇴: 확인 → 클라우드 데이터 삭제 → Auth 계정 삭제 → 로컬 초기화 → 온보딩
+  void _onDeleteAccount() {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.deleteAccount),
+        content: Text(l10n.deleteAccountConfirm),
+        actions: [
+          DialogActions(buttons: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: Text(l10n.cancel),
+            ),
+            FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: Theme.of(dialogContext).colorScheme.error,
+              ),
+              onPressed: () {
+                Navigator.pop(dialogContext);
+                _performDeleteAccount();
+              },
+              child: Text(l10n.deleteAccount),
+            ),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _performDeleteAccount() async {
+    final l10n = AppLocalizations.of(context)!;
+    final authService = ref.read(authServiceProvider);
+
+    // 진행 중 로딩 다이얼로그
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      // 1. 재인증 필요 여부 사전 확인 (데이터 삭제 전에!)
+      authService.ensureRecentLoginForDeletion();
+
+      // 2. 클라우드 데이터 삭제 → 3. Auth 계정 삭제
+      await FirestoreService.instance.deleteAllUserData();
+      await authService.deleteAuthAccount();
+
+      // 4. 로컬 데이터 + 예약된 알림 정리
+      await NotificationService.instance.cancelAllReminders();
+      try {
+        await Hive.box<LinkReminder>('links').clear();
+        await Hive.box<Bookmark>('bookmarks').clear();
+        await Hive.box('settings').clear();
+      } catch (_) {}
+
+      if (!mounted) return;
+      Navigator.pop(context); // 로딩 닫기
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+        (route) => false,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      Navigator.pop(context); // 로딩 닫기
+
+      final isReauth = e.toString().contains('requires-recent-login');
+      if (isReauth) {
+        // 재로그인 후 재시도 안내 → 로그아웃시켜 재로그인 유도
+        ToastOverlay.showError(context, l10n.deleteAccountReauth);
+        await authService.signOut();
+        if (!mounted) return;
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+          (route) => false,
+        );
+      } else {
+        ToastOverlay.showError(context, l10n.deleteAccountFailed);
+      }
+    }
   }
 
   void _onPrivacyPolicy() {
@@ -157,7 +250,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               backgroundColor: colorScheme.surfaceContainerHighest,
               child: const LinkkuSymbol(size: 28),
             ),
-            title: const Text('링꾸'),
+            title: Text(l10n.appName),
             subtitle: Text(
               Localizations.localeOf(context).languageCode == 'ko'
                   ? '도감'
@@ -224,6 +317,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             title: l10n.logout,
             onTap: _onLogout,
           ),
+          _buildSettingsTile(
+            icon: Icons.delete_forever_outlined,
+            title: l10n.deleteAccount,
+            onTap: _onDeleteAccount,
+          ),
 
           const SizedBox(height: Spacing.md),
 
@@ -235,7 +333,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             trailing: Text(
               '1.0.0',
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: colorScheme.outline,
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -393,7 +491,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       subtitle: Text(
         hasLinkedSns ? l10n.accountSynced : l10n.loginToSync,
         style: TextStyle(
-          color: hasLinkedSns ? colorScheme.primary : colorScheme.outline,
+          color: hasLinkedSns ? colorScheme.primary : colorScheme.onSurfaceVariant,
         ),
       ),
       trailing: const Icon(Icons.chevron_right),
@@ -522,7 +620,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Text(
                       l10n.referralCode,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: colorScheme.outline,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                     Text(
@@ -559,9 +657,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   void _copyReferralCode(String code) {
     final l10n = AppLocalizations.of(context)!;
     Clipboard.setData(ClipboardData(text: code));
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(l10n.referralCodeCopied)));
+    ToastOverlay.showSuccess(context, l10n.referralCodeCopied);
   }
 
   void _shareReferralCode(String code) {

@@ -159,6 +159,9 @@ class AuthService {
       final oauthCredential = OAuthProvider('apple.com').credential(
         idToken: appleCredential.identityToken,
         rawNonce: rawNonce,
+        // Apple authorizationCode 를 함께 넘겨야 Firebase가 검증 가능.
+        // 빠지면 [firebase_auth/invalid-credential] Invalid OAuth response 발생.
+        accessToken: appleCredential.authorizationCode,
       );
 
       // Firebase 로그인
@@ -204,6 +207,9 @@ class AuthService {
       final oauthCredential = OAuthProvider('apple.com').credential(
         idToken: appleCredential.identityToken,
         rawNonce: rawNonce,
+        // Apple authorizationCode 를 함께 넘겨야 Firebase가 검증 가능.
+        // 빠지면 [firebase_auth/invalid-credential] Invalid OAuth response 발생.
+        accessToken: appleCredential.authorizationCode,
       );
 
       return await user.linkWithCredential(oauthCredential);
@@ -392,5 +398,34 @@ class AuthService {
   Future<void> signOut() async {
     await _googleSignIn.signOut();
     await _auth.signOut();
+  }
+
+  // ==================== 회원 탈퇴 ====================
+
+  /// 탈퇴 전 재인증 필요 여부 사전 확인.
+  /// Firebase 는 user.delete() 같은 민감 작업에 최근 로그인(약 5분)을 요구한다.
+  /// 데이터를 먼저 지운 뒤 Auth 삭제가 거부되면 "데이터만 사라지고 계정은 남는"
+  /// 어중간한 상태가 되므로, 데이터 삭제 전에 미리 던져서 막는다.
+  void ensureRecentLoginForDeletion() {
+    final user = _auth.currentUser;
+    if (user == null || user.isAnonymous) return;
+
+    final lastSignIn = user.metadata.lastSignInTime;
+    if (lastSignIn != null &&
+        DateTime.now().difference(lastSignIn) > const Duration(minutes: 5)) {
+      throw FirebaseAuthException(code: 'requires-recent-login');
+    }
+  }
+
+  /// Firebase Auth 계정 삭제. 클라우드 데이터 삭제(FirestoreService.deleteAllUserData)
+  /// **후에** 호출할 것.
+  Future<void> deleteAuthAccount() async {
+    final user = _auth.currentUser;
+    if (user == null) return;
+
+    try {
+      await _googleSignIn.signOut();
+    } catch (_) {}
+    await user.delete();
   }
 }

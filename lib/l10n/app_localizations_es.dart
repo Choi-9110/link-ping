@@ -1524,4 +1524,240 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get phoneGenericError => 'Algo salió mal';
+
+  @override
+  String get deleteAccount => 'Eliminar cuenta';
+
+  @override
+  String get deleteAccountConfirm =>
+      '¿Eliminar tu cuenta? Tu cuenta, enlaces, estadísticas y vídeos se eliminarán permanentemente. No se puede deshacer.';
+
+  @override
+  String get deleteAccountReauth =>
+      'Por seguridad, inicia sesión de nuevo e inténtalo otra vez.';
+
+  @override
+  String get deleteAccountFailed =>
+      'No se pudo eliminar la cuenta. Inténtalo más tarde.';
+
+  @override
+  String get ringModeTitle => '¿Cómo se conecta?';
+
+  @override
+  String get ringModeAllName => 'Ring grupal';
+
+  @override
+  String get ringModeAllDesc => 'Junto a todos los que tienen el enlace';
+
+  @override
+  String get ringModeChainName => 'Ring relevo';
+
+  @override
+  String get ringModeChainDesc =>
+      'Junto a las personas con quienes compartiste';
+
+  @override
+  String get ringModeFixedNote => 'Esta elección queda fija para esta alarma';
+
+  @override
+  String get ringModeHelpTooltip => 'Detalles';
+
+  @override
+  String get ringModeHelpTitle => '¿Cuál es la diferencia?';
+
+  @override
+  String get ringModeHelpBody =>
+      '🔗 Ring grupal\nA lo crea, lo comparte con B, B lo pasa a C\n→ A, B y C están en un mismo grupo.\nTodos ven y animan las pruebas de 3 segundos de los demás.\n\n🤝 Ring relevo\nPasado de A → B → C → D\n→ C solo ve a B (quien se lo dio) y a D (a quien se lo dio). A no aparece.\nTus pruebas solo las ven las personas con quienes intercambiaste directamente.\n\n💡 Cambia quién puede ver tus vídeos de prueba.\nFamilia y amigos cercanos = Ring relevo,\ngrupos y equipos = Ring grupal!';
+
+  @override
+  String get ringModeHelpOk => '¡Entendido!';
+
+  @override
+  String get ringBannerAll =>
+      '🔗 Ring grupal — las pruebas las ven todos con este enlace';
+
+  @override
+  String get ringBannerChain =>
+      '🤝 Ring relevo — las pruebas solo las ven con quienes compartes';
+
+  @override
+  String get shareAlreadySaved => 'Ya está guardada';
+
+  @override
+  String get shareNotFound => 'Enlace compartido no encontrado';
+
+  @override
+  String get shareDuplicateAlarm => 'Ya tienes esta alarma';
+
+  @override
+  String shareRepeatWeekly(int count) {
+    return '$count veces/semana';
+  }
+
+  @override
+  String get shareArrivedTitle => 'Llegó una alarma compartida 💌';
+
+  @override
+  String shareArrivedWith(String nickname) {
+    return 'Recibe recordatorios junto a $nickname';
+  }
+
+  @override
+  String get shareLater => 'Después';
+
+  @override
+  String get shareAddToMyAlarms => 'Añadir a mis alarmas';
+
+  @override
+  String get shareKeptInInbox =>
+      '📥 Guardado en \"Enlaces compartidos\" de tu buzón';
+
+  @override
+  String get shareAddedTogether => '¡Alarma añadida! Juntos a la misma hora 🔔';
+
+  @override
+  String get shareAddFailed => 'No se pudo añadir';
+
+  @override
+  String get slotFullTitle => 'No quedan espacios de alarma';
+
+  @override
+  String get slotFullAdBody =>
+      'Todos tus espacios gratuitos están en uso.\n¡Mira un anuncio para añadir esta alarma compartida!\n\n(Premium = ilimitado y sin anuncios ✨)';
+
+  @override
+  String get slotFullLater => 'Después';
+
+  @override
+  String get slotFullWatchAd => 'Ver anuncio y añadir';
+
+  @override
+  String get adNotCompleted => 'El anuncio no se completó';
+
+  @override
+  String inboxSectionTitle(int count) {
+    return '📥 Enlaces compartidos ($count)';
+  }
+
+  @override
+  String inboxFrom(String nickname, String time) {
+    return 'De $nickname · ⏰ $time';
+  }
+
+  @override
+  String get inboxDecline => 'Rechazar';
+
+  @override
+  String get inboxAdd => 'Añadir';
+
+  @override
+  String pingCheerToast(String nickname) {
+    return '📣 ¡$nickname te animó!';
+  }
+
+  @override
+  String pingPokeToast(String nickname) {
+    return '👉 ¡$nickname te dio un toque!';
+  }
+
+  @override
+  String get pingReferralToast => '🎁 ¡Un amigo se unió con tu código!';
+
+  @override
+  String get pingInquiryToast => '💬 Tu consulta recibió respuesta';
+
+  @override
+  String get pingGenericToast => '🔔 Nueva notificación';
+
+  @override
+  String get proofGalleryTitle => 'Galería de pruebas';
+
+  @override
+  String get proofLoadFailed => 'Error al cargar. Desliza para actualizar';
+
+  @override
+  String get proofNoSharedAlarms => 'Aún no hay alarmas compartidas';
+
+  @override
+  String get proofNoSharedAlarmsHint =>
+      'Comparte un enlace con amigos y\nreúne aquí las pruebas de 3 segundos 💪';
+
+  @override
+  String proofLatest(String time) {
+    return 'último $time';
+  }
+
+  @override
+  String get proofNoneYet => 'Sin pruebas aún';
+
+  @override
+  String get proofRecordMine => 'Grabar prueba';
+
+  @override
+  String proofVerifyWindowClosed(int minutes) {
+    return 'Solo puedes grabar una prueba dentro de los $minutes min tras la alarma';
+  }
+
+  @override
+  String get proofMineBadge => 'Mío';
+
+  @override
+  String timeAgoMinutes(int count) {
+    return 'hace $count min';
+  }
+
+  @override
+  String timeAgoHours(int count) {
+    return 'hace $count h';
+  }
+
+  @override
+  String timeAgoDays(int count) {
+    return 'hace $count días';
+  }
+
+  @override
+  String get guestPurchaseTitle => 'Se requiere una cuenta';
+
+  @override
+  String get guestPurchaseBody =>
+      'Para proteger tu compra entre dispositivos,\nvincula primero una cuenta de Google o Apple.\n\n¡Tus alarmas e historial se conservarán!';
+
+  @override
+  String get guestPurchaseLink => 'Vincular cuenta';
+
+  @override
+  String get lockedSlotTitle => 'Espacio de alarma bloqueado';
+
+  @override
+  String get lockedSlotSubtitle => 'Invita a un amigo +1 · Premium = ilimitado';
+
+  @override
+  String get dayChipLabels => 'L,M,X,J,V,S,D';
+
+  @override
+  String get cameraNotFound => 'Cámara no encontrada';
+
+  @override
+  String cameraInitFailed(String error) {
+    return 'Fallo al iniciar cámara: $error';
+  }
+
+  @override
+  String recordStartFailed(String error) {
+    return 'Fallo al iniciar grabación: $error';
+  }
+
+  @override
+  String recordStopFailed(String error) {
+    return 'Fallo al detener grabación: $error';
+  }
+
+  @override
+  String proofDeleteFailed(String error) {
+    return 'Fallo al eliminar: $error';
+  }
+
+  @override
+  String get shareRepeatDaily => 'Diario';
 }

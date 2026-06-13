@@ -152,13 +152,13 @@ class _AddBookmarkScreenState extends ConsumerState<AddBookmarkScreen> {
                       ),
                     ] else ...[
                       Icon(Icons.folder_outlined,
-                          color: colorScheme.outline),
+                          color: colorScheme.onSurfaceVariant),
                       const SizedBox(width: Spacing.sm),
                       Expanded(
                         child: Text(
                           isKorean ? '폴더 선택하기' : 'Pick a folder',
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: colorScheme.outline,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ),

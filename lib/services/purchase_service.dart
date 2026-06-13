@@ -110,49 +110,62 @@ class PurchaseService {
   }
 
   /// 구매 스트림 핸들러
+  /// ※ 어떤 경로로 실패하든 반드시 콜백을 부르고(_스피너 고착 방지_),
+  ///   completePurchase 를 실행하고(거래 잔류 방지), _isPurchasing 을 푼다.
   void _onPurchaseUpdate(List<PurchaseDetails> purchaseDetailsList) async {
     for (final purchase in purchaseDetailsList) {
       debugPrint('PurchaseService: ${purchase.productID} - ${purchase.status}');
 
-      switch (purchase.status) {
-        case PurchaseStatus.pending:
-          _isPurchasing = true;
-          break;
+      try {
+        switch (purchase.status) {
+          case PurchaseStatus.pending:
+            _isPurchasing = true;
+            break;
 
-        case PurchaseStatus.purchased:
-        case PurchaseStatus.restored:
-          // 구매/복원 성공
-          final valid = await _verifyPurchase(purchase);
-          if (valid) {
-            await _deliverProduct(purchase);
-            if (purchase.status == PurchaseStatus.restored) {
-              onPurchaseRestored?.call();
+          case PurchaseStatus.purchased:
+          case PurchaseStatus.restored:
+            // 구매/복원 성공
+            final valid = await _verifyPurchase(purchase);
+            if (valid) {
+              await _deliverProduct(purchase);
+              if (purchase.status == PurchaseStatus.restored) {
+                onPurchaseRestored?.call();
+              } else {
+                onPurchaseComplete?.call(true, null);
+              }
             } else {
-              onPurchaseComplete?.call(true, null);
+              onPurchaseComplete?.call(false, 'Verification failed');
             }
-          } else {
-            onPurchaseComplete?.call(false, 'Verification failed');
-          }
-          _isPurchasing = false;
-          break;
+            _isPurchasing = false;
+            break;
 
-        case PurchaseStatus.error:
-          _isPurchasing = false;
-          onPurchaseComplete?.call(
-            false,
-            purchase.error?.message ?? 'Unknown error',
-          );
-          break;
+          case PurchaseStatus.error:
+            _isPurchasing = false;
+            onPurchaseComplete?.call(
+              false,
+              purchase.error?.message ?? 'Unknown error',
+            );
+            break;
 
-        case PurchaseStatus.canceled:
-          _isPurchasing = false;
-          onPurchaseComplete?.call(false, 'Canceled');
-          break;
+          case PurchaseStatus.canceled:
+            _isPurchasing = false;
+            onPurchaseComplete?.call(false, 'Canceled');
+            break;
+        }
+      } catch (e) {
+        // 검증/전달 중 예외 → 스피너 무한 방지
+        debugPrint('PurchaseService: purchase handling error: $e');
+        _isPurchasing = false;
+        onPurchaseComplete?.call(false, '$e');
       }
 
-      // 거래 완료 처리 (필수!)
-      if (purchase.pendingCompletePurchase) {
-        await _inAppPurchase.completePurchase(purchase);
+      // 거래 완료 처리 (필수!) — 예외가 났어도 반드시 실행
+      try {
+        if (purchase.pendingCompletePurchase) {
+          await _inAppPurchase.completePurchase(purchase);
+        }
+      } catch (e) {
+        debugPrint('PurchaseService: completePurchase error: $e');
       }
     }
   }
@@ -198,8 +211,12 @@ class PurchaseService {
         }),
       );
 
-      final response = await request.close();
-      final body = await utf8.decodeStream(response);
+      // 함수 콜드스타트 감안 15초 — 무한 대기로 스피너 고착되는 것 방지
+      final response =
+          await request.close().timeout(const Duration(seconds: 15));
+      final body = await utf8
+          .decodeStream(response)
+          .timeout(const Duration(seconds: 15));
       client.close();
 
       if (response.statusCode < 200 || response.statusCode >= 300) {

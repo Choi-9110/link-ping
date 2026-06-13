@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../widgets/dialog_actions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../l10n/app_localizations.dart';
 
@@ -493,14 +495,16 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(l10n.requestConsent),
-          ),
+          DialogActions(buttons: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(l10n.cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(l10n.requestConsent),
+            ),
+          ]),
         ],
       ),
     );
@@ -529,14 +533,16 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
         title: Text(l10n.delete),
         content: Text(l10n.deleteConfirm),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.cancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(l10n.delete),
-          ),
+          DialogActions(buttons: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(l10n.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(l10n.delete),
+            ),
+          ]),
         ],
       ),
     );
@@ -723,7 +729,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
                     Text(l10n.reminderTime, style: theme.textTheme.titleMedium),
                     if (isReceivedLocked) ...[
                       const SizedBox(width: Spacing.xs),
-                      Icon(Icons.lock, size: 16, color: colorScheme.outline),
+                      Icon(Icons.lock, size: 16, color: colorScheme.onSurfaceVariant),
                     ],
                   ],
                 ),
@@ -767,7 +773,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
                 Text(l10n.repeat, style: theme.textTheme.titleMedium),
                 if (isReceivedLocked) ...[
                   const SizedBox(width: Spacing.xs),
-                  Icon(Icons.lock, size: 16, color: colorScheme.outline),
+                  Icon(Icons.lock, size: 16, color: colorScheme.onSurfaceVariant),
                 ],
               ],
             ),
@@ -825,14 +831,14 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
         child: ListTile(
           leading: Icon(
             isTimeLocked ? Icons.lock_clock : Icons.access_time,
-            color: showLocked ? colorScheme.outline : null,
+            color: showLocked ? colorScheme.onSurfaceVariant : null,
           ),
           title: Row(
             children: [
               Text(
                 time.format(context),
                 style: TextStyle(
-                  color: showLocked ? colorScheme.outline : null,
+                  color: showLocked ? colorScheme.onSurfaceVariant : null,
                 ),
               ),
               // 잠긴 시간 뱃지
@@ -882,7 +888,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
                         onPressed: () => _unlockTimeWithPoring(index),
                       )
               : isLocked
-              ? Icon(Icons.lock, size: 18, color: colorScheme.outline)
+              ? Icon(Icons.lock, size: 18, color: colorScheme.onSurfaceVariant)
               : (isFirst
                     ? const Icon(Icons.chevron_right)
                     : IconButton(
@@ -940,7 +946,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
             style: TextStyle(
               color: isSelected
                   ? Colors.white
-                  : (isLocked ? colorScheme.outline : colorScheme.onSurface),
+                  : (isLocked ? colorScheme.onSurfaceVariant : colorScheme.onSurface),
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
@@ -1018,7 +1024,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
             style: TextStyle(
               color: isSelected
                   ? Colors.white
-                  : (isLocked ? colorScheme.outline : colorScheme.onSurface),
+                  : (isLocked ? colorScheme.onSurfaceVariant : colorScheme.onSurface),
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
@@ -1063,7 +1069,7 @@ class _EditLinkScreenState extends ConsumerState<EditLinkScreen> {
           subtitle: Text(
             _hasEndDate ? l10n.endDateEnabled : l10n.endDateDisabled,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.outline,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           value: _hasEndDate,

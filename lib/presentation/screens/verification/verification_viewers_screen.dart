@@ -69,7 +69,7 @@ class _VerificationViewersScreenState
                             : 'Failed to load viewers',
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyMedium
-                            ?.copyWith(color: colorScheme.outline),
+                            ?.copyWith(color: colorScheme.onSurfaceVariant),
                       ),
                     ),
                   );
@@ -82,7 +82,7 @@ class _VerificationViewersScreenState
                           ? '아직 본 사람이 없어요'
                           : 'No one viewed yet',
                       style: theme.textTheme.bodyMedium
-                          ?.copyWith(color: colorScheme.outline),
+                          ?.copyWith(color: colorScheme.onSurfaceVariant),
                     ),
                   );
                 }
@@ -109,7 +109,7 @@ class _VerificationViewersScreenState
                         subtitle: Text(
                           v.country,
                           style: theme.textTheme.bodySmall
-                              ?.copyWith(color: colorScheme.outline),
+                              ?.copyWith(color: colorScheme.onSurfaceVariant),
                         ),
                       ),
                     );
@@ -142,7 +142,7 @@ class _VerificationViewersScreenState
                 : 'See who watched your verification videos.\nUpgrade to Premium.',
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: colorScheme.outline,
+              color: colorScheme.onSurfaceVariant,
               height: 1.5,
             ),
           ),

@@ -32,7 +32,7 @@ class BlockedUsersScreen extends ConsumerWidget {
                     Icon(
                       Icons.shield_outlined,
                       size: 64,
-                      color: colorScheme.outline.withValues(alpha: 0.4),
+                      color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                     ),
                     const SizedBox(height: Spacing.md),
                     Text(
@@ -40,7 +40,7 @@ class BlockedUsersScreen extends ConsumerWidget {
                           ? '차단한 사용자가 없어요'
                           : 'No blocked users',
                       style: theme.textTheme.bodyLarge?.copyWith(
-                        color: colorScheme.outline,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -74,7 +74,7 @@ class BlockedUsersScreen extends ConsumerWidget {
                   subtitle: Text(
                     _formatDate(user.blockedAt, isKorean),
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: colorScheme.outline,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                   trailing: TextButton(

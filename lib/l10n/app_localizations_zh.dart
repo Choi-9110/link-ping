@@ -1467,4 +1467,231 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get phoneGenericError => '出错了';
+
+  @override
+  String get deleteAccount => '注销账号';
+
+  @override
+  String get deleteAccountConfirm => '确定要注销吗？账号、链接、统计和认证视频将被永久删除，无法恢复。';
+
+  @override
+  String get deleteAccountReauth => '为了安全，请重新登录后再试。';
+
+  @override
+  String get deleteAccountFailed => '注销失败，请稍后再试。';
+
+  @override
+  String get ringModeTitle => '要怎么连接？';
+
+  @override
+  String get ringModeAllName => '全员链';
+
+  @override
+  String get ringModeAllDesc => '和拥有链接的所有人一起';
+
+  @override
+  String get ringModeChainName => '接力链';
+
+  @override
+  String get ringModeChainDesc => '和你分享过的人一起';
+
+  @override
+  String get ringModeFixedNote => '选定后此闹钟将一直使用该方式';
+
+  @override
+  String get ringModeHelpTooltip => '详细说明';
+
+  @override
+  String get ringModeHelpTitle => '有什么区别？';
+
+  @override
+  String get ringModeHelpBody =>
+      '🔗 全员链\nA创建后分享给B，B再传给C\n→ A、B、C全员同组。\n所有人都能看到并为彼此的3秒打卡加油。\n\n🤝 接力链\n按 A → B → C → D 传递时\n→ C只能看到B（分享给我的人）和D（我分享的人），看不到A。\n我的3秒打卡也只对直接往来的人可见。\n\n💡 区别在于打卡视频对谁可见。\n家人密友安静地用 = 接力链，\n社团学习小组一起用 = 全员链！';
+
+  @override
+  String get ringModeHelpOk => '明白了！';
+
+  @override
+  String get ringBannerAll => '🔗 全员链 — 打卡对所有持链接者可见';
+
+  @override
+  String get ringBannerChain => '🤝 接力链 — 打卡只对我分享的人可见';
+
+  @override
+  String get shareAlreadySaved => '该闹钟已保存';
+
+  @override
+  String get shareNotFound => '找不到分享链接';
+
+  @override
+  String get shareDuplicateAlarm => '已有相同的闹钟';
+
+  @override
+  String shareRepeatWeekly(int count) {
+    return '每周$count次';
+  }
+
+  @override
+  String get shareArrivedTitle => '收到共享闹钟 💌';
+
+  @override
+  String shareArrivedWith(String nickname) {
+    return '和$nickname在同一时间收到提醒';
+  }
+
+  @override
+  String get shareLater => '稍后';
+
+  @override
+  String get shareAddToMyAlarms => '添加到我的闹钟';
+
+  @override
+  String get shareKeptInInbox => '📥 已存入通知页的“收到的分享”';
+
+  @override
+  String get shareAddedTogether => '闹钟已添加！同一时间一起加油 🔔';
+
+  @override
+  String get shareAddFailed => '添加失败';
+
+  @override
+  String get slotFullTitle => '闹钟栏位已满';
+
+  @override
+  String get slotFullAdBody => '免费闹钟栏位已全部用完。\n观看广告即可添加这个共享闹钟！\n\n（高级版无广告无限制 ✨）';
+
+  @override
+  String get slotFullLater => '下次吧';
+
+  @override
+  String get slotFullWatchAd => '看广告并添加';
+
+  @override
+  String get adNotCompleted => '广告未看完';
+
+  @override
+  String inboxSectionTitle(int count) {
+    return '📥 收到的分享（$count）';
+  }
+
+  @override
+  String inboxFrom(String nickname, String time) {
+    return '来自$nickname · ⏰ $time';
+  }
+
+  @override
+  String get inboxDecline => '拒绝';
+
+  @override
+  String get inboxAdd => '添加';
+
+  @override
+  String pingCheerToast(String nickname) {
+    return '📣 $nickname为你加油了！';
+  }
+
+  @override
+  String pingPokeToast(String nickname) {
+    return '👉 $nickname戳了你一下！';
+  }
+
+  @override
+  String get pingReferralToast => '🎁 朋友用你的邀请码注册了！';
+
+  @override
+  String get pingInquiryToast => '💬 你的咨询收到了回复';
+
+  @override
+  String get pingGenericToast => '🔔 收到新通知';
+
+  @override
+  String get proofGalleryTitle => '打卡相册';
+
+  @override
+  String get proofLoadFailed => '加载失败，下拉刷新';
+
+  @override
+  String get proofNoSharedAlarms => '还没有共同的约定';
+
+  @override
+  String get proofNoSharedAlarmsHint => '把链接分享给朋友\n就能在这里集中查看彼此的3秒打卡 💪';
+
+  @override
+  String proofLatest(String time) {
+    return '最近 $time';
+  }
+
+  @override
+  String get proofNoneYet => '暂无打卡';
+
+  @override
+  String get proofRecordMine => '我也打卡';
+
+  @override
+  String proofVerifyWindowClosed(int minutes) {
+    return '只能在闹钟响起后$minutes分钟内打卡';
+  }
+
+  @override
+  String get proofMineBadge => '我的';
+
+  @override
+  String timeAgoMinutes(int count) {
+    return '$count分钟前';
+  }
+
+  @override
+  String timeAgoHours(int count) {
+    return '$count小时前';
+  }
+
+  @override
+  String timeAgoDays(int count) {
+    return '$count天前';
+  }
+
+  @override
+  String get guestPurchaseTitle => '需要绑定账号';
+
+  @override
+  String get guestPurchaseBody =>
+      '为了安全保存购买记录，\n请先绑定Google或Apple账号。\n\n绑定后现有闹钟和记录都会保留！';
+
+  @override
+  String get guestPurchaseLink => '去绑定';
+
+  @override
+  String get lockedSlotTitle => '已锁定的闹钟栏位';
+
+  @override
+  String get lockedSlotSubtitle => '邀请好友+1 · 高级版无限制';
+
+  @override
+  String get dayChipLabels => '一,二,三,四,五,六,日';
+
+  @override
+  String get cameraNotFound => '找不到相机';
+
+  @override
+  String cameraInitFailed(String error) {
+    return '相机初始化失败: $error';
+  }
+
+  @override
+  String recordStartFailed(String error) {
+    return '开始录制失败: $error';
+  }
+
+  @override
+  String recordStopFailed(String error) {
+    return '停止录制失败: $error';
+  }
+
+  @override
+  String proofDeleteFailed(String error) {
+    return '删除失败: $error';
+  }
+
+  @override
+  String get shareRepeatDaily => '每天';
 }

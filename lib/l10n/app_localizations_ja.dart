@@ -1472,4 +1472,233 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get phoneGenericError => 'エラーが発生しました';
+
+  @override
+  String get deleteAccount => '退会（アカウント削除）';
+
+  @override
+  String get deleteAccountConfirm =>
+      '本当に退会しますか？アカウント・リンク・統計・認証動画がすべて削除され、復元できません。';
+
+  @override
+  String get deleteAccountReauth => 'セキュリティのため、再ログイン後にもう一度お試しください。';
+
+  @override
+  String get deleteAccountFailed => '退会処理に失敗しました。しばらくしてからもう一度お試しください。';
+
+  @override
+  String get ringModeTitle => 'どうつなげますか？';
+
+  @override
+  String get ringModeAllName => 'みんなリング';
+
+  @override
+  String get ringModeAllDesc => 'リンクを持つ全員と一緒に';
+
+  @override
+  String get ringModeChainName => 'リレーリング';
+
+  @override
+  String get ringModeChainDesc => '共有した相手と一緒に';
+
+  @override
+  String get ringModeFixedNote => '一度決めるとこのアラームはずっと同じ方式です';
+
+  @override
+  String get ringModeHelpTooltip => '詳しい説明';
+
+  @override
+  String get ringModeHelpTitle => '何が違うの？';
+
+  @override
+  String get ringModeHelpBody =>
+      '🔗 みんなリング\nAが作ってBへ、BがCへ渡すと\n→ A・B・C全員がひとつのグループに。\n全員がお互いの3秒認証を見て応援できます。\n\n🤝 リレーリング\nA → B → C → D の順で渡ると\n→ CにはB（くれた人）とD（渡した人）だけ見えます。Aは見えません。\n自分の3秒認証も直接やり取りした相手にだけ表示されます。\n\n💡 認証動画が誰に見えるかが変わります。\n家族や親しい友達と静かに = リレーリング、\nクルーや勉強会でみんなと = みんなリング！';
+
+  @override
+  String get ringModeHelpOk => 'わかった！';
+
+  @override
+  String get ringBannerAll => '🔗 みんなリング — リンクを持つ全員に認証が表示されます';
+
+  @override
+  String get ringBannerChain => '🤝 リレーリング — 共有した相手にだけ認証が表示されます';
+
+  @override
+  String get shareAlreadySaved => 'すでに保存済みのアラームです';
+
+  @override
+  String get shareNotFound => '共有リンクが見つかりません';
+
+  @override
+  String get shareDuplicateAlarm => '同じアラームがすでにあります';
+
+  @override
+  String shareRepeatWeekly(int count) {
+    return '週$count回';
+  }
+
+  @override
+  String get shareArrivedTitle => '共有アラームが届きました 💌';
+
+  @override
+  String shareArrivedWith(String nickname) {
+    return '$nicknameさんと同じ時間に通知が届きます';
+  }
+
+  @override
+  String get shareLater => 'あとで';
+
+  @override
+  String get shareAddToMyAlarms => 'マイアラームに追加';
+
+  @override
+  String get shareKeptInInbox => '📥 通知タブの「共有リンク」に保管しました';
+
+  @override
+  String get shareAddedTogether => 'アラームを追加しました！同じ時間に一緒に 🔔';
+
+  @override
+  String get shareAddFailed => '追加できませんでした';
+
+  @override
+  String get slotFullTitle => 'アラーム枠がいっぱいです';
+
+  @override
+  String get slotFullAdBody =>
+      '無料のアラーム枠がすべて使用中です。\n広告を見るとこの共有アラームを追加できます！\n\n（プレミアムは広告なしで無制限 ✨）';
+
+  @override
+  String get slotFullLater => 'あとで';
+
+  @override
+  String get slotFullWatchAd => '広告を見て追加';
+
+  @override
+  String get adNotCompleted => '広告の視聴が完了しませんでした';
+
+  @override
+  String inboxSectionTitle(int count) {
+    return '📥 共有リンク（$count）';
+  }
+
+  @override
+  String inboxFrom(String nickname, String time) {
+    return '$nicknameさんから · ⏰ $time';
+  }
+
+  @override
+  String get inboxDecline => '拒否';
+
+  @override
+  String get inboxAdd => '追加';
+
+  @override
+  String pingCheerToast(String nickname) {
+    return '📣 $nicknameさんが応援を送りました！';
+  }
+
+  @override
+  String pingPokeToast(String nickname) {
+    return '👉 $nicknameさんがつつきました！';
+  }
+
+  @override
+  String get pingReferralToast => '🎁 友達があなたのコードで登録しました！';
+
+  @override
+  String get pingInquiryToast => '💬 お問い合わせに回答が届きました';
+
+  @override
+  String get pingGenericToast => '🔔 新しい通知が届きました';
+
+  @override
+  String get proofGalleryTitle => '認証ギャラリー';
+
+  @override
+  String get proofLoadFailed => '読み込めませんでした。引っ張って更新';
+
+  @override
+  String get proofNoSharedAlarms => 'まだ一緒の約束がありません';
+
+  @override
+  String get proofNoSharedAlarmsHint => 'リンクを友達に共有すると\nここでお互いの3秒認証を集められます 💪';
+
+  @override
+  String proofLatest(String time) {
+    return '最新 $time';
+  }
+
+  @override
+  String get proofNoneYet => 'まだ認証なし';
+
+  @override
+  String get proofRecordMine => '私も認証する';
+
+  @override
+  String proofVerifyWindowClosed(int minutes) {
+    return 'アラームが鳴ってから$minutes分以内にだけ認証できます';
+  }
+
+  @override
+  String get proofMineBadge => '自分';
+
+  @override
+  String timeAgoMinutes(int count) {
+    return '$count分前';
+  }
+
+  @override
+  String timeAgoHours(int count) {
+    return '$count時間前';
+  }
+
+  @override
+  String timeAgoDays(int count) {
+    return '$count日前';
+  }
+
+  @override
+  String get guestPurchaseTitle => 'アカウント連携が必要です';
+
+  @override
+  String get guestPurchaseBody =>
+      '購入履歴を安全に保管するため、\n先にGoogleまたはAppleアカウントを連携してください。\n\n連携してもアラームや記録はそのまま残ります！';
+
+  @override
+  String get guestPurchaseLink => '連携しに行く';
+
+  @override
+  String get lockedSlotTitle => 'ロック中のアラーム枠';
+
+  @override
+  String get lockedSlotSubtitle => '友達招待で+1 · プレミアムは無制限';
+
+  @override
+  String get dayChipLabels => '月,火,水,木,金,土,日';
+
+  @override
+  String get cameraNotFound => 'カメラが見つかりません';
+
+  @override
+  String cameraInitFailed(String error) {
+    return 'カメラ初期化に失敗: $error';
+  }
+
+  @override
+  String recordStartFailed(String error) {
+    return '録画開始に失敗: $error';
+  }
+
+  @override
+  String recordStopFailed(String error) {
+    return '録画停止に失敗: $error';
+  }
+
+  @override
+  String proofDeleteFailed(String error) {
+    return '削除に失敗: $error';
+  }
+
+  @override
+  String get shareRepeatDaily => '毎日';
 }

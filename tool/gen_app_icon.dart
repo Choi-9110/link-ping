@@ -10,7 +10,8 @@ import 'dart:io';
 import 'package:image/image.dart' as img;
 
 String? _attr(String name, String s) =>
-    RegExp('$name="([^"]*)"').firstMatch(s)?.group(1);
+    // 앞에 글자가 붙은 속성(rx/ry 등)을 x/y로 오인하지 않도록 경계를 둔다.
+    RegExp('(?<![A-Za-z])$name="([^"]*)"').firstMatch(s)?.group(1);
 
 img.Color _hex(String hex) {
   final h = hex.replaceAll('#', '');

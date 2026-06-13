@@ -159,6 +159,15 @@ class LinkReminder extends HiveObject {
   @HiveField(16)
   final String? soundId; // 알람 소리 ID (null이면 기본 소리)
 
+  @HiveField(17)
+  final String? outgoingShareId; // 내가 공유 버튼으로 만든 문서 ID (릴레이: 내 고리)
+
+  @HiveField(18)
+  final String? rootShareId; // 공유 체인의 뿌리 ID (중복 등록 방지/묶음 기준)
+
+  @HiveField(19)
+  final String? shareVisibility; // 'all'=다같이 링 / 'chain'=릴레이 링
+
   LinkReminder({
     required this.id,
     required this.url,
@@ -177,6 +186,9 @@ class LinkReminder extends HiveObject {
     this.creatorUid,
     this.category,
     this.soundId,
+    this.outgoingShareId,
+    this.rootShareId,
+    this.shareVisibility,
   }) : createdAt = createdAt ?? DateTime.now();
 
   /// 모든 알림 시간 목록 (기본 시간 + 추가 시간)
@@ -218,6 +230,9 @@ class LinkReminder extends HiveObject {
     bool clearCategory = false, // category를 null로 설정하려면 true
     String? soundId,
     bool clearSoundId = false, // soundId를 null로 설정하려면 true
+    String? outgoingShareId,
+    String? rootShareId,
+    String? shareVisibility,
   }) {
     return LinkReminder(
       id: id ?? this.id,
@@ -237,6 +252,9 @@ class LinkReminder extends HiveObject {
       creatorUid: creatorUid ?? this.creatorUid,
       category: clearCategory ? null : (category ?? this.category),
       soundId: clearSoundId ? null : (soundId ?? this.soundId),
+      outgoingShareId: outgoingShareId ?? this.outgoingShareId,
+      rootShareId: rootShareId ?? this.rootShareId,
+      shareVisibility: shareVisibility ?? this.shareVisibility,
     );
   }
 
@@ -261,6 +279,9 @@ class LinkReminder extends HiveObject {
         'creatorUid': creatorUid,
         'category': category?.name,
         'soundId': soundId,
+        'outgoingShareId': outgoingShareId,
+        'rootShareId': rootShareId,
+        'shareVisibility': shareVisibility,
       };
 
   /// Firestore 백업 데이터 → 모델 복원
@@ -293,6 +314,9 @@ class LinkReminder extends HiveObject {
       creatorUid: m['creatorUid'] as String?,
       category: _categoryFromName(m['category'] as String?),
       soundId: m['soundId'] as String?,
+      outgoingShareId: m['outgoingShareId'] as String?,
+      rootShareId: m['rootShareId'] as String?,
+      shareVisibility: m['shareVisibility'] as String?,
     );
   }
 

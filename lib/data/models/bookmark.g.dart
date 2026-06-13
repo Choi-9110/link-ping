@@ -82,7 +82,7 @@ class BookmarkCategoryAdapter extends TypeAdapter<BookmarkCategory> {
       case 7:
         return BookmarkCategory.other;
       default:
-        return BookmarkCategory.other;
+        return BookmarkCategory.exercise;
     }
   }
 

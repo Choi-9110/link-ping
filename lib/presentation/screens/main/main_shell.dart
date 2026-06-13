@@ -1,11 +1,19 @@
+import 'dart:async';
+
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/models/ping_notification.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../providers/links_provider.dart';
 import '../../../providers/user_provider.dart';
 import '../../widgets/banner_ad_widget.dart';
+import '../../widgets/share_accept_flow.dart';
+import '../../widgets/toast_overlay.dart';
 import '../home/home_screen.dart';
 import '../bookmark/bookmark_screen.dart';
+import '../verification/verification_gallery_screen.dart';
 import '../verification/verification_prompt_dialog.dart';
 
 class MainShell extends ConsumerStatefulWidget {
@@ -20,8 +28,18 @@ class _MainShellState extends ConsumerState<MainShell>
   int _currentIndex = 0;
   bool _cloudRestored = false; // 프리미엄 클라우드 복원 1회 실행 가드
 
+  // 인앱 핑 토스트: 첫 로드(기존 알림)는 건너뛰고 새로 도착한 것만 띄운다
+  bool _pingToastInit = false;
+  String? _lastPingId;
+
+  // 딥링크 수신 (linkping://share/{id}, https://.../s/{id})
+  final _appLinks = AppLinks();
+  StreamSubscription<Uri>? _linkSub;
+  final _handledShareIds = <String>{};
+
   final _screens = const [
     HomeScreen(),
+    VerificationGalleryScreen(),
     BookmarkScreen(),
   ];
 
@@ -33,20 +51,69 @@ class _MainShellState extends ConsumerState<MainShell>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) VerificationPromptDialog.showIfPending(context);
     });
+    _initDeepLinks();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _linkSub?.cancel();
     super.dispose();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      // 알람 → 외부 URL 다녀온 직후 앱 복귀 시 인증 프롬프트
-      if (mounted) VerificationPromptDialog.showIfPending(context);
+  // ==================== 공유 링크 딥링크 수신 ====================
+
+  /// 콜드 스타트(앱이 링크로 실행됨) + 웜 스타트(실행 중 링크 탭) 모두 처리
+  Future<void> _initDeepLinks() async {
+    try {
+      final initial = await _appLinks.getInitialLink();
+      if (initial != null) _handleIncomingUri(initial);
+    } catch (_) {}
+    _linkSub = _appLinks.uriLinkStream.listen(
+      _handleIncomingUri,
+      onError: (_) {},
+    );
+  }
+
+  void _handleIncomingUri(Uri uri) {
+    // linkping://share/{shareId}  (웹 랜딩의 "앱에서 열기")
+    // https://linkping-prod.web.app/s/{shareId}  (유니버설 링크 — 추후)
+    String? shareId;
+    if (uri.scheme == 'linkping' && uri.host == 'share') {
+      if (uri.pathSegments.isNotEmpty) shareId = uri.pathSegments.first;
+    } else if (uri.pathSegments.length >= 2 && uri.pathSegments.first == 's') {
+      shareId = uri.pathSegments[1];
     }
+    if (shareId == null || shareId.isEmpty) return;
+    if (!_handledShareIds.add(shareId)) return; // 같은 링크 중복 처리 방지
+
+    final id = shareId;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) promptSaveSharedLink(context, ref, id);
+    });
+  }
+
+  /// 새 핑(응원/찌르기 등) 도착 시 인앱 토스트 "뿅"
+  void _onPingArrived(PingNotification n) {
+    final l10n = AppLocalizations.of(context)!;
+    final String message;
+    switch (n.type) {
+      case PingType.cheer:
+        message = l10n.pingCheerToast(n.fromNickname);
+        break;
+      case PingType.tease:
+        message = l10n.pingPokeToast(n.fromNickname);
+        break;
+      case PingType.referralAccepted:
+        message = l10n.pingReferralToast;
+        break;
+      case PingType.inquiryReply:
+        message = l10n.pingInquiryToast;
+        break;
+      default:
+        message = l10n.pingGenericToast;
+    }
+    ToastOverlay.show(context, message: message);
   }
 
   @override
@@ -54,6 +121,25 @@ class _MainShellState extends ConsumerState<MainShell>
     final colorScheme = Theme.of(context).colorScheme;
     final userProfile = ref.watch(userProfileProvider);
     final isPremium = userProfile.value?.isPremium ?? false;
+
+    // 새 알림 도착 감지 → 토스트 (첫 로드는 기준점만 기록)
+    ref.listen(myNotificationsProvider, (previous, next) {
+      final list = next.valueOrNull;
+      if (list == null) return;
+      final top = list.isEmpty ? null : list.first;
+      if (!_pingToastInit) {
+        _pingToastInit = true;
+        _lastPingId = top?.id;
+        return;
+      }
+      if (top != null && top.id != _lastPingId) {
+        _lastPingId = top.id;
+        final notification = top;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) _onPingArrived(notification);
+        });
+      }
+    });
 
     // 프리미엄 로그인 확인되면 클라우드 백업 → 로컬 복원 1회 실행
     if (isPremium && !_cloudRestored) {
@@ -97,6 +183,13 @@ class _MainShellState extends ConsumerState<MainShell>
                 ),
                 _buildNavItem(
                   index: 1,
+                  icon: Icons.videocam_outlined,
+                  activeIcon: Icons.videocam,
+                  label: 'Proof',
+                  colorScheme: colorScheme,
+                ),
+                _buildNavItem(
+                  index: 2,
                   icon: Icons.bookmark_outline,
                   activeIcon: Icons.bookmark,
                   label: 'Bookmark',

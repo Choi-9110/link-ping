@@ -15,7 +15,14 @@ class SharedLink {
   final String? soundId; // 알람 소리 ID
   final String languageCode; // 공유한 사람의 언어 코드 (en, ko, ja, zh, es)
 
-  const SharedLink({
+  /// 연결 모드: 'all' = 다같이(전원 한 그룹) / 'chain' = 릴레이(직접 주고받은 사람끼리)
+  final String visibility;
+
+  /// 릴레이 체인의 뿌리 문서 ID — 같은 알람에서 파생된 모든 공유를 묶는다.
+  /// (다같이 모드/뿌리 문서는 자기 자신의 id)
+  final String rootShareId;
+
+  SharedLink({
     required this.id,
     required this.url,
     required this.title,
@@ -30,7 +37,9 @@ class SharedLink {
     this.savedByUids = const [],
     this.soundId,
     this.languageCode = 'en', // 기본값 영어
-  });
+    this.visibility = 'all',
+    String? rootShareId,
+  }) : rootShareId = rootShareId ?? id;
 
   /// 공유자의 언어가 한국어인지 확인
   bool get isKorean => languageCode == 'ko';
@@ -89,6 +98,8 @@ class SharedLink {
     'savedByUids': savedByUids,
     if (soundId != null) 'soundId': soundId,
     'languageCode': languageCode,
+    'visibility': visibility,
+    'rootShareId': rootShareId,
   };
 
   factory SharedLink.fromJson(Map<String, dynamic> json) {
@@ -107,6 +118,8 @@ class SharedLink {
       savedByUids: List<String>.from(json['savedByUids'] as List? ?? []),
       soundId: json['soundId'] as String?,
       languageCode: json['languageCode'] as String? ?? 'en',
+      visibility: json['visibility'] as String? ?? 'all', // 레거시 = 다같이
+      rootShareId: json['rootShareId'] as String?,
     );
   }
 

@@ -165,6 +165,14 @@ class MyApp extends ConsumerWidget {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
 
+      // 전역 UX: 입력 중 키보드 바깥 아무 곳이나 탭하면 키보드를 내린다.
+      // (버튼 등 실제 탭 타깃은 제스처 우선권이 있어 정상 동작)
+      builder: (context, child) => GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: child,
+      ),
+
       // 다국어 지원
       localizationsDelegates: const [
         AppLocalizations.delegate,

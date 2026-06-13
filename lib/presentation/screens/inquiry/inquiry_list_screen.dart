@@ -50,20 +50,20 @@ class InquiryListScreen extends StatelessWidget {
                   Icon(
                     Icons.help_outline,
                     size: 80,
-                    color: colorScheme.outline,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                   const SizedBox(height: Spacing.md),
                   Text(
                     l10n.noInquiries,
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: colorScheme.outline,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                   const SizedBox(height: Spacing.sm),
                   Text(
                     l10n.inquiryHint,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.outline,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                   const SizedBox(height: Spacing.lg),
@@ -167,7 +167,7 @@ class _InquiryCard extends StatelessWidget {
                   Text(
                     _formatDate(inquiry.createdAt),
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: colorScheme.outline,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],

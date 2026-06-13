@@ -226,6 +226,39 @@
 | isPremium | Boolean | 프리미엄 여부 |
 | count | Integer | 일일 선택 횟수 |
 
+> ※ 알람 사운드 기능 제거로 현재 미사용(레거시). 보안 규칙상 admin 전용.
+
+---
+
+## 8. `users/{uid}/private/profile` - 민감정보 (본인 전용)
+
+| 필드 | 타입 | 설명 |
+|------|------|------|
+| phoneNumber | String | 전화번호 (tel: 알람용) — 공개 프로필에 두면 노출되므로 분리 |
+| updatedAt | Timestamp | 수정일 |
+
+---
+
+## 9. `verificationVideos` - 인증 영상 (UGC)
+
+자세한 필드/규칙은 [VERIFICATION_VIDEO_SETUP.md](./VERIFICATION_VIDEO_SETUP.md) 참조.
+핵심: uploaderUid/storagePath/videoUrl/expiresAt(+TTL), reports 서브컬렉션(신고).
+
+---
+
+## 10. `iapVerifications` - 인앱결제 검증 로그 (Cloud Functions 기록)
+
+`functions/src/index.ts` 의 `/iap/verify` 가 기록. 계약은 [IAP_VERIFY_API_CONTRACT.md](./IAP_VERIFY_API_CONTRACT.md) 참조.
+
+---
+
+## 회원 탈퇴 시 삭제 범위
+
+`FirestoreService.deleteAllUserData()` (Auth 삭제 전 호출):
+users/{uid} 문서 + 서브컬렉션(notifications/blockedUsers/stats/links/private),
+userStats/{uid}, 본인 verificationVideos(+Storage verifications/{uid}/*), 본인 inquiries.
+sharedLinks 는 공유받은 상대의 알람 보존을 위해 유지.
+
 ---
 
 ## 이모지 키 목록 (profileEmoji 값)

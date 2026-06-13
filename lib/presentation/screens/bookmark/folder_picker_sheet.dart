@@ -87,7 +87,7 @@ class FolderPickerSheet extends ConsumerWidget {
                         children: [
                           Icon(Icons.folder_outlined,
                               size: 48,
-                              color: colorScheme.outline.withValues(alpha: 0.6)),
+                              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6)),
                           const SizedBox(height: Spacing.md),
                           Text(
                             isKorean
@@ -95,7 +95,7 @@ class FolderPickerSheet extends ConsumerWidget {
                                 : 'No folders yet. Create one first',
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyMedium
-                                ?.copyWith(color: colorScheme.outline),
+                                ?.copyWith(color: colorScheme.onSurfaceVariant),
                           ),
                         ],
                       ),
